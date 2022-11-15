@@ -2,7 +2,19 @@
 
 **欢迎访问我的博客站点！**
 
-<img src="assets/logo.png" alt="img" style="zoom: 33%;" />
+<img src=".assets/logo.png" alt="img" style="zoom: 33%;" />
+
+
+
+## Kubernetes
+
+### 存储
+
+- [BeeGFS 简介](Kubernetes/存储/BeeGFS/BeeGFS简介.md)
+
+### 制品管理
+
+- [JFrog Containe rRegistry](Kubernetes/制品管理/JFrogContainerRegistry.md) 
 
 ## [设计模式概述](设计模式/设计模式概述.md)  
 
