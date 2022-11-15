@@ -6,11 +6,11 @@
 
 
 
+## BeeGFS 
+
+- [BeeGFS简介](BeeGFS/BeeGFS简介.md)
+
 ## Kubernetes
-
-### 存储
-
-- [BeeGFS 简介](Kubernetes/存储/BeeGFS/BeeGFS简介.md)
 
 ### 制品管理
 
