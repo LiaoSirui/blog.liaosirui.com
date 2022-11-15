@@ -14,7 +14,8 @@
 
 ### 制品管理
 
-- [JFrog Containe rRegistry](Kubernetes/制品管理/JFrogContainerRegistry.md) 
+- [devpi](Kubernetes/制品管理/devpi.md)
+- [JFrog Container Registry](Kubernetes/制品管理/JFrogContainerRegistry.md)
 
 ## [设计模式概述](设计模式/设计模式概述.md)  
 
