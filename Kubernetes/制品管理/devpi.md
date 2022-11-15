@@ -241,3 +241,15 @@ torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 \
 --trusted-host devpi.local.liaosirui.com
 ```
 
+与原先的合并
+
+```ini
+[global]
+timeout = 60
+index-url = http://devpi.local.liaosirui.com:3141/root/douban/+simple/
+extra-index-url = http://devpi.local.liaosirui.com:3141/root/torch-cu116/+simple/
+[install]
+trusted-host = devpi.local.liaosirui.com
+
+```
+
