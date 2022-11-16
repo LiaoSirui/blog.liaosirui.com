@@ -15,6 +15,7 @@
 ### 工具
 
 - [pyenvs](Python/工具/pyenvs.md)
+- [pdm](Python/工具/pdm.md)
 
 ## Kubernetes
 
