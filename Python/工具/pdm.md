@@ -57,3 +57,22 @@ pdm list 还有两个选项：
 pdm install
 ```
 
+## 配置多个源
+
+官方文档地址：<https://pdm.fming.dev/1.15/pyproject/tool-pdm/#specify-other-sources-for-finding-packages>
+
+多个源的配置示例：
+
+```toml
+[tool.pdm]
+    [[tool.pdm.source]]
+        name       = "pypi"
+        url        = "http://devpi.local.liaosirui.com:3141/root/douban/+simple/"
+        verify_ssl = true
+    [[tool.pdm.source]]
+        name       = "torch-cu116"
+        url        = "http://devpi.local.liaosirui.com:3141/root/torch-cu116/+simple/"
+        verify_ssl = false
+
+```
+

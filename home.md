@@ -6,9 +6,14 @@
 
 
 
+## Linux
+
+- [openssl](Linux/openssl.md)
+
 ## BeeGFS 
 
 - [BeeGFS简介](BeeGFS/BeeGFS简介.md)
+- [BeeGFS安装](BeeGFS/BeeGFS安装.md)
 
 ## Python
 
@@ -19,12 +24,18 @@
 
 ## Kubernetes
 
+### 服务网格
+
+#### istio
+
+- [istio-ingressgateway证书配置](Kubernetes/服务网格/istio/istio-ingressgateway证书配置.md)
+
 ### 制品管理
 
 - [devpi](Kubernetes/制品管理/devpi.md)
 - [JFrog Container Registry](Kubernetes/制品管理/JFrogContainerRegistry.md)
 
-## [设计模式概述](设计模式/设计模式概述.md)  
+## [设计模式概述](设计模式/设计模式概述.md)
 
 - [单例模式](设计模式/单例模式.md)
 - [工厂模式](设计模式/工厂模式.md)
@@ -49,3 +60,12 @@
 - [策略模式](设计模式/策略模式.md)
 - [责任链模式](设计模式/责任链模式.md)
 - [访问者模式](设计模式/访问者模式.md)
+
+## AI
+
+### TensorFlow
+
+- [安装TensorFlow](AI/TensorFlow/安装TensorFlow.md)
+
+### Torch
+
