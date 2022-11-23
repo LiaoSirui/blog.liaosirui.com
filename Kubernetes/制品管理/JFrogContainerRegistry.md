@@ -293,3 +293,4 @@ docker run \
   -v $JFROG_HOME/artifactory-proxy/conf/artifactory.conf:/etc/nginx/conf.d/artifactory.conf \
   docker.io/library/nginx:1.23.2-alpine
 ```
+
