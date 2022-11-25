@@ -8,12 +8,65 @@
 
 ## Linux
 
+### 磁盘
+
+- [绑定盘符和槽位](Linux/磁盘/绑定盘符和槽位.md)
+- [fdisk 磁盘分区](Linux/磁盘/fdisk磁盘分区.md)
+- [fstab](Linux/磁盘/fstab.md)
+- [df](Linux/磁盘/df.md)
+
+### 网卡
+
+- [修改网卡名](Linux/网卡/修改网卡名.md)
+
+### 网络调试工具
+
+- [tcpdump](Linux/网络调试工具/tcpdump.md)
+- [nc](Linux/网络调试工具/nc.md)
+- [nslookup](Linux/网络调试工具/nslookup.md)
+- [ip](Linux/网络调试工具/ip.md)
+- [dig](Linux/网络调试工具/dig.md)
+- [ping](Linux/网络调试工具/ping.md)
+
+### 内存
+
+- [清除 Buffer 和交换空间](Linux/内存/清除Buffer和交换空间.md)
+
+### 内核相关
+
+- [sysctl](Linux/内核相关/sysctl.md)
+- [文件监视](Linux/内核相关/文件监视.md)
+- [文件句柄](Linux/内核相关/文件句柄.md)
+- [CentOS7-Kernel升 级](Linux/内核相关/CentOS7-Kernel升级.md)
+
+### 用户管理
+
+- [更改用户](Linux/用户管理/更改用户.md)
+- [新增用户](Linux/用户管理/新增用户.md)
+
+### CPU
+
+- [开启CPU超频](Linux/CPU/开启CPU超频.md)
+
+### GPU
+
+### ZSH
+
+- [zimfw](Linux/zsh/zimfw.md)
+- [oh-my-zsh](Linux/zsh/oh-my-zsh.md)
+
+### 其他
+
 - [openssl](Linux/openssl.md)
+- [搭建 calsh 代理](Linux/其他/搭建calsh代理.md) 
+- [centos7 升级 glibc](Linux/其他/centos7升级glibc.md) 
 
 ## BeeGFS 
 
 - [BeeGFS简介](BeeGFS/BeeGFS简介.md)
 - [BeeGFS安装](BeeGFS/BeeGFS安装.md)
+- [增减storage节点](BeeGFS/增减storage节点.md)
+- [客户端重新构建](BeeGFS/客户端重新构建.md)
 
 ## Python
 
@@ -71,3 +124,6 @@
 
 ## CodeServer
 
+- [CodeServer 简介](CodeServer/CodeServer简介.md)
+- [开发环境配置](CodeServer/开发环境配置.md)
+- [调试 code-server](CodeServer/调试code-server.md)
