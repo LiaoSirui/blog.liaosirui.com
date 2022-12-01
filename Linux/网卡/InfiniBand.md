@@ -6,6 +6,8 @@ InfiniBand 代表两个不同的因素：
 - InfiniBand 网络的物理链路协议
 - InfiniBand Verbs API，这是远程直接访问（RDMA）技术的实现
 
+官方文档地址：<https://access.redhat.com/documentation/zh-cn/red_hat_enterprise_linux/9/html/configuring_infiniband_and_rdma_networks/index>
+
 ## 驱动安装
 
 ### 编译安装

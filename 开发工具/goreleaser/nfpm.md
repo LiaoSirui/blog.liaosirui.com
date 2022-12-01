@@ -1,0 +1,1 @@
+安装：<https://nfpm.goreleaser.com/install/>
