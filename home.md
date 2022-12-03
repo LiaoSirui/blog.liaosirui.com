@@ -4,8 +4,6 @@
 
 <img src=".assets/logo.png" alt="img" style="zoom: 33%;" />
 
-
-
 ## Linux
 
 ### 磁盘
@@ -61,7 +59,7 @@
 - [搭建 calsh 代理](Linux/其他/搭建calsh代理.md) 
 - [centos7 升级 glibc](Linux/其他/centos7升级glibc.md) 
 
-## BeeGFS 
+## BeeGFS
 
 - [BeeGFS简介](BeeGFS/BeeGFS简介.md)
 - [BeeGFS安装](BeeGFS/BeeGFS安装.md)
