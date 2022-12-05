@@ -73,9 +73,9 @@ dnf install -y jq
 
 ### ripgrep
 
-````bash
+```bash
 dnf install -y ripgrep
-````
+```
 
 ## 开发环境
 
@@ -130,8 +130,3 @@ yarn
 ```bash
 yarn watch
 ```
-
-
-
-
-
