@@ -424,13 +424,18 @@ kubectl label namespace default mount-lxcfs=enabled
 
 创建一个测试 pod
 
-```bash
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
   name: debug-tools
   namespace: default
 spec:
+  volumes:
+    - hostPath:
+        path: /mnt/beegfs/quant-data
+        type: DirectoryOrCreate
+      name: beegfs-test
   containers:
   - name: demo
     image: docker.io/rockylinux/rockylinux:9.1.20221123
@@ -443,6 +448,9 @@ spec:
         memory: "2048Mi"
     command: ["sh"]
     args: ["-c", "sleep 1000d"]
+    volumeMounts:
+      - mountPath: /data
+        name: beegfs-test
 
 ```
 
