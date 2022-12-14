@@ -204,3 +204,46 @@ COPY bin/dist-${TARGETOS}-${TARGETARCH} /dist
 
 ENTRYPOINT ["dist"]
 ```
+
+## HEREDOC
+
+Dockerfile 还支持 heredoc 语法。如果我们有多个 RUN 命令，那么我们可以使用 heredoc 如下所示的语法
+
+```dockerfile
+RUN <<EOF
+apt-get update
+apt-get upgrade -y
+apt-get install -y ...
+EOF
+```
+
+假设想从 Dockerfile 执行 python 脚本，可以使用以下语法
+
+```dockerfile
+RUN python3 <<EOF
+with open("/hello", "w") as f:
+    print("Hello", file=f)
+    print("World", file=f)
+EOF
+```
+
+还可以使用 heredoc 语法来创建文件。这是一个 Nginx 示例。
+
+```dockerfile
+FROM nginx
+
+COPY <<EOF /usr/share/nginx/html/index.html
+(your index page goes here)
+EOF
+```
+
+写入多个文件
+
+```dockerfile
+COPY <<robots.txt <<humans.txt /usr/share/nginx/html/
+(robots content)
+robots.txt
+(humans content)
+humans.txt
+```
+

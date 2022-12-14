@@ -89,7 +89,7 @@ docker buildx build \
   --no-cache \
   --label BUILD_DATE=20221115 \
   --platform linux/amd64 \
-  --tag jcr.local.liaosirui.com:5000/platform/devpi:6.7.0 \
+  --tag docker-registry.local.liaosirui.com:5000/platform/devpi:6.7.0 \
   --file ./Dockerfile \
   .
 ```
@@ -107,7 +107,7 @@ mkdir -p /registry/devpi/data
 
 docker run -it --rm \
 	-v /registry/devpi/data:/registry/devpi/data \
-	jcr.local.liaosirui.com:5000/platform/devpi:6.7.0 \
+	docker-registry.local.liaosirui.com:5000/platform/devpi:6.7.0 \
 	devpi-init --serverdir=/registry/devpi/data
 ```
 
@@ -123,7 +123,7 @@ mkdir -p /registry/devpi/config-generate
 docker run -it --rm \
 	-v /registry/devpi/config-generate:/registry/devpi/config-generate \
 	-w /registry/devpi/config-generate \
-	jcr.local.liaosirui.com:5000/platform/devpi:6.7.0 \
+	docker-registry.local.liaosirui.com:5000/platform/devpi:6.7.0 \
 	devpi-gen-config --host=0.0.0.0 --port=3141 --serverdir=/registry/devpi/data
 ```
 
@@ -136,7 +136,11 @@ docker run -itd \
 	-p 3141:3141 \
 	-v /registry/devpi/config-generate:/registry/devpi/config-generate \
 	-v /registry/devpi/data:/registry/devpi/data \
-	jcr.local.liaosirui.com:5000/platform/devpi:6.7.0 \
+	-e https_proxy=http://proxy.local.liaosirui.com:8899 \
+	-e http_proxy=http://proxy.local.liaosirui.com:8899 \
+	-e all_proxy=socks5://proxy.local.liaosirui.com:8899 \
+	-e no_proxy="127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.liaosirui.com,.doubanio.com" \
+	docker-registry.local.liaosirui.com:5000/platform/devpi:6.7.0 \
 	/usr/local/bin/devpi-server --host=0.0.0.0 --port=3141 --serverdir /registry/devpi/data
 ```
 
@@ -251,5 +255,41 @@ extra-index-url = http://devpi.local.liaosirui.com:3141/root/torch-cu116/+simple
 [install]
 trusted-host = devpi.local.liaosirui.com
 
+```
+
+## 添加 RAPIDS 源
+
+```bash
+# 创建源索引
+devpi index -c ngc-nvidia type=mirror
+
+# 使用索引
+devpi use root/ngc-nvidia
+
+devpi index root/ngc-nvidia \
+  "mirror_web_url_fmt=https://pypi.ngc.nvidia.com/{name}/" \
+	"mirror_url=https://pypi.ngc.nvidia.com"
+
+```
+
+安装测试
+
+```bash
+pip install \
+cupy-cuda11x  \
+--extra-index-url "http://devpi.local.liaosirui.com:3141/root/ngc-nvidia/+simple/" \
+--trusted-host devpi.local.liaosirui.com
+```
+
+与原先的合并
+
+```ini
+[global]
+timeout = 60
+index-url = http://devpi.local.liaosirui.com:3141/root/douban/+simple/
+extra-index-url = http://devpi.local.liaosirui.com:3141/root/torch-cu116/+simple/
+                  http://devpi.local.liaosirui.com:3141/root/ngc-nvidia/+simple/
+[install]
+trusted-host = devpi.local.liaosirui.com
 ```
 
