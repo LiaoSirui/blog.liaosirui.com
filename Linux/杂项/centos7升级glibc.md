@@ -31,6 +31,14 @@ RUN --mount=type=cache,target=/var/cache,id=cache \
 
 ```
 
+如果服务器是中文环境的，一定要再执行
+
+```
+make localedata/install-locales
+```
+
+否则字符集会出现问题
+
 参考资料：
 
 - <https://cloud.tencent.com/developer/article/1669876>
