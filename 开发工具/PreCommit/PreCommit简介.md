@@ -1,0 +1,1 @@
+支持的 hooks：<https://pre-commit.com/hooks.html>
