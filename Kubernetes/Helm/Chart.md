@@ -1,1 +1,0 @@
-chart 设计参考：https://www.devspace.sh/component-chart/docs/introduction
