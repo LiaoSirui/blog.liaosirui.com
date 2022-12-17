@@ -1,0 +1,1 @@
+AlertManager 主要用于接收 Prometheus 发送的告警信息
