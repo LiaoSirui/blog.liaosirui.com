@@ -30,3 +30,45 @@ beegfs-ctl --listnodes --nodetype=client --details
 beegfs-net
 ```
 
+
+### 服务端
+
+```bash
+/etc/beegfs/conn-inf.conf
+```
+
+填入网卡名
+
+```plain
+eth0
+siw0
+```
+
+依次停服务：
+
+```bash
+# 先停所有 client
+systemctl stop beegfs-client
+
+# 停所有 storage
+systemctl stop beegfs-storage
+
+# 停所有 meta
+systemctl stop beegfs-meta
+
+# 停止 managment
+systemctl stop beegfs-mgmtd
+```
+
+修改所有配置文件：
+
+```bash
+# 客户端
+vi /etc/beegfs/beegfs-client.conf
+```
+
+均修改配置
+
+```bash
+connRDMAInterfacesFile = /etc/beegfs/conn-inf.conf
+```

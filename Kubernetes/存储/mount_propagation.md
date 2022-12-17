@@ -27,7 +27,6 @@ Bidirectional一些使用场景：
 - 在不同的pod之间共享设备，其中挂载发生在pod中，但是在pod之间共享。
 - 从容器内部附加设备。例如，从容器内部附加ISCSI设备。这时候因为如果容器死掉，主机将不能获得所需的信息（除非使用双向安装传播）来正确刷新写入和分离设备。
 
-
 <img src=".assets/20180705175218137.png" alt="img"  />
 
 https://blog.csdn.net/weixin_34021089/article/details/88755548

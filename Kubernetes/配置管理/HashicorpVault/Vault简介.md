@@ -1,0 +1,1 @@
+Vault 是 hashicorp 推出的 secrets 管理、加密即服务与权限管理工具
