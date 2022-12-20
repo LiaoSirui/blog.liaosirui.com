@@ -125,7 +125,7 @@ spec:
 
 ```
 
-使用 service 进行暴露
+建立一个 service 方便后期使用
 
 ```yaml
 apiVersion: v1
@@ -135,14 +135,12 @@ metadata:
   namespace: openshift-console
 spec:
   clusterIP: None
-  type: NodePort
+  type: ClusterIP
   selector:
     app: console
   ports:
     - port: 9000
       targetPort: 9000
-      # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
-      nodePort: 30009
 ```
 
 
