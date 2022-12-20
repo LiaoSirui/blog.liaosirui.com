@@ -4,7 +4,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: aipaas-system
+  name: openshift-console
 ```
 
 部署 RBAC
@@ -15,7 +15,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: console
-  namespace: aipaas-system
+  namespace: openshift-console
 automountServiceAccountToken: true
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -29,7 +29,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: console
-  namespace: aipaas-system
+  namespace: openshift-console
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -56,7 +56,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: console-sa-secret
-  namespace: aipaas-system
+  namespace: openshift-console
   annotations:
     kubernetes.io/service-account.name: console
 type: kubernetes.io/service-account-token
@@ -69,11 +69,11 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: console-deployment
-  namespace: aipaas-system
+  namespace: openshift-console
   labels:
     app: console
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: console
@@ -82,8 +82,8 @@ spec:
       labels:
         app: console
     spec:
-      nodeSelector:
-        console: "true"
+      # nodeSelector:
+      #   console: "true"
       serviceAccountName: console
       containers:
         - name: console-app
@@ -92,6 +92,7 @@ spec:
           - name: http
             containerPort: 9000
             protocol: TCP
+            hostPort: 9000
           env:
             - name: BRIDGE_USER_AUTH
               value: disabled
@@ -131,7 +132,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: console-service
-  namespace: aipaas-system
+  namespace: openshift-console
 spec:
   clusterIP: None
   type: NodePort

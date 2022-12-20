@@ -1,3 +1,10 @@
+官方文档
+
+- Install Calicoctl： <https://projectcalico.docs.tigera.io/archive/v3.24/maintenance/clis/calicoctl/install>
+
+- Calicoctl：<https://projectcalico.docs.tigera.io/archive/v3.24/reference/calicoctl/>
+- Calico API server：https://projectcalico.docs.tigera.io/archive/v3.24/maintenance/install-apiserver
+
 ## 安装
 
 先确定 calico 的版本
