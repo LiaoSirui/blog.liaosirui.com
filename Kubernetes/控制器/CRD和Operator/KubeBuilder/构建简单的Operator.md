@@ -1,17 +1,17 @@
 
 ## 简介
 
-Kubebuilder 是一个基于 CRD 来构建 Kubernetes API 的框架，可以使用 CRD 来构建 API、Controller 和 Admission Webhook。
+Kubebuilder 是一个基于 CRD 来构建 Kubernetes API 的框架，可以使用 CRD 来构建 API、Controller 和 Admission Webhook
 
 ### 动机
 
-目前扩展 Kubernetes 的 API 的方式有创建 CRD、使用 Operator SDK 等方式，都需要写很多的样本文件（boilerplate），使用起来十分麻烦。
+目前扩展 Kubernetes 的 API 的方式有创建 CRD、使用 Operator SDK 等方式，都需要写很多的样本文件（boilerplate），使用起来十分麻烦
 
-为了能够更方便构建 Kubernetes API 和工具，就需要一款能够事半功倍的工具，与其他 Kubernetes API 扩展方案相比，kubebuilder 更加简单易用，并获得了社区的广泛支持。
+为了能够更方便构建 Kubernetes API 和工具，就需要一款能够事半功倍的工具，与其他 Kubernetes API 扩展方案相比，kubebuilder 更加简单易用，并获得了社区的广泛支持
 
 ### 设计哲学
 
-Kubebuilder 提供基于简洁的精心设计的示例 godoc 来提供整洁的库抽象。
+Kubebuilder 提供基于简洁的精心设计的示例 godoc 来提供整洁的库抽象
 
 1. 能使用 go 接口和库，就不使用代码生成
 1. 能使用代码生成，就不用使用多于一次的存根初始化
@@ -55,6 +55,19 @@ kubebuilder init --domain code.liaosirui.com \
  --repo code.liaosirui.com/srliao/test-prj
 # --domain string  domain for groups (default "my.domain")
 # --repo string    name to use for go module (e.g., github.com/user/repo), defaults to the go package of the current working directory.
+```
+
+生成后会有如下提示
+
+```bash
+Writing kustomize manifests for you to edit...
+Writing scaffold for you to edit...
+Get controller runtime:
+$ go get sigs.k8s.io/controller-runtime@v0.12.1
+Update dependencies:
+$ go mod tidy
+Next: define a resource with:
+$ kubebuilder create api
 ```
 
 ### 创建 API

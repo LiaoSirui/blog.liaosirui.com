@@ -87,7 +87,7 @@ spec:
       serviceAccountName: console
       containers:
         - name: console-app
-          image: 'quay.io/openshift/origin-console:4.12.0'
+          image: 'quay.io/openshift/origin-console:4.13.0'
           ports:
           - name: http
             containerPort: 9000
@@ -133,6 +133,7 @@ metadata:
   name: console-service
   namespace: aipaas-system
 spec:
+  clusterIP: None
   type: NodePort
   selector:
     app: console
@@ -142,4 +143,6 @@ spec:
       # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
       nodePort: 30009
 ```
+
+
 
