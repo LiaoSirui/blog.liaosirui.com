@@ -117,7 +117,7 @@ docker run -it --rm \
 
 ```bash
 dnf install -y epel-release
-dnf install -y procps-ng htop
+dnf install -y procps-ng htop util-linux-core
 ```
 
 测试效果
