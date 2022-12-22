@@ -18,6 +18,8 @@ Kubebuilder 提供基于简洁的精心设计的示例 godoc 来提供整洁的�
 1. 能使用一次存根，就不 fork 和修改 boilerplate
 1. 绝不 fork 和修改 boilerplate
 
+<img src=".assets/image-20221222163422951.png" alt="image-20221222163422951" style="zoom: 67%;" />
+
 ## 工作流程
 
 Kubebuilder 的工作流程如下：
