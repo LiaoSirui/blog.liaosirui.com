@@ -923,8 +923,923 @@ CronJob 控制器的基本逻辑如下:
 开始编码之前，先引进基本的依赖，除此之外还需要一些额外的依赖库
 
 ```go
+package controllers
+
+import (
+	"context"
+	"fmt"
+	"sort"
+	"time"
+
+	kbatch "k8s.io/api/batch/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	ref "k8s.io/client-go/tools/reference"
+	ctrl "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
+
+	batchv1 "tutorial.kubebuilder.io/project/api/v1"
+)
+
 ```
 
+接下来，我们需要一个时钟好让我们在测试中模拟计时
 
+```go
+/*
+Next, we'll need a Clock, which will allow us to fake timing in our tests.
+*/
+
+// CronJobReconciler reconciles a CronJob object
+type CronJobReconciler struct {
+	client.Client
+	Scheme *runtime.Scheme
+	Clock
+}
+
+/*
+We'll mock out the clock to make it easier to jump around in time while testing,
+the "real" clock just calls `time.Now`.
+*/
+type realClock struct{}
+
+func (_ realClock) Now() time.Time { return time.Now() }
+
+// clock knows how to get the current time.
+// It can be used to fake out timing for testing.
+type Clock interface {
+	Now() time.Time
+}
+
+```
+
+注意，我们需要获得RBAC权限——我们需要一些额外权限去 创建和管理 job，添加如下一些字段
+
+```go
+/*
+Notice that we need a few more RBAC permissions -- since we're creating and
+managing jobs now, we'll need permissions for those, which means adding
+a couple more [markers](/reference/markers/rbac.md).
+*/
+
+//+kubebuilder:rbac:groups=batch.tutorial.kubebuilder.io,resources=cronjobs,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=batch.tutorial.kubebuilder.io,resources=cronjobs/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=batch.tutorial.kubebuilder.io,resources=cronjobs/finalizers,verbs=update
+//+kubebuilder:rbac:groups=batch,resources=jobs,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=batch,resources=jobs/status,verbs=get
+
+// Reconcile is part of the main kubernetes reconciliation loop which aims to
+// move the current state of the cluster closer to the desired state.
+// TODO(user): Modify the Reconcile function to compare the state specified by
+// the CronJob object against the actual cluster state, and then
+// perform operations to make the cluster state reflect the state specified by
+// the user.
+//
+// For more details, check Reconcile and its Result here:
+// - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
+func (r *CronJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	log := log.FromContext(ctx)
+```
+
+控制器的核心部分 —— 调谐逻辑
+
+```go
+/*
+Now, we get to the heart of the controller -- the reconciler logic.
+*/
+var (
+	scheduledTimeAnnotation = "batch.tutorial.kubebuilder.io/scheduled-at"
+)
+
+// ...
+// ...
+
+// For more details, check Reconcile and its Result here:
+// - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
+func (r *CronJobReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	log := log.FromContext(ctx)
+```
+
+### 根据名称加载定时任务
+
+通过 client 获取定时任务。所有 client 方法第一个参数都是 context（用于取消定时任务）作为 第一个参数，把请求对象信息作为最后一个参数。Get 方法例外，它把 [`NamespacedName`](https://pkg.go.dev/sigs.k8s.io/controller-runtime/pkg/client?tab=doc#ObjectKey) 作为中间的第二个参数（大多数方法都没有中间的 NamespacedName 参数，下文会提到）
+
+许多 client 方法的最后一个参数接受变长参数
+
+```go
+	/*
+		### 1: Load the CronJob by name
+		We'll fetch the CronJob using our client.  All client methods take a
+		context (to allow for cancellation) as their first argument, and the object
+		in question as their last.  Get is a bit special, in that it takes a
+		[`NamespacedName`](https://pkg.go.dev/sigs.k8s.io/controller-runtime/pkg/client?tab=doc#ObjectKey)
+		as the middle argument (most don't have a middle argument, as we'll see
+		below).
+		Many client methods also take variadic options at the end.
+	*/
+	var cronJob batchv1.CronJob
+	if err := r.Get(ctx, req.NamespacedName, &cronJob); err != nil {
+		log.Error(err, "unable to fetch CronJob")
+		// we'll ignore not-found errors, since they can't be fixed by an immediate
+		// requeue (we'll need to wait for a new notification), and we can get them
+		// on deleted requests.
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+```
+
+### 列出所有有效 job，更新它们的状态
+
+为确保每个 job 的状态都会被更新到，我们需要列出某个 CronJob 在当前命名空间下的所有 job。 和 Get 方法类似，我们可以使用 List 方法来列出 CronJob 下所有的 job。注意，我们使用变长参数来映射命名空间和任意多个匹配变量（实际上相当于是建立了一个索引）
+
+```go
+	/*
+		### 2: List all active jobs, and update the status
+		To fully update our status, we'll need to list all child jobs in this namespace that belong to this CronJob.
+		Similarly to Get, we can use the List method to list the child jobs.  Notice that we use variadic options to
+		set the namespace and field match (which is actually an index lookup that we set up below).
+	*/
+	var childJobs kbatch.JobList
+	if err := r.List(ctx, &childJobs, client.InNamespace(req.Namespace), client.MatchingFields{jobOwnerKey: req.Name}); err != nil {
+		log.Error(err, "unable to list child Jobs")
+		return ctrl.Result{}, err
+	}
+```
+
+> 索引的作用：
+>
+> 
+>
+> 调谐器会获取 cronjob 下的所有 job 以更新它们状态。随着 cronjob 数量的增加，遍历全部 conjob 查找会变的相当低效。为了提高查询效率，这些任务会根据控制器名称建立索引。缓存后的 job 对象会 被添加上一个 jobOwnerKey 字段。这个字段引用其归属控制器和函数作为索引。在下文中，我们将配置 manager 作为这个字段的索引
+
+查找到所有的 job 后，将其归类为 active，successful，failed 三种类型
+
+```go
+	// find the active list of jobs
+	var activeJobs []*kbatch.Job
+	var successfulJobs []*kbatch.Job
+	var failedJobs []*kbatch.Job
+	var mostRecentTime *time.Time // find the last run so we can update the status
+
+```
+
+同时持续跟踪其最新的执行情况以更新其状态。牢记，status 值应该是从实际的运行状态中实时获取。从 cronjob 中读取 job 的状态通常不是一个好做法。应该从每次执行状态中获取。我们后续也采用这种方法。
+
+我们可以检查一个 job 是否已处于 “finished” 状态，使用 status 条件还可以知道它是 succeeded 或 failed 状态。
+
+```go
+	/*
+		We consider a job "finished" if it has a "Complete" or "Failed" condition marked as true.
+		Status conditions allow us to add extensible status information to our objects that other
+		humans and controllers can examine to check things like completion and health.
+	*/
+	isJobFinished := func(job *kbatch.Job) (bool, kbatch.JobConditionType) {
+		for _, c := range job.Status.Conditions {
+			if (c.Type == kbatch.JobComplete || c.Type == kbatch.JobFailed) && c.Status == corev1.ConditionTrue {
+				return true, c.Type
+			}
+		}
+
+		return false, ""
+	}
+
+	/*
+		We'll use a helper to extract the scheduled time from the annotation that
+		we added during job creation.
+	*/
+	getScheduledTimeForJob := func(job *kbatch.Job) (*time.Time, error) {
+		timeRaw := job.Annotations[scheduledTimeAnnotation]
+		if len(timeRaw) == 0 {
+			return nil, nil
+		}
+
+		timeParsed, err := time.Parse(time.RFC3339, timeRaw)
+		if err != nil {
+			return nil, err
+		}
+		return &timeParsed, nil
+	}
+	// +kubebuilder:docs-gen:collapse=getScheduledTimeForJob
+
+	for i, job := range childJobs.Items {
+		_, finishedType := isJobFinished(&job)
+		switch finishedType {
+		case "": // ongoing
+			activeJobs = append(activeJobs, &childJobs.Items[i])
+		case kbatch.JobFailed:
+			failedJobs = append(failedJobs, &childJobs.Items[i])
+		case kbatch.JobComplete:
+			successfulJobs = append(successfulJobs, &childJobs.Items[i])
+		}
+
+		// We'll store the launch time in an annotation, so we'll reconstitute that from
+		// the active jobs themselves.
+		scheduledTimeForJob, err := getScheduledTimeForJob(&job)
+		if err != nil {
+			log.Error(err, "unable to parse schedule time for child job", "job", &job)
+			continue
+		}
+		if scheduledTimeForJob != nil {
+			if mostRecentTime == nil {
+				mostRecentTime = scheduledTimeForJob
+			} else if mostRecentTime.Before(*scheduledTimeForJob) {
+				mostRecentTime = scheduledTimeForJob
+			}
+		}
+	}
+
+	if mostRecentTime != nil {
+		cronJob.Status.LastScheduleTime = &metav1.Time{Time: *mostRecentTime}
+	} else {
+		cronJob.Status.LastScheduleTime = nil
+	}
+	cronJob.Status.Active = nil
+	for _, activeJob := range activeJobs {
+		jobRef, err := ref.GetReference(r.Scheme, activeJob)
+		if err != nil {
+			log.Error(err, "unable to make reference to active job", "job", activeJob)
+			continue
+		}
+		cronJob.Status.Active = append(cronJob.Status.Active, *jobRef)
+	}
+
+```
+
+此处会记录我们观察到的 job 数量。为便于调试，略微提高日志级别。注意，这里没有使用 格式化字符串，使用由键值对构成的固定格式信息来输出日志。这样更易于过滤和查询日志
+
+```go
+	/*
+		Here, we'll log how many jobs we observed at a slightly higher logging level,
+		for debugging.  Notice how instead of using a format string, we use a fixed message,
+		and attach key-value pairs with the extra information.  This makes it easier to
+		filter and query log lines.
+	*/
+	log.V(1).Info("job count", "active jobs", len(activeJobs), "successful jobs", len(successfulJobs), "failed jobs", len(failedJobs))
+
+```
+
+使用收集到日期信息来更新 CRD 状态。和之前类似，通过 client 来完成操作。 针对 status 这一子资源，我们可以使用`Status`部分的`Update`方法。
+
+status 子资源会忽略掉对 spec 的变更。这与其它更新操作的发生冲突的风险更小， 而且实现了权限分离。
+
+```go
+	/*
+		Using the data we've gathered, we'll update the status of our CRD.
+		Just like before, we use our client.  To specifically update the status
+		subresource, we'll use the `Status` part of the client, with the `Update`
+		method.
+		The status subresource ignores changes to spec, so it's less likely to conflict
+		with any other updates, and can have separate permissions.
+	*/
+	if err := r.Status().Update(ctx, &cronJob); err != nil {
+		log.Error(err, "unable to update CronJob status")
+		return ctrl.Result{}, err
+	}
+```
+
+更新状态后，后续要确保状态符合我们在 spec 定下的预期。
+
+### 根据保留的历史版本数清理过旧的 job
+
+先清理掉一些版本太旧的 job，这样可以不用保留太多无用的 job
+
+```go
+
+	/*
+		Once we've updated our status, we can move on to ensuring that the status of
+		the world matches what we want in our spec.
+		### 3: Clean up old jobs according to the history limit
+		First, we'll try to clean up old jobs, so that we don't leave too many lying
+		around.
+	*/
+
+	// NB: deleting these are "best effort" -- if we fail on a particular one,
+	// we won't requeue just to finish the deleting.
+	if cronJob.Spec.FailedJobsHistoryLimit != nil {
+		sort.Slice(failedJobs, func(i, j int) bool {
+			if failedJobs[i].Status.StartTime == nil {
+				return failedJobs[j].Status.StartTime != nil
+			}
+			return failedJobs[i].Status.StartTime.Before(failedJobs[j].Status.StartTime)
+		})
+		for i, job := range failedJobs {
+			if int32(i) >= int32(len(failedJobs))-*cronJob.Spec.FailedJobsHistoryLimit {
+				break
+			}
+			if err := r.Delete(ctx, job, client.PropagationPolicy(metav1.DeletePropagationBackground)); client.IgnoreNotFound(err) != nil {
+				log.Error(err, "unable to delete old failed job", "job", job)
+			} else {
+				log.V(0).Info("deleted old failed job", "job", job)
+			}
+		}
+	}
+
+	if cronJob.Spec.SuccessfulJobsHistoryLimit != nil {
+		sort.Slice(successfulJobs, func(i, j int) bool {
+			if successfulJobs[i].Status.StartTime == nil {
+				return successfulJobs[j].Status.StartTime != nil
+			}
+			return successfulJobs[i].Status.StartTime.Before(successfulJobs[j].Status.StartTime)
+		})
+		for i, job := range successfulJobs {
+			if int32(i) >= int32(len(successfulJobs))-*cronJob.Spec.SuccessfulJobsHistoryLimit {
+				break
+			}
+			if err := r.Delete(ctx, job, client.PropagationPolicy(metav1.DeletePropagationBackground)); (err) != nil {
+				log.Error(err, "unable to delete old successful job", "job", job)
+			} else {
+				log.V(0).Info("deleted old successful job", "job", job)
+			}
+		}
+	}
+
+```
+
+### 检查是否被挂起
+
+如果当前 cronjob 被挂起，不会再运行其下的任何 job，我们将其停止。这对于某些 job 出现异常 的排查非常有用。我们无需删除 cronjob 来中止其后续其他 job 的运行。
+
+```go
+	/* ### 4: Check if we're suspended
+	If this object is suspended, we don't want to run any jobs, so we'll stop now.
+	This is useful if something's broken with the job we're running and we want to
+	pause runs to investigate or putz with the cluster, without deleting the object.
+	*/
+
+	if cronJob.Spec.Suspend != nil && *cronJob.Spec.Suspend {
+		log.V(1).Info("cronjob suspended, skipping")
+		return ctrl.Result{}, nil
+	}
+```
+
+### 计算 job 的下一执行时间
+
+如果 cronjob 没被挂起，则我们需要计算它的下一次执行时间， 同时检查是否有遗漏的执行没被处理
+
+```go
+
+	/*
+		### 5: Get the next scheduled run
+		If we're not paused, we'll need to calculate the next scheduled run, and whether
+		or not we've got a run that we haven't processed yet.
+	*/
+
+	/*
+		We'll calculate the next scheduled time using our helpful cron library.
+		We'll start calculating appropriate times from our last run, or the creation
+		of the CronJob if we can't find a last run.
+		If there are too many missed runs and we don't have any deadlines set, we'll
+		bail so that we don't cause issues on controller restarts or wedges.
+		Otherwise, we'll just return the missed runs (of which we'll just use the latest),
+		and the next run, so that we can know when it's time to reconcile again.
+	*/
+	getNextSchedule := func(cronJob *batchv1.CronJob, now time.Time) (lastMissed time.Time, next time.Time, err error) {
+		sched, err := cron.ParseStandard(cronJob.Spec.Schedule)
+		if err != nil {
+			return time.Time{}, time.Time{}, fmt.Errorf("Unparseable schedule %q: %v", cronJob.Spec.Schedule, err)
+		}
+
+		// for optimization purposes, cheat a bit and start from our last observed run time
+		// we could reconstitute this here, but there's not much point, since we've
+		// just updated it.
+		var earliestTime time.Time
+		if cronJob.Status.LastScheduleTime != nil {
+			earliestTime = cronJob.Status.LastScheduleTime.Time
+		} else {
+			earliestTime = cronJob.ObjectMeta.CreationTimestamp.Time
+		}
+		if cronJob.Spec.StartingDeadlineSeconds != nil {
+			// controller is not going to schedule anything below this point
+			schedulingDeadline := now.Add(-time.Second * time.Duration(*cronJob.Spec.StartingDeadlineSeconds))
+
+			if schedulingDeadline.After(earliestTime) {
+				earliestTime = schedulingDeadline
+			}
+		}
+		if earliestTime.After(now) {
+			return time.Time{}, sched.Next(now), nil
+		}
+
+		starts := 0
+		for t := sched.Next(earliestTime); !t.After(now); t = sched.Next(t) {
+			lastMissed = t
+			// An object might miss several starts. For example, if
+			// controller gets wedged on Friday at 5:01pm when everyone has
+			// gone home, and someone comes in on Tuesday AM and discovers
+			// the problem and restarts the controller, then all the hourly
+			// jobs, more than 80 of them for one hourly scheduledJob, should
+			// all start running with no further intervention (if the scheduledJob
+			// allows concurrency and late starts).
+			//
+			// However, if there is a bug somewhere, or incorrect clock
+			// on controller's server or apiservers (for setting creationTimestamp)
+			// then there could be so many missed start times (it could be off
+			// by decades or more), that it would eat up all the CPU and memory
+			// of this controller. In that case, we want to not try to list
+			// all the missed start times.
+			starts++
+			if starts > 100 {
+				// We can't get the most recent times so just return an empty slice
+				return time.Time{}, time.Time{}, fmt.Errorf("Too many missed start times (> 100). Set or decrease .spec.startingDeadlineSeconds or check clock skew.")
+			}
+		}
+		return lastMissed, sched.Next(now), nil
+	}
+
+	// figure out the next times that we need to create
+	// jobs at (or anything we missed).
+	missedRun, nextRun, err := getNextSchedule(&cronJob, r.Now())
+	if err != nil {
+		log.Error(err, "unable to figure out CronJob schedule")
+		// we don't really care about requeuing until we get an update that
+		// fixes the schedule, so don't return an error
+		return ctrl.Result{}, nil
+	}
+```
+
+上述步骤执行完后，将准备好的请求加入队列直到下次执行， 然后确定这些 job 是否要实际执行
+
+```go
+	/*
+		We'll prep our eventual request to requeue until the next job, and then figure
+		out if we actually need to run.
+	*/
+	scheduledResult := ctrl.Result{RequeueAfter: nextRun.Sub(r.Now())} // save this so we can re-use it elsewhere
+	log = log.WithValues("now", r.Now(), "next run", nextRun)
+
+```
+
+### 如果 job 符合执行时机，并且没有超出截止时间，且不被并发策略阻塞，执行该 job
+
+```go
+	/*
+		### 6: Run a new job if it's on schedule, not past the deadline, and not blocked by our concurrency policy
+		If we've missed a run, and we're still within the deadline to start it, we'll need to run a job.
+	*/
+	if missedRun.IsZero() {
+		log.V(1).Info("no upcoming scheduled times, sleeping until next")
+		return scheduledResult, nil
+	}
+
+	// make sure we're not too late to start the run
+	log = log.WithValues("current run", missedRun)
+	tooLate := false
+	if cronJob.Spec.StartingDeadlineSeconds != nil {
+		tooLate = missedRun.Add(time.Duration(*cronJob.Spec.StartingDeadlineSeconds) * time.Second).Before(r.Now())
+	}
+	if tooLate {
+		log.V(1).Info("missed starting deadline for last run, sleeping till next")
+		// TODO(directxman12): events
+		return scheduledResult, nil
+	}
+
+```
+
+如果确认 job 需要实际执行。我们有三种策略执行该 job。要么先等待现有的 job 执行完后，在启动本次 job； 或是直接覆盖取代现有的 job；或是不考虑现有的 job，直接作为新的 job 执行。因为缓存导致的信息有所延迟， 当更新信息后需要重新排队。
+
+```go
+	/*
+		If we actually have to run a job, we'll need to either wait till existing ones finish,
+		replace the existing ones, or just add new ones.  If our information is out of date due
+		to cache delay, we'll get a requeue when we get up-to-date information.
+	*/
+	// figure out how to run this job -- concurrency policy might forbid us from running
+	// multiple at the same time...
+	if cronJob.Spec.ConcurrencyPolicy == batchv1.ForbidConcurrent && len(activeJobs) > 0 {
+		log.V(1).Info("concurrency policy blocks concurrent runs, skipping", "num active", len(activeJobs))
+		return scheduledResult, nil
+	}
+
+	// ...or instruct us to replace existing ones...
+	if cronJob.Spec.ConcurrencyPolicy == batchv1.ReplaceConcurrent {
+		for _, activeJob := range activeJobs {
+			// we don't care if the job was already deleted
+			if err := r.Delete(ctx, activeJob, client.PropagationPolicy(metav1.DeletePropagationBackground)); client.IgnoreNotFound(err) != nil {
+				log.Error(err, "unable to delete active job", "job", activeJob)
+				return ctrl.Result{}, err
+			}
+		}
+	}
+
+```
+
+确定如何处理现有 job 后，创建符合我们预期的 job
+
+```go
+	/*
+		Once we've figured out what to do with existing jobs, we'll actually create our desired job
+	*/
+
+	/*
+		We need to construct a job based on our CronJob's template.  We'll copy over the spec
+		from the template and copy some basic object meta.
+		Then, we'll set the "scheduled time" annotation so that we can reconstitute our
+		`LastScheduleTime` field each reconcile.
+		Finally, we'll need to set an owner reference.  This allows the Kubernetes garbage collector
+		to clean up jobs when we delete the CronJob, and allows controller-runtime to figure out
+		which cronjob needs to be reconciled when a given job changes (is added, deleted, completes, etc).
+	*/
+	constructJobForCronJob := func(cronJob *batchv1.CronJob, scheduledTime time.Time) (*kbatch.Job, error) {
+		// We want job names for a given nominal start time to have a deterministic name to avoid the same job being created twice
+		name := fmt.Sprintf("%s-%d", cronJob.Name, scheduledTime.Unix())
+
+		job := &kbatch.Job{
+			ObjectMeta: metav1.ObjectMeta{
+				Labels:      make(map[string]string),
+				Annotations: make(map[string]string),
+				Name:        name,
+				Namespace:   cronJob.Namespace,
+			},
+			Spec: *cronJob.Spec.JobTemplate.Spec.DeepCopy(),
+		}
+		for k, v := range cronJob.Spec.JobTemplate.Annotations {
+			job.Annotations[k] = v
+		}
+		job.Annotations[scheduledTimeAnnotation] = scheduledTime.Format(time.RFC3339)
+		for k, v := range cronJob.Spec.JobTemplate.Labels {
+			job.Labels[k] = v
+		}
+		if err := ctrl.SetControllerReference(cronJob, job, r.Scheme); err != nil {
+			return nil, err
+		}
+
+		return job, nil
+	}
+	// +kubebuilder:docs-gen:collapse=constructJobForCronJob
+
+	// actually make the job...
+	job, err := constructJobForCronJob(&cronJob, missedRun)
+	if err != nil {
+		log.Error(err, "unable to construct job from template")
+		// don't bother requeuing until we get a change to the spec
+		return scheduledResult, nil
+	}
+
+	// ...and create it on the cluster
+	if err := r.Create(ctx, job); err != nil {
+		log.Error(err, "unable to create Job for CronJob", "job", job)
+		return ctrl.Result{}, err
+	}
+
+	log.V(1).Info("created Job for CronJob run", "job", job)
+```
+
+### 当 job 开始运行或到了 job 下一次的执行时间，重新排队
+
+最终我们返回上述预备的结果。我们还需重新排队当任务还有下一次执行时。 这被视作最长截止时间——如果期间发生了变更，例如 job 被提前启动或是提前 结束，或被修改，我们可能会更早进行调
+
+```go
+	/*
+		### 7: Requeue when we either see a running job or it's time for the next scheduled run
+		Finally, we'll return the result that we prepped above, that says we want to requeue
+		when our next run would need to occur.  This is taken as a maximum deadline -- if something
+		else changes in between, like our job starts or finishes, we get modified, etc, we might
+		reconcile again sooner.
+	*/
+	// we'll requeue once we see the running job, and update our status
+	return scheduledResult, nil
+}
+```
+
+### 启动 CronJob 控制器
+
+最后，我们还要完善下我们的启动过程。为了让调谐器可以通过 job 的 owner 值快速找到 job。 我们需要一个索引。声明一个索引键，后续我们可以将其用于 client 的虚拟变量名中，从 job 对象中提取索引值。此处的索引会帮我们处理好 namespaces 的映射关系。所以如果 job 有 owner 值，我们快速地获取 owner 值。
+
+另外，我们需要告知 manager，这个控制器拥有哪些 job。当对应的 job 发生变更或被删除时， 自动调用调谐器对 CronJob 进行调谐。
+
+```go
+/*
+### Setup
+Finally, we'll update our setup.  In order to allow our reconciler to quickly
+look up Jobs by their owner, we'll need an index.  We declare an index key that
+we can later use with the client as a pseudo-field name, and then describe how to
+extract the indexed value from the Job object.  The indexer will automatically take
+care of namespaces for us, so we just have to extract the owner name if the Job has
+a CronJob owner.
+Additionally, we'll inform the manager that this controller owns some Jobs, so that it
+will automatically call Reconcile on the underlying CronJob when a Job changes, is
+deleted, etc.
+*/
+var (
+	jobOwnerKey = ".metadata.controller"
+	apiGVStr    = batchv1.GroupVersion.String()
+)
+
+func (r *CronJobReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	// set up a real clock, since we're not in a test
+	if r.Clock == nil {
+		r.Clock = realClock{}
+	}
+
+	if err := mgr.GetFieldIndexer().IndexField(context.Background(), &kbatch.Job{}, jobOwnerKey, func(rawObj client.Object) []string {
+		// grab the job object, extract the owner...
+		job := rawObj.(*kbatch.Job)
+		owner := metav1.GetControllerOf(job)
+		if owner == nil {
+			return nil
+		}
+		// ...make sure it's a CronJob...
+		if owner.APIVersion != apiGVStr || owner.Kind != "CronJob" {
+			return nil
+		}
+
+		// ...and if so, return it
+		return []string{owner.Name}
+	}); err != nil {
+		return err
+	}
+
+	return ctrl.NewControllerManagedBy(mgr).
+		For(&batchv1.CronJob{}).
+		Owns(&kbatch.Job{}).
+		Complete(r)
+}
+
+```
 
 ## 实现 defaulting/validating webhooks
+
+如果你想为你的 CRD 实现一个 admission webhooks，你需要做的一件事就是去实现`Defaulter` 和/或 `Validator` 接口。
+
+Kubebuilder 会帮你处理剩下的事情，像下面这些：
+
+1. 创建 webhook 服务端。
+2. 确保服务端已添加到 manager 中。
+3. 为你的 webhooks 创建处理函数。
+4. 用路径在你的服务端中注册每个处理函数。
+
+首先，让我们为我们的 CRD (CronJob) 创建一个 webhooks 的支架。我们将需要运行下面的命令并带上 `--defaulting` 和 `--programmatic-validation` 标志（因为我们的测试项目会用到默认和验证 webhooks)：
+
+```go
+kubebuilder create webhook --group batch --version v1 --kind CronJob --defaulting --programmatic-validation
+```
+
+这里会在你的 `main.go` 中搭建一个 webhook 函数的框架并用 manager 注册你的 webhook。
+
+```go
+package main
+
+import (
+	"flag"
+	"os"
+
+	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
+	// to ensure that exec-entrypoint and run can make use of them.
+	_ "k8s.io/client-go/plugin/pkg/client/auth"
+
+	"k8s.io/apimachinery/pkg/runtime"
+	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	ctrl "sigs.k8s.io/controller-runtime"
+	"sigs.k8s.io/controller-runtime/pkg/healthz"
+	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+
+	batchv1 "tutorial.kubebuilder.io/project/api/v1"
+	"tutorial.kubebuilder.io/project/controllers"
+	//+kubebuilder:scaffold:imports
+)
+
+// ...
+func main() {
+// ...
+	if err = (&batchv1.CronJob{}).SetupWebhookWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create webhook", "webhook", "CronJob")
+		os.Exit(1)
+	}
+```
+
+接下来，我们为 webhooks 配置一个日志记录器
+
+```go
+/*
+Next, we'll setup a logger for the webhooks.
+*/
+
+var cronjoblog = logf.Log.WithName("cronjob-resource")
+
+```
+
+然后，我们将 webhook 和 manager 关联起来。
+
+```go
+/*
+Then, we set up the webhook with the manager.
+*/
+
+func (r *CronJob) SetupWebhookWithManager(mgr ctrl.Manager) error {
+	return ctrl.NewWebhookManagedBy(mgr).
+		For(r).
+		Complete()
+}
+
+```
+
+请注意我们用 kubebuilder 标记去生成 webhook 清单。 这个标记负责生成一个 mutating webhook 清单。
+
+我们使用 `webhook.Defaulter` 接口给我们的 CRD 设置默认值。 webhook 会自动调用这个默认值。
+
+`Default` 方法期待修改接收者，设置默认值。
+
+```go
+/*
+Notice that we use kubebuilder markers to generate webhook manifests.
+This marker is responsible for generating a mutating webhook manifest.
+The meaning of each marker can be found [here](/reference/markers/webhook.md).
+*/
+
+//+kubebuilder:webhook:path=/mutate-batch-tutorial-kubebuilder-io-v1-cronjob,mutating=true,failurePolicy=fail,groups=batch.tutorial.kubebuilder.io,resources=cronjobs,verbs=create;update,versions=v1,name=mcronjob.kb.io,sideEffects=None,admissionReviewVersions=v1
+
+/*
+We use the `webhook.Defaulter` interface to set defaults to our CRD.
+A webhook will automatically be served that calls this defaulting.
+The `Default` method is expected to mutate the receiver, setting the defaults.
+*/
+
+var _ webhook.Defaulter = &CronJob{}
+
+// Default implements webhook.Defaulter so a webhook will be registered for the type
+func (r *CronJob) Default() {
+	cronjoblog.Info("default", "name", r.Name)
+
+	if r.Spec.ConcurrencyPolicy == "" {
+		r.Spec.ConcurrencyPolicy = AllowConcurrent
+	}
+	if r.Spec.Suspend == nil {
+		r.Spec.Suspend = new(bool)
+	}
+	if r.Spec.SuccessfulJobsHistoryLimit == nil {
+		r.Spec.SuccessfulJobsHistoryLimit = new(int32)
+		*r.Spec.SuccessfulJobsHistoryLimit = 3
+	}
+	if r.Spec.FailedJobsHistoryLimit == nil {
+		r.Spec.FailedJobsHistoryLimit = new(int32)
+		*r.Spec.FailedJobsHistoryLimit = 1
+	}
+}
+
+```
+
+这个标记负责生成一个 validating webhook 清单。
+
+```go
+/*
+This marker is responsible for generating a validating webhook manifest.
+*/
+
+//+kubebuilder:webhook:verbs=create;update;delete,path=/validate-batch-tutorial-kubebuilder-io-v1-cronjob,mutating=false,failurePolicy=fail,groups=batch.tutorial.kubebuilder.io,resources=cronjobs,versions=v1,name=vcronjob.kb.io,sideEffects=None,admissionReviewVersions=v1
+
+```
+
+用声明式验证来验证我们的 CRD 。一般来说，声明式验证应该就足够了，但是有时对于复杂的验证需要 更高级的用例。
+
+例如，下面我们将看到，我们使用这个来验证格式良好的 cron 调度，而不需要构造一个很长的正则表达式。
+
+如果实现了 `webhook.Validator` 接口并调用了这个验证，webhook 将会自动被服务。
+
+`ValidateCreate`, `ValidateUpdate` 和 `ValidateDelete` 方法期望在创建、更新和删除时 分别验证其接收者。我们将 ValidateCreate 从 ValidateUpdate 分离开来以允许某些行为，像 使某些字段不可变，以至于仅可以在创建的时候去设置它们。我们也将 ValidateDelete 从 ValidateUpdate 分离开来以允许在删除的时候的不同验证行为。然而，这里我们只对 `ValidateCreate` 和 `ValidateUpdate` 用相同的共享验证。在 `ValidateDelete` 不做任何事情，因为我们不需要再 删除的时候做任何验证。
+
+```go
+
+/*
+We can validate our CRD beyond what's possible with declarative
+validation. Generally, declarative validation should be sufficient, but
+sometimes more advanced use cases call for complex validation.
+For instance, we'll see below that we use this to validate a well-formed cron
+schedule without making up a long regular expression.
+If `webhook.Validator` interface is implemented, a webhook will automatically be
+served that calls the validation.
+The `ValidateCreate`, `ValidateUpdate` and `ValidateDelete` methods are expected
+to validate its receiver upon creation, update and deletion respectively.
+We separate out ValidateCreate from ValidateUpdate to allow behavior like making
+certain fields immutable, so that they can only be set on creation.
+ValidateDelete is also separated from ValidateUpdate to allow different
+validation behavior on deletion.
+Here, however, we just use the same shared validation for `ValidateCreate` and
+`ValidateUpdate`. And we do nothing in `ValidateDelete`, since we don't need to
+validate anything on deletion.
+*/
+
+var _ webhook.Validator = &CronJob{}
+
+// ValidateCreate implements webhook.Validator so a webhook will be registered for the type
+func (r *CronJob) ValidateCreate() error {
+	cronjoblog.Info("validate create", "name", r.Name)
+
+	return r.validateCronJob()
+}
+
+// ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
+func (r *CronJob) ValidateUpdate(old runtime.Object) error {
+	cronjoblog.Info("validate update", "name", r.Name)
+
+	return r.validateCronJob()
+}
+
+// ValidateDelete implements webhook.Validator so a webhook will be registered for the type
+func (r *CronJob) ValidateDelete() error {
+	cronjoblog.Info("validate delete", "name", r.Name)
+
+	// TODO(user): fill in your validation logic upon object deletion.
+	return nil
+}
+
+```
+
+验证 CronJob 的 spec 和 name 
+
+```go
+/*
+We validate the name and the spec of the CronJob.
+*/
+
+func (r *CronJob) validateCronJob() error {
+	var allErrs field.ErrorList
+	if err := r.validateCronJobName(); err != nil {
+		allErrs = append(allErrs, err)
+	}
+	if err := r.validateCronJobSpec(); err != nil {
+		allErrs = append(allErrs, err)
+	}
+	if len(allErrs) == 0 {
+		return nil
+	}
+
+	return apierrors.NewInvalid(
+		schema.GroupKind{Group: "batch.tutorial.kubebuilder.io", Kind: "CronJob"},
+		r.Name, allErrs)
+}
+
+```
+
+OpenAPI schema 声明性地验证一些字段。 你可以在 API 中发现 kubebuilder 验证标记(前缀是 `// +kubebuilder:validation`)。 你可以通过运行 `controller-gen crd -w` 查找到 kubebuilder支持的用于声明验证的所有标记。
+
+```go
+/*
+Some fields are declaratively validated by OpenAPI schema.
+You can find kubebuilder validation markers (prefixed
+with `// +kubebuilder:validation`) in the
+[Designing an API](api-design.md) section.
+You can find all of the kubebuilder supported markers for
+declaring validation by running `controller-gen crd -w`,
+or [here](/reference/markers/crd-validation.md).
+*/
+
+func (r *CronJob) validateCronJobSpec() *field.Error {
+	// The field helpers from the kubernetes API machinery help us return nicely
+	// structured validation errors.
+	return validateScheduleFormat(
+		r.Spec.Schedule,
+		field.NewPath("spec").Child("schedule"))
+}
+
+/*
+Validating the length of a string field can be done declaratively by
+the validation schema.
+But the `ObjectMeta.Name` field is defined in a shared package under
+the apimachinery repo, so we can't declaratively validate it using
+the validation schema.
+*/
+
+func (r *CronJob) validateCronJobName() *field.Error {
+	if len(r.ObjectMeta.Name) > validationutils.DNS1035LabelMaxLength-11 {
+		// The job name length is 63 character like all Kubernetes objects
+		// (which must fit in a DNS subdomain). The cronjob controller appends
+		// a 11-character suffix to the cronjob (`-$TIMESTAMP`) when creating
+		// a job. The job name length limit is 63 characters. Therefore cronjob
+		// names must have length <= 63-11=52. If we don't validate this here,
+		// then job creation will fail later.
+		return field.Invalid(field.NewPath("metadata").Child("name"), r.Name, "must be no more than 52 characters")
+	}
+	return nil
+}
+
+```
+
+需要验证 [cron](https://en.wikipedia.org/wiki/Cron) 调度是否有良好的格式。
+
+```go
+/*
+We'll need to validate the [cron](https://en.wikipedia.org/wiki/Cron) schedule
+is well-formatted.
+*/
+
+func validateScheduleFormat(schedule string, fldPath *field.Path) *field.Error {
+	if _, err := cron.ParseStandard(schedule); err != nil {
+		return field.Invalid(fldPath, schedule, err.Error())
+	}
+	return nil
+}
+
+```
+
+如果希望本地运行 webhook，需要放置证书 `/tmp/k8s-webhook-server/serving-certs/tls.{crt,key}`
+
+使用如下命令签发一个证书
+
+```bash
+mkcd /tmp/k8s-webhook-server/serving-certs/
+
+
+```
+
