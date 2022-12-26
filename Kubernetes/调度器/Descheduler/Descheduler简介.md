@@ -29,9 +29,91 @@ Kubernetes 的调度是基于 Request，但是每个 Pod 的实际使用值是�
 
 详见：[调度策略.md](调度策略.md)
 
+## descheduler 的几种运行方式
+
+https://mp.weixin.qq.com/s/Q5VrLxR3IzvlsYquwVzDOw
+
+`descheduler` 可以以 `Job`、`CronJob` 或者 `Deployment` 的形式运行在 k8s 集群内
+
+descheduler 是 kubernetes-sigs 下的子项目，先将代码克隆到本地，进入项目目录:
+
+```bash
+git clone https://github.com/kubernetes-sigs/descheduler
+
+git checkout v0.25.1
+
+cd descheduler
+```
+
+如果运行环境无法拉取 gcr 的镜像，可以将 `k8s.gcr.io/descheduler/descheduler` 替换为 `k8simage/descheduler`
+
+### 一次性 Job
+
+```bash
+kubectl create -f kubernetes/base/rbac.yaml
+kubectl create -f kubernetes/base/configmap.yaml
+kubectl create -f kubernetes/job/job.yaml
+```
+
+### 定时任务 CronJob
+
+默认是 `*/2 * * * *` 每隔 2 分钟执行一次
+
+```bash
+kubectl create -f kubernetes/base/rbac.yaml
+kubectl create -f kubernetes/base/configmap.yaml
+kubectl create -f kubernetes/cronjob/cronjob.yaml
+```
+
+### 常驻任务 Deployment
+
+默认是 `--descheduling-interval 5m` 每隔 5 分钟执行一次
+
+```bash
+kubectl create -f kubernetes/base/rbac.yaml
+kubectl create -f kubernetes/base/configmap.yaml
+kubectl create -f kubernetes/deployment/deployment.yaml
+```
+
+## CLI 命令行
+
+编译 cli
+
+```bash
+make
+```
+
+将文件移动到 PATH 目录下
+
+```bash
+mv _output/bin/descheduler /usr/local/bin/
+```
+
+先在本地生成策略文件，然后执行 `descheduler` 命令
+
+```bash
+descheduler -v=3 --evict-local-storage-pods --policy-config-file=pod-life-time.yml
+```
+
+descheduler 有 `--help` 参数可以查看相关帮助文档。
+
+```bash
+descheduler --help
+The descheduler evicts pods which may be bound to less desired nodes
+
+Usage:
+  descheduler [flags]
+  descheduler [command]
+
+Available Commands:
+  completion  generate the autocompletion script for the specified shell
+  help        Help about any command
+  version     Version of descheduler
+```
+
 ## 安装
 
-`descheduler` 可以以 `Job`、`CronJob` 或者 `Deployment` 的形式运行在 k8s 集群内，同样我们可以使用 Helm Chart 来安装 `descheduler`：
+同样可以使用 Helm Chart 来安装 `descheduler`：
 
 ```bash
 helm repo add descheduler https://kubernetes-sigs.github.io/descheduler/
@@ -44,6 +126,10 @@ kubectl get priorityclass system-cluster-critical
 ```
 
 使用 Helm Chart 安装默认情况下会以 `CronJob` 的形式运行，执行周期为 `schedule: "*/2 * * * *"`，这样每隔两分钟会执行一次 `descheduler` 任务，默认的配置策略如下所示：
+
+## 测试调度效果
+
+
 
 ## 注意事项
 
