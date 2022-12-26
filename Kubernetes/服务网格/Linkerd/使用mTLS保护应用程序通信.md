@@ -1,3 +1,5 @@
+https://linkerd.hacker-linner.com/2.11/tasks/automatically-rotating-control-plane-tls-credentials/
+
 安全性是云原生应用程序的重中之重。
 
 虽然安全性是一个非常广泛的话题，但 Linkerd 依然可以发挥重要作用：其双向 TLS（mTLS）功能是为了在 Kubernetes 中实现零信任的安全方法。

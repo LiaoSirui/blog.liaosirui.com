@@ -94,7 +94,7 @@ systemctl restart containerd
 
 下载 docker 二进制版本，请选择最新最稳定的CE版本
 
-<https://download.docker.com/linux/static/stable/x86_64/​​>
+<https://download.docker.com/linux/static/stable/x86_64/>
 
 ```bash
 cd $(mktemp -d)
