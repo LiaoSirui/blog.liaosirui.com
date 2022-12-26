@@ -13,6 +13,8 @@ service 通过 label 选择器选取合适的 pod，构建出一个 endpoints，
 - Pod IP: Pod 的 IP 地址
 - Cluster IP: Service 的 IP 地址
 
+
+
 ## 定义 Service
 
 ## kube-proxy
@@ -24,3 +26,4 @@ service 通过 label 选择器选取合适的 pod，构建出一个 endpoints，
 ### ExternalName
 
 ## externalIPs
+

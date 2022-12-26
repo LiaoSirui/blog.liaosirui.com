@@ -1,1 +1,0 @@
-在 Kubernetes 中谈论 API 时，经常会使用 4 个术语：**groups** 、**versions**、**kinds** 和 **resources**。
