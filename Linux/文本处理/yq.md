@@ -43,3 +43,6 @@ all_images=$(yq eval "
 yq -i '.appVersion = strenv(nextChartVer)' Chart.yaml  
 ```
 
+
+
+https://www.cnblogs.com/tylerzhou/p/11050954.html
