@@ -1,3 +1,9 @@
+http://c.biancheng.net/golang/build/
+
+https://cloud.tencent.com/developer/article/1200219
+
+较新：https://doc.yonyoucloud.com/doc/wiki/project/go-command-tutorial/0.2.html
+
 Go 语言的工具链非常丰富，从获取源码、编译、文档、测试、性能分析，到源码格式化、源码提示、重构工具等应有尽有
 
 Go 语言自带有一套完整的命令操作工具，可以通过在命令行中执行 `go` 来查看：

@@ -1,0 +1,1 @@
+https://github.com/LiaoSirui/blockchain_guide/blob/master/04_distributed_system/paxos.md

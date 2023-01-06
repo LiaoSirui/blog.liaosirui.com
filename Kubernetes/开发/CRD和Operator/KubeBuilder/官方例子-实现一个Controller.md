@@ -1832,14 +1832,3 @@ func validateScheduleFormat(schedule string, fldPath *field.Path) *field.Error {
 }
 
 ```
-
-如果希望本地运行 webhook，需要放置证书 `/tmp/k8s-webhook-server/serving-certs/tls.{crt,key}`
-
-使用如下命令签发一个证书
-
-```bash
-mkcd /tmp/k8s-webhook-server/serving-certs/
-
-
-```
-
