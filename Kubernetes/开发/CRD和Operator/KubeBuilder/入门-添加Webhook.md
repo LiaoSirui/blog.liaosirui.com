@@ -703,3 +703,22 @@ varReference:
 最后使用 make run 启动服务。
 
 现在就可以在本地调试 Operator 的 webhook 功能了。
+
+## 补充
+
+controller 有两种运行方式，一种是在 kubernetes 环境内，一种是在 kubernetes 环境外独立运行；在编码阶段我们通常会在开发环境上运行 controller，但是如果使用了 webhook,由于其特殊的鉴权方式，需要将 kubernetes 签发的证书放置在本地的`tmp/k8s-webhook-server/serving-crets/ `目录
+
+面对这种问题，官方给出的建议是：如果在开发阶段暂时用不到 webhook，那么在本地运行 controller 时屏蔽 webhook 的功能
+
+具体操作是首先修改 `main.go` 文件，其实就是在 webhook 控制器这块添加一个环境变量的判断:
+
+```go
+if os.Getenv("ENABLE_WEBHOOKS") != "false" {
+	if err = (&devopsv1.KBDev{}).SetupWebhookWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create webhook", "webhook", "KBDev")
+		os.Exit(1)
+	}
+}
+```
+
+在本地启动 controller 的时候，使用`make run ENABLE_WEBHOOK=false`即可
