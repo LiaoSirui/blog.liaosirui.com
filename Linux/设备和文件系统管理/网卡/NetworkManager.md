@@ -14,7 +14,7 @@ docker0          45fb9025-88be-4628-8dde-85daf487a485  bridge    docker0
 分配静态 IP
 
 ```bash
- nmcli connection modify <interface_name> ipv4.address  <ip/prefix>
+nmcli connection modify <interface_name> ipv4.address <ip/prefix>
 ```
 
 为了简化语句，在 `nmcli` 命令中，我们通常用 `con` 关键字替换 `connection`，并用 `mod` 关键字替换 `modify`。
