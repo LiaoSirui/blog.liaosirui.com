@@ -5,43 +5,67 @@
 最新的 Release 可以从 <https://github.com/opencontainers/runc/releases> 获取
 
 ```bash
-curl -L https://github.com/opencontainers/runc/releases/download/v1.1.4/runc.amd64 -o /usr/local/bin/runc
+export RUNC_VERSION=v1.1.4
 
-chmod +x /usr/local/bin/runc
+curl -sL https://github.com/opencontainers/runc/releases/download/${RUNC_VERSION}/runc.amd64 -o /usr/local/bin/runc-${RUNC_VERSION}
 
-ln -s /usr/local/bin/runc /usr/bin/runc
+chmod +x /usr/local/bin/runc-${RUNC_VERSION}
+
+ln -s /usr/local/bin/runc-${RUNC_VERSION} /usr/bin/runc
+ln -s /usr/local/bin/runc-${RUNC_VERSION} /usr/local/bin/runc
+```
+
+查看二进制文件和软链
+
+```bash
+ls -al /usr/bin/runc /usr/local/bin/runc /usr/local/bin/runc-${RUNC_VERSION}
 ```
 
 ## 安装 containerd
 
+最新的 release 可以从 <https://github.com/containerd/containerd/releases> 获取
+
 下载 containerd
 
 ```bash
-wget https://github.com/containerd/containerd/releases/download/v1.6.8/containerd-1.6.8-linux-amd64.tar.gz -O containerd-1.6.8-linux-amd64.tar.gz
+export CONTAINERD_VERSION=v1.6.15
 
-#解压containerd
-mkdir -p /usr/local/containerd-1.6.8
-tar zxvf containerd-1.6.8-linux-amd64.tar.gz -C /usr/local/containerd-1.6.8
+cd $(mktemp -d)
+curl -sL \
+	https://github.com/containerd/containerd/releases/download/${CONTAINERD_VERSION}/containerd-${CONTAINERD_VERSION/v/}-linux-amd64.tar.gz \
+	-o containerd-${CONTAINERD_VERSION/v/}-linux-amd64.tar.gz
 
-ln -s /usr/local/containerd-1.6.8/bin/containerd-shim /usr/bin/containerd-shim
-ln -s /usr/local/containerd-1.6.8/bin/containerd /usr/bin/containerd
-ln -s /usr/local/containerd-1.6.8/bin/containerd-shim-runc-v1 /usr/bin/containerd-shim-runc-v1
-ln -s /usr/local/containerd-1.6.8/bin/containerd-stress /usr/bin/containerd-stress
-ln -s /usr/local/containerd-1.6.8/bin/containerd-shim-runc-v2 /usr/bin/containerd-shim-runc-v2
-ln -s /usr/local/containerd-1.6.8/bin/ctr /usr/bin/ctr
+# 解压 containerd
+mkdir -p /usr/local/containerd-${CONTAINERD_VERSION/v/}
+tar zxvf containerd-${CONTAINERD_VERSION/v/}-linux-amd64.tar.gz -C /usr/local/containerd-${CONTAINERD_VERSION/v/}
 
-ln -s /usr/local/containerd-1.6.8/bin/containerd-shim /usr/local/bin/containerd-shim
-ln -s /usr/local/containerd-1.6.8/bin/containerd /usr/local/bin/containerd
-ln -s /usr/local/containerd-1.6.8/bin/containerd-shim-runc-v1 /usr/local/bin/containerd-shim-runc-v1
-ln -s /usr/local/containerd-1.6.8/bin/containerd-stress /usr/local/bin/containerd-stress
-ln -s /usr/local/containerd-1.6.8/bin/containerd-shim-runc-v2 /usr/local/bin/containerd-shim-runc-v2
-ln -s /usr/local/containerd-1.6.8/bin/ctr /usr/local/bin/ctr
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd-shim /usr/bin/containerd-shim
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd /usr/bin/containerd
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd-shim-runc-v1 /usr/bin/containerd-shim-runc-v1
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd-stress /usr/bin/containerd-stress
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd-shim-runc-v2 /usr/bin/containerd-shim-runc-v2
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/ctr /usr/bin/ctr
+
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd-shim /usr/local/bin/containerd-shim
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd /usr/local/bin/containerd
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd-shim-runc-v1 /usr/local/bin/containerd-shim-runc-v1
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd-stress /usr/local/bin/containerd-stress
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/containerd-shim-runc-v2 /usr/local/bin/containerd-shim-runc-v2
+ln -s /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin/ctr /usr/local/bin/ctr
+```
+
+查看二进制文件和软链
+
+```bash
+ls -al /usr/local/containerd-${CONTAINERD_VERSION/v/}/bin
+ls -al /usr/bin/containerd* /usr/bin/ctr
+ls -al /usr/local/bin/containerd* /usr/local/bin/ctr
 ```
 
 生成配置文件
 
 ```bash
-# 生成containerd配置
+# 生成 containerd 配置
 mkdir -p /etc/containerd
 containerd config default > /etc/containerd/config.toml
 ```
@@ -50,7 +74,34 @@ containerd config default > /etc/containerd/config.toml
 
 ```bash
 # 编写 service 文件
-wget https://raw.githubusercontent.com/containerd/containerd/v1.6.8/containerd.service -O /usr/lib/systemd/system/containerd.service
+wget https://raw.githubusercontent.com/containerd/containerd/${CONTAINERD_VERSION}/containerd.service -O /usr/lib/systemd/system/containerd.service
+```
+
+内容为
+
+```ini
+[Unit]
+Description=containerd container runtime
+Documentation=https://containerd.io
+After=network.target local-fs.target
+
+[Service]
+ExecStartPre=-/sbin/modprobe overlay
+ExecStart=/usr/local/bin/containerd
+
+Type=notify
+Delegate=yes
+KillMode=process
+Restart=always
+RestartSec=5
+LimitNPROC=infinity
+LimitCORE=infinity
+LimitNOFILE=infinity
+TasksMax=infinity
+OOMScoreAdjust=-999
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 启动 containerd
@@ -70,6 +121,12 @@ systemctl status containerd
    125                SystemdCgroup = true
 ```
 
+如果不满足，则编辑文件
+
+```bash
+vim /etc/containerd/config.toml +125
+```
+
 配置使用代理
 
 ```bash
@@ -77,9 +134,9 @@ mkdir /etc/systemd/system/containerd.service.d
 
 cat > /etc/systemd/system/containerd.service.d/http_proxy.conf << EOF
 [Service]
-Environment="HTTP_PROXY=http://10.244.244.1:8899"
-Environment="HTTPS_PROXY=http://10.244.244.1:8899"
-Environment="ALL_PROXY=socks5://10.244.244.1:8899"
+Environment="HTTP_PROXY=http://10.244.244.2:7891"
+Environment="HTTPS_PROXY=http://10.244.244.2:7891"
+Environment="ALL_PROXY=socks5://10.244.244.2:7891"
 Environment="NO_PROXY=127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.liaosirui.com"
 EOF
 
@@ -97,26 +154,48 @@ systemctl restart containerd
 <https://download.docker.com/linux/static/stable/x86_64/>
 
 ```bash
+export DOCKER_VERSION=v20.10.9
+
 cd $(mktemp -d)
 
-wget https://download.docker.com/linux/static/stable/x86_64/docker-20.10.9.tgz -O docker-ce.tgz
+wget https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION/v/}.tgz -O docker-ce.tgz
 
 tar zxvf docker-ce.tgz -C .
 ```
 
-移动所需二进制文件
+移动所需二进制文件，建立软链
 
 ```bash
-mv ./docker/dockerd /usr/bin/
-mv ./docker/docker-proxy /usr/bin/
-mv ./docker/docker /usr/bin/
-mv ./docker/docker-init /usr/bin/
+mv ./docker /usr/local/docker-${DOCKER_VERSION/v/}
+
+ln -s /usr/local/docker-${DOCKER_VERSION/v/}/dockerd /usr/bin/dockerd
+ln -s /usr/local/docker-${DOCKER_VERSION/v/}/docker-proxy /usr/bin/docker-proxy
+ln -s /usr/local/docker-${DOCKER_VERSION/v/}/docker /usr/bin/docker
+ln -s /usr/local/docker-${DOCKER_VERSION/v/}/docker-init /usr/bin/docker-init
+
+ln -s /usr/local/docker-${DOCKER_VERSION/v/}/dockerd /usr/local/bin/dockerd
+ln -s /usr/local/docker-${DOCKER_VERSION/v/}/docker-proxy /usr/local/bin/docker-proxy
+ln -s /usr/local/docker-${DOCKER_VERSION/v/}/docker /usr/local/bin/docker
+ln -s /usr/local/docker-${DOCKER_VERSION/v/}/docker-init /usr/local/bin/docker-init
+
 ```
 
-创建一个 system 管理文件，参考 <https://github.com/docker/docker-ce/blob/master/components/engine/contrib/init/systemd/docker.service>
+查看二进制和软链
 
 ```bash
-vim /usr/lib/systemd/system/docker.service
+ls -al /usr/local/docker-${DOCKER_VERSION/v/}
+ls -al /usr/bin/docker*
+ls -al /usr/local/bin/docker*
+```
+
+创建一个 system 管理文件，参考
+
+- <https://github.com/docker/docker-ce/blob/master/components/engine/contrib/init/systemd/docker.service>
+- <https://github.com/moby/moby/blob/v20.10.19/contrib/init/systemd/docker.servic>
+
+```bash
+wget https://raw.githubusercontent.com/moby/moby/v20.10.19/contrib/init/systemd/docker.service \
+  -O /usr/lib/systemd/system/docker.service
 ```
 
 配置文件内容如下：
@@ -125,8 +204,8 @@ vim /usr/lib/systemd/system/docker.service
 [Unit]
 Description=Docker Application Container Engine
 Documentation=https://docs.docker.com
-After=network-online.target docker.socket firewalld.service containerd.service
-Wants=network-online.target containerd.service
+After=network-online.target docker.socket firewalld.service
+Wants=network-online.target
 Requires=docker.socket
 
 [Service]
@@ -134,47 +213,38 @@ Type=notify
 # the default is not to use systemd for cgroups because the delegate issues still
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker
-ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+ExecStart=/usr/bin/dockerd -H fd://
 ExecReload=/bin/kill -s HUP $MAINPID
-TimeoutStartSec=0
-RestartSec=2
-Restart=always
-
-# Note that StartLimit* options were moved from "Service" to "Unit" in systemd 229.
-# Both the old, and new location are accepted by systemd 229 and up, so using the old location
-# to make them work for either version of systemd.
-StartLimitBurst=3
-
-# Note that StartLimitInterval was renamed to StartLimitIntervalSec in systemd 230.
-# Both the old, and new name are accepted by systemd 230 and up, so using the old name to make
-# this option work for either version of systemd.
-StartLimitInterval=60s
-
+LimitNOFILE=1048576
 # Having non-zero Limit*s causes performance problems due to accounting overhead
 # in the kernel. We recommend using cgroups to do container-local accounting.
-LimitNOFILE=infinity
 LimitNPROC=infinity
 LimitCORE=infinity
-
-# Comment TasksMax if your systemd version does not support it.
-# Only systemd 226 and above support this option.
-TasksMax=infinity
-
+# Uncomment TasksMax if your systemd version supports it.
+# Only systemd 226 and above support this version.
+#TasksMax=infinity
+TimeoutStartSec=0
 # set delegate yes so that systemd does not reset the cgroups of docker containers
 Delegate=yes
-
 # kill only the docker process, not all processes in the cgroup
 KillMode=process
-OOMScoreAdjust=-500
+# restart the docker process if it exits prematurely
+Restart=on-failure
+StartLimitBurst=3
+StartLimitInterval=60s
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-创建 docker.socket，参考 <https://github.com/docker/docker-ce/blob/master/components/engine/contrib/init/systemd/docker.socket>
+创建 docker.socket，参考
+
+- <https://github.com/docker/docker-ce/blob/master/components/engine/contrib/init/systemd/docker.socket>
+- <https://github.com/moby/moby/blob/v20.10.19/contrib/init/systemd/docker.socket>
 
 ```bash
-vim /usr/lib/systemd/system/docker.socket
+curl -L https://raw.githubusercontent.com/moby/moby/v20.10.19/contrib/init/systemd/docker.socket \
+  -o /usr/lib/systemd/system/docker.socket
 ```
 
 内容如下：
@@ -189,11 +259,13 @@ Description=Docker Socket for the API
 ListenStream=/run/docker.sock
 SocketMode=0660
 SocketUser=root
-SocketGroup=root
+SocketGroup=docker
 
 [Install]
 WantedBy=sockets.target
 ```
+
+把上面的 group 改为 root
 
 配置 docker 服务端
 
@@ -259,8 +331,12 @@ systemctl restart docker
 下载 nerdctl
 
 ```bash
-# 下载nerdctl
-wget https://github.com/containerd/nerdctl/releases/download/v0.22.0/nerdctl-0.22.0-linux-amd64.tar.gz -O nerdctl-0.22.0-linux-amd64.tar.gz
+export NERDCTL_VERSION=v1.1.0
+
+# 下载 nerdctl
+cd $(mktemp -d)
+curl -L https://github.com/containerd/nerdctl/releases/download/${NERDCTL_VERSION}/nerdctl-${NERDCTL_VERSION/v/}-linux-amd64.tar.gz \
+  -o /usr/local/bin/nerdctl-${NERDCTL_VERSION/v/}-linux-amd64.tar.gz
 
 tar zxvf nerdctl-0.22.0-linux-amd64.tar.gz -C /usr/local/sbin
 ```

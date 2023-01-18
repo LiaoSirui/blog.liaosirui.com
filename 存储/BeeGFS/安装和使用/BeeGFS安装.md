@@ -7,47 +7,46 @@
 
 ```plain
 NAME="Rocky Linux"
-VERSION="9.0 (Blue Onyx)"
+VERSION="9.1 (Blue Onyx)"
 ID="rocky"
 ID_LIKE="rhel centos fedora"
-VERSION_ID="9.0"
+VERSION_ID="9.1"
 PLATFORM_ID="platform:el9"
-PRETTY_NAME="Rocky Linux 9.0 (Blue Onyx)"
+PRETTY_NAME="Rocky Linux 9.1 (Blue Onyx)"
 ANSI_COLOR="0;32"
 LOGO="fedora-logo-icon"
 CPE_NAME="cpe:/o:rocky:rocky:9::baseos"
 HOME_URL="https://rockylinux.org/"
 BUG_REPORT_URL="https://bugs.rockylinux.org/"
 ROCKY_SUPPORT_PRODUCT="Rocky-Linux-9"
-ROCKY_SUPPORT_PRODUCT_VERSION="9.0"
+ROCKY_SUPPORT_PRODUCT_VERSION="9.1"
 REDHAT_SUPPORT_PRODUCT="Rocky Linux"
-REDHAT_SUPPORT_PRODUCT_VERSION="9.0"
+REDHAT_SUPPORT_PRODUCT_VERSION="9.1"
 ```
 
 节点规划如下：
 
 ```plin
 Host Services:
-    devmaster3: Management Server (IP:10.244.244.103)
+    devmaster1: Management Server (ib0, IP:10.245.245.201)
 
-    devmaster3: Metadata Server (IP:10.244.244.103)
+    devmaster1: Metadata Server (ib0, IP:10.245.245.201)
 
-    devmaster1: Storage Server (IP:10.244.244.101)
-    devmaster2: Storage Server (IP:10.244.244.102)
-    devmaster3: Storage Server (IP:10.244.244.103)
+    devmaster1: Storage Server (ib0, IP:10.245.245.201)
+    devnode1: Storage Server (ib0, IP:10.245.245.211)
+    devnode2: Storage Server (ib0, IP:10.245.245.212)
 
-    devmaster1: Client (IP:10.244.244.101)
-    devmaster2: Client (IP:10.244.244.102)
-    devmaster3: Client (IP:10.244.244.103)
+    devmaster: Client (ib0, IP:10.245.245.201)
+    devnode1: Client (ib0, IP:10.245.245.211)
+    devnode2: Client (ib0, IP:10.245.245.212)
 
-    devmaster3: Mon Server (IP:10.244.244.103)(可选项)
+    devmaster1: Mon Server (ib0, IP:10.245.245.201)(可选项)
 
 
 Storage:
-  Storage servers and metadata servers with xfs, mounted to "/mnt/beegfs-data"
-    # Storage servers with xfs, mounted to "/mnt/beegfs-storage"
-    # ext4 对小文件支持更好
-    # Metadata servers with ext4, mounted to "/mnt/beegfs-metadata"
+  Storage servers with xfs, mounted to "/mnt/beegfs-storage"
+  # ext4 对小文件支持更好
+  Metadata servers with ext4, mounted to "/mnt/beegfs-metadata"
 ```
 
 所有节点配置 `/etc/hosts`
