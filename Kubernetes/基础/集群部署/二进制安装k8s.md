@@ -336,36 +336,59 @@ export NERDCTL_VERSION=v1.1.0
 # 下载 nerdctl
 cd $(mktemp -d)
 curl -L https://github.com/containerd/nerdctl/releases/download/${NERDCTL_VERSION}/nerdctl-${NERDCTL_VERSION/v/}-linux-amd64.tar.gz \
-  -o /usr/local/bin/nerdctl-${NERDCTL_VERSION/v/}-linux-amd64.tar.gz
+  -o nerdctl-${NERDCTL_VERSION/v/}-linux-amd64.tar.gz
 
-tar zxvf nerdctl-0.22.0-linux-amd64.tar.gz -C /usr/local/sbin
+mkdir -p /usr/local/nerdctl-${NERDCTL_VERSION/v/}
+tar zxvf nerdctl-${NERDCTL_VERSION/v/}-linux-amd64.tar.gz -C /usr/local/nerdctl-${NERDCTL_VERSION/v/}
+```
+
+建立软链
+
+```bash
+ln -s /usr/local/nerdctl-${NERDCTL_VERSION/v/}/nerdctl /usr/bin/nerdctl
+ln -s /usr/local/nerdctl-${NERDCTL_VERSION/v/}/nerdctl /usr/local/bin/nerdctl
+```
+
+查看二进制文件和生成的软链
+
+```bash
+ls -al /usr/local/nerdctl-${NERDCTL_VERSION/v/}
+ls -al /usr/bin/nerdctl /usr/local/bin/nerdctl
 ```
 
 配置 alias
 
 ```bash
-echo "alias docker-n='nerdctl --namespace k8s.io'"  >> ~/.bashrc
-echo "alias docker-n-compose='nerdctl compose'"  >> ~/.bashrc
+echo "alias dockern='nerdctl --namespace k8s.io'"  >> ~/.bashrc
+echo "alias dockern-compose='nerdctl compose'"  >> ~/.bashrc
 source ~/.bashrc
 ```
 
-下载 cni 插件
+下载 cni 插件，最新版本可以从 <https://github.com/containernetworking/plugins/releases>
 
 ```bash
-wget https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
-mkdir -p /usr/local/cni-plugins
-tar xvf cni-plugins-linux-amd64-v1.1.1.tgz -C /usr/local/cni-plugins
+export CNI_VERSION=v1.2.0
+
+cd $(mktemp -d)
+wget --no-check-certificate https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/cni-plugins-linux-amd64-${CNI_VERSION}.tgz \
+  -O cni-plugins-linux-amd64-${CNI_VERSION}.tgz
+
+mkdir -p /usr/local/cni-plugins-${CNI_VERSION}
+tar xvf cni-plugins-linux-amd64-${CNI_VERSION}.tgz -C /usr/local/cni-plugins-${CNI_VERSION}
+
+ln -s /usr/local/cni-plugins-${CNI_VERSION} /usr/local/cni-plugins
 ```
 
 配置 nerdctl
 
 ```bash
-# 配置nerdctl
+# 配置 nerdctl
 mkdir -p /etc/nerdctl/
+
 cat > /etc/nerdctl/nerdctl.toml << 'EOF'
-namespace      = "k8s.io"
+namespace         = "k8s.io"
 insecure_registry = true
-cni_path  = "/usr/local/cni-plugins"
+cni_path          = "/usr/local/cni-plugins"
 EOF
 ```
 
@@ -376,9 +399,38 @@ EOF
 下载 buildkit
 
 ```bash
-wget https://github.com/moby/buildkit/releases/download/v0.10.4/buildkit-v0.10.4.linux-amd64.tar.gz -O buildkit-v0.10.4.linux-amd64.tar.gz
+export BUILD_KIT_VERSION=v0.11.1
 
-tar zxvf buildkit-v0.10.4.linux-amd64.tar.gz  -C /usr/local/
+cd $(mktemp -d)
+wget https://github.com/moby/buildkit/releases/download/${BUILD_KIT_VERSION}/buildkit-${BUILD_KIT_VERSION}.linux-amd64.tar.gz \
+  -O buildkit-${BUILD_KIT_VERSION}.linux-amd64.tar.gz
+
+mkdir -p /usr/local/buildkit-${BUILD_KIT_VERSION}
+tar zxvf buildkit-${BUILD_KIT_VERSION}.linux-amd64.tar.gz -C /usr/local/buildkit-${BUILD_KIT_VERSION}
+
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildctl /usr/bin/buildctl
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-aarch64 /usr/bin/buildkit-qemu-aarch64
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-arm /usr/bin/buildkit-qemu-arm
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-i386 /usr/bin/buildkit-qemu-i386
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-mips64 /usr/bin/buildkit-qemu-mips64
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-mips64el /usr/bin/buildkit-qemu-mips64el
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-ppc64le /usr/bin/buildkit-qemu-ppc64le
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-riscv64 /usr/bin/buildkit-qemu-riscv64
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-s390x /usr/bin/buildkit-qemu-s390x
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-runc /usr/bin/buildkit-runc
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkitd /usr/bin/buildkitd
+
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildctl /usr/local/bin/buildctl
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-aarch64 /usr/local/bin/buildkit-qemu-aarch64
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-arm /usr/local/bin/buildkit-qemu-arm
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-i386 /usr/local/bin/buildkit-qemu-i386
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-mips64 /usr/local/bin/buildkit-qemu-mips64
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-mips64el /usr/local/bin/buildkit-qemu-mips64el
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-ppc64le /usr/local/bin/buildkit-qemu-ppc64le
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-riscv64 /usr/local/bin/buildkit-qemu-riscv64
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-qemu-s390x /usr/local/bin/buildkit-qemu-s390x
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkit-runc /usr/local/bin/buildkit-runc
+ln -s /usr/local/buildkit-${BUILD_KIT_VERSION}/bin/buildkitd /usr/local/bin/buildkitd
 ```
 
 配置 buildkit
@@ -448,35 +500,14 @@ systemctl status buildkit
 测试
 
 ```bash
-mkdir test
-cd test
+cd $(mktemp -d)
+mkcd test
+
 cat > Dockerfile << 'EOF'
 FROM alpine
 EOF
 
-docker-n build --platform arm64,amd64 -t  test1 .
-```
-
-- nerdctl 使用http 的harbor
-
-```bash
-nerdctl login harbor.cadp.com --insecure-registry -u admin -p Harbor123456
-```
-
-- 拉取镜像
-
-```bash
-docker pull harbor.cadp.com/smartgate/gwit:v5 --insecure-registry
-
-# 这个为 ctr 下载镜像命令
-ctr -n k8s.io i pull --plain-http   harbor.cadp.com/smartgate/gwit:v5
-# --plain-http 表示使用 http 下载
-```
-
-- 推送镜像
-
-```bash
-docker push harbor.cadp.com/public/elasticsearch:7.13.1 --insecure-registry
+dockern build --platform arm64,amd64 -t  test1 .
 ```
 
 ## 安装 k8s
@@ -484,13 +515,13 @@ docker push harbor.cadp.com/public/elasticsearch:7.13.1 --insecure-registry
 配置免密，方便操作
 
 ```bash
-echo '10.244.244.101 devmaster1.local.liaosirui.com devmaster1' >> /etc/hosts
-echo '10.244.244.102 devmaster2.local.liaosirui.com devmaster2' >> /etc/hosts
-echo '10.244.244.103 devmaster3.local.liaosirui.com devmaster3' >> /etc/hosts
+echo '10.244.244.201 devmaster' >> /etc/hosts
+echo '10.244.244.211 devnode1' >> /etc/hosts
+echo '10.244.244.212 devnode2' >> /etc/hosts
 
-ssh -p 10241 root@10.244.244.101
-ssh -p 10242 root@10.244.244.102
-ssh -p 10243 root@10.244.244.103
+ssh -p 10240 root@10.244.244.201
+ssh -p 10241 root@10.244.244.211
+ssh -p 10242 root@10.244.244.212
 ```
 
 关闭防火墙和 selinux
@@ -518,7 +549,7 @@ swapoff -a
 # 2、永久关闭
 sed -ri 's/.*swap.*/#&/' /etc/fstab
 
-# 3、查看 swap 分区是否已经关闭，若 swap 一行都显示0，则表示关闭成功
+# 3、查看 swap 分区是否已经关闭，若 swap 一行都显示 0，则表示关闭成功
 free -m
 ```
 
