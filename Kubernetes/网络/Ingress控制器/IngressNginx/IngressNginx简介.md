@@ -22,3 +22,77 @@ Kubernetes 控制器使用控制循环模式来检查控制器中所需的状态
 
 ## 区别于 Nginx 社区维护的版本
 
+## 安装 nginx-ingress
+
+添加仓库
+
+```bash
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx 
+```
+
+使用如下 values.yaml
+
+```yaml
+controller:
+  extraArgs:
+    enable-ssl-passthrough: 'true'
+  config:
+    worker-processes: 'auto'
+    max-worker-connections: '10240'
+    keep-alive: '200'
+    keep-alive-requests: '10000000'
+    use-http2: 'true'
+    # enable-real-ip: 'true'
+    # proxy-real-ip-cidr: '0.0.0.0/0'
+    # use-proxy-protocol: 'true'
+    use-forwarded-headers: 'true'
+    compute-full-forwarded-for: "true"
+  containerPort:
+    http: 80
+    https: 443
+  hostPort:
+    enabled: true
+    ports:
+      http: 10080
+      https: 10443
+  tolerations:
+    - operator: "Exists"
+  nodeSelector:
+    # ingress-nginx: 'true'
+    node-role.kubernetes.io/control-plane: ""
+  replicaCount: 1
+  service:
+    enabled: false
+  admissionWebhooks:
+    enabled: false
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+    prometheusRule:
+      enabled: false
+defaultBackend:
+  enabled: false
+
+```
+
+使用 helm 安装
+
+```bash
+helm upgrade --install \
+  --namespace ingress-nginx --create-namespace \
+  -f ./values.yaml \
+  ingress-nginx ingress-nginx/ingress-nginx
+```
+
+进行测试
+
+```bash
+kubectl create deployment demo --image=httpd --port=80
+
+kubectl expose deployment demo
+
+kubectl create ingress demo-localhost --class=nginx \
+  --rule="demo.local.liaosirui.com/*=demo:80"
+```
+

@@ -46,7 +46,7 @@ hostPort:
 nodePort:
   enabled: true
 kubeProxyReplacement: strict
-k8sServiceHost: 10.244.244.101
+k8sServiceHost: apiserver.local.liaosirui.com
 k8sServicePort: 6443
 loadBalancer:
   algorithm: maglev

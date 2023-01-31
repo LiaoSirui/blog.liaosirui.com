@@ -519,9 +519,9 @@ echo '10.244.244.201 devmaster' >> /etc/hosts
 echo '10.244.244.211 devnode1' >> /etc/hosts
 echo '10.244.244.212 devnode2' >> /etc/hosts
 
-ssh -p 10240 root@10.244.244.201
-ssh -p 10241 root@10.244.244.211
-ssh -p 10242 root@10.244.244.212
+ssh root@10.244.244.201
+ssh root@10.244.244.211
+ssh root@10.244.244.212
 ```
 
 关闭防火墙和 selinux
@@ -530,12 +530,17 @@ ssh -p 10242 root@10.244.244.212
 # 关闭防火墙
 systemctl stop firewalld
 systemctl disable firewalld
+```
 
-# selinux
+关闭 selinux
+
+```bash
 # 1、临时关闭
 setenforce 0
+
 # 2、永久关闭SELinux
-sed -i "s/^SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
+sed -i "s/^SELINUX=.*/SELINUX=disabled/g" /etc/selinux/config
+
 # 3、查看SELinux状态
 sestatus
 ```
@@ -568,7 +573,7 @@ systemctl enable chronyd
 systemctl status chronyd
 ```
 
-可参考，但不是必要的
+可参考修改 ntp 服务器地址，但不是必要的
 
 ```bash
 # 修改 /etc/chrony.conf 配置文件
@@ -609,56 +614,29 @@ fs.nr_open=52706963
 net.ipv6.conf.all.disable_ipv6=1
 net.netfilter.nf_conntrack_max=2310720
 
-# -------------------------解释-------------------------
-# net.bridge.bridge-nf-call-iptables=1：开启 ipv4 的过滤规则
-# net.bridge.bridge-nf-call-ip6tables=1：开启 iptables 中 ipv6 的过滤规则
-# net.ipv4.ip_forward=1：开启服务器的路由转发功能
-# vm.swappiness=0：禁止使用 swap 空间，只有当系统 OOM 时才允许使用它
-# vm.overcommit_memory=1：不检查物理内存是否够用
-# vm.panic_on_oom=0：开启 OOM
-# net.ipv6.conf.all.disable_ipv6=1：禁止 ipv6
-
-# 3、执行命令，使其配置文件生效
+# 3、编辑内核模块自动加载文件
+echo "br_netfilter" > /etc/modules-load.d/br_netfilter.conf
 modprobe br_netfilter
+
+# 4、执行命令，使其配置文件生效
 sysctl -p /etc/sysctl.d/kubernetes.conf
-1
 ```
 
-开启 kube-proxy 的 ipvs 前置条件
-
-从 kubernetes 的 1.8 版本开始，kube-proxy 引入了 ipvs 模式，ipvs 模式与 iptables 同样基于 Netfilter，但是 ipvs 模式采用的是 hash 表，因此当 service 数量达到一定规模时，hash 查表的速度优势就会显现出来，从而提高 service 的服务性能
-
-```bash
-# 1、安装ipvsadm 和 ipset
-dnf -y install ipvsadm ipset
-
-# 2、编辑 ipvs.modules 配置文件，使其永久生效
-
-mkdir -p /etc/sysconfig/modules
-vim /etc/sysconfig/modules/ipvs.modules
-
-# 3、填写如下内容
-modprobe -- ip_vs
-modprobe -- ip_vs_rr
-modprobe -- ip_vs_wrr
-modprobe -- ip_vs_sh
-modprobe -- br_netfilter
-modprobe -- nf_conntrack
-
-# 4、设置文件权限
-chmod 755 /etc/sysconfig/modules/ipvs.modules
-
-# 5、查看是否已经正确加载所需的内核模块
-bash /etc/sysconfig/modules/ipvs.modules && lsmod | grep -e ip_vs -e nf_conntrack
-
-vim /etc/modules-load.d/ipvs.conf
-ip_vs
-ip_vs_rr
-ip_vs_wrr
-ip_vs_sh
-br_netfilter
-nf_conntrack
-```
+> 解释
+>
+> - `net.bridge.bridge-nf-call-iptables=1`：开启 ipv4 的过滤规则
+>
+> - `net.bridge.bridge-nf-call-ip6tables=1`：开启 iptables 中 ipv6 的过滤规则
+>
+> - `net.ipv4.ip_forward=1`：开启服务器的路由转发功能
+>
+> - `vm.swappiness=0`：禁止使用 swap 空间，只有当系统 OOM 时才允许使用它
+>
+> - `vm.overcommit_memory=1`：不检查物理内存是否够用
+>
+> - `vm.panic_on_oom=0`：开启 OOM
+>
+> - `net.ipv6.conf.all.disable_ipv6=1`：禁止 ipv6
 
 添加源
 
@@ -670,21 +648,24 @@ vim /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
 baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
-enabled=1
+enabled=0
 gpgcheck=1
 repo_gpgcheck=0
 gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 ```
 
+查看可以安装的 k8s 版本
+
 ```bash
-dnf list kubelet --showduplicates | grep 1.24 | sort -r 
+dnf list --enablerepo=kubernetes kubelet --showduplicates | grep 1.26 | sort -r 
 
-dnf install -y kubelet-1.24.4-0 kubeadm-1.24.4-0 kubectl-1.24.4-0
-# 建议安装更高版本的
-
+# 建议安装最新版本的
+dnf install --enablerepo=kubernetes -y \
+  iproute-tc \
+  kubelet-1.26.1-0 \
+  kubeadm-1.26.1-0 \
+  kubectl-1.26.1-0
 # dnf versionlock kubelet kubeadm kubectl
-
-dnf install -y iproute-tc
 ```
 
 修改 kubelet 配置文件，关闭 swap
@@ -697,37 +678,135 @@ vim /etc/sysconfig/kubelet
 KUBELET_EXTRA_ARGS="--fail-swap-on=false"
 ```
 
-启动
+设置 kubelet 开机自动启动
 
 ```bash
 systemctl enable kubelet
 ```
 
-查看镜像版本（没什么用，一般是为了从中国区下载）
+查看镜像版本（没什么用，一般是为了从中国可访问的镜像仓库下载
 
 ```bash
-kubeadm config images list --kubernetes-version=v1.24.4
+> kubeadm config images list --kubernetes-version=v1.26.1
 
-kubeadm config images pull
+registry.k8s.io/kube-apiserver:v1.26.1
+registry.k8s.io/kube-controller-manager:v1.26.1
+registry.k8s.io/kube-scheduler:v1.26.1
+registry.k8s.io/kube-proxy:v1.26.1
+registry.k8s.io/pause:3.9
+registry.k8s.io/etcd:3.5.6-0
+registry.k8s.io/coredns/coredns:v1.9.3
+```
+
+指定镜像仓库
+
+```bash
+> kubeadm config images list --kubernetes-version=v1.26.1 \
+  --image-repository=harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io
+
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-apiserver:v1.26.1
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-controller-manager:v1.26.1
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-scheduler:v1.26.1
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-proxy:v1.26.1
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/pause:3.9
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/etcd:3.5.6-0
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/coredns:v1.9.3
+```
+
+如果有代理，直接拉取镜像即可，也可指定镜像仓库
+
+```bash
+kubeadm config images pull --kubernetes-version=v1.26.1 \
+  --image-repository=harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io
 ```
 
 初始化 master 节点
 
 ```bash
-kubeadm config print init-defaults > /data/kubeadm-init.yaml
+mkdir /root/.kube
+
+kubeadm config print init-defaults > /root/.kube/kubeadm-init.yaml
 
 kubeadm init \
---apiserver-advertise-address=10.244.244.101 \
---apiserver-cert-extra-sans=apiserver.local.liaosirui.com \
---kubernetes-version=v1.24.4 \
---service-cidr=10.3.0.0/16 \
---node-name devmaster1 \
---pod-network-cidr=10.4.0.0/16 \
---control-plane-endpoint="apiserver.local.liaosirui.com:6443" 
-
-# 用不上
-# --image-repository registry.aliyuncs.com/google_containers \
+  --apiserver-advertise-address=10.244.244.201 \
+  --apiserver-cert-extra-sans=apiserver.local.liaosirui.com \
+  --kubernetes-version=v1.26.1 \
+  --service-cidr=10.3.0.0/16 \
+  --pod-network-cidr=10.4.0.0/16 \
+  --node-name devmaster \
+  --control-plane-endpoint="apiserver.local.liaosirui.com:6443" \
+  --image-repository=harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io
 ```
+
+查看节点加入的 token
+
+```bash
+ kubeadm token create --print-join-command
+```
+
+加入节点
+
+```bash
+# devnode1 
+kubeadm join apiserver.local.liaosirui.com:6443 \
+  --node-name devnode1 \
+  --token 67n3f5.xjvndwcv4f7hzorl \
+	--discovery-token-ca-cert-hash sha256:6788e66a9ad6d8f1414f9d13f282ba82bf5f5a01b4752fd26a656bb05ff59ec8
+
+# devnode2
+kubeadm join apiserver.local.liaosirui.com:6443 \
+  --node-name devnode2 \
+  --token 67n3f5.xjvndwcv4f7hzorl \
+	--discovery-token-ca-cert-hash sha256:6788e66a9ad6d8f1414f9d13f282ba82bf5f5a01b4752fd26a656bb05ff59ec8
+```
+
+如果不使用 kubeproxy 可以使用增加 nodeSelector 的方式来关闭
+
+```bash
+> kubectl edit daemonset -n kube-system kube-proxy
+...
+      nodeSelector:
++       kube-proxy: disabled
+        kubernetes.io/os: linux
+...
+```
+
+## kubectl
+
+配置 kubectl 工具
+
+```bash
+mkdir -p $HOME/.kube
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+配置 kubectl 命令自动补全功能
+
+```bash
+# 1、安装 epel-release 和 bash-completion
+dnf install -y epel-release bash-completion
+
+# 2、配置 kubectl 命令自动补全
+source /usr/share/bash-completion/bash_completion
+source <(kubectl completion bash)
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+```
+
+## crictl
+
+配置 crictl
+
+```bash
+cat << _EOF_ > /etc/crictl.yaml
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+timeout: 10
+debug: false
+_EOF_
+```
+
+## 多 master 节点部署
 
 分发证书
 
@@ -772,147 +851,4 @@ kubeadm join apiserver.local.liaosirui.com:6443 --token qjjhtw.ngayg1wa1xo3q72w 
 
 kubeadm join apiserver.local.liaosirui.com:6443 --token qjjhtw.ngayg1wa1xo3q72w \
     --discovery-token-ca-cert-hash sha256:b55ba9deff1b7d08de9a4a4adcef02c71da37f413fd2aafa0144f7bca49b1484 --control-plane --apiserver-advertise-address=10.244.244.103 --node-name devmaster3
-```
-
-配置 kubectl 工具
-
-```bash
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-```
-
-配置 crictl
-
-```bash
-/etc/crictl.yaml
-
-runtime-endpoint: unix:///var/run/containerd/containerd.sock
-image-endpoint: unix:///var/run/containerd/containerd.sock
-timeout: 10
-debug: false
-```
-
-### calico
-
-安装 Calico 网络插件
-
-```bash
-curl https://docs.projectcalico.org/manifests/calico.yaml -O calico.yaml
-```
-
-修改网段
-
-```bash
-# 1、修改calico.yaml配置文件
-vim calico.yaml
-
-# 由于calico.yaml配置文件中使用的pod cidr地址段默认为192.168.0.0/16，
-# 与在kubeadm init初始化master节点时，指定的–pod-network-cidr地址段10.4.0.0/16不同
-# 所以需要修改calico配置文件，取消CALICO_IPV4POOL_CIDR变量和value前的注释，并将value值设置为与--pod-network-cidr指定地址段相同的值，即：10.4.0.0/16
-# 2、取消前面的注释，将value值改为 10.4.0.0/16
-- name: CALICO_IPV4POOL_CIDR
-  value: "10.4.0.0/16"
-```
-
-应用calico网络
-
-```bash
-kubectl apply -f calico.yaml
-```
-
-配置 kubectl 命令自动补全功能
-
-```bash
-# 1、安装 epel-release 和 bash-completion
-dnf install -y epel-release bash-completion
-
-# 2、配置 kubectl 命令自动补全
-source /usr/share/bash-completion/bash_completion
-source <(kubectl completion bash)
-echo "source <(kubectl completion bash)" >> ~/.bashrc
-```
-
-### ipvs
-
-配置 kube-proxy 开启 ipvs
-
-```bash
-# 1、编辑kube-proxy
-kubectl edit cm kube-proxy -n kube-system
-
-# 2、修改mode
-mode: ""
-# 修改为  mode: "ipvs"
-
-# 3、删除之前运行的资源类型为 pod 的 kube-proxy
-kubectl get pod -n kube-system |grep kube-proxy |awk '{system("kubectl delete pod "$1" -n kube-system")}'
-
-# 4、查看 kube-proxy 是否开启 ipvs
-ipvsadm -Ln
-```
-
-### nginx-ingress
-
-使用 helm 安装
-
-```bash
-helm upgrade --install ingress-nginx ingress-nginx \
-  --repo https://kubernetes.github.io/ingress-nginx \
-  --namespace ingress-nginx --create-namespace
-
-
-# for test
-kubectl create deployment demo --image=httpd --port=80
-kubectl expose deployment demo
-kubectl create ingress demo-localhost --class=nginx \
-  --rule="demo.localdev.me/*=demo:80"
-```
-
-安装 chart 后的提示
-
-```bash
-An example Ingress that makes use of the controller:
-  apiVersion: networking.k8s.io/v1
-  kind: Ingress
-  metadata:
-    name: example
-    namespace: foo
-  spec:
-    ingressClassName: nginx
-    rules:
-      - host: www.example.com
-        http:
-          paths:
-            - pathType: Prefix
-              backend:
-                service:
-                  name: exampleService
-                  port:
-                    number: 80
-              path: /
-    # This section is only required if TLS is to be enabled for the Ingress
-    tls:
-      - hosts:
-        - www.example.com
-        secretName: example-tls
-
-If TLS is enabled for the Ingress, a Secret containing the certificate and key must also be provided:
-
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    name: example-tls
-    namespace: foo
-  data:
-    tls.crt: <base64 encoded cert>
-    tls.key: <base64 encoded key>
-  type: kubernetes.io/tls
-```
-
-### 查看证书过期时间
-
-```bash
-# 查看证书时间
-kubeadm certs check-expiration
 ```
