@@ -67,7 +67,7 @@ yq -i '.data_volume = "/data/harbor-data"' harbor.yml
 修改完毕后，直接运行
 
 ```bash
-bash ./install.sh --with-notary --with-trivy --with-chartmuseum
+bash ./install.sh --with-trivy --with-chartmuseum
 ```
 
 并等待 Docker Compose 执行完毕
