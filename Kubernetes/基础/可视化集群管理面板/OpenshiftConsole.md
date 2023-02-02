@@ -73,7 +73,7 @@ metadata:
   labels:
     app: console
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: console
@@ -82,9 +82,11 @@ spec:
       labels:
         app: console
     spec:
-      # nodeSelector:
-      #   console: "true"
+      nodeSelector:
+        console: "true"
       serviceAccountName: console
+      tolerations:
+        - operator: "Exists"
       containers:
         - name: console-app
           image: 'quay.io/openshift/origin-console:4.13.0'
@@ -92,7 +94,7 @@ spec:
           - name: http
             containerPort: 9000
             protocol: TCP
-            hostPort: 9000
+            hostPort: 19000
           env:
             - name: BRIDGE_USER_AUTH
               value: disabled
