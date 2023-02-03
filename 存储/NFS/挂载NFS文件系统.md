@@ -1,9 +1,3 @@
-## 简介
-
-NFS 是 Network File System 的缩写，即网络文件系统。
-
-## 挂载 NFS 文件系统
-
 挂载文件系统时，可选择多种挂载选项，挂载选项使用半角逗号（,）分隔，说明如下：
 
 - rsize：定义数据块的大小，用于客户端与文件系统之间读取数据。建议值：1048576。
@@ -18,7 +12,7 @@ NFS 是 Network File System 的缩写，即网络文件系统。
 ```bash
 mount -t nfs \
  -o vers=3,nolock,proto=tcp,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport \
-  10.244.244.101:/ /mnt
+  10.244.244.201:/ /mnt
 ```
 
 使用 NFS v4 协议挂载文件系统：
@@ -26,11 +20,12 @@ mount -t nfs \
 ```bash
 mount -t nfs \
  -o vers=4,minorversion=0,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport \
-  10.244.244.101:/ /mnt
+  10.244.244.201:/ /mnt
 ```
 
 ```bash
 mount -t nfs \
  -o vers=3,nolock,noacl,proto=tcp,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport \
-  10.244.244.101:/ /mnt
+  10.244.244.201:/ /mnt
 ```
+
