@@ -1,4 +1,4 @@
-1. 直接创建 NFS 的 Volume
+## 直接创建 NFS 的 Volume
 
 直接创建 PV：
 
@@ -107,7 +107,7 @@ mountOptions:
 
 NFS CSI Driver 是 K8s 官方提供的 CSI 示例程序，只实现了 CSI 的最简功能
 
-要求已经有配置完成的 NFS 服务器
+这个插件驱动本身只提供了集群中的资源和 NFS 服务器之间的通信层，使用这个驱动之前需要 Kubernetes 集群 1.14 或更高版本和预先存在的 NFS 服务器。
 
 - Controller 由 CSI Plugin + csi-provisioner + liveness-probe 组成
 
@@ -120,3 +120,24 @@ NFS CSI Driver 是 K8s 官方提供的 CSI 示例程序，只实现了 CSI 的�
 不但可以像读取本地文件一样读取 NFS 中的文件，还可以享受内存加速效果。
 
 详情可参考 <https://github.com/fluid-cloudnative/fluid>
+
+## 总结
+
+从实际使用上讲使用 nfs 作为存储卷并不是一个好的方式，使用中会遇到千奇百怪的问题，kubernetes 官方也不太推荐生产使用 nfs 提供存储卷，但是实际上有时候无可奈何的要去用，建议数据重要的服务使用分布式存储如 ceph 或者通过云厂商提供的 csi 挂载云盘作为存储卷，再不行就使用 local pv。
+
+Nfs 作为存储卷的已知问题：
+
+- 不保证配置的存储。可以分配超过 NFS 共享的总大小。共享也可能没有足够的存储空间来实际容纳请求。
+- 未实施预配的存储限制。无论供应的大小如何，应用程序都可以扩展以使用所有可用存储。
+- 目前不支持任何形式的存储调整大小/扩展操作。您最终将处于错误状态：`Ignoring the PVC: didn't find a plugin capable of expanding the volume; waiting for an external controller to process this PVC.`
+
+- selfLink was empty 在 K8s 集群 v1.20 之前都存在，在 v1.20 之后被删除问题。
+- 还有可能引起 failed to obtain lock 和 input/output error 等问题，从而导致 Pod CrashLoopBackOff。此外，部分应用不兼容 NFS，例如 Prometheus 等。
+
+| 名称                                        | 优缺点                                                       |            |
+| ------------------------------------------- | ------------------------------------------------------------ | ---------- |
+| nfs-ganesha-server-and-external-provisioner | 提供 nfs 的 pod 出现问题时，pvc 无法使用                     | 不推荐使用 |
+| NFS Subdir External Provisioner             | 只支持配置一个 nfs server 端                                 | 推荐使用   |
+| NFS CSI Driver                              | 虽然功能上较简单，但是可以在存储类中配置 nfs server 端地址，较为灵活 | 推荐使用   |
+
+NFS CSI Driver 可提供 NFS 动态分配器，支持动态分配存储卷，分配和回收存储卷过程简便，可对接一个或者多个 NFS 服务端。

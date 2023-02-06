@@ -1,3 +1,11 @@
+## NFS 简介
+
+NFS 是 Network File System 的缩写，即网络文件系统。
+
+NFS 服务会经常用到，它用于在网络上共享存储。举例来说，假如有 3 台机器 A、B 和 C，它们需要访问同一个目录，且目录中都是图片。传统的做法是把这些图片分别放到 A、B、C 中，但若使用 NFS，只需要把图片放到 A 上，然后 A 共享给 B 和 C 即可。访问 B 和 C 时，是通过网络的方式去访问 A 上的那个目录的。
+
+<img src=".assets/ZTYjw6KickuDibLneVd3NBdNXpyTiaMhF6XNTLW5oZe4G8ZThSTZCoM9XWwpDGfCPOjoxbplTacPEBwPqMJwQBE0w.png" alt="img" style="zoom:50%;" />
+
 ## 服务端安装
 
 在节点 `10.244.244.201` 上来安装 NFS 服务，数据目录：`/data/nfs`
@@ -31,15 +39,25 @@ chmod -R 755 /data/nfs
 > vim /etc/exports
 
 /data/nfs  *(rw,sync,no_root_squash)
+# 此文件的配置格式为：
+# <输出目录> [客户端1 选项（访问权限,用户映射,其他）] [客户端2 选项（访问权限,用户映射,其他）]
 ```
 
 配置说明：
 
 - `/data/nfs`：是共享的数据目录
 - *：表示任何人都有权限连接，当然也可以是一个网段，一个 IP，也可以是域名
-- rw：读写的权限
-- sync：表示文件同时写入硬盘和内存
-- no_root_squash：当登录 NFS 主机使用共享目录的使用者是 root 时，其权限将被转换成为匿名使用者，通常它的 UID 与 GID，都会变成 nobody 身份
+
+第三部分：
+
+- **rw**：表示读/写。
+- **ro**：表示只读。
+- **sync**：同步模式，表示内存中的数据实时写入磁盘。
+- **async**：非同步模式，表示把内存中的数据定期写入磁盘。
+- **no_root_squash**：加上这个选项后，root 用户就会对共享的目录拥有至高的权限控制，就像是对本机的目录操作一样。但这样安全性降低。当登录 NFS 主机使用共享目录的使用者是 root 时，其权限将被转换成为匿名使用者，通常它的 UID 与 GID，都会变成 nobody 身份
+- **root_squash**：与no_root_squash选项对应，表示 root 用户对共享目录的权限不高，只有普通用户的权限，即限制了 root。
+- **all_squash**：表示不管使用 NFS 的用户是谁，其身份都会被限定为一个指定的普通用户身份。
+- **anonuid /anongid**：要和 root_squash 以及 all_squash 选项一同使用，用于指定使用 NFS 的用户被限定后的 uid 和 gid，但前提是本机的 /etc/passwd 中存在相应的 uid 和 gid。
 
 启动服务 nfs 需要向 rpc 注册，rpc 一旦重启了，注册的文件都会丢失，向他注册的服务都需要重启
 
