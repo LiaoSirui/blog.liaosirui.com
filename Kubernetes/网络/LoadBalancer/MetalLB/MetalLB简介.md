@@ -157,7 +157,11 @@ data:
 EOF
 ```
 
-创建 IP 地址池
+创建 IP 地址池，为 `LoadBalancer` 类型服务定义可分配的 IP 地址
+
+> 可以同时定义多个 `IPAddressPools` 资源。
+>
+> 可以使用 CIDR 定义地址, 也可以使用范围区间定义, 也可以定义 IPv4 和 IPv6 地址用于分配、
 
 ```yaml
 apiVersion: metallb.io/v1beta1
@@ -168,7 +172,11 @@ metadata:
 spec:
   addresses:
   - 10.244.244.100-10.244.244.200
----
+```
+
+下面的例子配置它使用 2 层模式:
+
+```yaml
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
@@ -178,6 +186,8 @@ spec:
   ipAddressPools:
   - first-pool
 ```
+
+
 
 ### 测试
 
