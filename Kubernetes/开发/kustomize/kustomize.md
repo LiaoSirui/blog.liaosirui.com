@@ -63,7 +63,7 @@ kubernetes 自 v1.14 之后也可以使用 `kubectl kustomize`的方式执行 ku
 
 官方：
 
-- API 参考地址：<文档地址：<https://kubectl.docs.kubernetes.io/zh/api-reference/kustomization/>>
+- API 参考文档地址：<https://kubectl.docs.kubernetes.io/zh/api-reference/kustomization/>
 
 常用的字段
 
