@@ -22,6 +22,8 @@ cert-manager 则可以解决上面的那些问题，实现证书的自动生成�
 
 cert-manager 也是一个 controller，部署起来后，会像其它 controller 一样，监听着资源的变化，然后执行相应的逻辑。
 
+cert-manager 将证书和证书颁发者作为资源类型添加到 Kubernetes 集群中，并简化了获取、更新和使用这些证书的过程。它可以从各种受支持的来源颁发证书，包括 Let’s Encrypt、HashiCorp Vault 和 Venafi 以及私有 PKI。它将确保证书有效且是最新的，并在到期前的配置时间尝试更新证书。
+
 它会监听的资源有如下三种，它们都属于分组 `certmanager.k8s.io`：
 
 - certificates
