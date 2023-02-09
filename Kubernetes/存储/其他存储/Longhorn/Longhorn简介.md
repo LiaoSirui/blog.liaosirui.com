@@ -15,6 +15,4 @@ Rancher 开源的一款 Kubernetes 的云原生分布式块存储方案 - Longho
 
 Longhorn 还带有独立的 UI，可以使用 Helm、kubectl 或 Rancher 应用程序目录进行安装。
 
-
-
 <https://www.qikqiak.com/k3s/storage/longhorn/>
