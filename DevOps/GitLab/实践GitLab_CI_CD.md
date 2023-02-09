@@ -1,0 +1,1 @@
+<https://todoit.tech/k8s/gitlab-ci/>

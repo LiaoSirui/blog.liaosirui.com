@@ -1,5 +1,7 @@
 ## MinIO 简介
 
+MinIO 是一个兼容 s3 标准的对象存储。
+
 MinIO 是在 GNU Affero 通用公共许可证 v3.0 下发布的高性能对象存储
 
 它与 Amazon S3 云存储服务 API 兼容

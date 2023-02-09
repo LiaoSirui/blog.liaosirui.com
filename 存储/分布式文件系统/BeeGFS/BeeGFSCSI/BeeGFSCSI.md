@@ -155,6 +155,5 @@ kubectl apply -k deploy/k8s/overlays/default
 
 查看部署后的 pod
 
-```bash
-```
+
 

@@ -18,6 +18,10 @@ parameters:
   volDirBasePath: k8s/test/dyn
   stripePattern/storagePoolID: "2"
   permissions/mode: "0644"
+  # stripePattern/chunkSize: 512k
+  # stripePattern/numTargets: "4"
+  # permissions/uid: "1000"
+  # permissions/gid: "1000"
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
 allowVolumeExpansion: false
