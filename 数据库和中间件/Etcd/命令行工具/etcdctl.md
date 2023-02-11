@@ -1,3 +1,10 @@
+## Etcdctl 简介
+
+官方：
+
+- GitHub 仓库：<https://github.com/etcd-io/etcd/tree/main/etcdctl>
+- 
+
 ## 连接 k8s 的 etcd
 
 可以使用如下的脚本进行 alias
@@ -16,7 +23,9 @@ export ETCDCTL_KEY=/etc/kubernetes/pki/etcd/server.key
 alias netcdctl='etcdctl --endpoints=${ETCDCTL_ENDPOINTS}'
 ```
 
-## endpoint
+## 子命令
+
+### endpoint
 
 - 查看集群状态
 
@@ -36,7 +45,7 @@ alias netcdctl='etcdctl --endpoints=${ETCDCTL_ENDPOINTS}'
 +------------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
 ```
 
-## member
+### member
 
 - 查看集群成员
 
@@ -54,5 +63,15 @@ etcdctl member list --write-out="table"
 | a513239cbbe4b01d | started | control-master004 | https://192.168.148.116:2380 | https://192.168.148.116:2379 |      false |
 | c6357ab2854c19c9 | started | control-master005 | https://192.168.148.117:2380 | https://192.168.148.117:2379 |      false |
 +------------------+---------+-------------------+------------------------------+------------------------------+------------+
+```
+
+### snapshot
+
+快照备份和从快照恢复
+
+```bash
+etcdctl snapshot save <backup-file-location>
+
+etcdctl snapshot restore  <backup-file-location>
 ```
 
