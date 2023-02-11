@@ -194,3 +194,7 @@ csi-rbdplugin-trxb4                                    3/3     Running     0    
 ```
 
 这里其实是实现了 RBD 和 CephFS 两种 CSI，用 DaemonSet 在每个节点上运行了一个包含 `Driver registra` 容器的 Pod，当然和节点相关的操作比如 Mount/Unmount 也是在这个 Pod 里面执行的，其他的比如 Provision、Attach 都是在另外的 `csi-rbdplugin-provisioner-xxx` Pod 中执行的。
+
+## 参考资料
+
+- <https://blog.gmem.cc/csi-study-note>
