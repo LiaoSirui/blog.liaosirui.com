@@ -1,11 +1,3 @@
-## 简介
-
-Artifactory 是一个成熟的商业版产品，支持HA，分布式部署，并且商业版本对于高并发的处理上会更有效率。Artifactory 在权限管理上做的颗粒度很细，可以满足对信息安全有严格要求的企业。在稳定性方面，经过了多家大公司的验证，以及 JFrog 在行业内的多年技术沉淀，是一款合格的商业级产品。
-
-JFrog 发布了社区版本的 JCR (JFrog Container Registry)，作为一款功能强大且丰富的 Docker 镜像中心，JCR 已经能够在 <https://jfrog.com/container-registry/> 进行免费下载和使用。
-
-官方简介页面：<https://www.jfrog.com/confluence/display/JFROG/JFrog+Container+Registry>
-
 ## 安装
 
 使用 Docker 安装的官方文档地址：<https://www.jfrog.com/confluence/display/JFROG/Installing+Artifactory#InstallingArtifactory-DockerInstallation>
