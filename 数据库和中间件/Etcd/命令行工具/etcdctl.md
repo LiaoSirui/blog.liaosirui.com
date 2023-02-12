@@ -3,24 +3,27 @@
 官方：
 
 - GitHub 仓库：<https://github.com/etcd-io/etcd/tree/main/etcdctl>
-- 
 
-## 连接 k8s 的 etcd
+## 安装 Etcdctl
 
-可以使用如下的脚本进行 alias
+同时安装了 etcdutl
 
 ```bash
-export HOST_1=https://192.168.148.116
-export HOST_2=https://192.168.148.117
-export HOST_3=https://192.168.148.115
-export ETCDCTL_ENDPOINTS=$HOST_1:2379,$HOST_2:2379,$HOST_3:2379
+export I_ETCDCTL_VERSION=v3.5.6
 
-export ETCDCTL_API=3
-export ETCDCTL_CACERT=/etc/kubernetes/pki/etcd/ca.crt
-export ETCDCTL_CERT=/etc/kubernetes/pki/etcd/server.crt
-export ETCDCTL_KEY=/etc/kubernetes/pki/etcd/server.key
+cd $(mktemp -d)
+curl -sL "https://github.com/etcd-io/etcd/releases/download/${I_ETCDCTL_VERSION}/etcd-${I_ETCDCTL_VERSION}-linux-amd64.tar.gz" -o etcd.tgz
+tar zxvf etcd.tgz -C .
+mkdir -p /usr/local/etcd
+mv "etcd-${I_ETCDCTL_VERSION}-linux-amd64" /usr/local/etcd
 
-alias netcdctl='etcdctl --endpoints=${ETCDCTL_ENDPOINTS}'
+update-alternatives --install /usr/bin/etcdutl etcdutl "/usr/local/etcd/etcd-${I_ETCDCTL_VERSION}-linux-amd64/etcdutl" 1
+alternatives --set etcdutl "/usr/local/etcd/etcd-${I_ETCDCTL_VERSION}-linux-amd64/etcdutl"
+etcdutl version
+
+update-alternatives --install /usr/bin/etcdctl etcdctl "/usr/local/etcd/etcd-${I_ETCDCTL_VERSION}-linux-amd64/etcdctl" 1
+alternatives --set etcdctl "/usr/local/etcd/etcd-${I_ETCDCTL_VERSION}-linux-amd64/etcdctl"
+etcdctl version
 ```
 
 ## 子命令
