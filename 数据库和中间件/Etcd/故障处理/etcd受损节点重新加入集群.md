@@ -32,7 +32,7 @@ chmod 0700 /data/etcd
 
 ```bash
 etcdctl member add \
-  k8s-03 \ # 节点名称
+  k8s-01 \ # 节点名称
   --peer-urls=https://172.31.243.178:2380 # 对端的 IP 和端口
 ```
 
