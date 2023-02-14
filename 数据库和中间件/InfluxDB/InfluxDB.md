@@ -1,0 +1,1 @@
+<https://jasper-zhang1.gitbooks.io/influxdb/content/Introduction/getting_start.html>
