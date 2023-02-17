@@ -145,5 +145,8 @@ spec:
       targetPort: 9000
 ```
 
+如果使用 NodePort
 
+```yaml
+```
 

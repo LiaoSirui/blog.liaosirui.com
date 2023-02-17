@@ -22,3 +22,7 @@ sysbench --test=fileio --threads=20 --file-total-size=1G --file-test-mode=rndrw 
 ## 官方 Benchmark
 
 官方文档：<https://www.beegfs.io/wiki/Benchmark>
+
+## IO500 测试
+
+参考：IO500 测试部分的内容
