@@ -1,8 +1,10 @@
 ## KubeVirt 简介
 
-Kubevirt 是 Redhat 开源一套以容器方式运行虚拟机的项目，通过 kubernetes 云原生来管理虚拟机生命周期。
+Kubevirt 是 Redhat 开源一套以容器方式运行虚拟机的项目，通过 kubernetes 云原生来管理虚拟机生命周期。KubeVirt 是一个 kubernetes 插件，在调度容器之余也可以调度传统的虚拟机。
 
-KubeVirt 是一个 kubernetes 插件，在调度容器之余也可以调度传统的虚拟机。它通过使用自定义资源（CRD）和其它 Kubernetes 功能来无缝扩展现有的集群，以提供一组可用于管理虚拟机的虚拟化的 API。
+它通过使用自定义资源（CRD）和其它 Kubernetes 功能来无缝扩展现有的集群，以提供一组可用于管理虚拟机的虚拟化的 API。CRD 形式将 VM 管理接口接入到 kubernetes，通过一个 podvirtd 方式，实现管理 pod 与以 lib 的 VM 接口，以作为容器通用的虚拟管理机，并使用与容器相同的资源管理、调度计划。
+
+<img src=".assets/architecture-simple.png" alt="img" style="zoom:20%;" />
 
 官方：
 
@@ -18,7 +20,9 @@ kubevirt 主要实现了下面几种资源，以实现对虚拟机的管理：
 
 - VirtualMachineInstance（VMI）
 
-类似于kubernetes Pod，是管理虚拟机的最小资源。一个VirtualMachineInstance对象即表示一台正在运行的虚拟机实例，包含一个虚拟机所需要的各种配置。
+类似于 kubernetes Pod，是管理虚拟机的最小资源。一个 VirtualMachineInstance 对象即表示一台正在运行的虚拟机实例，包含一个虚拟机所需要的各种配置。
+
+通常情况下用户不会直接创建 VMI 对象，而是创建更高层级的对象，即 VM 和 VMRS。
 
 - VirtualMachine（VM）
 
@@ -32,11 +36,73 @@ kubevirt 主要实现了下面几种资源，以实现对虚拟机的管理：
 
 Kubevirt 的整体架构：
 
-<img src=".assets/42ad1060adac496f8af2c55b4b3c1045.png" alt="img" style="zoom:150%;" />
+<img src=".assets/architecture.png" alt="img" style="zoom:20%;" />
 
- 简化版：
 
-<img src=".assets/439b8511f8ee4e16b8ecc253e4075108.png" alt="img"  />
+
+##### `virt-api`
+
+- kubevirt 是 CRD 形式管理 vm pod，virt-api 就是去所有虚拟化操作的入口，包括常规的 CRD 更新验证以及 vm 的 start、stop
+
+##### `virt-controlller`
+
+- virt-controller 会根据 VMI CRD，生成 virt-lancher pod，并维护 CRD 的状态
+
+##### `virt-handler`
+
+- `virt-handler` 会以 Daemonset 的状态部署在每个节点上，负责监控上每个虚拟机实例的状态变化，一旦检测到变化，会进行响应并确保相应的操作能够达到要求的状态。
+- `virt-handler` 保持集群级之间的同步规范，与 libvirt 的同步报告 libvirt 和集群的规范；调用以节点为中心的变化域 VMI 规范定义的网络状态和管理要求。
+
+##### `virt-launcher`
+
+- `virt-lanuncher pod` 一个 VMI，kubelet 只是负责运行状态，不会去关心 `virt-lanuncher pod` VMI 创建情况。
+- `virt-handler` 会根据 CRD 参数配置去通知 virt-lanuncher 去使用本地 libvirtd 实例来启动 VMI，virt-lanuncher 会通过 pid 去管理 VMI，如果 pod 生命周期结束，virt-lanuncher 也会去通知 VMI 去终止。
+- 然后再去启动一个 libvirtd，去启动 virt-lanuncher pod，通过 libvirtd 去管理 VM 的生命周期，不再是以前的机器那套，libvirtd 去管理多个 VM。
+
+##### `libvirtd`
+
+- `libvirtd` 每个 VMI pod 中都有一个 的实例。`virt-launcher` 使用 libvirtd 来管理 VMI 进程的生命周期。
+
+##### `virtctl`
+
+- virctl 是 kubevirt 自带控制类似 kubectl 命令，它是越过 virt-lancher pod 这层去直接管理 vm，可以完成 vm 的 start、stop、restart。
+
+## 虚拟机流程
+
+VM 的内部流程：
+
+1. K8S API 创建 VMI CRD 对象
+2. `virt-controller` 监听到 `VMI` 创建时间，会根据 VMI 配置生成 pod spec 文件，创建 `virt-launcher pods`
+3. `virt-controller` 发现 virt-launcher pod 创建完成后，更新 VMI CRD 状态
+4. `virt-handler` 监听到 VMI 状态变更，通信 `virt-launcher` 去创建虚拟机，并负责虚拟机生命周期管理
+
+```plain
+Client                     K8s API     VMI CRD  Virt Controller         VMI Handler
+-------------------------- ----------- ------- ----------------------- ----------
+
+                           listen <----------- WATCH /virtualmachines
+                           listen <----------------------------------- WATCH /virtualmachines
+                                                  |                       |
+POST /virtualmachines ---> validate               |                       |
+                           create ---> VMI ---> observe --------------> observe
+                             |          |         v                       v
+                           validate <--------- POST /pods              defineVMI
+                           create       |         |                       |
+                             |          |         |                       |
+                           schedPod ---------> observe                    |
+                             |          |         v                       |
+                           validate <--------- PUT /virtualmachines       |
+                           update ---> VMI ---------------------------> observe
+                             |          |         |                    launchVMI
+                             |          |         |                       |
+                             :          :         :                       :
+                             |          |         |                       |
+DELETE /virtualmachines -> validate     |         |                       |
+                           delete ----> * ---------------------------> observe
+                             |                    |                    shutdownVMI
+                             |                    |                       |
+                             :                    :                       :
+```
 
 ## 磁盘和卷
 
@@ -76,6 +142,16 @@ dnf install -y \
   bridge-utils
 ```
 
+查看 cpu 是否开启虚拟化
+
+```bash
+> lscpu | grep Virtualization
+Virtualization:                  AMD-V
+
+> lscpu | grep Virtualization
+Virtualization:                  VT-x
+```
+
 检查是否满足安装需求：
 
 ```bash
@@ -92,17 +168,35 @@ dnf install -y \
   QEMU: Checking for cgroup 'memory' controller support                      : PASS
   QEMU: Checking for cgroup 'devices' controller support                     : PASS
   QEMU: Checking for cgroup 'blkio' controller support                       : PASS
-  QEMU: Checking for device assignment IOMMU support                         : PASS
-  QEMU: Checking if IOMMU is enabled by kernel                               : PASS
+  QEMU: Checking for device assignment IOMMU support                         : WARN (No ACPI DMAR table found, IOMMU either disabled in BIOS or not supported by this hardware platform)
   QEMU: Checking for secure guest support                                    : WARN (Unknown if this platform has Secure Guest support)
+```
+
+查看内核模块是否加载了 `kvm`
+
+```bash
+> lsmod | grep kvm
+kvm_intel             385024  0
+kvm                  1105920  1 kvm_intel
+irqbypass              16384  1 kvm
+
+> lsmod | grep kvm
+kvm_amd               155648  0
+kvm                  1105920  1 kvm_amd
+irqbypass              16384  1 kvm
+ccp                   118784  1 kvm_amd
 ```
 
 处理：`No ACPI DMAR table found, IOMMU either disabled in BIOS or not supported by this hardware platform`
 
+需要先在 bios 上开启 intel iommu
+
+处理：`IOMMU appears to be disabled in kernel. Add intel_iommu=on to kernel cmdline arguments`
+
 ```bash
 vim /etc/default/grub
 # 添加：intel_iommu=on
-# GRUB_CMDLINE_LINUX="... quiet intel_iommu=on"
+# GRUB_CMDLINE_LINUX="... intel_iommu=on iommu=pt"
 
 # 重新生成 grub2 config 文件
 > grub2-mkconfig -o /boot/grub2/grub.cfg
@@ -111,7 +205,7 @@ vim /etc/default/grub
 > dmesg | grep -e DMAR | grep -i iommu
 ```
 
-
+`Unknown if this platform has Secure Guest support` 可以忽略
 
 ## 参考资料
 
@@ -124,3 +218,5 @@ vim /etc/default/grub
 - kubevirt（二）实现原理 https://mp.weixin.qq.com/s?__biz=MzAwMDQyOTcwOA==&mid=2247485425&idx=1&sn=0bd289c71671b19b1db1651a4b646882&chksm=9ae85c12ad9fd50451f3c53427e2818e3d71ecbacecd2d0828f7601f3e49503c752cf0c4218a&scene=178&cur_album_id=2573510573263667200#rd
 - kubevirt（三）迁移（migration）https://mp.weixin.qq.com/s/Wx7RSBlW23pVpHkvngkJMw
 - kubevirt（四）热插拔卷（hotplug volume）https://mp.weixin.qq.com/s/z5chVax1m-m3e2JBs9rdUA
+
+- <https://www.infvie.com/ops-notes/kubernetes-kubevirt-virtual-machine-management.html>

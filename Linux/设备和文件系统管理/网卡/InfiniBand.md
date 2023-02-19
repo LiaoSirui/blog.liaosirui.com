@@ -43,6 +43,17 @@ dnf install -y \
 	rdma-core
 ````
 
+如果没有内核模块，需要
+
+```bash
+# refer: http://elrepo.org/tiki/HomePage
+dnf install -y https://www.elrepo.org/elrepo-release-9.el9.elrepo.noarch.rpm
+
+dnf --disablerepo=\* --enablerepo=elrepo install -y kmod-mlx4
+
+echo "mlx4_ib" > /etc/modules-load.d/mlx4.conf
+```
+
 ## 配置 InfiniBand 子网管理器
 
 所有 InfiniBand 网络都必须运行子网管理器才能正常工作。即使两台机器没有使用交换机直接进行连接，也是如此。
