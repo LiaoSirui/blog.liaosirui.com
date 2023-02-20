@@ -409,7 +409,7 @@ sed -i 's|PDE_DATA(|pde_data(|g' /opt/beegfs/src/client/client_module_7/source/f
 其他修改处：
 
 ```bash
-> vim /opt/beegfs/src/client/client_module_7/source/Makefile +184
+> vim /opt/beegfs/src/client/client_module_7/source/Makefile +186
 
 diff --git a/client_module/source/Makefile b/client_module/source/Makefile
 index 375f647..d8f612c 100644
