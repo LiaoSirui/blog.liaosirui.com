@@ -87,10 +87,6 @@ EXPOSE 设置容器暴露的端口，可以指定一个或多个端口
 
 <https://www.likecs.com/show-305974031.html#sc=2076>
 
-
-
-
-
 ## 多阶段构建
 
 <https://docs.docker.com/build/building/multi-stage/>
