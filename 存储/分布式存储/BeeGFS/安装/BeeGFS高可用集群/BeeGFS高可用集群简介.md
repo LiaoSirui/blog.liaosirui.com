@@ -189,7 +189,7 @@ mkdir -p /data/lun_meta
 检查卷的 UUID，假设为 abcd-efgh-1234-5678
 
 ```bash
-lsblk -o +UUID 
+lsblk -o +UUID
 ```
 
 修改自动加载配置文件，添加：`UUID="abcd-efgh-1234-5678" /data/lun_meta xfs defaults,nofail 0 2`
@@ -491,6 +491,21 @@ BuddyGroupID   Node type Node
                secondary      202 @ beegfs-meta node202 [ID: 202]
 ```
 
+激活 metadata mirroring，需要重启所有的 meta service，参考：<https://www.beegfs.io/wiki/MDMirror#hn_59ca4f8bbb_2>
+
+```bash
+> beegfs-ctl --mirrormd
+NOTE:
+ To complete activating metadata mirroring, please remount any clients and
+ restart all metadata servers now.
+```
+
+重启 beegfs-meta 服务
+
+```bash
+systemctl restart beegfs-meta
+```
+
 自动创建存储 Group
 
 ```bash
@@ -509,21 +524,6 @@ BuddyGroupID Target type Target
 Mirror buddy group successfully set: groupID 1 -> target IDs 3011, 3021
 Mirror buddy group successfully set: groupID 2 -> target IDs 3031, 3012
 Mirror buddy group successfully set: groupID 3 -> target IDs 3022, 3032
-```
-
-激活 metadata mirroring，需要重启所有的 meta service，参考：<https://www.beegfs.io/wiki/MDMirror#hn_59ca4f8bbb_2>
-
-```bash
-> beegfs-ctl --mirrormd
-NOTE:
- To complete activating metadata mirroring, please remount any clients and
- restart all metadata servers now.
-```
-
-重启 beegfs-meta 服务
-
-```bash
-systemctl restart beegfs-meta
 ```
 
 > 如果想要设置自定义组 id，或者想要确保 Buddy Group 位于不同的故障域中 (例如，不同的机架)，那么手动定义镜像 Buddy Group 是非常有用的。使用 beegfs-ctl 工具手动定义镜像 Buddy Group。通过使用下面的命令，您可以创建一个 ID 为 100 的 Buddy Group，由目标 1 和目标 2 组成
@@ -663,7 +663,7 @@ Job state: Not started
 
 （1）模拟 Buddy Group 存储服务的 Failover
 
-首先模拟写入1GB数据
+首先模拟写入 1GB 数据
 
 ```bash
 > cd /mnt/beegfs/buddy-dir
