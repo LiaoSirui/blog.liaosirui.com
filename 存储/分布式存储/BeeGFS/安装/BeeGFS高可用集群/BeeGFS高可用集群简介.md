@@ -35,6 +35,8 @@ beegfs-ctl --listtargets --nodetype=meta --state
 
 只有在 BeeGFS 管理服务正在运行时，才能对 Buddy Group 进行故障转移。这意味着，如果具有 BeeGFS 管理服务的节点崩溃，则不会发生故障转移。因此，建议在不同的机器上运行 BeeGFS 管理服务。但是，不必为 BeeGFS 管理服务提供专用服务器。
 
+参考文档：<https://aws.amazon.com/cn/blogs/china/how-to-build-a-parallel-file-system-beegfs-on-aws-high-availability/>
+
 ## BeeGFS 高可用集群搭建
 
 部署架构图

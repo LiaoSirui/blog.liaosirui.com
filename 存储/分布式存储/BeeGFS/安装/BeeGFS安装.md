@@ -66,6 +66,8 @@ systemctl disable firewalld
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g'/etc/sysconfig/selinux
 ```
 
+参考文档：<https://aws.amazon.com/cn/blogs/china/how-to-build-beegfs-on-aws-system/>
+
 ## 初始化磁盘
 
 - Metadata 节点
