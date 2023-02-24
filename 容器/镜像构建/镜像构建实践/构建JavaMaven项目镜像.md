@@ -38,43 +38,29 @@ mvn archetype:generate \
 给项目添加一个声明使用内部仓库或者其他 Maven 代理仓库
 
 ```xml
-<project xmlns="http://maven.apache.org/POM/4.0.0"
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.liaosirui.demo</groupId>
-    <artifactId>maven-demo</artifactId>
-    <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>maven-demo Maven Webapp</name>
-    <url>http://maven.apache.org</url>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-    <!-- repositories and pluginRepositories here -->
-    <repositories>
-        <repository>
-            <id>nexus-aliyun</id>
-            <name>Nexus aliyun</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <!-- end repositories and pluginRepositories here -->
-    <build>
-        <finalName>maven-demo</finalName>
-    </build>
-</project>
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
+
+    <pluginGroups></pluginGroups>
+
+    <proxies></proxies>
+
+    <servers></servers>
+
+    <mirrors>
+        <mirror>
+            <id>aliyun</id>
+            <mirrorOf>central</mirrorOf>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </mirror>
+    </mirrors>
+
+    <profiles></profiles>
+
+</settings>
 
 ```
 
@@ -84,22 +70,25 @@ mvn archetype:generate \
 # First stage: complete build environment
 FROM maven:3.8.6-openjdk-8 AS builder
 
+WORKDIR /app
+
 # add pom.xml and source code
-# ADD settings.xml /etc/maven/settings.xml
-ADD ./pom.xml pom.xml
-ADD ./src src/
+COPY settings.xml /usr/share/maven/conf/settings.xml
+COPY ./pom.xml pom.xml
+COPY ./src src/
 
 # package jar
 RUN mvn clean package
 
 # Second stage: minimal runtime environment
-From openjdk:8-jre
+FROM openjdk:8-jre
 
-# copy jar from the first stage
-COPY --from=builder target/my-app-1.0-SNAPSHOT.jar my-app-1.0-SNAPSHOT.jar
+# copy war from the first stage
+COPY --from=builder /app/target /release
 
 EXPOSE 8080
 
 CMD ["java", "-jar", "my-app-1.0-SNAPSHOT.jar"]
+
 ```
 
