@@ -64,16 +64,33 @@ mvn archetype:generate \
 
 ```
 
+更加下 pom.xml
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    ...
+    <packaging>jar</packaging>
+    ...
+    <!-- <build>
+        <finalName>maven-demo</finalName>
+    </build> -->
+</project>
+
+```
+
 以 Java Maven 项目为例，在 Java Maven 项目中新建 Dockerfile 文件，并在 Dockerfile  文件添加以下内容。
 
 ```dockerfile
 # First stage: complete build environment
 FROM maven:3.8.6-openjdk-8 AS builder
 
+COPY settings.xml /usr/share/maven/conf/settings.xml
+
 WORKDIR /app
 
 # add pom.xml and source code
-COPY settings.xml /usr/share/maven/conf/settings.xml
 COPY ./pom.xml pom.xml
 COPY ./src src/
 
@@ -83,12 +100,14 @@ RUN mvn clean package
 # Second stage: minimal runtime environment
 FROM openjdk:8-jre
 
-# copy war from the first stage
-COPY --from=builder /app/target /release
+# copy jar from the first stage
+COPY --from=builder /app/target/*.jar /release
+
+WORKDIR /release
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "my-app-1.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "maven-demo-1.0-SNAPSHOT.jar"]
 
 ```
 
