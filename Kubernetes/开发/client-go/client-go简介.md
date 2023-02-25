@@ -1,3 +1,15 @@
+## client-go 简介
+
+client-go 是一个调用 kubernetes 集群资源对象 API 的客户端，即通过 client-go 实现对 kubernetes 集群中资源对象（包括 deployment、service、ingress、replicaSet、pod、namespace、node 等）的增删改查等操作
+
+大部分对 kubernetes 进行前置 API 封装的二次开发都通过 client-go 这个第三方包来实现
+
+官方：
+
+- GitHub 仓库：<https://github.com/kubernetes/client-go>
+
+## 源码目录结构
+
 源码目录结构及说明：
 
 | 源码目录     | 说明                                                         |
@@ -17,3 +29,7 @@
 
 
 <https://herbguo.gitbook.io/client-go/informer>
+
+https://www.huweihuang.com/kubernetes-notes/develop/client-go.html
+
+<https://www.backendcloud.cn/2022/11/24/client-go-1/>

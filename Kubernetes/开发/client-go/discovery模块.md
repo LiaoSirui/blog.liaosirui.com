@@ -171,4 +171,3 @@ func NewDiscoveryClientForConfigAndClient(c *restclient.Config, httpClient *http
 
 ```
 
-<https://www.backendcloud.cn/2022/11/24/client-go-1/>
