@@ -26,7 +26,7 @@ client-go 是一个调用 kubernetes 集群资源对象 API 的客户端，即�
 | `transport`  | 提供安全的 TCP 连接，支持 Http Stream，某些操作需要在客户端和容器之间传输二进制流，例如 exec、attach等操作<br />该功能由内部的 spdy 包提供支持 |
 | `util`       | 提供常用方法，例如 WorkQueue 工作队列、Certificate 证书管理  |
 
-
+## 参考资料
 
 <https://herbguo.gitbook.io/client-go/informer>
 
