@@ -161,9 +161,9 @@ dumped SSA to ./ssa.html
 ## 参考资料
 
 - <https://draveness.me/golang/docs/part1-prerequisite/ch01-prepare/golang-debug/>
-- <https://mp.weixin.qq.com/s/Evotvj5bOZab87Yh7ArP9A>
 - <https://qcrao91.gitbook.io/go/goroutine-tiao-du-qi>
 - <https://xiaomi-info.github.io/2019/11/13/golang-compiler-principle/>
 - <https://alanhou.org/xargin-golang-02/>
-
 - <https://golang.design/go-questions/>
+
+- <https://liuqh.icu/2023/01/28/go/bottom/2-string/>
