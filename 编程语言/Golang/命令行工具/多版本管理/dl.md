@@ -1,5 +1,7 @@
 ## 多版本管理简介
 
+官方文档：<https://go.dev/doc/manage-install>
+
 官方的 Go 多版本管理，也是升级 Go 的方式：
 
 ```bash
