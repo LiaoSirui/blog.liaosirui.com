@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="400" height="400" id="svg3956" sodipodi:version="0.32" inkscape:version="0.45.1" version="1.0" sodipodi:docbase="/home/cburnett/wikipedia/images/electronics" sodipodi:docname="MISD.svg" inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs id="defs3958">
+    <marker inkscape:stockid="TriangleInM" orient="auto" refY="0.0" refX="0.0" id="TriangleInM" style="overflow:visible">
+      <path id="path3231" d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z " style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none" transform="scale(-0.4)"/>
+    </marker>
+    <marker inkscape:stockid="TriangleOutM" orient="auto" refY="0.0" refX="0.0" id="TriangleOutM" style="overflow:visible">
+      <path id="path3240" d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z " style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none" transform="scale(0.4)"/>
+    </marker>
+  </defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" gridtolerance="10000" guidetolerance="10" objecttolerance="10" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="1.4142136" inkscape:cx="192.43892" inkscape:cy="194.3896" inkscape:document-units="px" inkscape:current-layer="layer1" width="400px" height="400px" showgrid="true" inkscape:grid-points="true" inkscape:window-width="923" inkscape:window-height="965" inkscape:window-x="0" inkscape:window-y="31"/>
+  <metadata id="metadata3961">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+    <rect style="opacity:1;fill:#ccccff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" id="rect3964" width="40" height="289.65909" x="20" y="90.340912"/>
+    <text xml:space="preserve" style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" x="-235.18903" y="48.556" id="text3966" sodipodi:linespacing="125%" transform="matrix(0,-1,1,0,0,0)"><tspan sodipodi:role="line" id="tspan3968" x="-235.18903" y="48.556" style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Century Schoolbook L">Data pool</tspan></text>
+    <rect style="opacity:1;fill:#ccffcc;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" id="rect3970" width="40" height="289.65909" x="20" y="-379.65909" transform="matrix(0,1,-1,0,0,0)"/>
+    <text xml:space="preserve" style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" x="235.0439" y="48.556007" id="text3972" sodipodi:linespacing="125%"><tspan sodipodi:role="line" id="tspan3974" x="235.0439" y="48.556007" style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Century Schoolbook L">Instruction pool</tspan></text>
+    <g id="g4023" transform="translate(-15,80.170456)">
+      <rect y="130" x="120" height="50" width="50" id="rect3976" style="fill:#ffcccc;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"/>
+      <text sodipodi:linespacing="125%" id="text3978" y="165.00781" x="144.84961" style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" xml:space="preserve"><tspan style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" y="165.00781" x="144.84961" id="tspan3980" sodipodi:role="line">PU</tspan></text>
+    </g>
+    <g id="g4193" transform="translate(135,80.170456)">
+      <rect y="130" x="120" height="50" width="50" id="rect4195" style="fill:#ffcccc;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"/>
+      <text sodipodi:linespacing="125%" id="text4197" y="165.00781" x="144.84961" style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" xml:space="preserve"><tspan style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Bitstream Vera Sans" y="165.00781" x="144.84961" id="tspan4199" sodipodi:role="line">PU</tspan></text>
+    </g>
+    <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 185.116,70.091301 L 185.116,234.96912" id="path4411"/>
+    <g id="g6024">
+      <path style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 165,234 L 165,236 L 185,236 L 185,234 L 165,234 z " id="path4419"/>
+      <path style="fill-rule:evenodd;stroke:#000000;stroke-width:0.4pt;marker-start:none" d="M 160.384,235 L 167.304,231 L 167.304,239 L 160.384,235 z " id="path6030"/>
+    </g>
+    <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 335,70.089583 L 335,234.96913" id="path4897"/>
+    <g id="g6040">
+      <path style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 315,234 L 315,236 L 335,236 L 335,234 L 315,234 z " id="path4905"/>
+      <path style="fill-rule:evenodd;stroke:#000000;stroke-width:0.4pt;marker-start:none" d="M 310.384,235 L 317.304,231 L 317.304,239 L 310.384,235 z " id="path6046"/>
+    </g>
+    <g id="g6016">
+      <path style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 64.6875,234.15625 L 64.6875,236.15625 L 93.625,236.15625 L 93.625,234.15625 L 64.6875,234.15625 z " id="path4926"/>
+      <path style="fill-rule:evenodd;stroke:#000000;stroke-width:0.4pt;marker-start:none" d="M 98.226817,235.17046 L 91.306817,239.17046 L 91.306817,231.17046 L 98.226817,235.17046 z " id="path6022"/>
+    </g>
+    <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 80.999997,196 L 217,196 L 217,236" id="path4970"/>
+    <g id="g6032">
+      <path style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.99999988;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 216,234.15625 L 216,236.15625 L 244.9375,236.15625 L 244.9375,234.15625 L 216,234.15625 z " id="path4972"/>
+      <path style="fill-rule:evenodd;stroke:#000000;stroke-width:0.4pt;marker-start:none" d="M 249.54,235.17046 L 242.62,239.17046 L 242.62,231.17046 L 249.54,235.17046 z " id="path6038"/>
+    </g>
+    <text xml:space="preserve" style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans" x="44.773438" y="47.842999" id="text4974" sodipodi:linespacing="125%"><tspan sodipodi:role="line" id="tspan4976" x="44.773438" y="47.842999" style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;writing-mode:lr-tb;text-anchor:middle;font-family:Century Schoolbook L">MISD</tspan></text>
+    <path style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" d="M 81,196 L 81,235" id="path5679"/>
+  </g>
+</svg>

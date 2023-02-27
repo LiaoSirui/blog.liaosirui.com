@@ -1,0 +1,75 @@
+## 费林分类法
+
+费林分类法（Flynn's Taxonomy），是一种高效能计算机的分类方式
+
+根据资讯流（information stream）可分成
+
+- 指令（Instruction）
+- 数据（Data）
+
+分成四种计算机类型：
+
+|            |        单一指令流         |         多指令流          |
+| :--------: | :-----------------------: | :-----------------------: |
+| 单一资料流 | 单指令流单数据流 （SISD） | 多指令流单数据流 （MISD） |
+|  多资料流  | 单指令流多数据流 （SIMD） | 多指令流多数据流 （MIMD） |
+
+![img](.assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/1293315-93485ebbb3a5f64a.png)
+
+## 四种计算机类型
+
+### SISD
+
+<img src=".assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/SISD.svg" alt="img" style="zoom: 67%;" />
+
+> "PU" 是指程序单元（processing unit）
+
+代表：
+
+- 标量处理器（Scalar Processor）
+
+标量处理器（Scalar Processor）是计算机处理器的类型之一。 标量处理器一次只处理一个数据，常见的数据类型有整型、浮点型等。
+
+### SIMD
+
+各处理器以异步的形式处理同一条指令
+
+<img src=".assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/SIMD.svg" alt="img" style="zoom:67%;" />
+
+代表：
+
+- 阵列处理机
+
+阵列处理器（Array Processor）又称为并行处理机、SIMD 计算机，其核心是一个由多个处理单元构成的阵列，用单一的控制部件来控制多个处理单元对各自的数据进行相同的运算和操作
+
+- 单指令多线程 SIMT
+
+SIMT 架构类似于 SIMD（单指令流多数据流）向量组织方法，共同之处是使用单指令来控制多个处理元素。一项主要差别在于 SIMD 向量组织方法会向软件公开  SIMD 宽度，而 SIMT 指令指定单一线程的执行和分支行为
+
+- 并行处理机（Data Parallelism）
+
+数据并行，不同的数据输入以并行方式运行同一个函数，它把一个任务分解成不连续的单元，因此，可以在单独的线程上并行处理，保证这个任务可以在可用的处理之间进行分配
+
+- 向量处理器（Vecotr Processor）
+
+向量处理器，又称数组处理器，是一种实现了直接操作一维数组（向量）指令集的中央处理器（CPU）
+
+### MISD
+
+<img src=".assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/MISD.svg" alt="img" style="zoom:67%;" />
+
+被证明是不可能的，至少是不实际的
+
+### MIMD
+
+<img src=".assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/MIMD.svg" alt="img" style="zoom:67%;" />
+
+代表：
+
+- MIMD
+
+各个进程在同一时间可以执行不同的指令
+
+- SPMD
+
+数据并行，多个进程执行相同的代码
