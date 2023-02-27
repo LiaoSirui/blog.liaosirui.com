@@ -14,7 +14,7 @@
 
 CRD 的相关概念：
 
-- CRD 是 `v1.7+` 新增的无需改变代码 就可以扩展 Kubernetes API 的机制，用来管理自定义对象。它实际上是ThirdPartyResources（TPR） 的升级版本，而 TPR 已经在 v1.8 中删除。
+- CRD 是 `v1.7+` 新增的无需改变代码 就可以扩展 Kubernetes API 的机制，用来管理自定义对象。它实际上是 ThirdPartyResources（TPR） 的升级版本，而 TPR 已经在 v1.8 中删除。
 - 从 Kubernetes 的用户角度来看，所有东西都叫资源 Resource，就是 Yaml 里的字段 Kind 的内容，例如 Service、Deployment 等。
 - 除了常见内置资源之外，Kubernetes 允许用户自定义资源 Custom Resource，而 CRD 表示自定义资源的定义。
 - 当你创建新的 CustomResourceDefinition（CRD）时，Kubernetes API 服务器会为你所指定的每个版本生成一个新的 RESTful 资源路径。

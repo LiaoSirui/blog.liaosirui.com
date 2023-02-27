@@ -12,6 +12,17 @@ Calico 是一种开源网络和网络安全解决方案，适用于容器，虚�
 curl https://docs.projectcalico.org/manifests/calico.yaml -O calico.yaml
 ```
 
+查看已部署 k8s 集群的子网段
+
+```bash
+> kubeadm config print init-defaults | grep Subnet
+  serviceSubnet: 10.96.0.0/12
+
+# 旧版本使用：kubeadm config view | grep Subnet
+```
+
+
+
 修改网段
 
 ```bash
@@ -33,6 +44,8 @@ kubectl apply -f calico.yaml
 ```
 
 ## IPIP 模式
+
+<https://system51.github.io/2020/05/27/using-calico/>
 
 ![img](.assets/436EF78A6A0877DE5732F186CE1406A9-20221219201641196.jpg)
 

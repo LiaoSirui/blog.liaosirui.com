@@ -29,31 +29,32 @@ $ autossh [-V] [-M port[:echo_port]] [-f] [SSH_OPTIONS]
 
 ### 命令使用参数
 
-| 编号 | 参数 | 含义说明                                                   |
-| :--- | :--- | :--------------------------------------------------------- |
-| 1    | `-M` | 用于有问题时就会自动重连；服务器 `echo` 机制使用的端口     |
-| 2    | `-D` | 本地机器动态的应用程序端口转发                             |
-| 3    | `-R` | 将远程主机(服务器)的某个端口转发到本地端指定机器的指定端口 |
-| 4    | `-L` | 将本地机(客户机)的某个端口转发到远端指定机器的指定端口     |
-| 5    | `-f` | 后台运行                                                   |
-| 6    | `-T` | 不占用 `shell` 终端                                        |
-| 7    | `-n` | 配合 `-f` 参数使用                                         |
-| 8    | `-N` | 不执行远程命令                                             |
-| 9    | `-q` | 安静模式运行；忽略提示和错误                               |
+| 编号 | 参数 | 含义说明                                                     |
+| :--- | :--- | :----------------------------------------------------------- |
+| 1    | `-M` | 用于有问题时就会自动重连；服务器 `echo` 机制使用的端口       |
+| 2    | `-D` | 本地机器动态的应用程序端口转发                               |
+| 3    | `-R` | 将远程主机（服务器）的某个端口转发到本地端指定机器的指定端口 |
+| 4    | `-L` | 将本地机（客户机）的某个端口转发到远端指定机器的指定端口     |
+| 5    | `-f` | 后台运行                                                     |
+| 6    | `-T` | 不占用 `shell` 终端                                          |
+| 7    | `-n` | 配合 `-f` 参数使用                                           |
+| 8    | `-N` | 不执行远程命令                                               |
+| 9    | `-q` | 安静模式运行；忽略提示和错误                                 |
 
 ### 命令使用演示
 
 ```bash
-# 本地端口绑定(在host1服务器上面运行)
-# 将所有发送到本机的8527端口的所有数据转发到远程主机的8000端口
-$ ssh -vv -N -D localhost:8527 root@host2 -p 8000
+# 本地端口绑定 (在 host1 服务器上面运行)
+# 将所有发送到本机的 31701 端口的所有数据转发到远程主机的 31701 端口
+sh -L 0.0.0.0:31701:localhost:31701 root@39.104.58.112 -f -N -o ServerAliveInterval=30
 ```
 
 使用 autossh 为如下命令：
 
 ```bash
-# 主要是为了更新安全的运行ssh服务
-$ autossh -M 5678 -vv -N -D localhost:8527 root@host2 -p 8000
+# 主要是为了更新安全的运行 ssh 服务
+
+autossh -M 5678 -L 0.0.0.0:31701:localhost:31701 root@39.104.58.112 -f -N -o ServerAliveInterval=30
 ```
 
 ## 使用示例
@@ -100,28 +101,28 @@ $ autossh -M 5678 -vv -D 1080 root@host2
 配置很简单，只需要创建一个如下服务启动配置文件，即可。
 
 ```plain
-# 配置文件地址
 # /etc/systemd/system/remote-autossh.service
 [Unit]
 Description=AutoSSH service for remote tunnel
+Wants=network-online.target
 After=network-online.target
-
+ 
 [Service]
-Type=forking
-PIDFile=/var/run/remote-autossh.pid
+Type=simple
+Environment="AUTOSSH_GATETIME=0"
 User=root
-ExecStartPre=/usr/bin/rm -f /var/run/remote-autossh.pid
-ExecStart=/usr/bin/autossh -M 15678 -CNR 0.0.0.0:11024:127.0.0.1:11024 root@10.24.15.81
+Group=root
+WorkingDirectory=/root
+ExecStart=/usr/bin/autossh -M 0 -p <port_a> -NR <virtual_port>:localhost:<port_b> <user_a>@<host_a>
 KillSignal=SIGQUIT
 TimeoutStopSec=5
 KillMode=process
 
 [Install]
 WantedBy=multi-user.target
-
 ```
 
-## 编写启停脚本
+## 编写手动启停脚本
 
 ```bash
 #!/bin/bash
