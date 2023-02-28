@@ -1,5 +1,5 @@
 <div align="center">
-<center> <img src=".assets/logo.jpeg" style="zoom: 20%;" />  </center>
+<img src=".assets/logo.jpeg" style="zoom: 20%;" />
 <h2 align="center"> 廖思睿的个人博客 </h2>
 <p align="center">
 欢迎访问我的博客站点！
