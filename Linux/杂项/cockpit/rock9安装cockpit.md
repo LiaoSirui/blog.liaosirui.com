@@ -30,4 +30,4 @@ firewall-cmd --reload
 
 从 Web 界面访问 <https://10.244.244.201:9090>
 
-![image-20230213021611895](.assets/image-20230213021611895.png)
+![image-20230213021611895.png](.assets/image-20230213021611895.png)
