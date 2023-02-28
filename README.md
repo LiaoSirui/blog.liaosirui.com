@@ -1,5 +1,5 @@
 <div align="center">
-<h1 align="center"> blog-docs </h1>
+<h1 align="center"><img src=".assets/logo.jpeg" alt="img" style="zoom: 25%;" /> 博客 </h1>
 <p align="center">
 博客文档仓库 - 欢迎访问我的博客站点！
 </p>
@@ -21,9 +21,9 @@
 
 在线阅读博客地址：<https://blog.liaosirui.com/>
 
-## [About me](https://www.liaosirui.com)
+## About me
 
-<div align="center"><img src=".assets/logo.png" alt="img" style="zoom: 33%;" /></div>
+欢迎访问我的个人主页：<https://www.liaosirui.com>
 
 ## Star History
 
