@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Maintainer-cyril@liaosirui.com-blue.svg">
   <img src="https://img.shields.io/badge/Language-Markdown-green.svg">
-  <img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat">
+  <img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat">
   <br />
   <img src="https://img.shields.io/github/stars/LiaoSirui/blog-docs.svg?style=social&label=Star">
   <img src="https://img.shields.io/github/forks/LiaoSirui/blog-docs.svg?style=social&label=Fork">
