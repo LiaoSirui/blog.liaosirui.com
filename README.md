@@ -18,14 +18,14 @@
 
 如果喜欢或对你有所帮助，欢迎 Star，对作者是一种鼓励和推进 😀
 
-## 在线阅读
+### 在线阅读
 
 在线阅读博客地址：<https://blog.liaosirui.com/>
 
-## About me
+### About me
 
 欢迎访问我的个人主页：<https://www.liaosirui.com>
 
-## Star History
+### Star History
 
 <div align="center"><img src="https://api.star-history.com/svg?repos=LiaoSirui/blog-docs&type=Date" alt="img" style="zoom: 67%;" /></div>
