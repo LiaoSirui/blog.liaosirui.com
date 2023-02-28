@@ -1,7 +1,8 @@
 <div align="center">
-<h1 align="center"><img src=".assets/logo.jpeg" alt="img" style="zoom: 25%;" /> 博客 </h1>
+<center> <img src=".assets/logo.jpeg" alt="img" style="zoom: 25%;" />  </center>
+<h1 align="center"> 廖思睿的个人博客 </h1>
 <p align="center">
-博客文档仓库 - 欢迎访问我的博客站点！
+欢迎访问我的博客站点！
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/Maintainer-cyril@liaosirui.com-blue.svg">
