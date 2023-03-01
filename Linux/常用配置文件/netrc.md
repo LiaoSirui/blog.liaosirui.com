@@ -21,7 +21,7 @@ default login <username> password <passwd>
 
 default 行匹配所有主机
 
-除了上面的形式，netrc文件还支持另外两个设置：
+除了上面的形式，netrc 文件还支持另外两个设置：
 
 - `account`：用于指定额外的一个用户密码
 - `macdef`：用于定义宏
