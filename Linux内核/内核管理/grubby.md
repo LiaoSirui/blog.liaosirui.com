@@ -72,3 +72,25 @@ grubby --default-kernel
 grubby --remove-kernel=/boot/vmlinuz-4.18.0-348.el8.x86_64
 ```
 
+删除未使用的内核
+
+```bash
+dnf remove --oldinstallonly --setopt installonly_limit=2 kernel
+```
+
+
+
+添加/删除内核启动参数：
+
+```bash
+# 对所有的内核都删除某个参数  
+grubby --update-kernel=ALL --remove-args=intel_iommu=on
+
+# 对所有的内核都添加某个参数  
+grubby --update-kernel=ALL --args=intel_iommu=on
+
+# 对某个的内核添加启动参数  
+grubby --update-kernel=/boot/vmlinuz-5.14.0-162.12.1.el9_1.0.2.x86_64 --args=intel_iommu=on
+
+```
+
