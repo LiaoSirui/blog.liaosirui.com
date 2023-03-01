@@ -11,6 +11,7 @@
   <br />
   <img src="https://img.shields.io/github/stars/LiaoSirui/blog-docs.svg?style=social&label=Star">
   <img src="https://img.shields.io/github/forks/LiaoSirui/blog-docs.svg?style=social&label=Fork">
+  <img src="https://img.shields.io/github/forks/LiaoSirui/blog-docs.svg?style=social&label=Watch">
 </p>
 </div>
 
