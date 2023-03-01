@@ -17,7 +17,7 @@ read -r -p "please put username:" SSH_USERNAME
 read -r -p "please put password:" SSH_PASSWORD
 
 /usr/bin/expect <<-__END__
-set timeout 3
+set timeout 2000
 spawn ssh -l "${SSH_USERNAME}" "${SSH_IP}"
 expect {
     "yes/no" {send "yes\r";exp_continue}

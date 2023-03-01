@@ -1,0 +1,4 @@
+```
+StrictHostKeyChecking no
+```
+
