@@ -1,3 +1,13 @@
+## bpftrace 简介
+
+bpftrace 是一个基于 Linux eBPF 的高级编程语言
+
+语言的设计是基于 awk 和 C，以及之前的一些 tracer 例如 DTrace 和 SystemTap
+
+bpftrace 使用了 LLVM 作为后端，来编译 compile 脚本为 eBPF 字节码，利用 BCC 作为库和 Linux eBPF 子系统、已有的监测功能、eBPF 附着点交互
+
+## 入门程序
+
 C++ 写一段 hello world 程序
 
 ```cpp

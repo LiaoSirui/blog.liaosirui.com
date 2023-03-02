@@ -1,3 +1,19 @@
+## BCC 简介
+
+BCC: Toolkit and library for efficient BPF-based kernel tracing
+
+BCC 是一个基于 eBPF 的高效跟踪检测内核、运行程序的工具，并且包含了须有有用的命令行工具和示例程序
+
+BCC减轻了使用 C 语言编写 eBPF 程序的难度，它包含了一个 LLVM 之上的包裹层，前端使用 Python 和 Lua
+
+它也提供了一个高层的库可以直接整合进应用。它适用于许多任务，包括性能分析和网络流量控制
+
+BCC给出的常见工具：
+
+![img](.assets/BCC%E7%AE%80%E4%BB%8B/bcc_tracing_tools_2019.20c5cdb8.png)
+
+
+
 ## 入门示例
 
 ### 开发环境准备
