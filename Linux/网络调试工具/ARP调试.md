@@ -1,10 +1,53 @@
+## arp
+
+https://blog.csdn.net/u012206617/article/details/119115346
+
+如果是暂时性 arp 欺骗攻击至此即可，如果网络中常有此问题，继续以下：
+
+```bash
+# 如下命令建立 /ect/ip-mac 文件
+echo '网关IP地址 网关MAC地址' > /etc/ip-mac
+ 
+# 通过下面的命令查看文件是否写的正确
+more /etc/ip-mac
+ 
+# 加载静态绑定 arp 记录
+arp -f /etc/ip-mac 
+```
+
+例如
+
+```bash
+# /etc/ip-mac 
+10.244.244.1 00:e2:69:59:b8:82
+
+```
+
+
+
+如果想开机自动绑定
+
+```bash
+echo 'arp -f /ect/ip-mac' >> /etc/rc.d/rc.local
+```
+
+https://cloud.tencent.com/developer/article/1850460
+
+## arping
+
+https://commandnotfound.cn/linux/1/112/arping-%E5%91%BD%E4%BB%A4
+
+arping 命令是用于发送 arp 请求到一个相邻主机的工具，arping 使用 arp 数据包，通过 ping 命令检查设备上的硬件地址。能够测试一个 `ip` 地址是否是在网络上已经被使用，并能够获取更多设备信息。功能类似于 [ping](https://commandnotfound.cn/linux/1/323/ping-命令)。
+
+
+
 https://commandnotfound.cn/linux/1/113/arptables-%E5%91%BD%E4%BB%A4
 
-## 简介
+## arptables
 
-Arptables 命令 用来设置、维护和检查Linux内核中的arp包过滤规则表。
+arptables 命令用来设置、维护和检查 Linux 内核中的 arp 包过滤规则表
 
-## 安装
+安装
 
 ```bash
 root at devmaster1 in /etc
@@ -30,15 +73,15 @@ Nothing to do.
 Complete!
 ```
 
-## 使用
+使用
 
-### arptables 命令语法
+arptables 命令语法
 
 ```
 arptables(选项)
 ```
 
-### arptables 命令选项
+arptables 命令选项
 
 
 ```
@@ -56,3 +99,10 @@ arptables(选项)
 -s：指定要匹配ARP包的源ip地址；
 -d：指定要匹配ARP包的目的IP地址
 ```
+
+## arpwatch
+
+https://commandnotfound.cn/linux/1/114/arpwatch-%E5%91%BD%E4%BB%A4
+
+arpwatch 命令用来监听网络上 arp 的记录
+
