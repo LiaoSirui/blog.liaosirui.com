@@ -207,13 +207,4 @@ beegfs-ctl --setpattern --pattern={pattern_type} --chunksize={chunk_size} --numt
 
 如使用网卡 bond0 作为 beegfs 集群通讯使用网卡，`echo bond0 > /etc/beegfs/tcp-only-interfaces.conf`
 
-添加 `connInterfacesFile = /etc/beegfs/tcp-only-interfaces.conf` 配置到所有 beegfs 服务配置中
-
-### 常用命令
-
-- 查看集群服务连接情况：`beegfs-net`
-- 查看集群服务详细信息：`beegfs-ctl --listnodes --nodetype={node_type} --details` 注：{node_type} 为 beegfs 集群节点类型，可选 mgmt、meta、storage、client
-- 查看集群服务状态：`beegfs-ctl --listtargets --nodetype={node_type} --state` 注：{node_type} 为 beegfs 集群节点类型，可选 meta、storage
-- 查看集群存储池状态：`beegfs-df`
-- 删除集群角色：`beegfs-ctl --removenode --nodetype={node_type} {node_id}` 注：{node_id} 可通过 beegfs-net 查看 ID 值。删除集群角色不会自动迁移对应数据到其他节点，需谨慎使用！！如需迁移数据后删除，参考官方手册：<https://www.beegfs.io/wiki/FAQ#migrate>
-- 查看集群目录属性信息：`beegfs-ctl --getentryinfo {mount_path}` 注：{mount-path} 为 beegfs 集群挂载路径，当前有 RAID0 和 Buddy Mirror 两种模式
+添加 `connInterfacesFile = /etc/beegfs/tcp-only-interfaces.conf` 配置到所有 beegfs 服务配置
