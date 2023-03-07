@@ -24,16 +24,6 @@ virt-builder debian-11 \
     --run-command "echo 'iface eth0 inet dhcp' >> /etc/network/interfaces"
 ```
 
-配置一个 centos7 的镜像：
-
-``` bash
-```
-
-配置一个 rocky9 的镜像：
-
-```bash
-```
-
 Runner 配置如下：
 
 ```toml
