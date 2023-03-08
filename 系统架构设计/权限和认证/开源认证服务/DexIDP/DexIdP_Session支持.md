@@ -3,3 +3,10 @@
 <https://github.com/dexidp/dex/issues/32>
 
 <https://github.com/dexidp/dex/pull/1574/files#diff-b877a4fe9a6210f40c1a5fbcf4c6dd366856b31ec0661975dcf60915cf3985d1>
+
+<https://github.com/dexidp/dex/issues/963>
+
+<https://github.com/dexidp/dex/issues/1697>
+
+<https://github.com/dexidp/dex/issues/1677>
+
