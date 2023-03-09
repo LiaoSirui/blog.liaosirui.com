@@ -1,1 +1,0 @@
-https://cizixs.com/2017/08/29/linux-namespace/
