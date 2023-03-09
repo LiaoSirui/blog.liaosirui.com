@@ -117,5 +117,7 @@ grubby --update-kernel=ALL --args=selinux=0
 
 grubby --update-kernel=ALL --args="console=ttyS0,115200n8"
 grubby --update-kernel=ALL --args=serial
+
+grubby --update-kernel=ALL --args=ipv6.disable=1
 ```
 

@@ -154,7 +154,7 @@ persistence:
   enabled: true
 ## 存储数据大小配置
 volumeClaimTemplate:
-  storageClassName: csi-local-bfs-path
+  storageClassName: csi-beegfs-hdd
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
@@ -244,7 +244,7 @@ persistence:
   enabled: true
 ## 存储数据大小配置
 volumeClaimTemplate:
-  storageClassName: csi-local-bfs-path
+  storageClassName: csi-beegfs-hdd
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
@@ -1187,7 +1187,7 @@ logstashPipeline:
 
 volumeClaimTemplate:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: csi-local-bfs-path
+  storageClassName: csi-beegfs-hdd
   resources:
     requests:
       storage: 1Gi
