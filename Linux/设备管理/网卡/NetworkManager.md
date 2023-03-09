@@ -1,55 +1,66 @@
-列出当前活动的以太网卡
+图形工具
+
+- nm-connection-editor
+
+字符工具
+
+-  nmtui
+
+- nmtui-connect
+
+- nmtui-edit
+
+- nmtui-hostname
+
+## nmcli
+
+`nmcli` 命令是 `NetworkManager client` 网络管理客户端
+
+使用 `nmcli` 命令做的那些更改都将永久保存在文件  `/etc/sysconfig/network-scripts/ifcfg-enp0s3` 
+
+### connection
 
 ```bash
-> nmcli connection
-
-NAME             UUID                                  TYPE      DEVICE
-eth0             0ac14f31-aefe-3540-be09-32ece613f1d0  ethernet  eth0
-br-81a2d4f77acf  d691fd00-dad0-4dfd-ae93-ae6461164bf5  bridge    br-81a2d4f77acf
-docker0          45fb9025-88be-4628-8dde-85daf487a485  bridge    docker0
+nmcli con show 					     # 查看网卡列表和网卡 uuid
+nmcli con show eth0          # 显示指定一个网络连接配置
+nmcli con show -active       # 显示活动的连接
+nmcli con add			           # 添加一个网卡配置文件
+nmcli con mod                # 修改网卡配置
+nmcli con delete			       # 删除一个网卡配置文件
+nmcli con down <interface>   # 关闭指定接口
+nmcli con up <interface>     # 打开指定接口
+nmcli con reload             # 重新加载网卡配置文件
+nmcli con 				           # 检查设备的连接情况
 ```
 
-## 配置
+常见的参数：
 
-分配静态 IP
+| 参数                 | 解释                                           | 简写 |
+| -------------------- | ---------------------------------------------- | ---- |
+| `con-name`           | 连接名                                         |      |
+| `ifname`             | 网络接口名                                     |      |
+| `type`               | 一般就是 ethernet                              |      |
+| `ipv4.address`       | IP 地址 / 掩码 形式                            | ip4  |
+| `ipv4.gateway`       | 网关                                           | gw4  |
+| `ipv4.dns`           | DNS 服务器                                     |      |
+| `autoconnect yes`    | 对应配置文件中的 `ONBOOT=yes`，默认为 yes      |      |
+| `autoconnect no`     | 对应配置文件中的 `ONBOOT=no`                   |      |
+| `ipv4.method auto`   | 对应配置文件中的 `BOOTPROTO=dhcp`，默认为 auto |      |
+| `ipv4.method manual` | 对应配置文件中的 `BOOTPROTO=none`，表示静态IP  |      |
 
-```bash
-nmcli connection modify <interface_name> ipv4.address <ip/prefix>
+### device
+
+```
+nmcli dev status             # 显示设备状态
+nmcli dev show eno16777736   # 显示指定接口属性
+nmcli dev show               # 显示全部接口属性
+nmcli con up static          # 启用名为 static连 接配置
+nmcli con up default         # 启用 default 连接配置 
+nmcli c reload               # 重新读取配置
+nmcli con add help           # 查看帮助
 ```
 
-为了简化语句，在 `nmcli` 命令中，我们通常用 `con` 关键字替换 `connection`，并用 `mod` 关键字替换 `modify`。
-
-将 IPv4 地址 (192.168.1.4) 分配给 `enp0s3` 网卡上
-
-```bash
-nmcli con mod enp0s3 ipv4.addresses 192.168.1.4/24
-```
-
-使用下面的 `nmcli` 命令设置网关
-
-```bash
-nmcli con mod enp0s3 ipv4.gateway 192.168.1.1
-```
-
-设置手动配置（从 dhcp 到 static）
-
-```bash
-nmcli con mod enp0s3 ipv4.method manual
-```
-
-设置 DNS 值为 “8.8.8.8”
-
-```bash
- nmcli con mod enp0s3 ipv4.dns "8.8.8.8"
-```
-
-要保存上述更改并重新加载，请执行如下 `nmcli` 命令
-
-```bash
- nmcli con up enp0s3
-```
-
-以上命令显示网卡 `enp0s3` 已成功配置。使用 `nmcli` 命令做的那些更改都将永久保存在文件  `/etc/sysconfig/network-scripts/ifcfg-enp0s3` 里。
+### 常见故障处理
 
 关闭 dns 自动配置
 
@@ -58,3 +69,20 @@ nmcli connection modify eth0 ipv4.ignore-auto-dns yes
 
 nmcli device modify eth0 ipv4.ignore-auto-dns yes
 ```
+
+桥接配置
+```bash
+# 添加网桥和网卡
+mcli connection add type bridge con-name br1 ifname br1
+nmcli connection modify br1 \
+  ipv4.addresses 192.168.220.222/24 \
+  ipv4.gateway 192.168.220.2 \
+  ipv4.method manual
+nmcli connection add type bridge-slave con-name br1-port1 ifname eth0 master br1
+nmcli connection up br1-port1
+
+# 删除网桥和网卡
+brctl delif <bridge> <device>
+brctl delbr <bridge>
+```
+
