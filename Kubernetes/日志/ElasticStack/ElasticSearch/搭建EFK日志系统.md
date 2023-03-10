@@ -154,7 +154,7 @@ persistence:
   enabled: true
 ## 存储数据大小配置
 volumeClaimTemplate:
-  storageClassName: csi-beegfs-hdd
+  storageClassName: csi-local-bfs-path
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
@@ -201,8 +201,8 @@ extraEnvs:
 ## - hard：只有当有足够的节点时 Pod 才会被调度，并且它们永远不会出现在同一个节点上
 ## - soft：尽最大努力调度
 antiAffinity: "hard"
-# tolerations:
-#   - operator: "Exists" ##容忍全部污点
+tolerations:
+  - operator: "Exists" ##容忍全部污点
 
 ```
 
@@ -244,7 +244,7 @@ persistence:
   enabled: true
 ## 存储数据大小配置
 volumeClaimTemplate:
-  storageClassName: csi-beegfs-hdd
+  storageClassName: csi-local-bfs-path
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
@@ -290,8 +290,8 @@ extraEnvs:
 ## - soft：尽最大努力调度
 antiAffinity: "hard"
 ## 容忍配置
-# tolerations:
-#   - operator: "Exists" ##容忍全部污点
+tolerations:
+  - operator: "Exists" ##容忍全部污点
 
 ```
 
@@ -1076,7 +1076,7 @@ docker buildx build  \
 	--push \
 	--platform linux/amd64 \
 	--progress plain \
-	--tag docker-registry.local.liaosirui.com:5000/test/fluentd-kafka:v0.17.5 \
+	--tag harbor.local.liaosirui.com:5000/test/fluentd-kafka:v0.17.5 \
 	--file ./Dockerfile \
 	.
 ```
@@ -1131,7 +1131,7 @@ data:
 
 ```yaml
 # fluentd-daemonset.yaml
-image: docker-registry.local.liaosirui.com:5000/test/fluentd-kafka:v0.17.5
+image: harbor.local.liaosirui.com:5000/test/fluentd-kafka:v0.17.5
 
 ```
 
@@ -1187,7 +1187,7 @@ logstashPipeline:
 
 volumeClaimTemplate:
   accessModes: ["ReadWriteOnce"]
-  storageClassName: csi-beegfs-hdd
+  storageClassName: csi-local-bfs-path
   resources:
     requests:
       storage: 1Gi
