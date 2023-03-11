@@ -18,3 +18,7 @@ Dex 通过 `Connector` 充当其他身份提供者的门户
 可以把 Dex 当作一个轻量级的认证的代理入口（portal），应用 APP 只需要通过与 Dex 交互，由 Dex 负责与后端的上游认证服务器交互，从而屏蔽了后端认证服务器的协议差异
 
 支持的 Connector 列表详见：<https://dexidp.io/docs/connectors/>
+
+
+
+<https://aws.amazon.com/cn/blogs/china/using-dex-and-dex-k8s-authenticator-to-authenticate-amazon-eks/>

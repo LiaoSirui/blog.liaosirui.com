@@ -156,7 +156,7 @@ workloadspreads.apps.kruise.io               2023-03-10T12:50:41Z
 
 提供了如下 CRD：
 
-（1）Typical Workloads
+（1）[TypicalWorkloads](Kruise控制器/TypicalWorkloads.md)
 
 - `CloneSet` 
 

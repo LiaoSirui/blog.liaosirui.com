@@ -362,7 +362,7 @@ NAME   DESIRED   CURRENT   UPDATED   READY   AGE
 web    5         5         5         1       32s
 ```
 
-该应用下有 5 个 Pod，假设应用能容忍 3 个副本不可用，当我们把 StatefulSet 里的 Pod 升级版本的时候，可以通过以下步骤来做：
+该应用下有 5 个 Pod，假设应用能容忍 3 个副本不可用，当把 StatefulSet 里的 Pod 升级版本的时候，可以通过以下步骤来做：
 
 - 设置 maxUnavailable=3
 - (可选) 如果需要灰度升级，设置 partition=4，Partition 默认的意思是 order 大于等于这个数值的 Pod 才会更新，在这里就只会更新 P4，即使我们设置了 maxUnavailable=3。
@@ -372,3 +372,4 @@ web    5         5         5         1       32s
 比如这里把上面应用的镜像版本进行修改，更新后查看 Pod 状态，可以看到有3个 Pod 并行升级的：
 
 ## Advanced DaemonSet
+
