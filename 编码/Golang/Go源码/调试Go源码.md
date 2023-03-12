@@ -167,3 +167,5 @@ dumped SSA to ./ssa.html
 - <https://golang.design/go-questions/>
 
 - <https://liuqh.icu/2023/01/28/go/bottom/2-string/>
+
+- <https://geektutu.com/post/hpg-concurrency-control.html>

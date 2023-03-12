@@ -51,6 +51,37 @@ type Equip struct{ /* 一些字段 */ }
 ch2 := make(chan *Equip)             // 创建 Equip 指针类型的通道, 可以存放 *Equip
 ```
 
+完整的例子：
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	// 1. 声明一个管道
+	var mych chan int
+	// 2. 初始化一个管道
+	mych = make(chan int, 3)
+	// 3. 查看管道的长度和容量
+	fmt.Println("长度是", len(mych), "容量是", cap(mych))
+	// 4. 向管道中写入数据
+	mych <- 666
+	fmt.Println("长度是", len(mych), "容量是", cap(mych))
+	// 5. 取出管道中写入的数据
+	num := <-mych
+	fmt.Println("num = ", num)
+	fmt.Println("长度是", len(mych), "容量是", cap(mych))
+}
+
+// 输出：
+// 长度是 0 容量是 3
+// 长度是 1 容量是 3
+// num =  666
+// 长度是 0 容量是 3
+
+```
+
 ### 使用通道发送数据
 
 通道创建后，就可以使用通道进行发送和接收操作
@@ -246,6 +277,108 @@ func main() {
 
 ```
 
+### 单向和双向通道
+
+- 双向管道 bi-directional channel
+
+```go
+var myCh chan int = make(chan int, 0)
+```
+
+- 单向管道 uni-directional channel
+
+```go
+// send-only channel
+var sendOnlyCh chan<- int = make(chan<- int, 0)
+
+// receive-only channel
+var readOnlyCh <-chan int = make(<-chan int, 0)
+```
+
+默认情况下所有管道都是双向（可读可写）
+
+注意点:
+
+- 双向管道可以自动转换为任意一种单向管道
+
+- 单向管道不能转换为双向管道
+
+单向 channel 的一个典型使用场景是作为函数或方法参数，用来控制只能往 channel 发送数据或者只能从 channel 接收数据，避免误操作
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+// send-only channel
+func testSendChan(c chan<- int) {
+	c <- 20
+}
+
+// receive-only channel
+func testRecvChan(c <-chan int) {
+	result := <-c
+	fmt.Println("result:", result)
+}
+
+func main() {
+	ch := make(chan int, 3)
+	testSendChan(ch)
+	testRecvChan(ch)
+}
+
+```
+
+### 带缓存和不带缓存通道
+
+同一个协程里，不能对无缓冲 channel 同时发送和接收数据，如果这么做会直接报错死锁
+
+对于一个无缓冲的 channel 而言，只有不同的协程之间一方发送数据一方接受数据才不会阻塞；channel无缓冲时，发送阻塞直到数据被接收，接收阻塞直到读到数据
+
+### 应用场景
+
+（1）任务定时
+
+比如超时处理：
+
+```go
+select {
+case <-time.After(time.Second):
+
+}
+```
+
+定时任务：
+
+```go
+select {
+case <- time.Tick(time.Second):
+
+}
+```
+
+（2）解耦生产者和消费者
+
+可以将生产者和消费者解耦出来，生产者只需要往 channel 发送数据，而消费者只管从 channel 中获取数据
+
+（3）控制并发数量
+
+以爬虫为例，比如需要爬取 1w 条数据，需要并发爬取以提高效率，但并发量又不能过大，可以通过 channel 来控制并发规模，比如同时支持 5 个并发任务：
+
+```go
+ch := make(chan int, 5)
+for _, url := range urls {
+	go func() {
+		ch <- 1
+		worker(url)
+		<-ch
+	}()
+}
+
+```
+
 ### 使用示例
 
 #### 循环交替打印
@@ -293,6 +426,120 @@ func print(wg *sync.WaitGroup, chanX, chanY chan struct{}, message string) {
 }
 
 ```
+
+#### 使用 channel 控制并发数量
+
+goroutine 是轻量级线程，调度由 Go 运行时进行管理的
+
+Go 语言的并发控制主要使用关键字 go 开启协程 goroutine
+
+Go 协程（Goroutine）之间通过信道（channel）进行通信，简单的说就是多个协程之间通信的管道
+
+信道可以防止多个协程访问共享内存时发生资源争抢的问题
+
+语法格式：
+
+```go
+// 普通函数创建 goroutine
+go 函数名(参数列表)
+
+// 匿名函数创建 goroutine
+go func(参数列表){
+    // 函数体
+}(调用参数列表)
+
+```
+
+协程可以开启多少个？是否有限制呢？
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+	"sync"
+	"time"
+)
+
+func main() {
+	var wg sync.WaitGroup
+	for i := 0; i < math.MaxInt32; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			fmt.Printf("并发数量：%d/n", i)
+			time.Sleep(time.Second)
+		}(i)
+	}
+	wg.Wait()
+}
+
+```
+
+以上代码开启了 `math.MaxInt32` 个协程的并发，执行后可以看到结果直接 `panic: too many concurrent operations on a single file or socket (max 1048575)`
+
+整个并发操作超出了系统最大值
+
+```plain
+goroutine 1228917 [running]:
+internal/poll.(*fdMutex).rwlock(0xc0000ac0c0, 0x70?)
+        /root/.g/go/src/internal/poll/fd_mutex.go:147 +0x11b
+internal/poll.(*FD).writeLock(...)
+        /root/.g/go/src/internal/poll/fd_mutex.go:239
+internal/poll.(*FD).Write(0xc0000ac0c0, {0xc1325ab700, 0x18, 0x20})
+        /root/.g/go/src/internal/poll/fd_unix.go:370 +0x72
+os.(*File).write(...)
+        /root/.g/go/src/os/file_posix.go:48
+os.(*File).Write(0xc000012018, {0xc1325ab700?, 0x18, 0xc13469df90?})
+        /root/.g/go/src/os/file.go:175 +0x65
+fmt.Fprintf({0x4b9fc8, 0xc000012018}, {0x49e2f0, 0x13}, {0xc121342f90, 0x1, 0x1})
+        /root/.g/go/src/fmt/print.go:225 +0x9b
+fmt.Printf(...)
+        /root/.g/go/src/fmt/print.go:233
+main.main.func1(0x0?)
+        /code/code.liaosirui.com/z-demo/go-demo/main.go:16 +0x9c
+created by main.main
+        /code/code.liaosirui.com/z-demo/go-demo/main.go:14 +0x3c
+panic: too many concurrent operations on a single file or socket (max 1048575)
+```
+
+对单个 file/socket 的并发操作个数超过了系统上限，这个报错是 `fmt.Printf` 函数引起的，`fmt.Printf` 将格式化后的字符串打印到屏幕，即标准输出；在 linux 系统中，标准输出也可以视为文件，内核（kernel）利用文件描述符（file descriptor）来访问文件，标准输出的文件描述符为 1，错误输出文件描述符为 2，标准输入的文件描述符为 0；简而言之，系统的资源被耗尽了
+
+那如果将 `fmt.Printf` 这行代码去掉呢？那程序很可能会因为内存不足而崩溃；这一点更好理解，每个协程至少需要消耗 2KB 的空间，那么假设计算机的内存是 2GB，那么至多允许 2GB/2KB = 1M 个协程同时存在；那如果协程中还存在着其他需要分配内存的操作，那么允许并发执行的协程将会数量级地减少
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+	"sync"
+)
+
+func main() {
+	task_chan := make(chan bool, 3) // 100 为 channel长度
+	wg := sync.WaitGroup{}
+	defer close(task_chan)
+	for i := 0; i < math.MaxInt; i++ {
+		wg.Add(1)
+		fmt.Println("go func ", i)
+		task_chan <- true
+		go func() {
+			<-task_chan
+			defer wg.Done()
+		}()
+	}
+
+	wg.Wait()
+}
+
+```
+
+- 创建缓冲区大小为 3 的 channel，在没有被接收的情况下，至多发送 3 个消息则被阻塞；通过 channel 控制每次并发的数量；
+- 开启协程前，设置 task_chan <- true，若缓存区满了则阻塞
+- 协程任务执行完成后就释放缓冲区
+- 等待所有的并发都处理结束后则函数结束；其实可以不使用 sync.WaitGroup；因使用 channel 控制并发处理的任务数量可以不用使用等待并发处理结束
 
 ## 设计原理
 
