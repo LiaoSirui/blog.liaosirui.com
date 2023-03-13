@@ -193,3 +193,6 @@ ulimit -r
 
 
 
+## 参考资料
+
+<https://feichashao.com/ulimit_demo/>

@@ -10,3 +10,13 @@
 
 <https://github.com/dexidp/dex/issues/1677>
 
+
+
+<https://github.com/mesosphere/traefik-forward-auth/pull/33>
+
+
+
+Logout 支持：
+
+<https://github.com/kyma-incubator/compass-console/pull/53>
+

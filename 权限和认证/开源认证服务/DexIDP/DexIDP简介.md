@@ -19,6 +19,16 @@ Dex 通过 `Connector` 充当其他身份提供者的门户
 
 支持的 Connector 列表详见：<https://dexidp.io/docs/connectors/>
 
+## 参考资料
 
+- OpenID Connect <https://openid.net/specs/openid-connect-core-1_0.html>
 
-<https://aws.amazon.com/cn/blogs/china/using-dex-and-dex-k8s-authenticator-to-authenticate-amazon-eks/>
+- <https://github.com/panva/node-openid-client/blob/main/docs/README.md>
+
+## 其他参考资料
+
+- <https://aws.amazon.com/cn/blogs/china/using-dex-and-dex-k8s-authenticator-to-authenticate-amazon-eks/>
+
+- <https://www.jokerbai.com/archives/k8s-zi-ding-yi-webhook-shi-xian-ren-zheng-guan-li>
+
+- <https://toutiao.io/posts/ylwd8kk/preview>
