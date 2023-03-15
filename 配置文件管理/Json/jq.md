@@ -1,1 +1,28 @@
-https://hellogitlab.com/OS/Centos/json_tool_jq.html#_2-1-%E6%8C%89tutorial%E6%95%99%E7%A8%8B%E8%BF%9B%E8%A1%8C%E7%AE%80%E5%8D%95%E6%B5%8B%E8%AF%95
+## jq 简介
+
+jq 是一款基于命令行处理 JSON 数据的工具
+
+其可以接受标准输入，命令管道或者文件中的 JSON 数据，经过一系列的过滤器 (filters) 和表达式的转后形成我们需要的数据结构并将结果输出到标准输出中，从而帮助很好的解析 json 数据
+
+## 安装
+
+### 编译安装
+
+```bash
+git clone https://github.com/stedolan/jq.git
+
+cd jq
+autoreconf -i
+./configure --disable-maintainer-mode
+make && make install
+```
+
+
+
+## 参考文档
+
+- <https://www.cnblogs.com/sunsky303/p/16437766.html>
+
+- <https://hellogitlab.com/OS/Centos/json_tool_jq.html>
+
+- <https://gitbook.curiouser.top/origin/linux-jq.html>

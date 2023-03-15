@@ -13,3 +13,7 @@ VS Code 的插件官网为: <https://marketplace.visualstudio.com/VSCode/>
 <https://www.bilibili.com/read/cv14431684>
 
 https://zhuanlan.zhihu.com/p/113222681
+
+
+
+- 文档翻译：<https://www.fanwen.eduboo.com/read/CN-VScode-Docs/769-120526-ddylkzt>
