@@ -42,7 +42,7 @@ systemctl status lxcfs
 
 ```bash
 docker run -it --rm \
-	--cpus 2 --memory 4g \
+	--cpus 2 --memory 4g --memory-swap 4g \
   -v /var/lib/lxcfs/proc/cpuinfo:/proc/cpuinfo:rw \
   -v /var/lib/lxcfs/proc/diskstats:/proc/diskstats:rw \
   -v /var/lib/lxcfs/proc/loadavg:/proc/loadavg:rw \
@@ -54,6 +54,7 @@ docker run -it --rm \
   -v /var/lib/lxcfs/sys/devices/system/cpu:/sys/devices/system/cpu \
   --security-opt seccomp=unconfined \
   rockylinux/rockylinux:9.1.20221123 bash
+
 ```
 
 在容器中安装工具集
