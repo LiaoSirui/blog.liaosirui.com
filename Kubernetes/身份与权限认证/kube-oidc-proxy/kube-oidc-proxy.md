@@ -1,0 +1,1 @@
+源码：<https://github.com/jetstack/kube-oidc-proxy>
