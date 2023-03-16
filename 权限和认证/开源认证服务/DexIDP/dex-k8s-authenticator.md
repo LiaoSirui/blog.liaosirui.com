@@ -1,3 +1,5 @@
+## 简介
+
 组件说明
 
 1. Dex 是一种身份认证服务，它使用 OpenID Connect 来驱动其他应用程序的身份验证。Dex 通过“connectors”充当其他身份提供商的门户。 这让 dex 将身份验证推到 LDAP 服务器、SAML 提供商或已建立的身份提供商（如 GitHub、Gitlab、Google 和 Active Directory等）。 客户端编写身份验证逻辑以与 dex 交互认证，然后 dex 通过 connector 转发到后端用户认证方认证，并返回给客户端Oauth2 Token。与其相似的还有 Keycloak，auth0 等
@@ -32,3 +34,59 @@ kubectl->>apiserver: id_token
 apiserver-->>kubectl: is valid <br/> is expired <br/> is authorized
 kubectl-->>user: 
 ```
+
+## 安装
+
+添加 如下 Helm 仓库
+
+```
+helm repo add skm https://charts.sagikazarmark.dev
+```
+
+Update Helm cache
+
+```
+helm repo update
+```
+
+获取 Amazon EKS 集群客户端证书：
+
+```
+aws eks describe-cluster --name <cluster-name> --query 'cluster.certificateAuthority' --region <region> --output text | base64 -d
+```
+
+为 dex-k8s-authenticator 创建 Value 文件：
+
+```yaml
+config:
+  clusters:
+    - name: your-cluster
+      short_description: "Your cluster"
+      description: "Your EKS cluster"
+      issuer: https://dex.yourdomain.com
+      client_id: your-cluster-client-id
+      client_secret: your-cluster-client-secret
+      redirect_uri: https://login.yourdomain.com/callback
+      k8s_master_uri: https://your-eks-cluster-endpoint-url
+      k8s_ca_pem: |
+        -----BEGIN CERTIFICATE-----
+        YOUR CLIENT CERTIFICATE DATA
+        -----END CERTIFICATE-----
+  
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: acme
+  hosts:
+    - host: login.yourdomain.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: dex-k8s-authenticator-tls
+      hosts:
+        - login.yourdomain.com
+```
+
