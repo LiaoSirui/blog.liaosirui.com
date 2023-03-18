@@ -10,3 +10,8 @@ iptables -t nat -nvL CNI-HOSTPORT-DNAT
 iptables -t nat -D CNI-HOSTPORT-DNAT 1
 ```
 
+
+
+<https://www.tkng.io/services/clusterip/dataplane/iptables/>
+
+<https://dustinspecker.com/posts/iptables-how-kubernetes-services-direct-traffic-to-pods/>
