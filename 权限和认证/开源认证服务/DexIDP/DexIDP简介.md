@@ -126,3 +126,5 @@ Kubelogin <https://github.com/int128/kubelogin>
 - <https://www.jokerbai.com/archives/k8s-zi-ding-yi-webhook-shi-xian-ren-zheng-guan-li>
 
 - <https://toutiao.io/posts/ylwd8kk/preview>
+
+- <https://tanzu.vmware.com/developer/guides/identity-dex/>
