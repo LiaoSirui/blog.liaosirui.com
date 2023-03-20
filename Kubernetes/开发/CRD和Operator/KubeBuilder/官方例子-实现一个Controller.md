@@ -482,6 +482,10 @@ resources（资源） 只是 API 中的一个 Kind 的使用方式。通常情�
 创建一个新的 Kind 和相应的控制器
 
 ```bash
+# 如果要在一个项目中创建多个 group 的资源
+# refer: https://kubebuilder.io/migration/multi-group.html
+# kubebuilder edit --multigroup=true
+
 kubebuilder create api --group batch --version v1 --kind CronJob
 ```
 
@@ -501,7 +505,7 @@ import (
 
 Kubernetes 功能通过使期待的状态 (`Spec`) 和实际集群状态 (其他对象的 `Status`)保 持一致和外部状态，然后记录观察到的状态(`Status`)
 
-因此，每个 *functional* 对象包括 spec 和 status
+因此，每个 functional 对象包括 spec 和 status
 
 很少的类型，像 `ConfigMap` 不需要遵从这个模式，因为它们不编码期待的状态， 但是大部分类型需要做这一步
 
