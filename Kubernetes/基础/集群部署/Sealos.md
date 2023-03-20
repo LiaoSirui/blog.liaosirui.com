@@ -1,12 +1,35 @@
+## 安装 Sealos
+
+添加 Yum 源
+
+```bash
+> cat >> /etc/yum.repos.d/sealos.repo << __EOF__
+# refer: https://github.com/labring/sealos/releases
+[fury]
+name=Gemfury Private Repo
+baseurl=https://yum.repo.sealos.io/
+enabled=1
+gpgcheck=0
+__EOF__
+```
+
+使用 DNF 安装命令行
+
+```bash
+dnf install -y sealos
+```
 
 ## 安装单节点集群
 
 ```bash
-sealos init --interface enp2s0 \
-    --master 192.168.1.99 \
-    --user root \
-    --version v1.18.14 \
-    --pkg-url=./kube1.18.14.tar.gz
+sealos run \
+  labring/kubernetes:v1.23.0 \
+  labring/helm:v3.8.2 labring/calico:v3.24.1 \
+  --masters 10.244.244.21 \
+  --single \
+  --debug 
+
+# 安装 node: --nodes 10.244.244.21
 ```
 
 ## 参数详解
