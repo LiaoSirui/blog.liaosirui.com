@@ -113,6 +113,92 @@ Dex 部署完后需要修改 apiserver 配置 OIDC 服务地址
 
 Kubelogin <https://github.com/int128/kubelogin>
 
+## 请求过程
+
+auth 请求
+
+```bash
+curl 'http://127.0.0.1:5556/dex/auth?client_id=example-app&redirect_uri=http%3A%2F%2F127.0.0.1%3A5555%2Fcallback&response_type=code&scope=openid+profile+email+offline_access&state=I+wish+to+wash+my+irish+wristwatch' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Cache-Control: max-age=0' \
+  -H 'Connection: keep-alive' \
+  -H 'Referer: http://127.0.0.1:5555/' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-Site: same-site' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  --compressed
+```
+
+auth login
+
+```bash
+curl 'http://127.0.0.1:5556/dex/auth/local?client_id=example-app&redirect_uri=http%3A%2F%2F127.0.0.1%3A5555%2Fcallback&response_type=code&scope=openid+profile+email+offline_access&state=I+wish+to+wash+my+irish+wristwatch' \
+  -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'Accept-Language: zh-CN,zh;q=0.9' \
+  -H 'Connection: keep-alive' \
+  -H 'Referer: http://127.0.0.1:5556/dex/auth?client_id=example-app&redirect_uri=http%3A%2F%2F127.0.0.1%3A5555%2Fcallback&response_type=code&scope=openid+profile+email+offline_access&state=I+wish+to+wash+my+irish+wristwatch' \
+  -H 'Sec-Fetch-Dest: document' \
+  -H 'Sec-Fetch-Mode: navigate' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'Sec-Fetch-User: ?1' \
+  -H 'Upgrade-Insecure-Requests: 1' \
+  --compressed
+```
+
+auth 
+
+```bash
+curl 'https://console.local.dev.bigquant.ai/ai/users/auth/local/login?back=&state=hvu5mnztgabkdxrpv3yb66g7t' \
+  -H 'authority: console.local.dev.bigquant.ai' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'cookie: _bdid_=4957a50daee349a18e3528e2f22e671a; current_space=00000000-0000-0000-0000-000000000000; _ga=GA1.1.1323826053.1678970117; _ga_B58V018K6L=GS1.1.1679147385.4.0.1679147385.60.0.0; csrf-token=YPbdOlDL11kPszGgZLrwFAXSOCQU3Q0JE5MUqXUfvl82cxirA+57v0t6v7x8mXpTePBmoWyRVRikki/NVfl/ZA==; login-state=1ccf4b27' \
+  -H 'referer: https://console.local.dev.bigquant.ai/' \
+  -H 'sec-ch-ua: "Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-mode: navigate' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36' \
+  --compressed \
+  --insecure
+```
+
+back
+
+```bash
+curl 'https://console.local.dev.bigquant.ai/ai/users/auth/local/login?back=&state=hvu5mnztgabkdxrpv3yb66g7t' \
+  -H 'authority: console.local.dev.bigquant.ai' \
+  -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'cache-control: max-age=0' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -H 'cookie: _bdid_=4957a50daee349a18e3528e2f22e671a; current_space=00000000-0000-0000-0000-000000000000; _ga=GA1.1.1323826053.1678970117; _ga_B58V018K6L=GS1.1.1679147385.4.0.1679147385.60.0.0; csrf-token=YPbdOlDL11kPszGgZLrwFAXSOCQU3Q0JE5MUqXUfvl82cxirA+57v0t6v7x8mXpTePBmoWyRVRikki/NVfl/ZA==; login-state=1ccf4b27' \
+  -H 'origin: https://console.local.dev.bigquant.ai' \
+  -H 'referer: https://console.local.dev.bigquant.ai/ai/users/auth/local/login?back=&state=hvu5mnztgabkdxrpv3yb66g7t' \
+  -H 'sec-ch-ua: "Chromium";v="110", "Not A(Brand";v="24", "Google Chrome";v="110"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  -H 'sec-fetch-dest: document' \
+  -H 'sec-fetch-mode: navigate' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'sec-fetch-user: ?1' \
+  -H 'upgrade-insecure-requests: 1' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36' \
+  --data-raw 'login=bqadm%40bigquant.ai&password=abc123%21' \
+  --compressed \
+  --insecure
+```
+
+
+
+
+
 ## 参考资料
 
 - OpenID Connect <https://openid.net/specs/openid-connect-core-1_0.html>

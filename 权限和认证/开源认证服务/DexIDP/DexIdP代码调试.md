@@ -51,5 +51,30 @@ curl --location --request POST 'http://localhost:3000/me' \
 
 ```
 
+## 认证过程
 
+- login请求
 
+（1）请求login接口
+
+```plain
+http://127.0.0.1:8080/login?redirect_uri=http://127.0.0.1:8080/callback
+```
+
+login 接口传递 redirect_uri 地址，作为回调地址
+
+（2）接下来login接口回去访问
+
+```plain
+dex/auth?client_id=test&redirect_uri=http://127.0.0.1:8080callback&response_type=code&scope=openid+email+groups+profile+offline_access&state=login
+```
+
+（3）从 dex 返回 `http://127.0.0.1/dex/auth/ldap?req=xxxxxx`，并展示 dex 的登录界面
+
+（4）输入用户名和密码，点击登录之后，IdP 验证用户名密码的合法行，生成 code 返回到 callback 地址
+
+- callback 请求
+
+callback 获取授权的 code
+
+通过 code 获取认证的 token
