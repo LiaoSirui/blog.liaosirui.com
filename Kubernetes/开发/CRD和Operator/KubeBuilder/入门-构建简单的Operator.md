@@ -78,6 +78,10 @@ $ kubebuilder create api
 
 ```bash
 kubebuilder create api --group webapp --version v1 --kind Guestbook
+
+# 如果要在一个项目中创建多个 group 的资源
+# refer: https://kubebuilder.io/migration/multi-group.html
+# kubebuilder edit --multigroup=true
 ```
 
 按照提示进行生成即可
