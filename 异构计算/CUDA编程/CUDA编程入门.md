@@ -46,12 +46,12 @@ dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda
 安装 cuda
 
 ```bash
-dnf module install nvidia-driver:latest-dkms
+dnf module install -y nvidia-driver:latest-dkms
 
-dnf install cuda
+dnf install -y cuda
 
 # GDS
-dnf install nvidia-gds
+dnf install -y nvidia-gds
 ```
 
 配置 share 库的软链，部分库可能会用到
