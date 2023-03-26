@@ -2,6 +2,11 @@
 
 `PDM` 全名 `Python Development Master`
 
+官方：
+
+- GitHub 仓库：<https://github.com/pdm-project/pdm>
+- 官网：<https://pdm.fming.dev/latest/>
+
 ## 安装方式
 
 ```bash
