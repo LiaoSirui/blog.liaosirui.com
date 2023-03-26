@@ -24,68 +24,6 @@ GPU 并不是一个独立运行的计算平台，而需要与 CPU 协同工作�
 
 ![img](.assets/CUDA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/v2-2959e07a36a8dc8f59280f53b43eb9d1_1440w-20230323214109589.webp)
 
-## CUDA 安装
-
-官方文档：<https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html>
-
-安装需要的包
-
-```bash
-dnf install kernel-devel-$(uname -r) kernel-headers-$(uname -r)
-```
-
-安装 cuda 仓库
-
-```bash
-export distro=rhel9
-export arch=x86_64
-
-dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/$distro/$arch/cuda-$distro.repo
-```
-
-安装 cuda
-
-```bash
-dnf module install -y nvidia-driver:latest-dkms
-
-dnf install -y cuda
-
-# GDS
-dnf install -y nvidia-gds
-```
-
-配置 share 库的软链，部分库可能会用到
-
-```bash
-ls -al /usr/lib{,64}/nvidia
-ls -al /usr/lib/libcuda.so /usr/lib64/libcuda.so
-
-# 如果没有，再执行：
-# ln -s /usr/lib/nvidia/libcuda.so /usr/lib/libcuda.so
-# ln -s /usr/lib64/nvidia/libcuda.so /usr/lib64/libcuda.so
-```
-
-安装完成后：
-
-```bash
-export PATH=/usr/local/cuda-12.1/bin${PATH:+:${PATH}}
-
-export LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-```
-
-开启持久化服务
-
-```bash
-systemctl enable --now nvidia-persistenced
-```
-
-安装第三方包
-
-```bash
-dnf install -y freeglut-devel libX11-devel libXi-devel libXmu-devel \
-  make mesa-libGLU-devel freeimage-devel
-```
-
 ## CUDA 编程模型基础
 
 CUDA 编程模型是一个异构模型，需要 CPU 和 GPU 协同工作
