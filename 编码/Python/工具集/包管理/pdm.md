@@ -81,3 +81,30 @@ pdm install
 
 ```
 
+## 方案兼容
+
+### 其他方案迁移到 pdm
+
+如果当前使用的是其他的包管理器，比如 pipenv ，poetry，或者还在用最原始的 requirements.txt ，也可以很方便的迁移到 pdm 中来：
+
+- 使用 `pdm import -f {file}` 无需初始化，直接转换
+
+- 执行 `pdm init` 或者 `pdm install `的时候，会自动识别当前的依赖情况并转换
+
+### pdm 迁移到其他方案
+
+可以将 pdm 管理的项目，导出为其他方案
+
+- 将 pyproject.toml 转成 setup.py（暂未支持，<https://pdm.fming.dev/latest/usage/project/#export-locked-packages-to-alternative-formats>）
+
+```bash
+pdm export -f setuppy -o setup.py
+# pdm export -f setuppy -o setup.py --without-hashes --pyproject --prod
+```
+
+- 将 pdm.lock 转成 requirements.txt
+
+```bash
+pdm export -o requirements.txt
+```
+
