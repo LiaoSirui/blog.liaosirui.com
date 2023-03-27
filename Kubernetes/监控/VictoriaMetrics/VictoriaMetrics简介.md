@@ -169,7 +169,7 @@ accountID 是不同用户/租户的 ID，必须是数字，否则通过 vmselect
 auth error: cannot parse accountID from "localcluster": strconv.Atoi: parsing "localcluster": invalid syntax
 ```
 
-VictoriaMetrics 支持多种写入方式，通过 sufficx 区分，suffix 支持以下几种：
+VictoriaMetrics 支持多种写入方式，通过 suffix 区分，suffix 支持以下几种：
 
 - prometheus: for inserting data with Prometheus remote write API
 - influx/write: for inserting data with Influx line protocol
