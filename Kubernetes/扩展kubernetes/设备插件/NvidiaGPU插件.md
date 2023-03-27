@@ -57,11 +57,38 @@ sslcacert=/etc/pki/tls/certs/ca-bundle.crt
 ```bash
 dnf clean expire-cache \
     && dnf install -y nvidia-container-toolkit
+    
+nvidia-ctk --version
 ```
 
 ### 配置 containerd
 
-```yaml
+```bash
+> cat <<EOF > containerd-config.patch
+--- config.toml.orig    2020-12-18 18:21:41.884984894 +0000
++++ /etc/containerd/config.toml 2020-12-18 18:23:38.137796223 +0000
+@@ -94,6 +94,15 @@
+        privileged_without_host_devices = false
+        base_runtime_spec = ""
+        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
++            SystemdCgroup = true
++       [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]
++          privileged_without_host_devices = false
++          runtime_engine = ""
++          runtime_root = ""
++          runtime_type = "io.containerd.runc.v1"
++          [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
++            BinaryName = "/usr/bin/nvidia-container-runtime"
++            SystemdCgroup = true
+    [plugins."io.containerd.grpc.v1.cri".cni]
+    bin_dir = "/opt/cni/bin"
+    conf_dir = "/etc/cni/net.d"
+EOF
+```
+
+即：
+
+```toml
 version = 2
 [plugins]
   [plugins."io.containerd.grpc.v1.cri"]
@@ -73,15 +100,28 @@ version = 2
           privileged_without_host_devices = false
           runtime_engine = ""
           runtime_root = ""
-          runtime_type = "io.containerd.runc.v2"
+          runtime_type = "io.containerd.runc.v1"
           [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
             BinaryName = "/usr/bin/nvidia-container-runtime"
+            SystemdCgroup = true
 ```
 
 重启 containerd
 
 ```yaml
 systemctl restart containerd
+```
+
+测试安装
+
+```bash
+ctr image pull docker.io/nvidia/cuda:11.6.2-base-ubuntu20.04
+
+ctr run --rm -t \
+    --runc-binary=/usr/bin/nvidia-container-runtime \
+    --env NVIDIA_VISIBLE_DEVICES=all \
+    docker.io/nvidia/cuda:11.6.2-base-ubuntu20.04 \
+    cuda-11.6.2-base-ubuntu20.04 nvidia-smi
 ```
 
 ### 在 k8s 中启用
@@ -107,10 +147,12 @@ kubectl create cm -n nvidia-device-plugin nvidia-plugin-configs \
     --from-file=config=/tmp/dp-example-config0.yaml
 ```
 
-helm chart 地址：<https://github.com/NVIDIA/k8s-device-plugin/blob/v0.12.3/deployments/helm/nvidia-device-plugin/values.yaml>
+helm chart 地址：<https://github.com/NVIDIA/k8s-device-plugin/blob/v0.13.0/deployments/helm/nvidia-device-plugin/values.yaml>
 
 ```yaml
-# kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.12.3/nvidia-device-plugin.yml
+# refer: https://github.com/NVIDIA/k8s-device-plugin/releases
+
+# kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.13.0/nvidia-device-plugin.yml
 
 helm upgrade -i nvdp \
     --namespace nvidia-device-plugin \
@@ -118,7 +160,7 @@ helm upgrade -i nvdp \
     --set config.name=nvidia-plugin-configs \
     --set gfd.enabled=true \
     --set nodeSelector.gpu="enabled" \
-    https://nvidia.github.io/k8s-device-plugin/stable/nvidia-device-plugin-0.12.3.tgz 
+    https://nvidia.github.io/k8s-device-plugin/stable/nvidia-device-plugin-0.13.0.tgz 
 ```
 
 ### 启动一个 GPU Pod
@@ -143,3 +185,4 @@ spec:
     effect: NoSchedule
 EOF
 ```
+
