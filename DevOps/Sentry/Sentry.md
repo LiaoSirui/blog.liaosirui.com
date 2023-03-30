@@ -41,11 +41,29 @@ helm pull sentry/sentry --version 17.11.0
 helm pull sentry/sentry --version 17.11.0 --untar
 ```
 
+Sentry web 需要一个单独手动建立的 pvc
 
+```yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sentry-data
+  namespace: sentry
+  labels:
+    app: sentry
+    release: sentry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeMode: Filesystem
+  storageClassName: "csi-local-data-path"
 
-参考 values
+```
 
-（1）创建 admin 用户
+参考 values：
 
 ```yaml
 user: 
@@ -53,96 +71,195 @@ user:
   email: "admin@yourdomain.com"
   password: "AgoodPassword"
 
-```
-
-
-
-
-
-```yaml
-# Admin user to create
-user:
-  # Indicated to create the admin user or not,
-  # Default is true as the initial installation.
-  create: true
-  email: "<your email>"
-  password: "<your password>"
-
-email:
-  from_address: "<your from email>"
-  host: smtp
-  port: 25
-  use_tls: false
-  user: "<your email username>"
-  password: "<your email password>"
-  enable_replies: false
-
-ingress:
+containerSecurityContext:
   enabled: true
-  hostname: "<sentry.example.com>"
-
-# Needs to be here between runs.
-# See https://github.com/helm/charts/tree/master/stable/postgresql#upgrade for more info
-postgresql:
-  postgresqlPassword: example-postgresql-password
-
-```
-
-
-
-
-
-```bash
-user:
-  create: true
-  email: youremail@example.com
-  password: admin
-
-ingress:
-  enabled: true
-  # If you are using traefik ingress controller, switch this to 'traefik'
-  regexPathStyle: nginx
-  annotations:
-  # If you are using nginx ingress controller, please use at least those 2 annotations
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: "true"
-  
-  hostname: sentry.example.com
+  runAsNonRoot: false
+  runAsUser: 0
 
 sentry:
-  singleOrganization: false
   worker:
-    replicas: 2
-mail:
-  backend: smtp
-  useTls: false
-  username: "apikey"
-  password: "XXXXX"
-  port: 25
-  host: "smtp.sendgrid.net"
-  from: "sentry@example.com"
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 10
+            preference:
+              matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values: 
+                  - devnode2
+  web:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 10
+            preference:
+              matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values: 
+                  - devnode2
 
-service:
-  name: sentry
-  type: ClusterIP
-  externalPort: 9000
-  annotations: {}
-slack: 
-  clientId: "client-it"
-  clientSecret: "cleint-secret"
-  signingSecret: "signing-secret"
-# Reference -> https://develop.sentry.dev/integrations/slack/
+clickhouse:
+  clickhouse:
+    persistentVolumeClaim:
+      enabled: true
+      dataPersistentVolume:
+        accessModes:
+        - ReadWriteOnce
+        enabled: true
+        storage: 500Gi
+        storageClassName: "csi-local-data-path"
+      logsPersistentVolume:
+        accessModes:
+        - ReadWriteOnce
+        enabled: true
+        storage: 50Gi
+        storageClassName: "csi-local-data-path"
+
+kafka:
+  common:
+    global:
+      storageClass: "csi-local-data-path"
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: false
+    runAsUser: 0
+  global:
+    storageClass: "csi-local-data-path"
+  logPersistence:
+    storageClass: "csi-local-data-path"
+  persistence:
+    storageClass: "csi-local-data-path"
+  zookeeper:
+    containerSecurityContext:
+      enabled: false
+      runAsNonRoot: false
+      runAsUser: 0
+    common:
+      global:
+        storageClass: "csi-local-data-path"
+    global:
+      storageClass: "csi-local-data-path"
+    persistence:
+      storageClass: "csi-local-data-path"
+
+memcached:
+  common:
+    global:
+      storageClass: "csi-local-data-path"
+  global:
+    storageClass: "csi-local-data-path"
+  persistence:
+    storageClass: "csi-local-data-path"
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: false
+    runAsUser: 0
 
 postgresql:
-  enabled: false
-## This value is only used when postgresql.enabled is set to false
-##
-externalPostgresql:
-  host: database-host
-  port: 5432
-  username: postgres
-  password: ""
-  database: sentry
+  common:
+    global:
+      storageClass: "csi-local-data-path"
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 0
+  global:
+    storageClass: "csi-local-data-path"
+  persistence:
+    storageClass: "csi-local-data-path"
+  primary:
+    affinity:
+      nodeAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 10
+            preference:
+              matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values: 
+                  - devnode2
+
+rabbitmq:
+  podSecurityContext:
+    enabled: true
+    fsGroup: 1001
+    runAsUser: 1001
+  common:
+    global:
+      storageClass: "csi-local-data-path"
+  global:
+    storageClass: "csi-local-data-path"
+  persistence:
+    storageClass: "csi-local-data-path"
+  serviceAccount:
+    automountServiceAccountToken: true
+    create: true
+  volumePermissions:
+    enable: true
+
+redis:
+  common:
+    global:
+      storageClass: "csi-local-data-path"
+  global:
+    storageClass: "csi-local-data-path"
+  master:
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 0
+    persistence:
+      storageClass: "csi-local-data-path"
+  replica:
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 0
+    persistence:
+      storageClass: "csi-local-data-path"
+  sentinel:
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 0
+    persistence:
+      storageClass: "csi-local-data-path"
+
+zookeeper:
+  common:
+    global:
+      storageClass: "csi-local-data-path"
+  persistence:
+    storageClass: "csi-local-data-path"
+  containerSecurityContext:
+    enabled: true
+    runAsNonRoot: false
+    runAsUser: 0
+
+ingress:
+  alb:
+    httpRedirect: false
+  enabled: true
+  regexPathStyle: nginx
+  ingressClassName: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: cert-http01
+    nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+  hostname: sentry.local.liaosirui.com
+  tls:
+    - hosts:
+        - sentry.local.liaosirui.com
+      secretName: sentry-https-tls
+
+filestore:
+  backend: filesystem
+  filesystem:
+    path: /var/lib/sentry/files
+    persistence:
+      accessMode: ReadWriteOnce
+      enabled: true
+      existingClaim: "sentry-data"
+      persistentWorkers: false
+      size: 10Gi
+
 ```
 
 安装：
