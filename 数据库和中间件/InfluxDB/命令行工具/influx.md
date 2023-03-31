@@ -16,13 +16,17 @@ influx -host 10.24.110.200 -port 8428 -database beegfs_mon -path-prefix /influx
 
 ## 常用查询语句
 
+- 查看数据库
+
+```bash
+SHOW DATABASES;
+```
+
 - 查看所有表
 
 ```bash
-show measurements;
+SHOW MEASUREMENTS;
 ```
-
-
 
 ### 数据库管理
 

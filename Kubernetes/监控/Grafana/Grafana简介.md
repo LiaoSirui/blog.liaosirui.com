@@ -64,3 +64,142 @@ group id changed from 107 to 472
 Runs as the grafana user by default (instead of root)
 All default volumes removed
 ```
+
+## 使用 helm chart 进行安装
+
+添加仓库
+
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+```
+
+查看最新的版本
+
+```bash
+> helm search repo grafana  
+
+grafana/grafana                                 6.52.4          9.4.3                   The leading tool for querying and visualizing t...
+grafana/grafana-agent                           0.10.0          v0.32.1                 Grafana Agent                                     
+grafana/grafana-agent-operator                  0.2.14          0.32.1                  A Helm chart for Grafana Agent Operator           
+grafana/enterprise-logs                         2.4.3           v1.5.2                  Grafana Enterprise Logs                           
+grafana/enterprise-logs-simple                  1.2.1           v1.4.0                  DEPRECATED Grafana Enterprise Logs (Simple Scal...
+grafana/enterprise-metrics                      1.9.0           v1.7.0                  DEPRECATED Grafana Enterprise Metrics             
+grafana/fluent-bit                              2.4.0           v2.1.0                  Uses fluent-bit Loki go plugin for gathering lo...
+grafana/loki                                    4.10.0          2.7.5                   Helm chart for Grafana Loki in simple, scalable...
+grafana/loki-canary                             0.11.0          2.7.4                   Helm chart for Grafana Loki Canary                
+grafana/loki-distributed                        0.69.9          2.7.4                   Helm chart for Grafana Loki in microservices mode 
+grafana/loki-simple-scalable                    1.8.11          2.6.1                   Helm chart for Grafana Loki in simple, scalable...
+grafana/loki-stack                              2.9.9           v2.6.1                  Loki: like Prometheus, but for logs.              
+grafana/mimir-distributed                       4.3.0           2.7.1                   Grafana Mimir                                     
+grafana/mimir-openshift-experimental            2.1.0           2.0.0                   Grafana Mimir on OpenShift Experiment             
+grafana/oncall                                  1.2.6           v1.2.6                  Developer-friendly incident response with brill...
+grafana/phlare                                  0.5.3           0.5.1                   🔥 horizontally-scalable, highly-available, mul...
+grafana/promtail                                6.9.3           2.7.4                   Promtail is an agent which ships the contents o...
+grafana/rollout-operator                        0.4.0           v0.4.0                  Grafana rollout-operator                          
+grafana/synthetic-monitoring-agent              0.1.0           v0.9.3-0-gcd7aadd       Grafana's Synthetic Monitoring application. The...
+grafana/tempo                                   1.0.2           2.0.1                   Grafana Tempo Single Binary Mode                  
+grafana/tempo-distributed                       1.2.7           2.0.1                   Grafana Tempo in MicroService mode                
+grafana/tempo-vulture                           0.2.1           1.3.0                   Grafana Tempo Vulture - A tool to monitor Tempo...
+prometheus-community/kube-prometheus-stack      45.8.1          v0.63.0                 kube-prometheus-stack collects Kubernetes manif...
+prometheus-community/prometheus-druid-exporter  1.0.0           v0.11.0                 Druid exporter to monitor druid metrics with Pr...
+```
+
+拉取最新版本
+
+```bash
+helm pull grafana/grafana --version 6.52.4
+
+# 下载并解压
+helm pull grafana/grafana --version 6.52.4 --untar
+```
+
+新建 pv
+
+```yaml
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  annotations:
+    pv.kubernetes.io/provisioned-by: beegfs.csi.netapp.com
+  name: grafana-data
+  labels:
+    app.kubernetes.io/instance: grafana
+    app.kubernetes.io/name: grafana
+spec:
+  capacity:
+    storage: 100Gi
+  csi:
+    driver: beegfs.csi.netapp.com
+    volumeHandle: 'beegfs://10.244.244.201/app-data/grafana'
+    volumeAttributes:
+      storage.kubernetes.io/csiProvisionerIdentity: 1680159721626-8081-beegfs.csi.netapp.com
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: grafana-data
+  namespace: grafana
+  labels:
+    app.kubernetes.io/instance: grafana
+    app.kubernetes.io/name: grafana
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  volumeMode: Filesystem
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: grafana
+      app.kubernetes.io/name: grafana
+
+```
+
+使用如下 values.yaml
+
+```yaml
+service:
+  enabled: true
+  type: LoadBalancer
+  loadBalancerIP: 10.244.244.151
+  allocateLoadBalancerNodePorts: false # not work here
+  port: 3000
+
+tolerations:
+  - operator: Exists
+
+nodeSelector:
+  kubernetes.io/hostname: devmaster
+
+persistence:
+  type: pvc
+  enabled: true
+  existingClaim: grafana-data
+  # storageClassName: csi-beegfs-hdd
+
+adminUser: admin
+adminPassword: abcd1234!
+
+```
+
+安装
+
+```yaml
+helm upgrade --install grafana  \
+    --namespace grafana \
+    --create-namespace \
+    -f ./values.yaml \
+    grafana/grafana --version 6.52.4
+```
+
+查看密码
+
+```bash
+kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
