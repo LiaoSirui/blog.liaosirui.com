@@ -23,9 +23,9 @@ docker pull ghcr.io/eclipse/openvsx-webui:v0.6.0
 同步到内部仓库
 
 ```bash
-dockerhub.bigquant.ai:5000/aipaas-devops/3rdparty/ghcr.io/eclipse/openvsx-server:v0.6.0
+ghcr.io/eclipse/openvsx-server:v0.6.0
 
-dockerhub.bigquant.ai:5000/aipaas-devops/3rdparty/ghcr.io/eclipse/openvsx-webui:v0.6.0
+ghcr.io/eclipse/openvsx-webui:v0.6.0
 ```
 
 <img title="" src=".assets/openvsx-architecture.png" alt="" width="551">
@@ -68,7 +68,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-db
-    app.kubernetes.io/instance: bigquant
  
 ---
 apiVersion: v1
@@ -78,7 +77,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-db
-    app.kubernetes.io/instance: bigquant
 spec:
   type: ClusterIP
   ports:
@@ -88,7 +86,6 @@ spec:
       name: postgres
   selector:
     app.kubernetes.io/name: open-vsx-db
-    app.kubernetes.io/instance: bigquant 
  
 ---
 apiVersion: v1
@@ -98,7 +95,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-db
-    app.kubernetes.io/instance: bigquant
 spec:
   storageClassName: manual
   accessModes:
@@ -106,7 +102,6 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: open-vsx-db
-      app.kubernetes.io/instance: bigquant
   resources:
     requests:
       storage: "10Gi"
@@ -119,7 +114,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-db
-    app.kubernetes.io/instance: bigquant
 spec:
   storageClassName: manual
   capacity:
@@ -145,19 +139,16 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-db
-    app.kubernetes.io/instance: bigquant
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: open-vsx-db
-      app.kubernetes.io/instance: bigquant
   serviceName: open-vsx-db
   template:
     metadata:
       labels:
         app.kubernetes.io/name: open-vsx-db
-        app.kubernetes.io/instance: bigquant
     spec:
       nodeSelector:
         kubernetes.io/os: linux
@@ -169,7 +160,6 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: code-marketplace
-                  app.kubernetes.io/instance: bigquant
               namespaces:
               - aipaas-system
               topologyKey: kubernetes.io/hostname
@@ -206,7 +196,7 @@ spec:
           claimName: open-vsx-db
       containers:
       - name: postgres
-        image: dockerhub.bigquant.ai:5000/aipaas-devops/3rdparty/docker.io/library/postgres:13.9
+        image: docker.io/library/postgres:13.9
         resources:
           requests:
             memory: "512Mi"
@@ -243,7 +233,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-es
-    app.kubernetes.io/instance: bigquant
  
 ---
 apiVersion: v1
@@ -253,7 +242,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-es
-    app.kubernetes.io/instance: bigquant
 spec:
   type: ClusterIP
   clusterIP: None
@@ -268,7 +256,6 @@ spec:
       targetPort: inter-node
   selector:
     app.kubernetes.io/name: open-vsx-es
-    app.kubernetes.io/instance: bigquant
  
 ---
 apiVersion: v1
@@ -278,7 +265,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-es
-    app.kubernetes.io/instance: bigquant
 spec:
   storageClassName: manual
   accessModes:
@@ -286,7 +272,6 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: open-vsx-es
-      app.kubernetes.io/instance: bigquant
   resources:
     requests:
       storage: "10Gi"
@@ -298,7 +283,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-es
-    app.kubernetes.io/instance: bigquant
 spec:
   storageClassName: manual
   capacity:
@@ -329,7 +313,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx
-    app.kubernetes.io/instance: bigquant
  
 ---
 apiVersion: v1
@@ -339,7 +322,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx
-    app.kubernetes.io/instance: bigquant
 spec:
   type: ClusterIP
   ports:
@@ -349,8 +331,6 @@ spec:
       name: open-vsx
   selector:
     app.kubernetes.io/name: open-vsx
-    app.kubernetes.io/instance: bigquant
- 
  
 ---
 apiVersion: v1
@@ -360,7 +340,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx
-    app.kubernetes.io/instance: bigquant
 data:
   application.yml: |-
     spring:
@@ -396,7 +375,7 @@ data:
       databasesearch:
         enabled: false
       webui:
-        url: https://openvsx.bigquant.com
+        url: https://openvsx.xxx.com
    
 ---
 apiVersion: apps/v1
@@ -407,17 +386,14 @@ metadata:
   annotations:
     configmap.reloader.stakater.com/reload: "open-vsx-config"
   labels:
-    app.kubernetes.io/instance: bigquant
     app.kubernetes.io/name: open-vsx
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/instance: bigquant
       app.kubernetes.io/name: open-vsx
   template:
     metadata:
       labels:
-        app.kubernetes.io/instance: bigquant
         app.kubernetes.io/name: open-vsx
     spec:
       nodeSelector:
@@ -430,7 +406,6 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: code-marketplace
-                  app.kubernetes.io/instance: bigquant
               namespaces:
               - aipaas-system
               topologyKey: kubernetes.io/hostname
@@ -463,7 +438,7 @@ spec:
       serviceAccountName: open-vsx
       containers:
       - name: open-vsx
-        image: dockerhub.bigquant.ai:5000/aipaas-devops/3rdparty/ghcr.io/eclipse/openvsx-server:v0.6.0
+        image: ghcr.io/eclipse/openvsx-server:v0.6.0
         resources:
           requests:
             memory: "512Mi"
@@ -499,7 +474,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-ui
-    app.kubernetes.io/instance: bigquant
  
 ---
 apiVersion: v1
@@ -509,7 +483,6 @@ metadata:
   namespace: open-vsx
   labels:
     app.kubernetes.io/name: open-vsx-ui
-    app.kubernetes.io/instance: bigquant
 spec:
   type: ClusterIP
   ports:
@@ -519,7 +492,6 @@ spec:
     name: open-vsx-ui
   selector:
     app.kubernetes.io/name: open-vsx-ui
-    app.kubernetes.io/instance: bigquant
  
 ---
 apiVersion: apps/v1
@@ -528,17 +500,14 @@ metadata:
   name: open-vsx-ui
   namespace: open-vsx
   labels:
-    app.kubernetes.io/instance: bigquant
     app.kubernetes.io/name: open-vsx-ui
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/instance: bigquant
       app.kubernetes.io/name: open-vsx-ui
   template:
     metadata:
       labels:
-        app.kubernetes.io/instance: bigquant
         app.kubernetes.io/name: open-vsx-ui
     spec:
       nodeSelector:
@@ -551,7 +520,6 @@ spec:
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: code-marketplace
-                  app.kubernetes.io/instance: bigquant
               namespaces:
               - aipaas-system
               topologyKey: kubernetes.io/hostname
@@ -586,7 +554,7 @@ spec:
       serviceAccountName: open-vsx-ui
       containers:
       - name: open-vsx-ui
-        image: dockerhub.bigquant.ai:5000/aipaas-devops/3rdparty/ghcr.io/eclipse/openvsx-webui:v0.6.0
+        image: ghcr.io/eclipse/openvsx-webui:v0.6.0
         resources:
           requests:
             memory: "512Mi"
@@ -609,7 +577,6 @@ metadata:
   name: open-vsx
   namespace: open-vsx
   labels:
-    app.kubernetes.io/instance: bigquant
     app.kubernetes.io/name: open-vsx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
@@ -619,10 +586,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - openvsx.bigquant.com
+    - openvsx.xxx.com
     secretName: open-vsx-https-secret
   rules:
-  - host: openvsx.bigquant.com
+  - host: openvsx.xxx.com
     http:
       paths:
       - pathType: Prefix
@@ -698,7 +665,7 @@ spec:
               value: 'socks5://192.168.148.116:8899'
             - name: no_proxy
               value: >-
-                127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.bigquant.ai,.aliyun.com,.bigquant.com
+                127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.aliyun.com
             - name: HTTP_PROXY
               value: 'http://192.168.148.116:8899'
             - name: HTTPS_PROXY
@@ -707,13 +674,13 @@ spec:
               value: 'socks5://192.168.148.116:8899'
             - name: NO_PROXY
               value: >-
-                127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.bigquant.ai,.aliyun.com,.bigquant.com 
+                127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.aliyun.com
 ```
 
 验证上述代理方式无效，需要注入 jvm args
 
 ```bash
--Dhttp.proxyHost=192.168.148.182 -Dhttp.proxyPort=8899 -Dhttps.proxyHost=192.168.148.182 -Dhttps.proxyPort=8899  -Dhttp.nonProxyHosts=127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,open-vsx-es,open-vsx-db,open-vsx.svc.cluster.local,.svc.cluster.local,.cluster.local,.local,.aliyun.com,.bigquant.com -Dhttps.proxySet=true -Dhttp.proxySet=true
+-Dhttp.proxyHost=192.168.148.182 -Dhttp.proxyPort=8899 -Dhttps.proxyHost=192.168.148.182 -Dhttps.proxyPort=8899  -Dhttp.nonProxyHosts=127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,open-vsx-es,open-vsx-db,open-vsx.svc.cluster.local,.svc.cluster.local,.cluster.local,.local,.aliyun.com, -Dhttps.proxySet=true -Dhttp.proxySet=true
 
 # 可以通过环境变量 JVM_ARGS 注入
 ```
@@ -761,13 +728,13 @@ Commands:
 
 ```bash
 root at devmaster1 in ~
-# npx ovsx -r https://openvsx.bigquant.com -p 71812426-35af-4127-858c-daace3ecbe4f create-namespace jock
+# npx ovsx -r https://openvsx.xxx.com -p 71812426-35af-4127-858c-daace3ecbe4f create-namespace jock
 🚀  Created namespace jock
 ```
 
 手动上传插件
 
 ```
-npx ovsx -r https://openvsx.bigquant.com -p 71812426-35af-4127-858c-daace3ecbe4f publish jock.svg-1.4.23.vsix
+npx ovsx -r https://openvsx.xxx.com -p 71812426-35af-4127-858c-daace3ecbe4f publish jock.svg-1.4.23.vsix
 ```
 

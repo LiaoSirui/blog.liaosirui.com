@@ -35,7 +35,7 @@ global: {}
 
 
 # initContainerImage: docker.bintray.io/alpine:3.12
-initContainerImage: dockerhub.bigquant.ai:5000/devops/alpine:3.12
+initContainerImage: alpine:3.12
 
 # Init containers
 initContainers:
@@ -92,7 +92,7 @@ ingress:
     enabled: true
   # Used to create an Ingress record.
   hosts: 
-    - repos.bigquant.ai
+    - repos.local-repo.ai
   routerPath: /
   artifactoryPath: /artifactory/
   annotations:
@@ -110,7 +110,7 @@ ingress:
   # Secrets must be manually created in the namespace.
   - secretName: artifactory-https-secret
     hosts:
-      - repos.bigquant.ai
+      - repos.local-repo.ai
 
   # Additional ingress rules
   additionalRules: []
@@ -141,7 +141,7 @@ logger:
     # registry: docker.bintray.io
     # repository: busybox
     # tag: 1.31.1
-    registry: "dockerhub.bigquant.ai:5000"
+    registry: "dockerhub.local-repo.ai:5000"
     repository: devops/busybox
     tag: 1.31.1
 
@@ -152,7 +152,7 @@ artifactory:
   image:
     # registry: docker.bintray.io
     # repository: jfrog/artifactory-pro
-    registry: "dockerhub.bigquant.ai:5000"
+    registry: "dockerhub.local-repo.ai:5000"
     repository: devops/artifactory-pro
     # tag:
     pullPolicy: IfNotPresent
@@ -920,7 +920,7 @@ artifactory:
    # other: ""
 
   nodeSelector:
-    bigquant_repo: "true"
+    local-repo_repo: "true"
 
   tolerations: []
 
@@ -976,7 +976,7 @@ nginx:
   image:
     # registry: docker.bintray.io
     # repository: jfrog/nginx-artifactory-pro
-    registry: "dockerhub.bigquant.ai:5000"
+    registry: "dockerhub.local-repo.ai:5000"
     repository: devops/nginx-artifactory-pro
     # tag:
     pullPolicy: IfNotPresent
@@ -1236,7 +1236,7 @@ nginx:
      memory: "250Mi"
      cpu: "500m"
   nodeSelector:
-    bigquant_repo: "true"
+    local-repo_repo: "true"
 
   tolerations: []
 
@@ -1254,11 +1254,11 @@ postgresql:
     # registry: docker.bintray.io
     # repository: bitnami/postgresql
     # tag: 12.3.0-debian-10-r71
-    registry: "dockerhub.bigquant.ai:5000"
+    registry: "dockerhub.local-repo.ai:5000"
     repository: devops/postgresql
     tag: 12.3.0-debian-10-r71
   postgresqlUsername: artifactory
-  postgresqlPassword: "bigquant123!"
+  postgresqlPassword: "local-repo123!"
   postgresqlDatabase: artifactory
   postgresqlExtendedConf:
     listenAddresses: "'*'"
@@ -1270,12 +1270,12 @@ postgresql:
     port: 5432
   master:
     nodeSelector:
-      bigquant_repo: "true"
+      local-repo_repo: "true"
     affinity: {}
     tolerations: []
   slave:
     nodeSelector:
-      bigquant_repo: "true"
+      local-repo_repo: "true"
     affinity: {}
     tolerations: []
   resources:
@@ -1748,22 +1748,22 @@ fluentd:
 ```bash
 cd helm
 
-helm install bigquant artifactory-11.4.5.tgz --version 11.4.5 --namespace artifactory -f ./values.yaml \
-    --set artifactory.joinKeySecretName=bigquant-joinkey-secret \
-    --set artifactory.masterKeySecretName=bigquant-masterkey-secret
+helm install local-repo artifactory-11.4.5.tgz --version 11.4.5 --namespace artifactory -f ./values.yaml \
+    --set artifactory.joinKeySecretName=local-repo-joinkey-secret \
+    --set artifactory.masterKeySecretName=local-repo-masterkey-secret
 ```
 
 如果你想 debug，可以使用下面的方式
 
 ```bash
 # for debug: 
-# helm install bigquant artifactory-11.4.5.tgz --version 11.4.5 --namespace artifactory -f ./values.yaml \
-#     --set artifactory.joinKeySecretName=bigquant-joinkey-secret \
-#     --set artifactory.masterKeySecretName=bigquant-masterkey-secret --dry-run
+# helm install local-repo artifactory-11.4.5.tgz --version 11.4.5 --namespace artifactory -f ./values.yaml \
+#     --set artifactory.joinKeySecretName=local-repo-joinkey-secret \
+#     --set artifactory.masterKeySecretName=local-repo-masterkey-secret --dry-run
 ```
 
 ### 删除部署
 
 ```bash
-helm delete bigquant  -n artifactory
+helm delete local-repo  -n artifactory
 ```

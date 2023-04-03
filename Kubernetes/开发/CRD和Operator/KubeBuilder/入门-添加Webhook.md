@@ -96,7 +96,7 @@ func (r *KBDev) SetupWebhookWithManager(mgr ctrl.Manager) error {
 var _ webhook.Defaulter = &KBDev{}
 
 const (
-	DefaultImage = "dockerhub.bigquant.ai:5000/dockerstacks/rocky-kbdev:master_latest"
+	DefaultImage = "dockerstacks/rocky-kbdev:master_latest"
 )
 
 // Default implements webhook.Defaulter so a webhook will be registered for the type
@@ -488,8 +488,8 @@ patchesStrategicMerge:
 
 ```bash
 > make dev
-/code/bigquant/aipaas-devops/kbdev-operator/bin/controller-gen rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
-/code/bigquant/aipaas-devops/kbdev-operator/bin/kustomize build config/overlays/dev | kubectl apply -f -
+/code/aipaas-devops/kbdev-operator/bin/controller-gen rbac:roleName=manager-role crd webhook paths="./..." output:crd:artifacts:config=config/crd/bases
+/code/aipaas-devops/kbdev-operator/bin/kustomize build config/overlays/dev | kubectl apply -f -
 certificate.cert-manager.io/kbdev-operator-serving-cert created
 issuer.cert-manager.io/kbdev-operator-selfsigned-issuer created
 

@@ -2,7 +2,7 @@ Git Config 配置如下：
 
 ```ini
 [user]
-    email = srliao@bigquant.ai
+    email = cyril@liaosirui.com
     name = LiaoSirui
 
 [core]

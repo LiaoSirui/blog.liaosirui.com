@@ -25,13 +25,13 @@ touch docker/build/Dockerfile
 Dockerfile 内容如下（基于 centos 7 进行编译）
 
 ```dockerfile
-# syntax=dockerhub.bigquant.ai:5000/aipaas-devops/3rdparty/docker.io/docker/dockerfile:1.4
+# syntax=docker.io/docker/dockerfile:1.4
 
 ARG APP_VERSION=v5.0.2
 
-ARG THIRDPARTY_REPO=dockerhub.bigquant.ai:5000/aipaas-devops/3rdparty
+ARG THIRDPARTY_REPO=daipaas-devops/3rdparty
 
-FROM --platform=$TARGETPLATFORM dockerhub.bigquant.ai:5000/dockerstacks/centos-base:master_latest as builder
+FROM --platform=$TARGETPLATFORM dockerstacks/centos-base:master_latest as builder
 
 ARG AIPAAS_UID=1713
 ARG AIPAAS_GID=1713
@@ -60,7 +60,7 @@ RUN --mount=type=cache,target=/var/cache,id=buildx-cache \
     && meson compile -C build \
     && meson install -C build
 
-FROM --platform=$TARGETPLATFORM dockerhub.bigquant.ai:5000/dockerstacks/centos-base:master_latest
+FROM --platform=$TARGETPLATFORM dockerstacks/centos-base:master_latest
 
 ENV LXCFS_VERSION=${APP_VERSION}
 

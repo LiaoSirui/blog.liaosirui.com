@@ -82,7 +82,7 @@ spec:
       additionalRedisConfig: redis-cluster-ext-config
     replicas: 3
   kubernetesConfig:
-    image: 'dockerhub.bigquant.ai:5000/aipaas-middleware/redis:v7.0.5'
+    image: 'aipaas-middleware/redis:v7.0.5'
     imagePullPolicy: IfNotPresent
     imagePullSecrets:
       - name: aipaas-image-pull-secrets
@@ -129,7 +129,7 @@ spec:
   clusterSize: 3
   redisExporter:
     enabled: true
-    image: 'dockerhub.bigquant.ai:5000/aipaas-middleware/redis-exporter:v1.44.0'
+    image: 'aipaas-middleware/redis-exporter:v1.44.0'
     imagePullPolicy: IfNotPresent
   tolerations:
     - effect: NoSchedule

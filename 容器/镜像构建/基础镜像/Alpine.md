@@ -70,11 +70,11 @@ apk add --no-cache --virtual .ruby-builddeps \
 
 ```dockerfile
 # syntax=docker/dockerfile:experimental
-FROM dockerhub.bigquant.ai:5000/vendor/alpine:3.11.3 as file_passer
+FROM alpine:3.11.3 as file_passer
 
 COPY docker_build/ruby_base /tmp/ruby_base/
 
-FROM dockerhub.bigquant.ai:5000/vendor/alpine:3.11.3
+FROM alpine:3.11.3
 
 ENV \
     # ruby version
