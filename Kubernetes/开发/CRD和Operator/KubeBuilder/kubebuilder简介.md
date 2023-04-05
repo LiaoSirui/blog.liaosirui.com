@@ -7,3 +7,7 @@
 <https://lihaoquan.me/posts/k8s-crd-develop/>
 
 <https://blog.gmem.cc/crd>
+
+
+
+- <https://lailin.xyz/post/operator-kubebuilder-clientset.html>
