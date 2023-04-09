@@ -11,3 +11,5 @@
 
 
 - <https://lailin.xyz/post/operator-kubebuilder-clientset.html>
+
+- <https://kubebyexample.com/learning-paths/operator-framework/operator-sdk-go/watching-resources>
