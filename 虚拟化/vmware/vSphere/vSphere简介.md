@@ -22,11 +22,13 @@ vSphere Essentials 和 Essentials Plus 专门为刚开始体验虚拟化的小�
 
 ![img](./.assets/vSphere简介/af70bb8a-87a2-4a06-844c-933f4d9db9f11.png)
 
-# 下载链接
+## 下载链接
 
 8.0 下载：<https://customerconnect.vmware.com/downloads/info/slug/datacenter_cloud_infrastructure/vmware_vsphere/8_0>
 
 其他下载链接：<https://www.dinghui.org/vmware-iso-download.html>
+
+一些神秘的代码：
 
 ```
 ESXi 8 4V492-44210-48830-931GK-2PRJ4
@@ -43,9 +45,9 @@ vSAN 8 witness JF61H-48K8K-488X9-W98Z0-1FH24
 Horizon Enterprise v8.x 0G4DA-49J81-M80R1-012N4-86KH4
 ```
 
-## 安装参考
+## 常用链接
 
-<https://post.smzdm.com/p/a8x6o5on/>
+- VMWare 硬件支持（VMware Compatibility Guide，查询网卡的驱动情况：<https://www.vmware.com/resources/compatibility/search.php?deviceCategory=io&details=1&partner=46&releases=589&keyword=226&deviceTypes=6&page=1&display_interval=10&sortColumn=Partner&sortOrder=Asc>
 
-<https://post.smzdm.com/p/a5op28x7/>
+- ESXi 的社区网络驱动程序下载网卡驱动：<https://flings.vmware.com/community-networking-driver-for-esxi#requirements>
 

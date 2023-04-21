@@ -95,3 +95,6 @@ threadIdx.y = 1
 
 - <https://zhuanlan.zhihu.com/p/34587739>
 - <https://lulaoshi.info/gpu/python-cuda/numba.html#%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95>
+
+- <https://qiankunli.github.io/2021/08/18/gpu_utilization.html>
+- <https://mp.weixin.qq.com/s/K_Yl-MD0SN4ltlG3Gx_Tiw>
