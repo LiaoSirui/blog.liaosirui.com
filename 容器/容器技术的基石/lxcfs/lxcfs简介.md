@@ -2,9 +2,18 @@
 
 Linuxs 利用 Cgroup 实现了对容器的资源限制，但在容器内部依然缺省挂载了宿主机上的 procfs 的 `/proc` 目录，其包含如：meminfo, cpuinfo，stat， uptime 等资源信息
 
-一些监控工具如 free/top 或遗留应用还依赖上述文件内容获取资源配置和使用情况
+```bash
+/proc/cpuinfo
+/proc/diskstats
+/proc/meminfo
+/proc/stat
+/proc/swaps
+/proc/uptime
+```
 
-当它们在容器中运行时，就会把宿主机的资源状态读取出来，引起错误和不便
+一些监控工具如 free/top 或遗留应用还依赖上述文件内容获取资源配置和使用情况；当它们在容器中运行时，就会把宿主机的资源状态读取出来，引起错误和不便
+
+为了实现让容器内部的资源视图更像虚拟机，使得应用程序可以拿到真实的 CPU 和内存信息，就需要通过文件挂载的方式将 cgroup 的真实的容器资源信息挂载到容器内 `/proc` 下的文件，使得容器内执行 top、free 等命令时可以拿到真实的 CPU 和内存信息
 
 通过 lxcfs 提供容器资源可见性的方法，可以帮助一些遗留系统更好的识别容器运行时的资源限制
 
@@ -54,3 +63,16 @@ LXCFS 的示意图如下
 比如，把宿主机的 `/var/lib/lxcfs/proc/memoinfo` 文件挂载到Docker容器的`/proc/meminfo`位置后
 
 容器中进程读取相应文件内容时，LXCFS 的 FUSE 实现会从容器对应的 Cgroup 中读取正确的内存限制，从而使得应用获得正确的资源约束设定
+
+**映射目录**
+
+| 类别 | 容器内目录                       | 宿主机 lxcfs 目录                                            |
+| ---- | -------------------------------- | ------------------------------------------------------------ |
+| cpu  | `/proc/cpuinfo`                  | `/var/lib/lxcfs/{container_id}/proc/cpuinfo`                 |
+| 内存 | `/proc/meminfo`                  | `/var/lib/lxcfs/{container_id}/proc/meminfo`                 |
+| -    | `/proc/diskstats`                | `/var/lib/lxcfs/{container_id}/proc/diskstats`               |
+| -    | `/proc/stat`                     | `/var/lib/lxcfs/{container_id}/proc/stat`                    |
+| -    | `/proc/swaps`                    | `/var/lib/lxcfs/{container_id}/proc/swaps`                   |
+| -    | `/proc/uptime`                   | `/var/lib/lxcfs/{container_id}/proc/uptime`                  |
+| -    | `/proc/loadavg`                  | `/var/lib/lxcfs/{container_id}/proc/loadavg`                 |
+| -    | `/sys/devices/system/cpu/online` | `/var/lib/lxcfs/{container_id}/sys/devices/system/cpu/online` |

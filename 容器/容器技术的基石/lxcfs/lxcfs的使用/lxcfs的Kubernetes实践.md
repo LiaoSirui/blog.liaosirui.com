@@ -2,6 +2,8 @@
 
 <img src=".assets/d21cc9032174006d97a770ca4396a533.png" alt="图片" style="zoom: 67%;" />
 
+### 启用 fuse 模块
+
 先确保节点都开启 fuse 内核模块，并写入文件
 
 ```bash
@@ -9,6 +11,8 @@ cat << EOF > /etc/modules-load.d/fuse.conf
 fuse
 EOF
 ```
+
+### rbac
 
 准备 rbac
 
@@ -70,6 +74,8 @@ subjects:
 
 ```
 
+### 使用 DaemonSet  启动 lxcfs
+
 要在集群节点上安装并启动 lxcfs，将用 Kubernetes 的方式，用利用容器和 DaemonSet 方式来运行 lxcfs FUSE 文件系统
 
 由于 lxcfs FUSE 需要共享系统的 PID 名空间以及需要特权模式，所以配置了相应的容器启动参数
@@ -106,6 +112,9 @@ spec:
         - --enable-cfs
         - --enable-pidfd
         - /var/lib/lxcfs
+        - --enable-loadavg
+        - -o
+        - allow_other,nonempty
         image: ghcr.io/cndoit18/lxcfs-agent:v0.1.4
         imagePullPolicy: "IfNotPresent"
         resources:
@@ -135,7 +144,16 @@ spec:
 
 ```
 
-部署
+建议增加优先级，保证服务始终运行
+
+```bash
+```
+
+
+
+### webhook
+
+webhook 部署
 
 ```yaml
 ---
@@ -280,6 +298,8 @@ webhooks:
 
 ```
 
+### 测试
+
 给指定的命名空间加上 label
 
 ```bash
@@ -384,6 +404,8 @@ Volumes:
     Path:          /var/lib/lxcfs/sys/devices/system/cpu/online
     HostPathType:
 ```
+
+## 自动 remount 问题
 
 故障恢复，如何自动 remount？ 如果 lxcfs 进程重启了，那么容器里的 `/proc/cpuinfo` 等等都会报`transport connected failed` 这个是因为 /var/lib/lxcfs 会删除再重建，inode 变了
 

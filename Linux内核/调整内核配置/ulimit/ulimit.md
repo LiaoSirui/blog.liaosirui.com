@@ -30,6 +30,8 @@ Max realtime priority     0                    0
 Max realtime timeout      unlimited            unlimited            us
 ```
 
+禁止 core 文件生成，需要执行 `ulimit -c 0`
+
 ## 软资源限制和硬资源限制
 
 - 硬资源限制代表了物理限制，即物理上最大能达到的值

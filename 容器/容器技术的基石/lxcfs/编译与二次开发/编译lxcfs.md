@@ -79,7 +79,9 @@ RUN --mount=type=cache,target=/var/cache,id=buildx-cache \
     # update packages
     && yum makecache fast \
     && yum update --exclude=centos-release* --skip-broken -y \
-    && yum install -y fuse-libs
+    && yum install -y fuse-libs \
+    fuse \
+    && true
 
 ENTRYPOINT [ "/usr/bin/lxcfs" ]
 

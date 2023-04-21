@@ -42,7 +42,7 @@ systemctl status lxcfs
 
 ```bash
 docker run -it --rm \
-	--cpus 2 --memory 4g --memory-swap 4g \
+  --cpus 2 --memory 4g --memory-swap 4g \
   -v /var/lib/lxcfs/proc/cpuinfo:/proc/cpuinfo:rw \
   -v /var/lib/lxcfs/proc/diskstats:/proc/diskstats:rw \
   -v /var/lib/lxcfs/proc/loadavg:/proc/loadavg:rw \

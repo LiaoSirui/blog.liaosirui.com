@@ -37,3 +37,9 @@ fuse: if you are sure this is safe, use the 'nonempty' mount option
 Running destructor lxcfs_exit
 ```
 
+增加挂载参数
+
+```bash
+-o allow_other,nonempty
+```
+
