@@ -5,7 +5,7 @@
 最新的 Release 可以从 <https://github.com/opencontainers/runc/releases> 获取
 
 ```bash
-export RUNC_VERSION=v1.1.4
+export RUNC_VERSION=v1.1.6
 
 curl -sL https://github.com/opencontainers/runc/releases/download/${RUNC_VERSION}/runc.amd64 -o /usr/local/bin/runc-${RUNC_VERSION}
 
@@ -662,9 +662,9 @@ dnf list --enablerepo=kubernetes kubelet --showduplicates | grep 1.26 | sort -r
 # 建议安装最新版本的
 dnf install --enablerepo=kubernetes -y \
   iproute-tc \
-  kubelet-1.26.1-0 \
-  kubeadm-1.26.1-0 \
-  kubectl-1.26.1-0
+  kubelet-1.27.1-0 \
+  kubeadm-1.27.1-0 \
+  kubectl-1.27.1-0
 # dnf versionlock kubelet kubeadm kubectl
 ```
 
@@ -687,12 +687,12 @@ systemctl enable kubelet
 查看镜像版本（没什么用，一般是为了从中国可访问的镜像仓库下载
 
 ```bash
-> kubeadm config images list --kubernetes-version=v1.26.1
+> kubeadm config images list --kubernetes-version=v1.27.1
 
-registry.k8s.io/kube-apiserver:v1.26.1
-registry.k8s.io/kube-controller-manager:v1.26.1
-registry.k8s.io/kube-scheduler:v1.26.1
-registry.k8s.io/kube-proxy:v1.26.1
+registry.k8s.io/kube-apiserver:v1.27.1
+registry.k8s.io/kube-controller-manager:v1.27.1
+registry.k8s.io/kube-scheduler:v1.27.1
+registry.k8s.io/kube-proxy:v1.27.1
 registry.k8s.io/pause:3.9
 registry.k8s.io/etcd:3.5.6-0
 registry.k8s.io/coredns/coredns:v1.9.3
@@ -701,22 +701,22 @@ registry.k8s.io/coredns/coredns:v1.9.3
 指定镜像仓库
 
 ```bash
-> kubeadm config images list --kubernetes-version=v1.26.1 \
+> kubeadm config images list --kubernetes-version=v1.27.1 \
   --image-repository=harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io
 
-harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-apiserver:v1.26.1
-harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-controller-manager:v1.26.1
-harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-scheduler:v1.26.1
-harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-proxy:v1.26.1
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-apiserver:v1.27.1
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-controller-manager:v1.27.1
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-scheduler:v1.27.1
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/kube-proxy:v1.27.1
 harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/pause:3.9
-harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/etcd:3.5.6-0
-harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/coredns:v1.9.3
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/etcd:3.5.7-0
+harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io/coredns:v1.10.1
 ```
 
 如果有代理，直接拉取镜像即可，也可指定镜像仓库
 
 ```bash
-kubeadm config images pull --kubernetes-version=v1.26.1 \
+kubeadm config images pull --kubernetes-version=v1.27.1 \
   --image-repository=harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io
 ```
 
@@ -730,7 +730,7 @@ kubeadm config print init-defaults > /root/.kube/kubeadm-init.yaml
 kubeadm init \
   --apiserver-advertise-address=10.244.244.201 \
   --apiserver-cert-extra-sans=apiserver.local.liaosirui.com \
-  --kubernetes-version=v1.26.1 \
+  --kubernetes-version=v1.27.1 \
   --service-cidr=10.3.0.0/16 \
   --pod-network-cidr=10.4.0.0/16 \
   --node-name devmaster \
