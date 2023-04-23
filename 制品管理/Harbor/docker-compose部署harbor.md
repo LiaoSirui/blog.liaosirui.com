@@ -7,7 +7,7 @@
 最新版本可以从 github 获取：<https://github.com/goharbor/harbor/releases>
 
 ```bash
-export HARBOR_VERSION=v2.5.5
+export HARBOR_VERSION=v2.8.0
 
 cd $(mktemp -d)
 wget https://github.com/goharbor/harbor/releases/download/${HARBOR_VERSION}/harbor-offline-installer-${HARBOR_VERSION}.tgz \
@@ -55,8 +55,8 @@ yq -i '.https.certificate = "/data/harbor/https-cert/tls.crt"' harbor.yml
 yq -i '.https.private_key = "/data/harbor/https-cert/tls.key"' harbor.yml
 
 # 初始密码
-yq -i '.harbor_admin_password = "LSR1142.harbor"' harbor.yml
-yq -i '.database.password = "LSR1142mysql"' harbor.yml
+yq -i '.harbor_admin_password = "Lsr1142._harbor"' harbor.yml
+yq -i '.database.password = "Lsr1142._mysql"' harbor.yml
 
 # 数据目录
 yq -i '.data_volume = "/data/harbor-data"' harbor.yml
@@ -67,7 +67,7 @@ yq -i '.data_volume = "/data/harbor-data"' harbor.yml
 修改完毕后，直接运行
 
 ```bash
-bash ./install.sh --with-trivy --with-chartmuseum
+bash ./install.sh --with-trivy
 ```
 
 并等待 Docker Compose 执行完毕

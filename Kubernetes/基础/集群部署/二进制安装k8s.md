@@ -28,7 +28,7 @@ ls -al /usr/bin/runc /usr/local/bin/runc /usr/local/bin/runc-${RUNC_VERSION}
 下载 containerd
 
 ```bash
-export CONTAINERD_VERSION=v1.6.15
+export CONTAINERD_VERSION=v1.6.20
 
 cd $(mktemp -d)
 curl -sL \
@@ -132,13 +132,13 @@ vim /etc/containerd/config.toml +125
 ```bash
 mkdir /etc/systemd/system/containerd.service.d
 
-cat > /etc/systemd/system/containerd.service.d/http_proxy.conf << EOF
+cat > /etc/systemd/system/containerd.service.d/http_proxy.conf << __EOF__
 [Service]
-Environment="HTTP_PROXY=http://10.244.244.2:7891"
-Environment="HTTPS_PROXY=http://10.244.244.2:7891"
-Environment="ALL_PROXY=socks5://10.244.244.2:7891"
+Environment="HTTP_PROXY=http://proxy.local.liaosirui.com:8899"
+Environment="HTTPS_PROXY=http://proxy.local.liaosirui.com:8899"
+Environment="ALL_PROXY=socks5://proxy.local.liaosirui.com:8899"
 Environment="NO_PROXY=127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.liaosirui.com"
-EOF
+__EOF__
 
 systemctl daemon-reload
 
@@ -154,7 +154,7 @@ systemctl restart containerd
 <https://download.docker.com/linux/static/stable/x86_64/>
 
 ```bash
-export DOCKER_VERSION=v20.10.9
+export DOCKER_VERSION=v23.0.4
 
 cd $(mktemp -d)
 
@@ -190,11 +190,10 @@ ls -al /usr/local/bin/docker*
 
 创建一个 system 管理文件，参考
 
-- <https://github.com/docker/docker-ce/blob/master/components/engine/contrib/init/systemd/docker.service>
-- <https://github.com/moby/moby/blob/v20.10.19/contrib/init/systemd/docker.servic>
+- <https://github.com/moby/moby/blob/v23.0.4/contrib/init/systemd/docker.servic>
 
 ```bash
-wget https://raw.githubusercontent.com/moby/moby/v20.10.19/contrib/init/systemd/docker.service \
+wget https://raw.githubusercontent.com/moby/moby/v23.0.4/contrib/init/systemd/docker.service \
   -O /usr/lib/systemd/system/docker.service
 ```
 
@@ -204,8 +203,8 @@ wget https://raw.githubusercontent.com/moby/moby/v20.10.19/contrib/init/systemd/
 [Unit]
 Description=Docker Application Container Engine
 Documentation=https://docs.docker.com
-After=network-online.target docker.socket firewalld.service
-Wants=network-online.target
+After=network-online.target docker.socket firewalld.service containerd.service time-set.target
+Wants=network-online.target containerd.service
 Requires=docker.socket
 
 [Service]
@@ -213,25 +212,38 @@ Type=notify
 # the default is not to use systemd for cgroups because the delegate issues still
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker
-ExecStart=/usr/bin/dockerd -H fd://
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 ExecReload=/bin/kill -s HUP $MAINPID
-LimitNOFILE=1048576
+TimeoutStartSec=0
+RestartSec=2
+Restart=always
+
+# Note that StartLimit* options were moved from "Service" to "Unit" in systemd 229.
+# Both the old, and new location are accepted by systemd 229 and up, so using the old location
+# to make them work for either version of systemd.
+StartLimitBurst=3
+
+# Note that StartLimitInterval was renamed to StartLimitIntervalSec in systemd 230.
+# Both the old, and new name are accepted by systemd 230 and up, so using the old name to make
+# this option work for either version of systemd.
+StartLimitInterval=60s
+
 # Having non-zero Limit*s causes performance problems due to accounting overhead
 # in the kernel. We recommend using cgroups to do container-local accounting.
+LimitNOFILE=infinity
 LimitNPROC=infinity
 LimitCORE=infinity
-# Uncomment TasksMax if your systemd version supports it.
-# Only systemd 226 and above support this version.
-#TasksMax=infinity
-TimeoutStartSec=0
+
+# Comment TasksMax if your systemd version does not support it.
+# Only systemd 226 and above support this option.
+TasksMax=infinity
+
 # set delegate yes so that systemd does not reset the cgroups of docker containers
 Delegate=yes
+
 # kill only the docker process, not all processes in the cgroup
 KillMode=process
-# restart the docker process if it exits prematurely
-Restart=on-failure
-StartLimitBurst=3
-StartLimitInterval=60s
+OOMScoreAdjust=-500
 
 [Install]
 WantedBy=multi-user.target
@@ -239,8 +251,7 @@ WantedBy=multi-user.target
 
 创建 docker.socket，参考
 
-- <https://github.com/docker/docker-ce/blob/master/components/engine/contrib/init/systemd/docker.socket>
-- <https://github.com/moby/moby/blob/v20.10.19/contrib/init/systemd/docker.socket>
+- <https://github.com/moby/moby/blob/v23.0.4/contrib/init/systemd/docker.socket>
 
 ```bash
 curl -L https://raw.githubusercontent.com/moby/moby/v20.10.19/contrib/init/systemd/docker.socket \
@@ -312,13 +323,14 @@ systemctl enable docker
 
 ```bash
 mkdir /etc/systemd/system/docker.service.d
-cat > /etc/systemd/system/containerd.service.d/http_proxy.conf << EOF
+
+cat > /etc/systemd/system/docker.service.d/http_proxy.conf << __EOF__
 [Service]
-Environment="HTTP_PROXY=http://10.244.244.1:8899"
-Environment="HTTPS_PROXY=http://10.244.244.1:8899"
-Environment="ALL_PROXY=socks5://10.244.244.1:8899"
+Environment="HTTP_PROXY=http://proxy.local.liaosirui.com:8899"
+Environment="HTTPS_PROXY=http://proxy.local.liaosirui.com:8899"
+Environment="ALL_PROXY=socks5://proxy.local.liaosirui.com:8899"
 Environment="NO_PROXY=127.0.0.1,localhost,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.liaosirui.com"
-EOF
+__EOF__
 
 systemctl daemon-reload
 systemctl restart docker
@@ -331,7 +343,7 @@ systemctl restart docker
 下载 nerdctl
 
 ```bash
-export NERDCTL_VERSION=v1.1.0
+export NERDCTL_VERSION=v1.3.1
 
 # 下载 nerdctl
 cd $(mktemp -d)
@@ -359,8 +371,8 @@ ls -al /usr/bin/nerdctl /usr/local/bin/nerdctl
 配置 alias
 
 ```bash
-echo "alias dockern='nerdctl --namespace k8s.io'"  >> ~/.bashrc
-echo "alias dockern-compose='nerdctl compose'"  >> ~/.bashrc
+echo "alias ndocker='nerdctl --namespace k8s.io'"  >> ~/.bashrc
+echo "alias ndocker-compose='nerdctl compose'"  >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -399,7 +411,7 @@ EOF
 下载 buildkit
 
 ```bash
-export BUILD_KIT_VERSION=v0.11.1
+export BUILD_KIT_VERSION=v0.11.6
 
 cd $(mktemp -d)
 wget https://github.com/moby/buildkit/releases/download/${BUILD_KIT_VERSION}/buildkit-${BUILD_KIT_VERSION}.linux-amd64.tar.gz \
@@ -463,12 +475,12 @@ insecure-entitlements = [ "network.host", "security.insecure" ]
 
 [registry."19.15.14.158:31104"]
   mirrors = ["19.15.14.158:31104"]
-  http = true       #使用http协议
-  insecure = true    #不验证安全证书
+  http = true        # 使用 http 协议
+  insecure = true    # 不验证安全证书
 [registry."mmzwwwdocker.xxxxxx.com:31104"]
   mirrors = ["mmzwwwdocker.xxxxxxx.com:31104"]
-  http = true  #使用http协议
-  insecure = true  #不验证安全证书
+  http = true      # 使用 http 协议
+  insecure = true  # 不验证安全证书
 EOF
 ```
 
@@ -501,13 +513,13 @@ systemctl status buildkit
 
 ```bash
 cd $(mktemp -d)
-mkcd test
+mkdir test && cd test
 
 cat > Dockerfile << 'EOF'
 FROM alpine
 EOF
 
-dockern build --platform arm64,amd64 -t  test1 .
+ndocker build --platform arm64,amd64 -t  test1 .
 ```
 
 ## 安装 k8s
@@ -515,13 +527,17 @@ dockern build --platform arm64,amd64 -t  test1 .
 配置免密，方便操作
 
 ```bash
-echo '10.244.244.201 devmaster' >> /etc/hosts
-echo '10.244.244.211 devnode1' >> /etc/hosts
-echo '10.244.244.212 devnode2' >> /etc/hosts
+echo '10.244.244.11 dev-master' >> /etc/hosts
+echo '10.244.244.12 dev-node12' >> /etc/hosts
+echo '10.244.244.13 dev-node13' >> /etc/hosts
 
-ssh root@10.244.244.201
-ssh root@10.244.244.211
-ssh root@10.244.244.212
+ssh root@10.244.244.11
+ssh root@10.244.244.12
+ssh root@10.244.244.13
+
+ssh root@dev-master
+ssh root@dev-node12
+ssh root@dev-node13
 ```
 
 关闭防火墙和 selinux
@@ -563,11 +579,8 @@ free -m
 ```bash
 dnf install -y chrony
 
-# 启动 chrony 服务
-systemctl start chronyd
-
-# 设置开机自启
-systemctl enable chronyd
+# 启动 chrony 服务 /设置开机自启
+systemctl enable --now chronyd
 
 # 查看 chrony 服务状态
 systemctl status chronyd
@@ -649,15 +662,14 @@ vim /etc/yum.repos.d/kubernetes.repo
 name=Kubernetes
 baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
 enabled=0
-gpgcheck=1
+gpgcheck=0
 repo_gpgcheck=0
-gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 ```
 
 查看可以安装的 k8s 版本
 
 ```bash
-dnf list --enablerepo=kubernetes kubelet --showduplicates | grep 1.26 | sort -r 
+dnf list --enablerepo=kubernetes kubelet --showduplicates | grep 1.27 | sort -r 
 
 # 建议安装最新版本的
 dnf install --enablerepo=kubernetes -y \
@@ -665,7 +677,7 @@ dnf install --enablerepo=kubernetes -y \
   kubelet-1.27.1-0 \
   kubeadm-1.27.1-0 \
   kubectl-1.27.1-0
-# dnf versionlock kubelet kubeadm kubectl
+# dnf install -y 'dnf-command(versionlock)' && dnf versionlock kubelet kubeadm kubectl
 ```
 
 修改 kubelet 配置文件，关闭 swap
@@ -681,7 +693,7 @@ KUBELET_EXTRA_ARGS="--fail-swap-on=false"
 设置 kubelet 开机自动启动
 
 ```bash
-systemctl enable kubelet
+systemctl enable --now kubelet
 ```
 
 查看镜像版本（没什么用，一般是为了从中国可访问的镜像仓库下载
@@ -694,8 +706,8 @@ registry.k8s.io/kube-controller-manager:v1.27.1
 registry.k8s.io/kube-scheduler:v1.27.1
 registry.k8s.io/kube-proxy:v1.27.1
 registry.k8s.io/pause:3.9
-registry.k8s.io/etcd:3.5.6-0
-registry.k8s.io/coredns/coredns:v1.9.3
+registry.k8s.io/etcd:3.5.7-0
+registry.k8s.io/coredns/coredns:v1.10.1
 ```
 
 指定镜像仓库
@@ -728,12 +740,12 @@ mkdir /root/.kube
 kubeadm config print init-defaults > /root/.kube/kubeadm-init.yaml
 
 kubeadm init \
-  --apiserver-advertise-address=10.244.244.201 \
+  --apiserver-advertise-address=10.244.244.11 \
   --apiserver-cert-extra-sans=apiserver.local.liaosirui.com \
   --kubernetes-version=v1.27.1 \
   --service-cidr=10.3.0.0/16 \
   --pod-network-cidr=10.4.0.0/16 \
-  --node-name devmaster \
+  --node-name dev-master \
   --control-plane-endpoint="apiserver.local.liaosirui.com:6443" \
   --image-repository=harbor.local.liaosirui.com:5000/3rdparty/registry.k8s.io
 ```
