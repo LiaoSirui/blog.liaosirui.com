@@ -217,22 +217,3 @@ resize2fs /dev/loop0
 reboot
 ```
 
-## 其他配置
-
-关闭旁路由 DHCP 服务，动态 IP 统一由 iKuai 主路由配置，点右下角保存应用生效
-
-![image-20230424181508136](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424181508136.png)
-
-高级设置里，勾选开机自动运行、强制链路。保存应用
-
-<img src="D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424181619965.png" alt="image-20230424181619965" style="zoom: 67%;" />
-
-将网关、首选 DNS、备选 DNS 都改为 openwrt 的网关。接入 ikuai 主路由的设备的 DNS 由 openwrt 代理
-
-![image-20230424181810832](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424181810832.png)
-
-![image-20230424181825766](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424181825766.png)
-
-防火墙对照设置一下，一定要将下面其他接口的转发删掉，尤其是 WAN 口的，只保存一个 lan 口即可：
-
-![image-20230424182412185](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424182412185.png)

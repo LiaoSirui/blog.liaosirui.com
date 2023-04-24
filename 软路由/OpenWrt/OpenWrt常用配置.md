@@ -118,8 +118,6 @@ net.core.default_qdisc=fq
 
 - 文件传输插件 `luci-app-filetransfer`
 
-
-
 - 用 frp 来在 OpenWrt 下实现内网穿透
 
 ```bash
@@ -136,4 +134,28 @@ opkg install luci-app-frpc_*.ipk
 - 参考链接：<https://post.smzdm.com/p/axz6z7w9/> 、<http://www.wbini.com/id-12.html>
 
 ### OpenClash
+
+如果使用 nftables
+
+```bash
+#nftables
+opkg update
+opkg install coreutils-nohup bash dnsmasq-full curl ca-certificates ipset ip-full libcap libcap-bin ruby ruby-yaml kmod-tun kmod-inet-diag unzip kmod-nft-tproxy luci-compat luci luci-base
+```
+
+如果使用 iptables
+
+```bash
+#iptables
+opkg update
+opkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-full iptables-mod-tproxy iptables-mod-extra libcap libcap-bin ruby ruby-yaml kmod-tun kmod-inet-diag unzip luci-compat luci luci-base
+```
+
+然后安装 OpenClash
+
+```bash
+# https://github.com/vernesong/OpenClash/releases
+wget https://github.com/vernesong/OpenClash/releases/download/v0.45.112-beta/luci-app-openclash_0.45.112-beta_all.ipk
+opkg -i luci-app-openclash*.ipk
+```
 
