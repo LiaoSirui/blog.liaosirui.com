@@ -61,6 +61,8 @@ root:x:0:0:root:/root:/bin/bash
 
 ## 插件
 
+### 简单插件-无需配置
+
 - 中文支持：`luci-i18n-base-zh-cn`
 - sftp 
 
@@ -131,8 +133,7 @@ wget https://github.com/kuoruan/luci-app-frpc/releases/download/v1.2.1-1/luci-i1
 opkg install luci-app-frpc_*.ipk
 ```
 
-- openclash
-
-
-
 - 参考链接：<https://post.smzdm.com/p/axz6z7w9/> 、<http://www.wbini.com/id-12.html>
+
+### OpenClash
+
