@@ -15,25 +15,6 @@
 
 ![image-20230423213558134](./.assets/虚拟机安装OpenWrt旁路由/image-20230423213558134.png)
 
-## 镜像转换
-
-使用 qemu-img 工具进行转换
-
-安装工具：
-
-```bash
-dnf -y install qemu-img
-```
-
-转换命令（文件名以openwrt.img为例）：
-```bash
-qemu-img convert -f raw openwrt.img -O vmdk openwrt.vmdk
-```
-
-<https://http.ooo/7.html>
-
-<https://oldtang.com/3424.html>
-
 ## 安装虚拟机
 
 首先进入 ESXi 后台，新建虚拟机，点击创建新虚拟机：
@@ -67,3 +48,191 @@ qemu-img convert -f raw openwrt.img -O vmdk openwrt.vmdk
 ![image-20230423214503142](./.assets/虚拟机安装OpenWrt旁路由/image-20230423214503142.png)
 
 选择 EFI 启动，记得一定要把下面的是否为此虚拟机启用 UEFI 安全引导去掉，否则会安装后无法启动。也可以采用，引导方式选择 BIOS，其他不用管。如果安装后有问题可以检查一下自己下载的镜像格式，或者两种引导方式来回替换看下
+
+## 镜像转换
+
+StarWind Converter 这个软件的优点：
+
+- 免费
+- 既支持 p2v（物理机转虚拟机）又支持 v2v（虚机格式 A → 虚机格式 B）
+- 效率高
+- 兼容性高
+
+官网介绍：https://www.starwindsoftware.com/starwind-v2v-converter
+
+下载地址：<https://www.starwindsoftware.com/tmplink/starwindconverter.exe>
+
+安装完成后打开 StarWind V2V Converter，选第二项加载文件：
+
+![image-20230424153744289](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424153744289.png)
+
+找到下载好的 openwrt 镜像，点下一步：
+
+![image-20230424155517793](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155517793.png)
+
+选择第二项，远程加载：
+
+![image-20230424155534124](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155534124.png)
+
+输入 ESXI 的 ip 地址和登录账号及密码，点下一步：
+
+![image-20230424155622163](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155622163.png)
+
+登录后，选择 OpenWrt 文件夹，这一步是确定 OpenWrt 的安装位置，点下一步：
+
+![image-20230424155711252](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155711252.png)
+
+选择第一项，点下一步
+
+![image-20230424155806187](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155806187.png)
+
+点【Convert】转换写入：
+
+![image-20230424155829923](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155829923.png)
+
+等待转换完成：
+
+![image-20230424155858203](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155858203.png)
+
+回到 ESXI 界面可以看到，已经安装完成，并且自动生成了硬盘。取消，退出：
+
+![image-20230424155942042](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155942042.png)
+
+打开电源自动安装：
+
+![image-20230424155959540](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424155959540.png)
+
+点击 ESXi 的管理 —— 自动启动，设置一个自动启动参数，然后把自动启动参数，配置给 OpenWrt 即可，设置之后每次重启两个软路由会自动重启
+
+## OpenWRT 系统空间扩容
+
+### 配置网络
+
+OpenWrt 安装好之后，默认的 IP 地址是 192.168.1.1，很多时候是不符合实际需求的，所以需要修改
+
+以下操作是在命令行下输入的：
+
+1、以 root 的身份登录；
+
+2、修改 `/etc/config/network` 文件：
+
+![image-20230424161948649](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424161948649.png)
+
+3、修改 `/etc/resolv.conf` 文件：
+
+![image-20230424162246625](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424162246625.png)
+
+### Package 镜像修改为国内源
+
+参考：<https://mirrors.tuna.tsinghua.edu.cn/help/openwrt/>
+
+```
+sed -i 's_downloads.openwrt.org_mirrors.tuna.tsinghua.edu.cn/openwrt_' /etc/opkg/distfeeds.conf
+```
+
+### 扩展根分区
+
+安装需要的工具
+
+```bash
+opkg update
+
+opkg install lsblk fdisk resize2fs blkid losetup
+```
+
+通过 `lsblk` 命令查看目前磁盘划分情况
+
+![image-20230424162439794](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424162439794.png)
+
+sda1 是引导分区，sda2 是 OpenWRT 的系统分区，这里只要将磁盘剩余没有使用上的空间追加到 sda2 分区上就可以了
+
+使用 fdisk 重新分配 sda2 分区大小
+
+打印分区
+
+![image-20230424162600716](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424162600716.png)
+
+重新分区
+
+```bash
+root@0:~# fdisk /dev/sda
+
+Welcome to fdisk (util-linux 2.36.1).
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Command (m for help): p
+Disk /dev/sda: 14.91 GiB, 16013852672 bytes, 31277056 sectors
+Disk model: IM016-S220
+Units: sectors of 1 \* 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0xeb3ae1bb
+
+Device Boot Start End Sectors Size Id Type
+/dev/sda1 \* 512 33279 32768 16M 83 Linux
+/dev/sda2 33792 558079 524288 256M 83 Linux
+
+Command (m for help): d
+Partition number (1,2, default 2): 2
+
+Partition 2 has been deleted.
+
+Command (m for help): n
+Partition type
+p primary (1 primary, 0 extended, 3 free)
+e extended (container for logical partitions)
+Select (default p):
+
+Using default response p.
+Partition number (2-4, default 2):
+First sector (33280-31277055, default 34816): 33792
+Last sector, +/-sectors or +/-size{K,M,G,T,P} (33792-31277055, default 31277055):
+
+Created a new partition 2 of type 'Linux' and of size 14.9 GiB.
+Partition #2 contains a ext4 signature.
+
+Do you want to remove the signature? [Y]es/[N]o: N
+
+Command (m for help): w
+
+The partition table has been altered.
+Calling ioctl() to re-read partition table.
+Syncing disks.
+```
+
+这里注意删除分区 2 后，新建分区的 First sector 不能用 默认值 (34816)，得输入删除前的 First sector 值 (33792)
+
+增大 loop0 文件系统大小
+
+```
+# resize2fs /dev/sda2
+resize2fs /dev/loop0
+```
+
+最后重启，OpenWRT 就安装完成了
+
+```down
+reboot
+```
+
+## 其他配置
+
+关闭旁路由 DHCP 服务，动态 IP 统一由 iKuai 主路由配置，点右下角保存应用生效
+
+![image-20230424181508136](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424181508136.png)
+
+高级设置里，勾选开机自动运行、强制链路。保存应用
+
+<img src="D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424181619965.png" alt="image-20230424181619965" style="zoom: 67%;" />
+
+将网关、首选 DNS、备选 DNS 都改为 openwrt 的网关。接入 ikuai 主路由的设备的 DNS 由 openwrt 代理
+
+![image-20230424181810832](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424181810832.png)
+
+![image-20230424181825766](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424181825766.png)
+
+防火墙对照设置一下，一定要将下面其他接口的转发删掉，尤其是 WAN 口的，只保存一个 lan 口即可：
+
+![image-20230424182412185](D:\blog.liaosirui.com\软路由\OpenWrt\.assets\虚拟机安装OpenWrt旁路由\image-20230424182412185.png)
