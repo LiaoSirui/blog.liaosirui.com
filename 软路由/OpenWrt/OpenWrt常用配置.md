@@ -2,13 +2,13 @@
 
 ### 升级所有可以更新的软件
 
-```
+```bash
 opkg upgrade $(opkg list-upgradable | awk '{print $1}')
 ```
 
 ### wget/curl/opkg 支持 https
 
-```
+```bash
 opkg update
 opkg install libustream-openssl ca-bundle ca-certificates
 ```
@@ -52,7 +52,7 @@ opkg install libustream-openssl ca-bundle ca-certificates
 
 默认为 ash
 
-```
+```bash
 opkg install bash
 
 > vim /etc/passwd
@@ -64,29 +64,29 @@ root:x:0:0:root:/root:/bin/bash
 ### 简单插件-无需配置
 
 - 中文支持：`luci-i18n-base-zh-cn`
-- sftp 
+- sftp
 
 安装对应的软件：
 
-```
+```bash
 opkg install vsftpd openssh-sftp-server
 ```
 
 设置系统开启后自动启动 sftp 服务：
 
-```
+```bash
 /etc/init.d/vsftpd enable
 ```
 
 启动 sftp 服务：
 
-```
- /etc/init.d/vsftpd start
+```bash
+/etc/init.d/vsftpd start
 ```
 
 - 主题
 
-```
+```bash
 opkg install luci-compat
 opkg install luci-lib-ipkg
 
@@ -96,7 +96,7 @@ opkg install luci-theme-argon*.ipk
 
 - 开启 bbr 算法
 
-```
+```bash
 opkg install kmod-tcp-bbr
 
 > lsmod | grep bbr
@@ -131,14 +131,12 @@ wget https://github.com/kuoruan/luci-app-frpc/releases/download/v1.2.1-1/luci-i1
 opkg install luci-app-frpc_*.ipk
 ```
 
-- 参考链接：<https://post.smzdm.com/p/axz6z7w9/> 、<http://www.wbini.com/id-12.html>
-
-### OpenClash
+- OpenClash
 
 如果使用 nftables
 
 ```bash
-#nftables
+# nftables
 opkg update
 opkg install coreutils-nohup bash dnsmasq-full curl ca-certificates ipset ip-full libcap libcap-bin ruby ruby-yaml kmod-tun kmod-inet-diag unzip kmod-nft-tproxy luci-compat luci luci-base
 ```
@@ -146,7 +144,7 @@ opkg install coreutils-nohup bash dnsmasq-full curl ca-certificates ipset ip-ful
 如果使用 iptables
 
 ```bash
-#iptables
+# iptables
 opkg update
 opkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ipset ip-full iptables-mod-tproxy iptables-mod-extra libcap libcap-bin ruby ruby-yaml kmod-tun kmod-inet-diag unzip luci-compat luci luci-base
 ```
@@ -158,4 +156,3 @@ opkg install coreutils-nohup bash iptables dnsmasq-full curl ca-certificates ips
 wget https://github.com/vernesong/OpenClash/releases/download/v0.45.112-beta/luci-app-openclash_0.45.112-beta_all.ipk
 opkg -i luci-app-openclash*.ipk
 ```
-
