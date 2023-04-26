@@ -1,3 +1,5 @@
+## htop 配置文件
+
 htop 的配置文件：`~/.htoprc` 或者 `~/.config/htop/htoprc`
 
 ```
@@ -34,6 +36,65 @@ left_meter_modes=1 1 1
 right_meters=RightCPUs Tasks LoadAverage Uptime 
 right_meter_modes=1 2 2 2 
 ```
+
+## htop 常用参数
+
+每 3 秒更新一次 htop
+
+```
+htop -d 30
+```
+
+使用 htop 命令按用户排序
+
+```
+htop -s USER
+```
+
+使用 htop 命令按 CPU 使用率排序
+
+```
+htop -s CPU%
+```
+
+使用 htop 命令跟踪特定用户
+
+```
+htop -u tastethelinux
+```
+
+使用 htop 命令按内存使用排序
+
+```
+htop -s MEM%
+```
+
+使用 htop 命令跟踪多个进程，1 和 443 是将要跟踪的进程 ID
+
+```
+ htop -p 1,443
+```
+
+## htop 源码编译
+
+最新源码获取：<https://github.com/htop-dev/htop/releases>
+
+参考 fedora 进行编译：<https://src.fedoraproject.org/rpms/htop/blob/f29/f/htop.spec>
+
+```bash
+./configure \
+	--enable-openvz \
+	--enable-vserver \
+	--enable-taskstats \
+	--enable-unicode \
+	--enable-cgroup
+ 
+make
+```
+
+
+
+## 参考资料
 
 使用详解：<https://cloud.tencent.com/developer/article/1115041>
 
