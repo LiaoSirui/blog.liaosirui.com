@@ -1,21 +1,20 @@
-
 拉取镜像
 
 ```bash
 docker pull haishanh/yacd:v0.3.8
 
-docker pull dreamacro/clash-premium:2022.08.26
+docker pull dreamacro/clash-premium:2023.04.16
 ```
 
 下载配置文件
 
 ```bash
-mkcd /data/clash
+mkcd ./clash
 
 wget 'https://suburl.mimemi.net/link/cob6L6ETCpJcTlWn?dns=1&clashr=1' -O config.yaml
 ```
 
- config.yaml 加入 external-ui: 目录名，使可以引入 clash dashboard
+config.yaml 加入 external-ui: 目录名，使可以引入 clash dashboard
 
 ```yaml
 1 ---
@@ -43,13 +42,19 @@ yq -i 'with(.proxy-groups[]; . | select(.name == "Auto") | .interval = "3600")' 
 ```yaml
 version: '3'
 services:
-  clash:
     image: dreamacro/clash-premium:2022.08.26
+```
+
+```yaml
+version: '3'
+services:
+  clash:
+    image: dreamacro/clash-premium:~
     container_name: clash
     volumes:
-      - /data/clash/config.yaml:/root/.config/clash/config.yaml
+      - ./config.yaml:/root/.config/clash/config.yaml
       # dashboard volume
-      - /data/clash/clash-ui:/root/.config/clash/clash-ui
+      - ./clash-ui:/root/.config/clash/clash-ui
     # ports:
     #   # rest api
     #   - "6170:6170"
@@ -64,10 +69,16 @@ services:
 
   clash-ui:
     image: haishanh/yacd:v0.3.8
-    # ports:
-    #   - "17890:80"
+    ports:
+      - "17890:80"
     restart: always
-    privileged: true
+    entrypoint: /bin/sh -c "/bin/sh -c \"$${@}\""
+    command: |
+      /bin/sh -c "
+        sed -i 's|127.0.0.1:9090|10.244.2444.3:6170|' /usr/share/nginx/html/index.html
+        sed -i 's|worker_processes |worker_processes 4;#|' /etc/nginx/nginx.conf
+        nginx -g 'daemon off;'
+      "
 ```
 
 安装 docker-compose 的方式：
@@ -89,4 +100,35 @@ chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 clash             | time="2022-04-04T08:08:52Z" level=info msg="HTTP proxy listening at: [::]:8888"
 clash             | time="2022-04-04T08:08:52Z" level=info msg="SOCKS proxy listening at: [::]:8889"
 clash             | time="2022-04-04T08:08:52Z" level=info msg="Mixed(http+socks) proxy listening at: [::]:8899"
+```
+
+## 更新配置文件脚本
+
+```bash
+#!/usr/bin/env bash
+
+suffix=$(date +"%Y%m%d-%H%M%S")
+backup_dir="backup_config"
+
+export yq="/var/app/clash/bin/yq_linux_amd64"
+
+cd /var/app/clash || exit 1
+
+# backup config
+mkdir -p ${backup_dir}
+cp config.yaml "${backup_dir}/config.yaml.${suffix}"
+
+wget -O config-new.yaml 'https://suburl.mimemi.net/link/PQUNsArhzbxz9xck?dns=1&clash=1'
+
+"$yq" -i '.external-controller = "0.0.0.0:6170"' config-new.yaml
+"$yq" -i '.external-ui = "clash-ui"' config-new.yaml
+"$yq" -i '.log-level = "error"' config-new.yaml
+"$yq" -i 'with(.proxy-groups[]; . | select(.name == "Auto") | .interval = "120")' config-new.yaml
+
+mv config-new.yaml config.yaml
+
+# diff config-new.yaml config.yaml > /dev/null || (mv -f config-new.yaml config.yaml && docker-compose restart)
+# docker-compose up -d
+docker compose down
+docker compose up -d
 ```
