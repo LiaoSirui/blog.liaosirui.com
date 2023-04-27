@@ -13,6 +13,8 @@ ENV PYTHONUNBUFFERED 1
 1. `ENV PYTHONDONTWRITEBYTECODE 1`: 建议构建 Docker 镜像时一直为 `1`, 防止 python 将 pyc 文件写入硬盘
 2. `ENV PYTHONUNBUFFERED 1`: 建议构建 Docker 镜像时一直为 `1`, 防止 python 缓冲 (buffering) stdout 和 stderr, 以便更容易地进行容器日志记录
 
+参考：<https://docs.python.org/3/using/cmdline.html>
+
 ### 使用非 root 用户运行容器进程
 
 出于安全考虑，推荐运行 Python 程序前，创建 非 root 用户并切换到该用户。
