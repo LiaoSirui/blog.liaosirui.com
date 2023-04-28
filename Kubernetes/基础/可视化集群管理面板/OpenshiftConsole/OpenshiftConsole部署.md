@@ -1,3 +1,5 @@
+## 部署 Console
+
 部署 ns
 
 ```yaml
@@ -147,6 +149,7 @@ spec:
 
 如果使用 NodePort
 
-```yaml
-```
+## 其他
+
+缺失  CRD，参考：<https://github.com/openshift/api/tree/master/console/v1>
 
