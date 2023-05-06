@@ -323,8 +323,6 @@ webhooks:
 
 ```
 
-因此执行如下的方式进行新增
-
 在 CRD 的 patch 中也需要调整 webhook 的地址，文件在 `config/crd/patches/webhook_in_kbdevs.yaml`：
 
 ```yaml
