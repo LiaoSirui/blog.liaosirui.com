@@ -6,6 +6,8 @@ CoreDNS 是由 CNCF 孵化的开源软件，用于 Cloud-Native 环境下的 DNS
 
 目前 CoreDNS 已经成为社区 kubernetes 1.11 及以上版本集群推荐的 DNS 服务器解决方案
 
-CoreDNS 官网：https://coredns.io/
+官方：
 
-开源社区地址：https://github.com/coredns/coredns
+- CoreDNS 官网：https://coredns.io/
+
+- 开源社区地址：https://github.com/coredns/coredns
