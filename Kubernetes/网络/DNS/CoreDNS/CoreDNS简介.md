@@ -27,6 +27,13 @@ CoreDNS 是由 CNCF 孵化的开源软件，用于 Cloud-Native 环境下的 DNS
 
 ![image-20230509100753501](.assets/CoreDNS%E7%AE%80%E4%BB%8B/image-20230509100753501.png)
 
+## 插件和外部插件
+
+- CoreDNS 本身是没有能力作为一个递归查询的 DNS 服务器（Recursive DNS），可以通过插件来实现对域名的递归查询和缓存等功能从而加速客户端的 DNS 查询性能；这里主要实现的插件有内部插件（Plugins）forward 或外部插件（External Plugins）unbound
+- CoreDNS 的日志输出并不如 nginx 那么完善（并不能在配置文件中指定输出的文件目录，但是可以指定日志的格式），默认情况下不论是 log 插件还是 error 插件都会把所有的相关日志输出到程序的 standard output；CoreDNS 的原生日志功能对于一个 DNS 服务器的绝大部分应用场景来说是足够使用的，如果有更进阶的需求，可以考虑使用 dnstap 插件来实现
+- CoreDNS 内置的两个健康检查插件 health 和 ready
+- CoreDNS 服务在外部域名递归结果过程中容易出现一些问题，使用 dnsredir 插件进行分流和 alternate 插件进行重试优化的操作
+
 ## 参考资料
 
 - <https://help.aliyun.com/document_detail/195425.html>

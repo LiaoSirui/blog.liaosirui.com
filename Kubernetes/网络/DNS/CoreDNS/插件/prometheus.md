@@ -59,9 +59,13 @@ prometheus [ADDRESS]
 
 coredns 原生支持的 prometheus 指标数量和丰富程度在众多 DNS 系统中可以说是首屈一指的，此外在 grafana 的官网上也有着众多现成的 dashboard 可用，并且由于绝大多数指标都是通用的，多个不同的 dashboard 之间的 panel 可以随意复制拖拽组合成新的 dashboard 并且不用担心兼容性问题
 
-<https://grafana.com/grafana/dashboards/?search=coredns>
+可以实现：
 
-看到能够监控出不同 DNS 类型的请求数量以及不同的 zone 各自的请求数量，还有其他的类似请求延迟、请求总数等等各项参数都能完善地监控起来
+- 监控出不同 DNS 类型的请求数量以及不同的 zone 各自的请求数量，还有其他的类似请求延迟、请求总数等等各项参数都能完善地监控起来
+- 可以监控到不同的请求的传输层协议状态，缓存的大小状态和命中情况等各种信息
 
-能看到可以监控到不同的请求的传输层协议状态，缓存的大小状态和命中情况等各种信息
+官方面板市场搜索：<https://grafana.com/grafana/dashboards/?search=coredns>
 
+推荐的面板：
+
+- <https://grafana.com/grafana/dashboards/14981-coredns/>
