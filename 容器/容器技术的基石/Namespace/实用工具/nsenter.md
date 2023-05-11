@@ -106,3 +106,30 @@ kubectl get pod -o template --template='{{range .status.containerStatuses}}{{.co
 ```
 
 注意，要去到容器所在的节点才能进行调试
+
+### 从容器进入宿主机
+
+需要设置 hostPID 和 hostNetwork 为 true
+
+```yaml
+hostPID: true
+hostNetwork: true
+```
+
+容器执行
+
+```yaml
+command:
+  - nsenter
+  - '--target'
+  - '1'
+  - '--mount'
+  - '--uts'
+  - '--ipc'
+  - '--net'
+  - '--pid'
+  - bash
+  - '-l'
+# nsenter --target 1 --mount --uts --ipc --net --pid bash -l
+```
+
