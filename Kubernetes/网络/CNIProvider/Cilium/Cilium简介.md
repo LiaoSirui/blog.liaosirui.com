@@ -2,6 +2,10 @@
 
 Cilium 是一个基于 eBPF 和 XDP 的高性能容器网络方案的开源项目，目标是为微服务环境提供网络、负载均衡、安全功能，主要定位是容器平台
 
+官方：
+
+- Github 仓库：<https://github.com/cilium/cilium>
+
 ![Cilium feature overview](.assets/Cilium%E7%AE%80%E4%BB%8B/cilium_overview.png)
 
 <img src=".assets/Cilium%E7%AE%80%E4%BB%8B/9885453-6b09787b4b207027.png" alt="img" style="zoom: 50%;" />
@@ -49,6 +53,12 @@ Cilium 通过利用 BPF 具有能够透明的注入网络安全策略并实施�
 ## 安装 Cilium
 
 ### 安装需求
+
+官方文档：
+
+- 系统安装需求：https://docs.cilium.io/en/v1.13/operations/system_requirements/
+
+安装需求：
 
 - 内核版本 >=4.9.17
 
@@ -180,6 +190,10 @@ cilium status --wait
 cilium connectivity test
 ```
 
-
-
 参考：<https://tinychen.com/20220510-k8s-04-deploy-k8s-with-cilium/#5-1-%E5%AE%89%E8%A3%85cilium>
+
+## 参考资料
+
+https://zhuanlan.zhihu.com/p/468686172
+
+<https://www.jianshu.com/p/090c3d32c2be>
