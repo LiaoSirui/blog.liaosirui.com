@@ -1,3 +1,9 @@
+## 错误描述
+
+```bash
+[ERROR] [MY-013131] [Server] Out of sort memory, consider increasing server sort buffer size!
+```
+
 ## 理论
 
 ### sort_buffer_size
@@ -9,7 +15,9 @@ sort_buffer_size 并不是越大越好，过大的设置 + 高并发可能会耗
 
 sort buffer size 和 max_sort_length 之间的关系：
 
-![img](.assets/1620.png)
+![image-20230516180851122](.assets/MY-013131ER_SERVER_OUT_OF_SORTMEMORY/image-20230516180851122.png)
+
+
 
 - MAX_SORT_LENGTH 仅仅锁定排序中最大支持的一行的字节数
 
@@ -19,7 +27,7 @@ SORT_BUFFER_SIZE 是固定，MAX_SORT_LENGTH 越大，则支持的容纳的行�
 
 对于 MAX_SORT_LENGTH，调整的后的对 于ORDER BY 的执行的时间的变化，这里的 sort_buffer_size 的配置是 20MB
 
-![img](.assets/1620-20221223170350378.png)
+![image-20230516180920967](.assets/MY-013131ER_SERVER_OUT_OF_SORTMEMORY/image-20230516180920967.png)
 
 如果需要排序的数据，前面字头的数据就很容易能进行排序，则越小的 MAX_SORT_LENGTH 越好
 
