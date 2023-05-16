@@ -4,11 +4,11 @@
 
 - 需要拥有多个内部集群来隔离应用程序运行环境。例如，开发阶段的应用程序应该部署在开发集群中，而测试阶段的应用程序应该部署在测试集群中，生产就绪的应用程序应该部署在生产集群中。这种方法限制了对生产集群的访问，并在生产集群上创建了强大的安全性。
 
-<img title="" src="https://mmbiz.qpic.cn/mmbiz_png/1k47ocfZtlSUZrAUDhhmU3eiaGmicD7vVJvu4323AzRTlM5onOWKnQQTyDibFfvZ1Zt4cdcsk0fGV51dInOvTFy8w/" alt="" width="726" data-align="center">
+<img title="" src=".assets/kubectx%E5%92%8Ckubens/1k47ocfZtlSUZrAUDhhmU3eiaGmicD7vVJvu4323AzRTlM5onOWKnQQTyDibFfvZ1Zt4cdcsk0fGV51dInOvTFy8w.png" alt="" width="726" data-align="center">
 
 - K8s 管理员也可以创建虚拟集群。虚拟集群是从现有的 Kubernetes 集群中衍生出来的，并使用集群的资源。创建虚拟集群的好处是提高安全性并降低成本。
 
-<img title="" src="https://mmbiz.qpic.cn/mmbiz_png/1k47ocfZtlSUZrAUDhhmU3eiaGmicD7vVJek1Onc72fsxamicwbib6W8127BDNgLM6ez133fv0ZV6pqGAZk1anAbsw/640" alt="" width="525" data-align="center">
+<img title="" src=".assets/kubectx%E5%92%8Ckubens/1k47ocfZtlSUZrAUDhhmU3eiaGmicD7vVJek1Onc72fsxamicwbib6W8127BDNgLM6ez133fv0ZV6pqGAZk1anAbsw.png" alt="" width="525" data-align="center">
 
 ## 管理多个 K8s 集群
 
@@ -49,6 +49,11 @@ KUBECONFIG=/$HOME/.kube/contexts/config-development:/$HOME/.kube/contexts/config
 
 - `kubectx` 是一个更快地在上下文（集群）之间切换的工具。
 - `kubens` 是一个在 Kubernetes 命名空间之间轻松切换（并配置它们`kubectl`）的工具
+
+官方 Github 仓库：
+
+- 
+- 
 
 安装插件
 
