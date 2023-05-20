@@ -23,22 +23,22 @@ helm repo add sentry https://sentry-kubernetes.github.io/charts
 查看最新的 chart 版本
 
 ```bash
-> helm search repo sentry                                        
+> helm search repo sentry
 
 NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
-sentry/sentry                   17.11.0         22.11.0         A Helm chart for Kubernetes                       
+sentry/sentry                   19.0.0          23.5.0          A Helm chart for Kubernetes                       
 sentry/sentry-db                0.9.4           10.0.0          A Helm chart for Kubernetes                       
 sentry/sentry-kubernetes        0.3.2           latest          A Helm chart for sentry-kubernetes (https://git...
-sentry/clickhouse               3.2.1           19.14           ClickHouse is an open source column-oriented da...
+sentry/clickhouse               3.3.0           19.14           ClickHouse is an open source column-oriented da...
 ```
 
 下载最新的 chart 版本
 
 ```bash
-helm pull sentry/sentry --version 17.11.0
+helm pull sentry/sentry --version 19.0.0
 
 # 下载并解压
-helm pull sentry/sentry --version 17.11.0 --untar
+helm pull sentry/sentry --version 19.0.0 --untar
 ```
 
 Sentry web 需要一个单独手动建立的 pvc
@@ -269,6 +269,6 @@ helm upgrade --install sentry  \
     --namespace sentry \
     --create-namespace \
     -f ./values.yaml \
-    sentry/sentry --version 17.11.0
+    sentry/sentry --version 19.0.0
 ```
 
