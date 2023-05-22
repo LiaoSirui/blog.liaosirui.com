@@ -367,10 +367,10 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: sentry-kafka-data
+  name: data-sentry-kafka-0
   namespace: sentry
   labels:
-    app: sentry-kafka
+    app: sentry-kafka-0
     release: sentry
 spec:
   accessModes:
@@ -381,22 +381,118 @@ spec:
   volumeMode: Filesystem
   selector:
     matchLabels:
-      app: sentry-kafka
+      app: sentry-kafka-0
       release: sentry
 
 ---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: sentry-kafka-data-pv
+  name: sentry-kafka-data-0-pv
   labels:
-    app: sentry-kafka
+    app: sentry-kafka-0
     release: sentry
 spec:
   capacity:
     storage: 100Gi
   hostPath:
-    path: /var/lib/sentry-kafka
+    path: /var/lib/sentry-kafka-0
+    type: DirectoryOrCreate
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - dev-sentry
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-sentry-kafka-1
+  namespace: sentry
+  labels:
+    app: sentry-kafka-1
+    release: sentry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  volumeMode: Filesystem
+  selector:
+    matchLabels:
+      app: sentry-kafka-1
+      release: sentry
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: sentry-kafka-data-1-pv
+  labels:
+    app: sentry-kafka-1
+    release: sentry
+spec:
+  capacity:
+    storage: 100Gi
+  hostPath:
+    path: /var/lib/sentry-kafka-1
+    type: DirectoryOrCreate
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - dev-sentry
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: data-sentry-kafka-2
+  namespace: sentry
+  labels:
+    app: sentry-kafka-2
+    release: sentry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+  volumeMode: Filesystem
+  selector:
+    matchLabels:
+      app: sentry-kafka-2
+      release: sentry
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: sentry-kafka-data-2-pv
+  labels:
+    app: sentry-kafka-2
+    release: sentry
+spec:
+  capacity:
+    storage: 100Gi
+  hostPath:
+    path: /var/lib/sentry-kafka-2
     type: DirectoryOrCreate
   accessModes:
     - ReadWriteOnce
@@ -910,7 +1006,7 @@ spec:
           enabled: false
 
     kafka:
-      replicaCount: 1
+      replicaCount: 3
       tolerations:
         - key: "node.kubernetes.io/sentry"
           operator: "Exists"
@@ -927,7 +1023,7 @@ spec:
         enabled: true
       persistence:
         # storageClass: "csi-notfound"
-        existingClaim: sentry-kafka-data
+        # existingClaim: sentry-kafka-data
       zookeeper:
         volumePermissions:
           enabled: true

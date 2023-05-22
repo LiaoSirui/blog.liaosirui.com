@@ -272,3 +272,6 @@ helm upgrade --install sentry  \
     sentry/sentry --version 19.0.0
 ```
 
+## 参考资料
+
+- sentry 架构：<https://juejin.cn/post/7139006619043495973#heading-10>
