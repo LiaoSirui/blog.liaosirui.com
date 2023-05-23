@@ -612,6 +612,8 @@ spec:
 
 ## HelmRelease
 
+部署 helm release
+
 ```yaml
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
@@ -1090,6 +1092,8 @@ spec:
       architecture: standalone
       volumePermissions:
         enabled: true
+      auth:
+        existingSecret: sentry-sentry-postgresql
       primary:
         persistence:
           # storageClass: "csi-notfound"
