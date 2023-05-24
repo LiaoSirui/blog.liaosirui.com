@@ -30,7 +30,7 @@ Value 是别名为 Name 的主机对应的规范主机名，提供一个主机�
 
 - Type=MX
 
-Value 是一个别名为 Name 的邮件服务器的规范主机名。
+Value 是一个别名为 Name 的邮件服务器的规范主机名
 
 ## DNS 报文
 

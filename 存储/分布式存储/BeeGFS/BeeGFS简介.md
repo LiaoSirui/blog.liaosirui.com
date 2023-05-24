@@ -118,6 +118,7 @@ Buddy Group 两个目标有主辅之分，一个目标为主存储（primary）�
 ### BuddyGroups 故障切换
 
 当 Buddy Group 主目标无法访问时，等待短暂时间后仍无法恢复，则会被标记为脱机状态，此时辅目标将会成为新的主目标接管服务
+
 可通过 `beegfs-ctl --listtargets --nodetype={node_type} --state` 查询目标状态，相关状态描述如下：
 
 ```bash
@@ -193,9 +194,9 @@ systemctl restart beegfs-client
 beegfs-ctl --setpattern --pattern={pattern_type} --chunksize={chunk_size} --numtargets={target_num} {mount_path}
 ```
 
-- {pattern_type}：设置使用的条带模式，可选 raid0（默认值）或 buddymirror
-- {chunk_size}：每个存储目标条带大小，默认为 512K
-- {target_num}：每个文件条带目标数，当设置为 buddymirror 模式时，参数值为 buddy group 组数
+- `{pattern_type}`：设置使用的条带模式，可选 raid0（默认值）或 buddymirror
+- `{chunk_size}`：每个存储目标条带大小，默认为 512K
+- `{target_num}`：每个文件条带目标数，当设置为 buddymirror 模式时，参数值为 buddy group 组数
 
 ## 其他
 
