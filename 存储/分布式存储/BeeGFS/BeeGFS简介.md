@@ -209,3 +209,7 @@ beegfs-ctl --setpattern --pattern={pattern_type} --chunksize={chunk_size} --numt
 如使用网卡 bond0 作为 beegfs 集群通讯使用网卡，`echo bond0 > /etc/beegfs/tcp-only-interfaces.conf`
 
 添加 `connInterfacesFile = /etc/beegfs/tcp-only-interfaces.conf` 配置到所有 beegfs 服务配置
+
+## 参考资料
+
+- <https://indico.mathrice.fr/event/5/contributions/714/attachments/737/989/Typical_Administrative_Tasks_last.pdf>
