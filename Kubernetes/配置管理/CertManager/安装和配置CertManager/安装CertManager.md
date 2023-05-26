@@ -79,3 +79,61 @@ helm upgrade --install \
   -f ./values.yaml
 ```
 
+## 使用 manifests 部署
+
+```bash
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.11.0/cert-manager.yaml
+
+NAME                                       READY   STATUS    RESTARTS   AGE
+cert-manager-5d495db6fc-6rtxx              1/1     Running   0          9m56s
+cert-manager-cainjector-5f9c9d977f-bxchd   1/1     Running   0          9m56s
+cert-manager-webhook-57bd45f9c-89q87       1/1     Running   0          9m56s
+
+```
+
+## cmctl
+
+使用 cmctl 命令行工具检查 cert-manager 是否正常
+
+```bash
+cmctl check api
+```
+
+## 安装后检查
+
+安装完成后，Cert-manager 将自动创建 CRD（Custom Resource Definitions）和相关的资源，如证书、密钥
+
+检查 cert-manager 的`webhook`是否正常
+
+```bash
+cat <<EOF > 02-test-resources.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager-test
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: test-selfsigned
+  namespace: cert-manager-test
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: selfsigned-cert
+  namespace: cert-manager-test
+spec:
+  dnsNames:
+    - example.com
+  secretName: selfsigned-cert-tls
+  issuerRef:
+    name: test-selfsigned
+EOF
+
+kubectl apply -f 02-test-resources.yaml
+kubectl delete -f 02-test-resources.yaml
+```
+

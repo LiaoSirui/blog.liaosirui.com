@@ -1,17 +1,28 @@
 
 ## 简介
 
-Cert-manager 是一个Kubernetes addon 插件，用于从不同的证书颁发者自动化管理和签发 TLS 证书。Cert-manager 会保证证书的合法性，并试图在到期前轮转更新证书。
+Cert-manager 是一个Kubernetes addon 插件，用于从不同的证书颁发者自动化管理和签发 TLS 证书。Cert-manager 会保证证书的合法性，并试图在到期前轮转更新证书
 
-主要作用：给 k8s 集群中的应用生成证书，让应用可以通过 https 访问。
+主要作用：给 k8s 集群中的应用生成证书，让应用可以通过 https 访问
+
+### 使用场景
+
+Cert-Manager 的使用场景非常广泛，包括以下几个方面：
+
+1. HTTPS 访问：通过 Cert-Manager 可以方便地为 Kubernetes 集群中的 Service 和 Ingress 创建 TLS 证书，以便实现 HTTPS 访问
+2. 部署安全：Cert-Manager 可以为 Kubernetes 集群中的 Pod 创建 TLS 证书，以确保 Pod 之间的通信是加密的
+3. 服务间认证：Cert-Manager 可以为 Kubernetes 集群中的 Service 创建 TLS 证书，以确保 Service 之间的通信是加密的
+4. 其他应用场景：Cert-Manager 还可以用于为其他应用程序创建 TLS 证书，以确保通信是加密的
+
+### 实际解决的问题
 
 主要解决的几个痛点如下：
 
-- 如果 k8s 集群上部署的应用较多，要为每个应用的不同域名生成 https 证书，操作太麻烦。
-- 上述这些手动操作没有跟 k8s 的 deployment 描述文件放在一起记录下来，很容易遗忘。
-- 证书过期后，又得手动执行命令重新生成证书。
+1. 自动化管理证书：Cert-Manager 可以自动化地管理 TLS 证书，无需人工干预，自动签发证书以及过期前 renew 证书等问题，避免了证书管理的复杂性和错误
+2. 安全性：Cert-Manager 可以帮助确保证书的颁发机构是可信的，并确保证书的私钥不会泄露，从而提高了通信的安全性
+3. 管理成本：Cert-Manager 可以通过标准化证书的管理方式，简化证书管理的成本和流程
 
-cert-manager 则可以解决上面的那些问题，实现证书的自动生成和更新。
+cert-manager 则可以解决上面的那些问题，实现证书的自动生成和更新
 
 ## 相关
 
@@ -19,6 +30,18 @@ cert-manager 则可以解决上面的那些问题，实现证书的自动生成�
 - 代码仓库：<https://github.com/cert-manager/cert-manager>
 
 ## 架构
+
+### 分层架构
+
+Cert-Manager 的架构分为两层：控制层和数据层
+
+- 控制层: 负责证书的管理，包括证书的创建、更新和删除等
+
+- 数据层: 负责存储证书相关的数据，包括证书的私钥、证书请求、证书颁发机构等
+
+Cert-Manager 支持多种证书颁发机构，包括自签名证书 selfSigned、Let's Encrypt、HashiCorp Vault、Venafi 等。它还支持多种验证方式，包括 HTTP 验证、DNS 验证和 TLS-SNI 验证等。这些验证方式可以帮助确保证书的颁发机构是可信的，并且确保证书的私钥不会泄露
+
+### 监听资源
 
 cert-manager 也是一个 controller，部署起来后，会像其它 controller 一样，监听着资源的变化，然后执行相应的逻辑。
 
@@ -59,6 +82,88 @@ Cert-manager 定义了几个 CRD 资源，用于证书的管理。如下：
 certificates 是自定义证书资源，其中存储了证书的类型，以及证书信息存到哪个 secret 等信息。
 
 clusterissuers 和 issuers 是生产者，负责生成 certificates，然后 certificates 负责生成 tls 类型的 secret，secret 最终被 ingress 引用，实现 https 访问。
+
+### cert-manager 创建证书的过程
+
+cert-manager 在 k8s 中创建证书的整个过程可以通过以下流程图来描述：
+
+```plain
+              +-------------+
+              |             |
+              |   Ingress/  |
+              | annotations |
+              |             |
+              +------+------+
+                     |
+                     | watch ingress change
+                     |
+                     v
+              +-------------+
+              |             |
+              |   Issuer/   |
+              | ClusterIssuer |
+              |             |
+              +------+------+
+                     |
+                     | Create CertificateRequest
+                     |
+                     v
+              +------+------+
+              |             |
+              |CertificateRequest|
+              |             |
+              +------+------+
+                     |
+                     | Create Order
+                     |
+                     v
+              +------+------+
+              |             |
+              |      Order  |
+              |             |
+              +------+------+
+                     |
+                     | Create Challenges
+                     |
+                     v
+              +------+------+
+              |             |
+              |  Challenge  |
+              |             |
+              +------+------+
+                     |
+                     | Respond to Challenge
+                     |
+                     v
+              +------+------+
+              |             |
+              |ChallengeResponse|
+              |             |
+              +------+------+
+                     |
+                     | Issue Certificate
+                     |
+                     v
+              +------+------+
+              |             |
+              |     Secret  |
+              |             |
+              +------+------+
+```
+
+在 Kubernetes 中，cert-manager 通过以下流程创建资源对象以签发证书：
+
+1. 创建一个 `CertificateRequest` 对象，包含证书的相关信息，例如证书名称、域名等。该对象指定了使用的 `Issuer` 或 `ClusterIssuer`，以及证书签发完成后，需要存储的 `Secret` 的名称
+2. `Issuer` 或 `ClusterIssuer` 会根据证书请求的相关信息，创建一个 `Order` 对象，表示需要签发一个证书。该对象包含了签发证书所需的域名列表、证书签发机构的名称等信息
+3. 证书签发机构根据 `Order` 对象中的信息创建一个或多个 `Challenge` 对象，用于验证证书申请者对该域名的控制权。`Challenge` 对象包含一个 DNS 记录或 HTTP 服务，证明域名的所有权
+4. cert-manager 接收到 `Challenge` 对象的回应`ChallengeResponse`后，会将其更新为已解决状态。证书签发机构会检查所有的 `Challenge` 对象，如果全部通过验证，则会签发证书
+5. 签发证书完成后，证书签发机构会将证书信息写入 `Secret` 对象，同时将 `Order` 对象标记为已完成。证书信息现在可以被其他部署对象使用
+
+可以通过以下命令查看各个过程的信息：
+
+```
+kubectl get CertificateRequests,Orders,Challenges
+```
 
 ## 参考资料
 

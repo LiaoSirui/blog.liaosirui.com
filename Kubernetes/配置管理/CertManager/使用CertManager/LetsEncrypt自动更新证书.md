@@ -1,11 +1,10 @@
-
 ## Let's Encrypt
 
 Cert-manager 是 Kubernetes 上的全能证书管理工具，支持利用 Cert-Manager 基于 ACME(Automatic Certificate Management Environment) 协议与 Let's Encrypt 签发免费证书并为证书自动续期，实现永久免费使用证书
 
 Cert-Manager 用于在 Kubernetes 集群中自动管理和颁发来自各种颁发源的 TLS 证书，它可以从各种受支持的来源颁发证书，包括 Let's Encrypt、HashiCorp Vault 和 Venafi 以及私有 PKI，它将确保证书定期有效和更新，并在到期前的适当时间尝试更新证书。
 
-<img src=".assets/image-20221217124411758.png" alt="image-20221217124411758" style="zoom:67%;" />
+![image-20230526144158024](.assets/LetsEncrypt%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%E8%AF%81%E4%B9%A6/image-20230526144158024.png)
 
 Let's Encrypt 和 ACME 协议的目标是使配置能够自动获取受信任浏览器的证书的 HTTPS 服务器成为可能。这是通过在 Web 服务器上运行证书管理软件（Agent）来达成的。该流程分为两步：
 
