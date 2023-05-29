@@ -7,12 +7,12 @@
 创建一个特定的服务帐户
 
 ```bash
-kubectl create serviceaccount console \
+kubectl create serviceaccount okd-console \
   -n kube-system
 
-kubectl create clusterrolebinding console \
+kubectl create clusterrolebinding okd-console \
   --clusterrole=cluster-admin \
-  --serviceaccount=kube-system:console \
+  --serviceaccount=kube-system:okd-console \
   -n kube-system
 ```
 
@@ -41,7 +41,7 @@ rules:
 
 ```bash
 # 提取与控制台服务帐户关联的令牌秘密名称
-kubectl get serviceaccount console \
+kubectl get serviceaccount okd-console \
   -n kube-system \
   -o jsonpath='{.secrets[0].name}'
 
@@ -54,10 +54,10 @@ kubectl get serviceaccount console \
 apiVersion: v1
 kind: Secret
 metadata:
-  name: console-sa-secret
+  name: okd-console-sa-secret
   namespace: kube-system
   annotations:
-    kubernetes.io/service-account.name: console
+    kubernetes.io/service-account.name: okd-console
 type: kubernetes.io/service-account-token
 ```
 
@@ -120,7 +120,7 @@ spec:
             - name: BRIDGE_K8S_AUTH_BEARER_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: console-token-rzws4 # console serviceaccount token
+                  name: okd-console-token-rzws4 # console serviceaccount token
                   key: token
 
 ---
