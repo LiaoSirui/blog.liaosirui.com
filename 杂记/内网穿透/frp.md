@@ -112,5 +112,36 @@ systemctl enable --now frpc
 参考配置如下：
 
 ```ini
+# frpc.ini
+[common]
+server_addr = 47.108.210.201
+# Same as the 'kcp_bind_port' in frps.ini
+server_port = 7000
+
+# auth token
+authentication_method = token
+token = tk-token
+
+# log
+log_file = /var/log/frp/frpc.log
+log_level = debug
+log_max_days = 3
+disable_log_color = false
+
+[http]
+type = tcp
+local_port = 80
+local_ip = 10.244.244.11
+remote_port = 11080
+use_encryption = true
+use_compression = true
+
+[https]
+type = tcp
+local_port = 443
+local_ip = 10.244.244.11
+remote_port = 11443
+use_encryption = true
+use_compression = true
 ```
 
