@@ -18,7 +18,7 @@
 | xtcp   | 点对点内网穿透代理，功能同 stcp，但是流量不需要经过服务器中转 |
 | tcpmux | 支持服务端 TCP 端口的多路复用，通过同一个端口访问不同的内网服务 |
 
-## 安装
+## 服务端安装
 
 使用 systemd 管理服务 `/usr/lib/systemd/system/frps.service` ：
 
@@ -78,5 +78,39 @@ allow_ports = 22,80,443,11080,11443
 max_pool_count = 10
 max_ports_per_client = 10
 
+```
+
+### 客户端安装
+
+使用 systemd 管理服务 `/usr/lib/systemd/system/frpc.service` ：
+
+```ini
+[Unit]
+Description = Frp Client Service
+After = network.target syslog.target
+Wants = network.target
+
+[Service]
+Type=simple
+User=root
+Restart=on-failure
+RestartSec=5s
+ExecStart=/root/frp_0.49.0_linux_amd64/frpc -c /root/frpc.ini
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+设置开机自启
+
+```bash
+systemctl enable --now frpc
+```
+
+参考配置如下：
+
+```ini
 ```
 

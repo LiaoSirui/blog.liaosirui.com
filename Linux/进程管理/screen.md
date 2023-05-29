@@ -1,8 +1,26 @@
 ## screen 常用命令
 
+- 新建 screen
+
+```bash
+screen -S name
+```
+
 - `ctrl + A` 窗口之间切换
 - `ctrl + A + D` 打开新窗口
 - `ctrl + A + D` 保留后台并退出当前窗口
+
+- 显示当前所有的 screen
+
+```bash
+screen -ls
+```
+
+- 进入某个 screen
+
+```bash
+screen -r [screen id] or [screen name]
+```
 
 ## 常见问题
 
