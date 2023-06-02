@@ -40,6 +40,8 @@ metabase 是一款开源免费的 BI 工具，可以选择数据库进行展示�
 ```bash
 helm repo add pmint93 https://pmint93.github.io/helm-charts
 
+helm pull pmint93/metabase --version 2.7.0
+
 helm install my-metabase pmint93/metabase --version 2.7.0
 
 ```
