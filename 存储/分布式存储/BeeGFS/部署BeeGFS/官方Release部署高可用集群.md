@@ -1,1 +1,0 @@
-官方 Releae 地址：<http://www.beegfs.io/release/>

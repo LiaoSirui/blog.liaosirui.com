@@ -25,11 +25,11 @@ Buildx 使用 BuildKit 引擎 进行构建，支持许多新的功能
 ```bash
 mkdir ~/.docker/cli-plugins
 
-export BUILDX_VER=v0.9.1
+export INST_BUILDX_VER=v0.11.0
 # export BUILDX_ARCH=arm64
-export BUILDX_ARCH=amd64
+export INST_BUILDX_ARCH=amd64
 
-curl -sL https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-${BUILDX_ARCH} -o ~/.docker/cli-plugins/docker-buildx
+curl -sL https://github.com/docker/buildx/releases/download/${INST_BUILDX_VER}/buildx-${INST_BUILDX_VER}.linux-${INST_BUILDX_ARCH} -o ~/.docker/cli-plugins/docker-buildx
 
 chmod +x ~/.docker/cli-plugins/docker-buildx
 ```
