@@ -310,3 +310,17 @@ virt-builder --cache-all-templates
 virt-builder --delete-cache
 ```
 
+## 示例
+
+启动一个空白的 centos7 镜像
+
+```bash
+virt-builder centos-7.8 \
+    --size 50G \
+    --output /var/lib/libvirt/images/centos7-base.qcow2 \
+    --format qcow2 \
+    --hostname centos7-base \
+    --root-password password:f
+
+```
+

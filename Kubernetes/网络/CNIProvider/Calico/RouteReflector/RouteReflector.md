@@ -2,7 +2,7 @@
 
 默认情况下 calico 采用 node-to-node mesh 方式 ，为了防止 BGP 路由环路，BGP 协议规定在一个 AS（自治系统）内部，IBGP 路由器之间只能传一跳路由信息，所以在一个 AS 内部，IBGP 路由器之间为了学习路由信息需要建立全互联的对等体关系，但是当一个 AS 规模很大的时候，这种全互联的对等体关系维护会大量消耗网络和 CPU 资源，所以这种情况下就需要建立路由反射器以减少 IBGP 路由器之间的对等体关系数量
 
-![img](.assets/C9D7916921B885265B3A269E8E2276A7.jpg)
+![image-20230704185340865](.assets/RouteReflector/image-20230704185340865.png)
 
 早期 calico 版本提供专门的 route reflector 镜像，在新版本 calico node 内置集成 route reflector 功能。Route reflector 可以是以下角色：
 
