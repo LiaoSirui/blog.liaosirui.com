@@ -18,7 +18,7 @@ Alias tip: k get daemonsets.apps -n kube-system calico-node -o json | jq '.spec.
 二进制文件下载：
 
 ```bash
-curl -sL  https://github.com/projectcalico/calicoctl/releases/download/v3.24.1/calicoctl -o /usr/local/bin/calicoctl
+curl -sL  https://github.com/projectcalico/calicoctl/releases/download/v3.20.6/calicoctl-linux-amd64 -o /usr/local/bin/calicoctl
 
 chmod +x /usr/local/bin/calicoctl
 ```
