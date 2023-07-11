@@ -61,3 +61,12 @@ strace 记录程序所产生的每次系统调用，并以类似 C 的格式(无
 ```
 
 可看到程序调用哪些系统函数，调用次数、所耗时间及出错次数等信息，有助于分析程序运行速度瓶颈。同时注意到，settimeofday调用出错两次，而该函数在ChangeSysTime程序中被显式调用两次，亦即这两次调用均出错！但ChangeSysTime程序中并未对settimeofday调用作出错处理，故在运行中没有输出任何错误提示。假定程序源码不可修改，则此时就可借助strace找出错误所在(*strace -e trace=settimeofday ./ChangeSysTime*)： 
+
+## 示例
+
+-e trace=network  跟踪与网络有关的所有系统调用
+
+## 参考文档
+
+- <https://blog.csdn.net/budong282712018/article/details/83151953>
+- <https://cloud.tencent.com/developer/article/1683018>
