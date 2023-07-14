@@ -21,7 +21,7 @@ serve_from_sub_path = true
 ## Oauth
 
 ```ini
-role_attribute_path = "contains(name, 'bqadm') && 'Admin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'"
+role_attribute_path = "contains(name, 'adm') && 'Admin' || contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'"
 ```
 
 其他配置
