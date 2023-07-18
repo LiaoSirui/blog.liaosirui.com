@@ -178,7 +178,7 @@ spec:
       image: nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda10.2
       resources:
         limits:
-          nvidia.com/gpu: 1 # requesting 1 GPU
+          nvidia.com/gpu: "1" # requesting 1 GPU
   tolerations:
   - key: nvidia.com/gpu
     operator: Exists

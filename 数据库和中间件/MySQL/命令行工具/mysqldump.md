@@ -19,3 +19,19 @@
 
 
 <https://blog.csdn.net/miyatang/article/details/78227344>
+
+
+
+只导出表结构
+
+```bash
+mysqldump \
+  -h $HOST \
+  -u$USER \
+  -p$PASSWORD \
+  --single-transaction \
+  --skip-lock-tables \
+  --no-data \
+  --databases <db1> <db2> <..>
+```
+
