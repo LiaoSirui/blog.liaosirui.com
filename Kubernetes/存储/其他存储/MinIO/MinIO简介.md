@@ -131,3 +131,7 @@ MinIO 采用 Reed-Solomon code 将对象拆分成 N/2 数据和 N/2 奇偶校验
 <img src=".assets/image-20230111160539025.png" alt="image-20230111160539025" style="zoom:67%;" />
 
 该模式是 Minio 服务最常用的架构，通过共享一个 access_key 和 secret_key，在多台服务器上搭建服务，且数据分散在多块（大于 4 块，无上限）磁盘上，提供了较为强大的数据冗余机制（Reed-Solomon 纠删码）
+
+## 参考文档
+
+- <https://juejin.cn/post/7128064094061461534>
