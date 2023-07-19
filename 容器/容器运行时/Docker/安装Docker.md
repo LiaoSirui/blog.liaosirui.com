@@ -4,102 +4,60 @@
 配置源
 
 ```bash
-cat > /etc/yum.repos.d/docker-ce.repo << _EOF_
-[docker-ce-stable]
-name=Docker CE Stable - $basearch
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/$basearch/stable
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
+dnf config-manager \
+    --add-repo \
+    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 
-[docker-ce-stable-debuginfo]
-name=Docker CE Stable - Debuginfo $basearch
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/debug-$basearch/stable
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
-
-[docker-ce-stable-source]
-name=Docker CE Stable - Sources
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/source/stable
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
-
-[docker-ce-test]
-name=Docker CE Test - $basearch
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/$basearch/test
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
-
-[docker-ce-test-debuginfo]
-name=Docker CE Test - Debuginfo $basearch
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/debug-$basearch/test
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
-
-[docker-ce-test-source]
-name=Docker CE Test - Sources
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/source/test
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
-
-[docker-ce-nightly]
-name=Docker CE Nightly - $basearch
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/$basearch/nightly
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
-
-[docker-ce-nightly-debuginfo]
-name=Docker CE Nightly - Debuginfo $basearch
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/debug-$basearch/nightly
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
-
-[docker-ce-nightly-source]
-name=Docker CE Nightly - Sources
-baseurl=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/$releasever/source/nightly
-enabled=0
-gpgcheck=1
-gpgkey=https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/gpg
-_EOF_
 ```
 
 查看可用版本
 
 ```bash
-yum --disablerepo=\* --enablerepo=docker-ce-stable repolist
+dnf --disablerepo=\* --enablerepo=docker-ce-stable repolist
 
-yum --disablerepo=\* --enablerepo=docker-ce-stable list available
+dnf --disablerepo=\* --enablerepo=docker-ce-stable list available
 
-yum --disablerepo=\* --enablerepo=docker-ce-stable list docker-ce --showduplicates | sort -r
+dnf --disablerepo=\* --enablerepo=docker-ce-stable list docker-ce --showduplicates | sort -r
 ```
 
 例如：
 
 ```bash
-Loaded plugins: versionlock
-Installed Packages
-docker-ce.x86_64               3:20.10.14-3.el7                docker-ce-stable
-docker-ce.x86_64               3:20.10.14-3.el7                @docker-ce-stable
+Last metadata expiration check: 0:00:27 ago on Thu 20 Jul 2023 01:11:42 AM CST.
+docker-ce.x86_64                3:24.0.4-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:24.0.3-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:24.0.2-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:24.0.1-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:24.0.0-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:23.0.6-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:23.0.5-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:23.0.4-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:23.0.2-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:23.0.1-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:23.0.0-1.el9                  docker-ce-stable
+docker-ce.x86_64                3:20.10.24-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.23-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.22-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.21-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.20-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.19-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.18-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.17-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.16-3.el9                docker-ce-stable
+docker-ce.x86_64                3:20.10.15-3.el9                docker-ce-stable
 Available Packages
 ```
 
 安装对应的版本
 
 ```bash
-yum install --enablerepo=docker-ce-stable docker-ce-20.10.14-3.el7.x86_64
+dnf install --enablerepo=docker-ce-stable docker-ce-24.0.4-1.el9.x86_64
 ```
 
 锁版本
 
 ```bash
-yum versionlock docker-ce
+dnf versionlock docker-ce
 ```
 
 可以查看 `/etc/yum/pluginconf.d/versionlock.list` 是否出现对应的锁，例如
