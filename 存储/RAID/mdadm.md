@@ -18,6 +18,18 @@ dnf install -y mdadm
 fdisk -l
 ```
 
+检查分区表
+
+```bash
+wipefs /dev/sdb
+```
+
+清除所有分区表
+
+```bash
+wipefs -a -f /dev/sdb
+```
+
 创建 RAID 10。使用以下命令创建 RAID 10：
 
 ```bash
@@ -44,5 +56,41 @@ mkfs.xfs /dev/md0
 mkdir /mnt/raid10
 
 mount /dev/md0 /mnt/raid10
+```
+
+执行扫描
+
+```bash
+mdadm --detail --scan | tee -a /etc/mdadm.conf
+
+ARRAY /dev/md/r10a metadata=1.2 name=dev-nas:r10a UUID=15a98904:5e59a203:68845e55:f31ab986
+```
+
+## 删除 raid
+
+删除流程
+
+（1）停止运行 RAID
+
+```bash
+mdadm -S /dev/md0
+```
+
+（2）删除自动配置文件
+
+将 `/etc/mdadm/mdadm.conf` 文件中关于该 md0 的配置信息删除即可，这个方式有很多种
+
+由于配置信息中只有一个 RAID，将文件清空
+
+```bash
+> /etc/mdadm/mdadm.conf
+```
+
+（3）删除元数据
+
+将 RAID 分区中的元数据删除
+
+```bash
+mdadm --zero-superblock /dev/sdb
 ```
 
