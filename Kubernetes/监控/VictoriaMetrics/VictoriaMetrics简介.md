@@ -251,3 +251,27 @@ curl 'http://127.0.0.1:8481/select/0/prometheus/api/v1/series' --data-urlencode 
     },
    ...
 ```
+
+## 结合
+
+作为 Prometheus remote_write
+
+```
+  remoteWrite:
+    - url: >-
+        http://vminsert-vm-cluster.monitoring.svc.cluster.local:8480/insert/0/prometheus/
+```
+
+或者配置文件
+
+```yaml
+remote_write:
+- url: http://vminsert-vm-cluster.monitoring.svc.cluster.local:8480/insert/0/prometheus/
+  remote_timeout: 30s
+```
+
+grafana 读取数据源设置为
+
+```
+http://vmselect-vm-cluster.monitoring.svc.cluster.local:8481/select/0/prometheus/
+```
