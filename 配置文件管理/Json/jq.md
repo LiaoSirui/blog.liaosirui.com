@@ -17,6 +17,19 @@ autoreconf -i
 make && make install
 ```
 
+## 示例
+
+从环境变量读取
+
+```bash
+gpu_ip=10.16.153.20
+
+cat ${orion_file} | \
+  jq -r \
+  --arg gpu_ip "${gpu_ip}" \
+  '[ .data.items[]|select(.DeviceMeta.device_ip == $gpu_ip) ] | .[].DeviceID'
+```
+
 
 
 ## 参考文档
