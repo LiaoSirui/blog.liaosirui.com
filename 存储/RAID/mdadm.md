@@ -42,7 +42,7 @@ mdadm --create /dev/md0 --level=10 --raid-devices=4 /dev/sdb /dev/sdc /dev/sdd /
 - `--level=10` 表示创建 RAID10
 - `--raid-devices=4` 表示将 4 个磁盘组成 RAID10
 
-- `/dev/sdb1`、`/dev/sdc1`、`/dev/sdd1` 和 `/dev/sde1` 是要组合的磁盘的分区名称
+- `/dev/sdb`、`/dev/sdc`、`/dev/sdd` 和 `/dev/sde` 是要组合的磁盘的分区名称
 
 格式化 RAID10。使用以下命令格式化 RAID10：
 
