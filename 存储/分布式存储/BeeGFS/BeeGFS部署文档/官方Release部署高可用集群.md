@@ -40,20 +40,22 @@
 
 本次安装最新 stable 版本 `7.3.3-el9.x86_64`，官方 Releae 地址：<http://www.beegfs.io/release/>
 
+repo 文件链接：<https://www.beegfs.io/release/beegfs_7.4.0/dists/beegfs-rhel9.repo>
+
 ```bash
 cat > /etc/yum.repos.d/beegfs-rhel9.repo << _EOF_
 
 [beegfs]
-name=BeeGFS 7.3.3 (rhel9)
+name=BeeGFS 7.4.0 (rhel9)
 
 # If you have an active BeeGFS support contract, use the alternative URL below
 # to retrieve early updates. Replace username/password with your account for
 # the BeeGFS customer login area.
-# baseurl=https://username:password@www.beegfs.io/login/release/beegfs_7.3.3/dists/rhel9
-baseurl=https://www.beegfs.io/release/beegfs_7.3.3/dists/rhel9
+#baseurl=https://username:password@www.beegfs.io/login/release/beegfs_7.4.0/dists/rhel9
+baseurl=https://www.beegfs.io/release/beegfs_7.4.0/dists/rhel9
 
-gpgkey=https://www.beegfs.io/release/beegfs_7.3.3/gpg/GPG-KEY-beegfs
-gpgcheck=1
+gpgkey=https://www.beegfs.io/release/beegfs_7.4.0/gpg/GPG-KEY-beegfs
+gpgcheck=0
 enabled=0
 
 _EOF_
@@ -389,6 +391,8 @@ dnf install -y --enablerepo=beegfs \
 
 ```bash
 /opt/beegfs/sbin/beegfs-setup-client -m beegfs-node1
+
+crudini --set /etc/beegfs/beegfs-client.conf '' connDisableAuthentication "true"
 ```
 
 自动创建元数据 Group
@@ -426,7 +430,7 @@ systemctl restart beegfs-meta
 > beegfs-ctl --listmirrorgroups --nodetype=meta
      BuddyGroupID     PrimaryNodeID   SecondaryNodeID
      ============     =============   ===============
-                1               201               202
+                1                 1                 2
 
 ```
 

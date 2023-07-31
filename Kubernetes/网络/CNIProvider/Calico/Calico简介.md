@@ -21,8 +21,6 @@ curl https://docs.projectcalico.org/manifests/calico.yaml -O calico.yaml
 # 旧版本使用：kubeadm config view | grep Subnet
 ```
 
-
-
 修改网段
 
 ```bash
