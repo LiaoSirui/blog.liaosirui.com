@@ -2,10 +2,16 @@
 
 ```bash
 sealos init \
-  --master 10.24.9.97 \
+  --master 10.237.113.14 \
   --version v1.18.20 \
-  --pkg-url=/root/kube1.18.20.tar.gz
+  --pkg-url=/root/kube1.18.20.tar.gz \
+  --podcidr=100.90.0.0/16
 
-# --node 10.237.113.17
+```
+
+安装 nginx
+
+```bash
+sealos install --pkg-url=nginx-ingress_v1.20.tar
 ```
 
