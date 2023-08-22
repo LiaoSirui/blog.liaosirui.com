@@ -1,0 +1,1 @@
+代码地址：<https://github.com/istio/istio/tree/master/samples/bookinfo/>
