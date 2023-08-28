@@ -1,0 +1,1 @@
+参考资料：<https://www.coderdocument.com/docs/prometheus/v2.14/best_practices/remote_write_tuning.html>
