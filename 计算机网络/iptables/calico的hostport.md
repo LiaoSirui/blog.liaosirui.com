@@ -10,10 +10,6 @@ iptables -t nat -nvL CNI-HOSTPORT-DNAT
 iptables -t nat -D CNI-HOSTPORT-DNAT 1
 ```
 
-
-
-
-
 nodeport
 
 ```bash
