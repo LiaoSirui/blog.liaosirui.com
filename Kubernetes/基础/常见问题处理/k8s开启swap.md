@@ -78,3 +78,15 @@ ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELE
 systemctl daemon-reload
 systemctl start kubelet
 ```
+
+在 `/var/lib/kubelet/config.yaml` 中写入
+
+```
+featureGates:
+  NodeSwap: true
+memorySwap:
+  swapBehavior: LimitedSwap
+```
+
+- `UnlimitedSwap`（默认）：Kubernetes 工作负载可以根据请求使用尽可能多的交换内存， 一直到达到系统限制为止。
+- `LimitedSwap`：Kubernetes 工作负载对交换内存的使用受到限制。 只有具有 Burstable QoS 的 Pod 可以使用交换空间。

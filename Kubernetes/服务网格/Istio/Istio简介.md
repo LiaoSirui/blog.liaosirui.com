@@ -50,3 +50,9 @@ Istio 的安全功能：
 - 基于黑白名单的访问控制
 - 基于角色的访问控制
 - JWT 认证支持
+
+## 参考资料
+
+- <https://www.qikqiak.com/k8strain/istio/traffic/#_6>
+- <https://mp.weixin.qq.com/s/1VMEt3sJG3FWdaNXFGDn4Q>
+- <https://istio.io/latest/zh/docs/ops/diagnostic-tools/proxy-cmd/>
