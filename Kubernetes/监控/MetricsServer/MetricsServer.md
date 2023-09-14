@@ -24,15 +24,63 @@
 使用 Chart 安装，values.yaml 的值如下：
 
 ```yaml
-tolerations:
-  - operator: "Exists"
+customTolerations: &customTolerations
+  - key: node.kubernetes.io/not-ready
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 60
+  - key: node.kubernetes.io/unreachable
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 60
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+  - key: node-role.kubernetes.io/monitoring
+    operator: Exists
+
+customNodeAffinity: &customNodeAffinity
+  requiredDuringSchedulingIgnoredDuringExecution:
+    nodeSelectorTerms:
+      - matchExpressions:
+          - key: node-role.kubernetes.io/monitoring
+            operator: In
+            values:
+              - ""
+              - "yes"
+              - "true"
+
+customNodeSelector: &customNodeSelector
+  kubernetes.io/arch: amd64
+  kubernetes.io/os: linux
+
+global:
+  imagePullSecrets: 
+    - name: platform-oci-image-pull-secrets
+
+image:
+  repository: harbor.alpha-quant.com.cn:5000/3rd_party/registry.k8s.io/metrics-server/metrics-server
+  tag: "v0.6.4"
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 200Mi
 
 defaultArgs:
+  - --secure-port=10250
   - --cert-dir=/tmp
   - --kubelet-insecure-tls
   - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
   - --kubelet-use-node-status-port
   - --metric-resolution=15s
+
+nodeSelector: *customNodeSelector
+tolerations: *customTolerations
+affinity:
+  nodeAffinity: *customNodeAffinity
 
 ```
 
