@@ -1,12 +1,4 @@
-<https://mp.weixin.qq.com/s/fonvqHKjTd6-zLSGvYn38A>
-
-<https://mp.weixin.qq.com/s/HuYwxy4-rb-rPOoQT_mOkw>
-
-<https://mp.weixin.qq.com/s/PtHgg2HPX26VItujj5YCuA>
-
-<https://mp.weixin.qq.com/s/FCzrhubJH_x8p-2FepWIJg>
-
-
+Custom Resource Define 简称 CRD，是 Kubernetes（v1.7+）为提高可扩展性，让开发者去自定义资源的一种方式
 
 ## CRD 简介
 
@@ -20,3 +12,16 @@ CRD 的相关概念：
 - 当你创建新的 CustomResourceDefinition（CRD）时，Kubernetes API 服务器会为你所指定的每个版本生成一个新的 RESTful 资源路径。
 - 基于 CRD 对象所创建的自定义资源可以是名字空间作用域的，也可以是集群作用域的， 取决于 CRD 对象 spec.scope 字段的设置。
 - 定义 CRD 对象的操作会使用你所设定的名字和模式定义（Schema）创建一个新的定制资源， Kubernetes API 负责为你的定制资源提供存储和访问服务。 CRD 对象的名称必须是合法的 DNS 子域名。
+
+## 参考资料
+
+- <https://mp.weixin.qq.com/s/KhiCfUR_HiC1sRZW6Z0N_g>
+- <https://mp.weixin.qq.com/s/fonvqHKjTd6-zLSGvYn38A>
+- <https://mp.weixin.qq.com/s/HuYwxy4-rb-rPOoQT_mOkw>
+
+- <https://mp.weixin.qq.com/s/PtHgg2HPX26VItujj5YCuA>
+
+- <https://mp.weixin.qq.com/s/FCzrhubJH_x8p-2FepWIJg>
+
+
+
