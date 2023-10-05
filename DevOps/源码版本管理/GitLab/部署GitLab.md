@@ -55,3 +55,27 @@ gitlab-rake gitlab:check SANITIZE=true --trace
 gitlab-ctl tail        
 gitlab-ctl tail nginx/gitlab_access.log
 ```
+
+## Rails Console
+
+开启 Rails Console
+
+```bash
+gitlab-rails console
+```
+
+### 重置密码
+
+超级管理员用户默认都是 1
+
+```ruby
+user = User.where(id:1).first
+```
+
+输入`user.password='密码'`，密码位置填写您新的密码即可。然后再输入`user.save!` 保存用户对象
+
+```ruby
+user.password='abcd1234!'
+user.save!
+```
+

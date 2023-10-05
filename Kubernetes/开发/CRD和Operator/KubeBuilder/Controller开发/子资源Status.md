@@ -1,0 +1,4 @@
+```go
+// +kubebuilder:subresource:status
+```
+
