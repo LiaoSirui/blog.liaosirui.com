@@ -4,7 +4,23 @@
 
 ## 使用 helm 进行部署
 
+确定内核
+
+```bash
+cat <<EOT >> /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+nf_nat
+xt_REDIRECT
+xt_owner
+iptable_nat
+iptable_mangle
+iptable_filter
+EOT
+```
+
 - 部署 istio-base
+
 - 部署 istiod
 - 部署 istio-ingressgateway
 
@@ -106,3 +122,5 @@ helm install istio-ingressgateway istio/gateway -n istio-system --wait
 实际上 istio-ingressgateway 是作为一个 Kubernetes Service 对外提供访问服务
 
 由于 Istio-ingressgateway 默认使用的是 LoadBalancer ，需要公有云平台支撑，不然会一直处于 `<pending>`，因此需要修改 Service ，将 istio-ingressway 的网络类型从 LoadBalancer 改成 NodePort，以便直接通过服务器的 IP 访问
+
+> 如果无法 sidecar 注入，变更一个命名空间 `-n ingress-istio-gateway`
