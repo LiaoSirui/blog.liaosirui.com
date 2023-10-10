@@ -1,4 +1,23 @@
+## Bookinfo 简介
+
 代码地址：<https://github.com/istio/istio/tree/master/samples/bookinfo/>
+
+Bookinfo 应用分为四个单独的微服务：
+
+- `productpage` 这个微服务会调用 `details` 和 `reviews` 两个微服务，用来生成页面。
+- `details` 这个微服务中包含了书籍的信息。
+- `reviews` 这个微服务中包含了书籍相关的评论。它还会调用 `ratings` 微服务。
+- `ratings` 这个微服务中包含了由书籍评价组成的评级信息。
+
+`reviews` 微服务有 3 个版本：
+
+- v1 版本不会调用 `ratings` 服务。
+- v2 版本会调用 `ratings` 服务，并使用 1 到 5 个黑色星形图标来显示评分信息。
+- v3 版本会调用 `ratings` 服务，并使用 1 到 5 个红色星形图标来显示评分信息。
+
+![img](.assets/bookinfo-demo/JdnyfSAB5775HmgB62ib0BgtU6gEZcwGuF4wPEKlgZ2PF8ekIDKV4Mb03GeywFYo7RNVAxR60YLctlswEOezhmA.jpeg)
+
+## Bookinfo 部署
 
 安装官方的 Demo 示例：
 
@@ -52,7 +71,7 @@ metadata:
   name: bookinfo-gateway
 spec:
   selector:
-    istio: ingress-istio-gateway # use istio default controller
+    istio: ingressgateway
   servers:
   - port:
       number: 80
@@ -66,10 +85,10 @@ spec:
 执行下面命令以判断的 Kubernetes 集群环境是否支持外部负载均衡：
 
 ```bash
-> kubectl get svc -n ingress-istio-gateway ingress-istio-gateway
+> kubectl get svc -n istio-system istio-ingressgateway
 
-NAME                    TYPE       CLUSTER-IP   EXTERNAL-IP   PORT(S)                                      AGE
-ingress-istio-gateway   NodePort   10.96.2.92   <none>        15021:31868/TCP,80:30621/TCP,443:30934/TCP   65m
+NAME                   TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)                                      AGE
+istio-ingressgateway   NodePort   10.96.2.189   <none>        15021:30613/TCP,80:32721/TCP,443:32156/TCP   6m1s
 ```
 
 设置 `EXTERNAL-IP` 的值之后， 环境就有了一个外部的负载均衡器，可以将其用作入站网关。但如果 EXTERNAL-IP 的值为 (或者一直是 <`pending`> 状态)， 则环境则没有提供可作为入站流量网关的外部负载均衡器
@@ -77,9 +96,9 @@ ingress-istio-gateway   NodePort   10.96.2.92   <none>        15021:31868/TCP,80
 在这个情况下，还可以用服务（Service）的`NodePort`访问网关
 
 ```bash
-export INGRESS_PORT=$(kubectl get service -n ingress-istio-gateway ingress-istio-gateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+export INGRESS_PORT=$(kubectl get service -n istio-system istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
 
-export INGRESS_HOST=$(kubectl get po -l istio=ingress-istio-gateway -n ingress-istio-gateway -o jsonpath='{.items[0].status.hostIP}')
+export INGRESS_HOST=$(kubectl get po -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].status.hostIP}')
 ```
 
 设置环境变量 GATEWAY_URL：

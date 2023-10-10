@@ -2,7 +2,7 @@
 
 OpenTelemetry 可以用于从应用程序收集数据。它是一组工具、API 和 SDK 集合，可以使用它们来检测、生成、收集和导出遥测数据（指标、日志和追踪），以帮助分析应用的性能和行为
 
-![img](.assets/OpenTelemetry简介/z9BgVMEm7YuiayNegdFTRZ5bRd7ZGhsEmDjkWtCdrRcXPice0aV7h0JKdiaRKasfy5UNRuW5rXXIFq59AuI7lVnSA.png)
+<img src=".assets/OpenTelemetry简介/z9BgVMEm7YuiayNegdFTRZ5bRd7ZGhsEmDjkWtCdrRcXPice0aV7h0JKdiaRKasfy5UNRuW5rXXIFq59AuI7lVnSA.png" alt="img" style="zoom: 50%;" />
 
 OpenTelemetry 是：
 
