@@ -22,9 +22,10 @@ Kiali 仪表板展示了网格的概览以及应用的各个服务之间的关�
 
 - Envoy：Envoy 是一个高性能的 L7 代理和通信总线，它可以作为 sidecar 部署在每个微服务容器中。Envoy 实现了 Isto 中的核心功能，包括流量管理、服务发现、负载均衡、故障恢复和安全等
 - Istiod：Istiod 是 Istio 的控制平面，它负责管理 Envoy 和其他 Istio 组件的配置信息，并通过 pilot-discovery 服务将配置信息推送到 Envoy
-- Pilot：Pilot 是 Istio 的数据平面，它负责服务发现、负载均衡和流量管理等功能，同时它也是一个控制平面的客户端，与 Istiod 通信获取配置信息
-- Citadel：Citadel 是 Istio 的安全组件，它负责证书和密钥管理、身份验证和授权等功能。Citadel 将证书和密钥分发给每个 Envoy，以确保安全通信
-- Galley：Galley 是 Istio 的配置验证和分发组件，它负责将配置信息转换为 Istio 内部可用的格式，并将配置信息推送到 Istiod
+  - Pilot：Pilot 是 Istio 的数据平面，它负责服务发现、负载均衡和流量管理等功能，同时它也是一个控制平面的客户端，与 Istiod 通信获取配置信息
+  - Citadel：Citadel 是 Istio 的安全组件，它负责证书和密钥管理、身份验证和授权等功能。Citadel 将证书和密钥分发给每个 Envoy，以确保安全通信
+  - Galley：Galley 是 Istio 的配置验证和分发组件，它负责将配置信息转换为 Istio 内部可用的格式，并将配置信息推送到 Istiod
+
 - Mixer：Mixer 是 Istio 的策略和遥测组件，它负责在 Envoy 中插入策略和遥测代码，并将策略和遥测数据发送到外部服务。Mixer 已被替换为 Envoy 的本地策略代理
 
 ## Istio 资源类型

@@ -91,3 +91,11 @@ echo "http://$GATEWAY_URL/productpage"
 ```
 
 把上面命令的输出地址复制粘贴到浏览器并访问，确认 Bookinfo 应用的产品页面是否可以打开
+
+要查看追踪数据，必须向服务发送请求。请求的数量取决于 Istio 的采样率。采样率在安装 Istio 时设置，默认采样速率为 1%。在第一个跟踪可见之前，您需要发送至少 100 个请求。使用以下命令向 productpage 服务发送 100 个请求：
+
+```bash
+for i in `seq 1 100`; do curl -s -o /dev/null http://$GATEWAY_URL/productpage; done
+```
+
+Kiali 仪表板展示了网格的概览以及 Bookinfo 示例应用的各个服务之间的关系。它还提供过滤器来可视化流量的流动
