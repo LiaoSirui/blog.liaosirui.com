@@ -1,5 +1,3 @@
-<https://www.qikqiak.com/k3s/logging/efk/#%E5%AE%89%E8%A3%85-ES-%E9%9B%86%E7%BE%A4>
-
 ## EFK 技术栈简介
 
 ### 简介
@@ -485,7 +483,7 @@ kibana-kibana                   NodePort    10.3.25.210    <none>        5601:30
 
 登录成功后进入如下所示的 Kibana 主页：
 
-<img src=".assets/1654506382241.jpg" alt="Kibana 主页面" style="zoom: 25%;" />
+<img src=".assets/搭建EFK日志系统/1654506382241.jpg" alt="Kibana 主页面" style="zoom: 25%;" />
 
 ### 部署 Fluentd
 
@@ -905,19 +903,19 @@ kubectl create -f counter.yaml
 
 Pod 创建并运行后，回到 Kibana Dashboard 页面，点击左侧最下面的 `Management` -> `Stack Management`，进入管理页面，点击左侧 `Kibana` 下面的 `索引模式`，点击 `创建索引模式` 开始导入索引数据：
 
-<img src=".assets/1654507935976.jpg" alt="create index" style="zoom:67%;" />
+<img src=".assets/搭建EFK日志系统/1654507935976.jpg" alt="create index" style="zoom:67%;" />
 
 在这里可以配置需要的 Elasticsearch 索引，前面 Fluentd 配置文件中采集的日志使用的是 logstash 格式，定义了一个 `k8s` 的前缀，所以这里只需要在文本框中输入 `k8s-*` 即可匹配到 Elasticsearch 集群中采集的 Kubernetes 集群日志数据，然后点击下一步，进入以下页面：
 
-![index config](.assets/1654507989330.jpg)
+![index config](.assets/搭建EFK日志系统/1654507989330.jpg)
 
 在该页面中配置使用哪个字段按时间过滤日志数据，在下拉列表中，选择`@timestamp`字段，然后点击 `创建索引模式`，创建完成后，点击左侧导航菜单中的 `Discover`，然后就可以看到一些直方图和最近采集到的日志数据了：
 
-![log data](.assets/20210424172654.png)
+![log data](.assets/搭建EFK日志系统/20210424172654.png)
 
 现在的数据就是上面 Counter 应用的日志，如果还有其他的应用，也可以筛选过滤：
 
-![counter log data](.assets/1654508149663.jpg)
+![counter log data](.assets/搭建EFK日志系统/1654508149663.jpg)
 
 也可以通过其他元数据来过滤日志数据，比如可以单击任何日志条目以查看其他元数据，如容器名称，Kubernetes 节点，命名空间等。
 
@@ -1241,15 +1239,15 @@ logstash-0   1/1     Running   0          16s
 
 现在可以登录到 Kibana 可以看到有如下所示的索引数据了：
 
-![索引管理](.assets/1654758703795.jpg)
+![索引管理](.assets/搭建EFK日志系统/1654758703795.jpg)
 
 然后同样创建索引模式，匹配上面的索引即可：
 
-![创建索引模式](.assets/1654758738601.jpg)
+![创建索引模式](.assets/搭建EFK日志系统/1654758738601.jpg)
 
 创建完成后就可以前往发现页面过滤日志数据了：
 
-![过滤日志](.assets/1654758835366.jpg)
+![过滤日志](.assets/搭建EFK日志系统/1654758835366.jpg)
 
 ### 总结
 
@@ -1319,7 +1317,7 @@ logstashPipeline:
 
 使用上面的 values 值更新 logstash，正常更新后上面的 counter 这个 Pod 日志会输出到一个名为 `k8s-test-2022.06.09` 的索引去。
 
-![定制索引名称](.assets/1654761232362.jpg)
+![定制索引名称](.assets/搭建EFK日志系统/1654761232362.jpg)
 
 这样就实现了自定义索引名称，当然你也可以使用 Pod 名称、容器名称、命名空间名称来作为索引的名称，这完全取决于自己的需求。
 
