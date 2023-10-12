@@ -254,8 +254,12 @@ OpenTelemetry 收集器并不提供自己的后端，所以可以使用任何供
 为了可视化和分析遥测数据，只需要在 OpenTelemetry 采集器种配置一个导出器，比如 Jaeger 就是一个非常流行的用于分析和查询数据的开源产品
 
 ```yaml
+# exporters:
+#   jaeger:
+#     endpoint: "http://jaeger-collector.tracing.svc:14250"
+
 exporters:
-  jaeger:
-    endpoint: "http://localhost:14250"
+  "otlp/jaeger":
+    endpoint: "http://jaeger-collector.tracing.svc:4317"
 ```
 

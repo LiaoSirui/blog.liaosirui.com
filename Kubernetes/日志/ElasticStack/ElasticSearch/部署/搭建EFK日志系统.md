@@ -57,7 +57,7 @@ ElasticSearch 安装有最低安装要求，如果安装后 Pod 无法正常启�
 mkdir -p elastic-certs
 
 nerdctl run --name elastic-certs -v $PWD/elastic-certs:/app -it -w /app elasticsearch:7.17.3 /bin/sh -c  \
-  "elasticsearch-certutil ca --out /app/elastic-stack-ca.p12 --pass '' && \
+    "elasticsearch-certutil ca --out /app/elastic-stack-ca.p12 --pass '' && \
     elasticsearch-certutil cert --name security-master --dns \
     security-master --ca /app/elastic-stack-ca.p12 --pass '' --ca-pass '' --out /app/elastic-certificates.p12"
 
