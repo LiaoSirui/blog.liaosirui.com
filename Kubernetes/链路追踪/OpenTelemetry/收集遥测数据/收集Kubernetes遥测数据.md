@@ -1,0 +1,1 @@
+收集 Kubernetes 遥测数据的第一步是部署一个 OpenTelemetry Collector 的 DaemonSet 实例，以收集与节点和运行在这些节点上的工作负载相关的遥测数据。使用 DaemonSet 可以确保此收集器实例被安装在所有节点上。每个 DaemonSet 中的收集器实例将仅从其运行的节点收集数据。

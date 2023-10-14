@@ -148,6 +148,3 @@ annotations:
   sidecar.opentelemetry.io/inject: "true"
 ```
 
-## 参考文档
-
-- <https://mp.weixin.qq.com/s/LVkDPw5FGSmMJYkemPuZBA>
