@@ -178,3 +178,20 @@ app="demo-app"
 volume-pod
 ```
 
+## 示例
+
+Golang 程序的常用变量：
+
+```yaml
+- name: GOMEMLIMIT
+  valueFrom:
+    resourceFieldRef:
+      divisor: "0"
+      resource: limits.memory
+- name: GOMAXPROCS
+  valueFrom:
+    resourceFieldRef:
+      divisor: "0"
+      resource: limits.cpu
+```
+
