@@ -1,3 +1,11 @@
+## 查看所有 api 资源
+
+命令`kubectl api-resources`来查看所有 api 资源
+
+通过`kubectl api-versions`来查看 api 的版本
+
+通过`kubectl explain <资源名对象名>`查看资源对象拥有的字段
+
 ## 运行 pod
 
 ```bash

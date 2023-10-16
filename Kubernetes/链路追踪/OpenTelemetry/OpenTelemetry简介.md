@@ -205,6 +205,14 @@ OpenTelemetry 收集器可以通过不同的方式进行部署
 
 ### 部署模式
 
+采集器可以以三种不同的方式部署：
+
+1. 作为 Kubernetes Deployment：这是默认选项，它允许采集器根据需要在节点之间移动，支持向上和向下扩展。
+2. 作为 Kubernetes Daemonset：这个选项将在每个节点上部署一个采集器，当你想确保你的信号在没有任何网络开销的情况下被处理时，它可能很有用。
+3. 作为一个 Sidecar：被注入到任何新的注释的 pod 中（使用 `sidecar.opentelemetry.io/inject: true`）。当采集器需要一个 pod 的特定配置时，这可能是很好的（例如，也许它需要一些专门的转换）。
+
+可以混合和匹配这些收集器模式。例如，可以设置一个 sidecar，为部署中的 pod 做一些转换，然后将它们发送到一个全局收集器，与其他工作负载共享。
+
 基本版 - 客户端使用 OTLP 进行检测，将数据发送到一组收集器
 
 ![img](.assets/OpenTelemetry简介/z9BgVMEm7YuiayNegdFTRZ5bRd7ZGhsEmdWgQ5rs23cOx0GGKqiciaEauYAwK1dcre8shMmFUTWXvljy3wiacWIPmQ.png)
