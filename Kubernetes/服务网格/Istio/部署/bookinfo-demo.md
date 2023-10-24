@@ -17,6 +17,10 @@ Bookinfo 应用分为四个单独的微服务：
 
 ![img](.assets/bookinfo-demo/JdnyfSAB5775HmgB62ib0BgtU6gEZcwGuF4wPEKlgZ2PF8ekIDKV4Mb03GeywFYo7RNVAxR60YLctlswEOezhmA.jpeg)
 
+服务依赖图如下所示：
+
+![image-20230507162407860](.assets/bookinfo-demo/image-20230507162407860.png)
+
 ## Bookinfo 部署
 
 安装官方的 Demo 示例：
@@ -118,3 +122,106 @@ for i in `seq 1 100`; do curl -s -o /dev/null http://$GATEWAY_URL/productpage; d
 ```
 
 Kiali 仪表板展示了网格的概览以及 Bookinfo 示例应用的各个服务之间的关系。它还提供过滤器来可视化流量的流动
+
+## 详解 istio 相关配置
+
+### Gateway
+
+已经部署了 istio-ingressgateway，这个组件起到了类似 nginx、apisix 的效果，对外提供端口访问，然后将流量转发到内部服务中。
+
+但是 istio-ingressgateway 并不能直接转发流量到 Pod，它还需要进行一些配置。要为 productpage 创建一个站点，绑定对应的域名，这样外部访问 istio-ingressgateway 的端口时，istio-ingressgateway 才知道该将流量转发给谁。在 Istio 中，定义这种绑定关系的资源叫 Gateway。
+
+![image-20230523105731802](.assets/bookinfo-demo/image-20230523105731802.png)
+
+Gateway 类似 Nginx 需要创建一个反向代理时需要绑定的域名配置。
+
+创建一个 Gateway，绑定域名入口
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+
+```
+
+`hosts` 表示对外开放的访问路径，可以绑定域名、IP 等。这里使用 `*` ，表示所有访问都可以进入此网关。
+
+当我们创建 Istio Gateway 之后，istio-ingressgateway 会为我们监控流量，检测不同的域名或端口属于哪个 Istio Gateway 。
+
+![image-20230507191326199](.assets/bookinfo-demo/image-20230507191326199.png)
+
+### VirtualService
+
+虽然创建了 Istio Gateway，但是还不能直接通过网关访问到前面部署的微服务，还需要创建 Istio VirtualService 将 Istio Gateway 跟对应的 Kubernetes Service 绑定起来，然后流量才能正式流向 Pod。
+
+![image-20230523111048859](.assets/bookinfo-demo/image-20230523111048859.png)
+
+一定要注意这里，流量实际并不会经过 Service 中，但是 VirtualService 需要通过 Service 来发现 Pod。
+
+VirtualService 的主要目标是为服务提供稳定的入口地址，并通过配置一系列的路由规则来控制流量在网格内的行为。
+
+VirtualService 可以用于实现以下功能：
+
+- 请求路由：将请求路由到特定的服务或版本，例如将请求分发到不同版本的服务，以实现灰度发布或金丝雀发布。
+
+- 请求重试：为失败的请求配置重试策略，以提高服务的可用性。
+
+- 请求超时：设置请求的超时时间，以便在特定时间内没有得到响应时中断请求。
+
+- 请求镜像：将请求的副本发送到另一个服务，用于测试新版本的服务，而不影响实际的生产流量。
+
+- 流量分割：将流量按照特定的比例分发到不同的服务或版本，以实现流量控制。
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - bookinfo-gateway
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage
+        port:
+          number: 9080
+```
+
+`http.match`，表示暴露了哪些 API 地址，外部访问时只能访问到这些地址。可以通过 `http.match` 限制集群外部访问此地址时所能使用的 URL
+
+然后通过 `http.route` 绑定 Kubernetes Service ，通过 Service 中的服务发现，将流量转发到对应的 Pod 中
+
+host 这里，由于 VirtualService 跟 Service/Pod 在同一个命名空间中，所以只需要配置 Service 的名称即可，如果要跨命名空间访问，则需要加上完整的命名空间名称。
+
+由于只暴露了五个地址，所以外部直接访问 `/` ，是打不开页面的。
+
+### DestinationRule
+
+Istio VistualService 中可以限制外部能够访问的路由地址，而 DestinationRule 则可以配置访问的 Pod 策略。可以为 Istio VistualService 绑定一个 Istio DestinationRule，通过 DestinationRule 我们还可以定义版本子集等，通过更加丰富的策略转发流量。
+
+![image-20230507192751780](.assets/bookinfo-demo/image-20230507192751780.png)

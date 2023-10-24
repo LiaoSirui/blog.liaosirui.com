@@ -95,6 +95,8 @@ istiod 具备了五大功能：
 - 验证和转换：验证 Istio 配置资源的正确性，并将它们转换为 Envoy Proxy 可以理解的格式
 - Envoy 代理注入：负责将 Envoy Proxy 注入到服务 Pod 中，以便进行流量拦截和路由
 
+>  新版本的 Istiod 将旧版本中零散的组件如 Mixer、Pilot、Citadel、Galley 等合并
+
 安装 istiod
 
 ```bash
@@ -119,8 +121,12 @@ Istio Ingress Gateway 的主要包括以下作用：
 helm install istio-ingressgateway istio/gateway -n istio-system --wait
 ```
 
-实际上 istio-ingressgateway 是作为一个 Kubernetes Service 对外提供访问服务
+istio-ingressgateway 本身包含 Kubernetes Service 、Pod，通过暴露节点端口，外部可以通过节点端口将流量打入 istio-ingressgateway 的 Pod
 
-由于 Istio-ingressgateway 默认使用的是 LoadBalancer ，需要公有云平台支撑，不然会一直处于 `<pending>`，因此需要修改 Service ，将 istio-ingressway 的网络类型从 LoadBalancer 改成 NodePort，以便直接通过服务器的 IP 访问
+![image-20230523091815336](.assets/使用Helm部署/image-20230523091815336.png)
 
-> 如果无法 sidecar 注入，变更一个命名空间 `-n ingress-istio-gateway`
+流量经过 Istio 分析后，流量通过负载均衡转发到其中一个 Pod
+
+![image-20230528090617137](.assets/使用Helm部署/image-20230528090617137.png)
+
+流量进入 Istio 之后，不需要将流量转发到 Service，但是依然需要依赖 Service。 Istio 会从 Service 中获取到所有的 Pod，然后 Istio 直接将流量转发到 Pod，实现熔断、故障处理等一系列任务。
