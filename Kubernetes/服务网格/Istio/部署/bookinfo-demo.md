@@ -225,3 +225,4 @@ host 这里，由于 VirtualService 跟 Service/Pod 在同一个命名空间中�
 Istio VistualService 中可以限制外部能够访问的路由地址，而 DestinationRule 则可以配置访问的 Pod 策略。可以为 Istio VistualService 绑定一个 Istio DestinationRule，通过 DestinationRule 我们还可以定义版本子集等，通过更加丰富的策略转发流量。
 
 ![image-20230507192751780](.assets/bookinfo-demo/image-20230507192751780.png)
+

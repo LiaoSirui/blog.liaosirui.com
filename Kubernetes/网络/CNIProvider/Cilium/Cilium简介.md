@@ -197,3 +197,5 @@ cilium connectivity test
 https://zhuanlan.zhihu.com/p/468686172
 
 <https://www.jianshu.com/p/090c3d32c2be>
+
+https://lib.jimmysong.io/cilium-handbook/
