@@ -1,3 +1,11 @@
+## VSCode RemoteSSH 开发问题合集
+
+wdinwos ssh 无法使用，设置如下
+
+```json
+"remote.SSH.path": "C:\\Program Files\\Git\\usr\\bin\\ssh.exe",
+```
+
 通过跳板机远程（跳板机为 Windows）
 
 ```bash
