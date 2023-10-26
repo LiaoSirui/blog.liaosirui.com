@@ -6,6 +6,8 @@ P2P 镜像分发技术将需要分发的文件做分片处理，生成种子文�
 
 以下是一些常见的 P2P 镜像分发技术：
 
+- Spegel: <https://github.com/XenitAB/spegel#spegel>
+
 - Kraken：Uber 使用 Go 语言开发而开源的一个镜像 P2P 分发项目
 - Dragonfly：阿里巴巴开源的 P2P 镜像和文件分发系统，可以解决原生云应用中面临的分发问题
 - BitTorrent：BitTorrent 是一种常用的 P2P 文件分发协议，可以用于分发镜像文件。BitTorrent 协议将文件划分为多个块，每个块由多个节点共享，下载者可以同时从多个节点下载块，从而提高下载速度
