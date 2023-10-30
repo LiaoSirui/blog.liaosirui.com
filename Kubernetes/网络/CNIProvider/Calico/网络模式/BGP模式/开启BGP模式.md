@@ -33,3 +33,6 @@ kubectl set env daemonset/calico-node -n kube-system FELIX_IPINIPENABLED=false
 
 ```
 
+## 参考资料
+
+- <https://kubesphere.io/zh/blogs/calico-guide/>
