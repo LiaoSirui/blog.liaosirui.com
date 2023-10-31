@@ -36,3 +36,9 @@ Containerlab 还提供了丰富的实验案例，可以在 Lab examples 中找�
 
 ![img](.assets/Containerlab简介/vvsibFWkwqHrG3ffYxKKwgwq4w6c4E2W41RqOZjOQ6sK8croJnhnwmpyC31F2EskeMhLx2cYtINP3DWict4DPsRA.png)
 
+安装
+
+```bash
+bash -c "$(curl -sL https://get.containerlab.dev)" -- -v 0.47.2
+```
+
