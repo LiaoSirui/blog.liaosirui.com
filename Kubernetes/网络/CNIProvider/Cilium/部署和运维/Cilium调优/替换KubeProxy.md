@@ -1,0 +1,1 @@
+`KubeProxyReplacement: Disabled` Cilium 是没有完全替换掉 kube-proxy 的

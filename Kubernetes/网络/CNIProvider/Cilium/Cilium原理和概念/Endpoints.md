@@ -21,6 +21,8 @@ local-path-storage   local-path-provisioner-6bc4bddd6b-x7gpb   2895          632
 
 官方文档：<https://docs.cilium.io/en/v1.14/internals/security-identities/#security-identities>
 
+![img](.assets/Endpoints/identity_model.png)
+
 使 Cilium 能够高效工作的一个关键概念是 Cilium 的 身份概念。所有 Cilium Endpoints 都有一个基于标签的标识
 
 Cilium 身份由标签决定，在整个集群中是唯一的。端点会被分配与端点安全相关标签相匹配的身份，也就是说，共享同一组安全相关标签的所有端点将共享相同的身份。与每个身份相关的唯一数字标识符会被 eBPF 程序用于网络数据路径中的快速查找，这也是 Hubble 能够提供 Kubernetes 感知网络可观察性的基础
