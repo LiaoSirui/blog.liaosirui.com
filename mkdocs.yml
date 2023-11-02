@@ -1,0 +1,43 @@
+site_name: 廖思睿的个人博客
+
+repo_url: https://github.com/LiaoSirui/blog.liaosirui.com
+
+hide:
+  - footer
+
+theme:
+  palette:
+    primary: black
+  language: zh
+  font:
+    text: Roboto
+  name: material
+  features:
+    - navigation.sections
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+# Markdown extensions
+markdown_extensions:
+  - attr_list
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
