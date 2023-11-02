@@ -1,6 +1,6 @@
 Git 仓库：<https://github.com/komodorio/helm-dashboard>
 
-<img src="../../.assets/2022-12-03-17-46-37-image.png" title="" alt="" data-align="center">
+![img](../../.assets/2022-12-03-17-46-37-image.png" title=")
 
 Helm Dashboard 插件提供了一种 UI 驱动的方式来查看已安装的 Helm Chart、查看其修订历史记录和相应的 K8s 资源。此外，你还可以执行简单的操作，例如回滚到修订版或升级到新版本。
 

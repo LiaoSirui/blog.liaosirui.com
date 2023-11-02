@@ -17,7 +17,7 @@ burst buffer 存在两种架构一种是 node-local，另外一种是 remote sha
 
 beeond 的设计思路采用 remote shared 模式，计算节点启动一个 beegfs 的实例。其中 nodefile 中记录了实例相关的配置。实例通过 start 和 stop 命令快速的启动和停止。通过内置的 beeond-cp 将文件系统实例中的数据存入 / 读出（stageout/stagein）后端的持久化存储（其他如 rsync 也可以完成类似的工作），其并发在指定的多个节点上同时执行。beeond-cp 使用的是 GNU parallel 组件，该组件可以并行执行任务。 
 
-<img src=".assets/3841733-8fb3f584cb00a2cd.png" alt="img" style="zoom: 33%;" />
+![img](.assets/3841733-8fb3f584cb00a2cd.png)
 
 beeond-copy 提供并行拷贝的能力，最大速度在 29 小时内传输了 1PB 的数据。 
 

@@ -39,7 +39,7 @@ Docker 公司与 CoreOS 和 Google 共同创建了 OCI (Open Container Initial)
 
 Docker、Google 等开源了用于运行容器的工具和库 runC 作为 OCI 的一种实现参考, 随后各种运行时和库也慢慢出现例如 rkt、containerd、cri-o，然而这些工具所拥有的功能却不尽相同，有的只有运行容器（runc、lxc），而有的除此之外也可以对镜像进行管理（containerd、cri-o）， 按照前面容器运行时进行分为两类，其不同容器运行时工具分类关系图如下。
 
-<img src=".assets/runtime.png"  />
+![img](.assets/runtime.png"  />
 
 主要关注如何与操作系统资源交互和创建并运行容器。目前常见的 low-level runtime有：
 
@@ -72,7 +72,7 @@ CRI 插件是 Kubernetes 容器运行时接口 （CRI） 的实现, Containerd �
 
 containerd 中的插件处理来自 Kubelet 的所有 CRI 服务请求，并使用容器内部来管理容器和容器映像,该插件使用 containerd 来管理整个容器生命周期和所有容器映像，并通过 CNI（另一个 CNCF 项目）管理 pod 网络，如下图所示。
 
-<img src=".assets/cri.png" style="zoom:67%;" />
+![img](.assets/cri.png)
 
 当 Kubelet 创建一个单容器 pod 时，插件是如何工作的：
 
@@ -100,7 +100,7 @@ Containerd 的设计是一个大的插件系统。
   - API 层: 通过 GRPC 与客户端连接，例如提供了给 Prometheus 使用 API 来进行监控，给 kubernetes 提供了 CRI 接口，给 containerd 提供了服务处理程序。
 - 3. 高层提供各种客户端，包括 K8s 的 kubelet，containerd 自己的命令行 ctr 等。
 
-<img src=".assets/containerd.png" style="zoom:67%;" />
+![img](.assets/containerd.png)
 
 Containerd 仍然采用标准的 C/S 架构，服务端通过 GRPC 协议提供稳定的 API，客户端通过调用服务端的 API 进行高级的操作。
 
@@ -115,7 +115,7 @@ Containerd 仍然采用标准的 C/S 架构，服务端通过 GRPC 协议提供�
 
 总之，万物皆插件，插件就是模块，模块就是插件。
 
-<img src=".assets/containerd_plugin.png"  />
+![img](.assets/containerd_plugin.png"  />
 
 几个常用的插件：
 
@@ -129,7 +129,7 @@ Containerd 仍然采用标准的 C/S 架构，服务端通过 GRPC 协议提供�
 - 【Metadata】 管理镜像和容器的元数据；
 - 【Runtime】由 Task 触发运行时, 并对外提供 GRPC 方式的 API 以及 Metrics 接口。
 
-<img src=".assets/containerd_simplify.png"  />
+![img](.assets/containerd_simplify.png"  />
 
 ## containerd-shim
 
@@ -165,18 +165,18 @@ systemd─┬─VGAuthService
 
 如下图所示 dockershim，containerd 和 cri-o 都是遵循 CRI 的容器运行时，我们称他们为高层级运行时（High-level Runtime）
 
-<img src=".assets/high_level_runtime.png" style="zoom:50%;" />
+![img](.assets/high_level_runtime.png)
 
 kubernetes 为啥会替换掉 Docker 呢？主要原因就是其复杂性，由于 Docker 的多层封装和调用，导致其在可维护性上略逊一筹，增加了线上问题的定位难度。
 
 如下图所示，总结了 Docker，containerd 以及 cri-o 的详细调用层级, Containerd 和 cri-o 的方案比起 Docker 简洁很多, 因此我们更偏向于选用更加简单和纯粹的 containerd 和 cri-o 作为我们的容器运行时，kubernetes 1.20.x 之上的版本建议使用 containerd 作为容器运行时。
 
-<img src=".assets/kubernetes_runtime.png" style="zoom:50%;" />
+![img](.assets/kubernetes_runtime.png)
 
 - 如下图所示，对 containerd 和 cri-o 进行了一组性能测试，包括创建、启动、停止和删除容器，得出它们所耗的时间。
 
 containerd 在各个方面都表现良好，除了启动容器这项。从总用时来看 containerd 的用时还是要比 cri-o 要短的。
 
-<img src=".assets/runc_performance.png" style="zoom:50%;" />
+![img](.assets/runc_performance.png)
 
 - 从功能性来讲 containerd 和 cri-o 都符合 CRI 和 OCI 的标准。从稳定性来说，单独使用 containerd 和 cri-o 都没有足够的生产环境经验。但 containerd 一直在 Docker 里使用，而 Docker 的生产环境经验可以说比较充足。可见在稳定性上 containerd 略胜一筹。

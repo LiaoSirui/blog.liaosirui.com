@@ -3,7 +3,7 @@
 
 Redis Operator 可以在 Kubernetes 平台上一键部署一个高可用的 Redis 集群，实现对 Redis 集群的自动化运维
 
-<img src=".assets/redis-operator-architecture.png" alt="redis-operator-architecture.png" style="zoom: 67%;" />
+![img](.assets/redis-operator-architecture.png)
 
 配置如下：
 

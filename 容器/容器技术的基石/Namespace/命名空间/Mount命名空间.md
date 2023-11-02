@@ -134,7 +134,7 @@ mount --bind /X /Z
 
 将看到下图所示的情况：
 
-<img src="./.assets/Mount命名空间/7000.png" alt="img" style="zoom:150%;" />
+![img](./.assets/Mount命名空间/7000.png)
 
 在这种情况下，有两个对等组：
 

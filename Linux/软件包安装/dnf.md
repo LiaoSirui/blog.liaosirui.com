@@ -444,7 +444,7 @@ gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors
 
 再例如安装 `hdf5-devel`
 
-<img src=".assets/image-20221207171414129.png" alt="image-20221207171414129" style="zoom:50%;" />
+![img](.assets/image-20221207171414129.png)
 
 ```bash
 dnf --enablerepo=devel install -y mysql-devel
@@ -452,7 +452,7 @@ dnf --enablerepo=devel install -y mysql-devel
 
 Rocky8 安装 `libaec-devel`
 
-<img src=".assets/image-20221207171537032.png" alt="image-20221207171537032" style="zoom:50%;" />
+![img](.assets/image-20221207171537032.png)
 
 ```bash
 dnf --enablerepo=powertools install -y libaec-devel

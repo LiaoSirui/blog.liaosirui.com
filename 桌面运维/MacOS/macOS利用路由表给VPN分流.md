@@ -10,7 +10,7 @@
 
 首先，点开 VPN 高级选项，像上图一样把通过 VPN 连接发送所有流量去掉
 
-<img src=".assets/image-20221221195443498.png" alt="image-20221221195443498" style="zoom:50%;" />
+![img](.assets/image-20221221195443498.png)
 
 设定服务顺序，将 VPN 的顺序调低
 

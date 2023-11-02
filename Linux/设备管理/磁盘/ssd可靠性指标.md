@@ -18,7 +18,7 @@ MTBF 也是一个需要实际跑测验证的指标，但因为完成 MTBF 不间
 
 电子产品有失效浴盆曲线的特性，通常用作视觉模型来说明产品失效率的三个关键时期。
 
-<img src="https://static001.geekbang.org/infoq/14/14e9e908b61635eb5b477b210b4414e3.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/14/14e9e908b61635eb5b477b210b4414e3.png" title=")
 
 - 早期失效（Early life failure rate or infant mortality)：这一阶段的特征是产品在开始使用时失效率很高，但随着产品工作时间的增加，失效率迅速降低。Memblaze 对所有生产线上的产品会进行一定时长的老化跑测，老化过程可以最大程度上暴露产品可能的早期失效，对正式出货产品进一步筛选
 
@@ -30,7 +30,7 @@ MTBF 也是一个需要实际跑测验证的指标，但因为完成 MTBF 不间
 
 对于一个可维护的设备，**MTBF = MTTF + MTTR**，三者关系如下图所示：
 
-<img src="https://static001.geekbang.org/infoq/3c/3cb9f927d428704edb6417de94282fa7.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/3c/3cb9f927d428704edb6417de94282fa7.png" title=")
 
 - MTTF (Mean Time To Failure，平均失效时间)：指系统两次失效的平均时间，取所有从系统开始正常运行到发生故障之间的时间段的平均值。 MTTF =∑T1/ N
 
@@ -44,7 +44,7 @@ MTBF 也是一个需要实际跑测验证的指标，但因为完成 MTBF 不间
 
 最简单的情况下，MTTF 计算遵循如下公式。
 
-<img src="https://static001.geekbang.org/infoq/60/60e10e8592fe2a3c398e2b16ca80fd22.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/60/60e10e8592fe2a3c398e2b16ca80fd22.png" title=")
 
 其中：
 
@@ -70,11 +70,11 @@ MTBF 也是一个需要实际跑测验证的指标，但因为完成 MTBF 不间
 
 TBW 是 SSD 寿命单位，以寿命为 1.5 DWPD，用户容量 3.84TB PBlaze6 SSD 为例，5 年总的数据写入量（也就是现场部署写入量 field）为 10.5 PBW，对应每天数据写入量为 5.76 TBW。如果增加每天的数据写入量（加速写入量 stress），相当于加快消耗 SSD 寿命，可以加速故障出现。对于 TBW 加速因子，计算方法如下：
 
-<img src="https://static001.geekbang.org/infoq/7a/7a8bb07b34f32d139722588dbc25484b.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/7a/7a8bb07b34f32d139722588dbc25484b.png" title=")
 
 假设对于一个用户容量为 100G 的 SSD，产品规格书定义 SSD 寿命为 175TBW，连续 5 年（43800 个小时）。在 1008 小时内写入 130TB 的数据，写放大为 1.2，则 TBW 加速因子为 32。
 
-<img src="https://static001.geekbang.org/infoq/b9/b9e196c76afd8fce5e016a179cdd969d.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/b9/b9e196c76afd8fce5e016a179cdd969d.png" title=")
 
 ##### 温度加速因子
 
@@ -82,7 +82,7 @@ JESD 22-A108 定义了温度随时间对 SSD 的影响，执行高温运行寿�
 
 对于温度加速因子，计算方法如下：
 
-<img src="https://static001.geekbang.org/infoq/af/af8047dc20ce7c3ef2037068efe5dae3.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/af/af8047dc20ce7c3ef2037068efe5dae3.png" title=")
 
 其中
 
@@ -98,7 +98,7 @@ JESD 22-A108 定义了温度随时间对 SSD 的影响，执行高温运行寿�
 
 假设样本量为 400，测试时间为 1008 小时，加速因子 Ai = A(TBW) * A(T) 为 10，失败的数量为 0，置信度为 60%，则
 
-<img src="https://static001.geekbang.org/infoq/13/139b59a9095587612bb6f4142ddc6a8b.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/13/139b59a9095587612bb6f4142ddc6a8b.png" title=")
 
 **注意， MTBF 标称和温度有关**
 
@@ -122,19 +122,19 @@ MTBF 和 AFR 都是针对大样本量的可靠性统计，二者可以相互转�
 
 - AFR = 365 * 24hours * λhours= 8760/MTBFhours, MTBF 以小时为单位（8760 是一年的小时数）
 
-<img src="https://static001.geekbang.org/infoq/31/31cae62b6a4fb44469ace0a3a516f2a8.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/31/31cae62b6a4fb44469ace0a3a516f2a8.png" title=")
 
 根据 JEDEC JESD 218 定义，企业级 SSD 在宣称的生命周期内必须保证 FFR≤3%，UBER≤
 
 10-16 ，关机后 SSD 在 40℃常温下必须达到 3 个月的数据保持力。其中功能故障要求 FFR（Functional Failure Requirement，The allowed cumulative functional failures over the TBW rating， 即 SSD 在整个磨损寿命时间范围内累积的功能失效率）这个指标也是 AFR 和 MTBF 的另一种表征方式（FFR = AFR * 5 年，以 5 年保修期）。
 
-<img src="https://static001.geekbang.org/infoq/c9/c9ba3b4008ad1638c6efe2c7b4f604ce.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/c9/c9ba3b4008ad1638c6efe2c7b4f604ce.png" title=")
 
 > For example, an FFR of 3% could be viewed as representing an annualized failure rate (AFR) of 0.6% averaged over a five-year life, or a mean time between failures (MTBF) of 5 years divided by 0.03, or about 1.5 million hours.
 
 根据 JESD 218 的解释，FFR≤3%的要求，等价于 AFR≤0.6%，MTBF 是 1,500,000 小时。
 
-<img src="https://static001.geekbang.org/infoq/28/2847722fc4c97ffda2a8fe6871a9bc51.png" title="" alt="" data-align="center">
+![img](https://static001.geekbang.org/infoq/28/2847722fc4c97ffda2a8fe6871a9bc51.png" title=")
 
 ## 根据实际出货统计的失效率 CFR
 

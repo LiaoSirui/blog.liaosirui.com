@@ -2,7 +2,7 @@
 
 对于 Kubernetes，Metrics API 提供了一组基本的指标，以支持自动伸缩和类似的用例。 该 API 提供有关节点和 Pod 的资源使用情况的信息， 包括 CPU 和内存的指标。
 
-<img src=".assets/image-20230209171951049.png" alt="image-20230209171951049" style="zoom: 67%;" />
+![img](.assets/image-20230209171951049.png)
 
 图中从右到左的架构组件包括以下内容：
 

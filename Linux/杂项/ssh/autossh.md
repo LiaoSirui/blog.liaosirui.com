@@ -70,7 +70,7 @@ autossh -M 5678 -fCN -L 5900:localhost:8000 root@host3
 autossh -M 5678 -fCN -L 5900:root@host2:8000 root@host3
 ```
 
-<img src=".assets/image-20221217150759159.png" alt="image-20221217150759159" style="zoom:50%;" />
+![img](.assets/image-20221217150759159.png)
 
 ### 反向转发
 
@@ -83,7 +83,7 @@ autossh -M 5678 -fCN -R 5900:localhost:8000 root@host1
 autossh -M 5678 -fCN -R 5900:root@host2:8000 root@host1
 ```
 
-<img src=".assets/image-20221217150813289.png" alt="image-20221217150813289" style="zoom:50%;" />
+![img](.assets/image-20221217150813289.png)
 
 ### 动态转发
 

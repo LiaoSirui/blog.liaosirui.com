@@ -9,7 +9,7 @@ BPF 有两个组成部分：
 - Tap 部分负责收集数据
 - Filter 部分负责按规则过滤包
 
-<img src=".assets/eBPF%E7%AE%80%E4%BB%8B//image-20230302234302596.png" alt="image-20230302234302596" style="zoom: 50%;" />
+![img](.assets/eBPF%E7%AE%80%E4%BB%8B/image-20230302234302596.png)
 
 收到包以后，驱动不仅会直接发给协议栈，还会发给 BPF 一份， BPF根据不同的filter直接“就地”进行过滤，不会再拷贝到内核中的其他 buffer 之后再就行处理，否则就太浪费资源了。处理后才会拷贝需要的部分到用户可以拿到的 buffer 中，用户态的应用只会看到他们需要的数据
 

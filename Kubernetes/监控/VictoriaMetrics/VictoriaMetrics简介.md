@@ -5,7 +5,7 @@ VictoriaMetrics 是一个支持水平扩展的时序数据库，可以作为 Pro
 
 使用 VM 完全替换 Prometheus，可以达到架构简单、更低的资源占用
 
-<img src=".assets/replace-prom.png" alt="replace-prom.png" style="zoom:80%;" />
+![img](.assets/replace-prom.png)
 
 ## 对比其他方案
 
@@ -27,7 +27,7 @@ cortex过于复杂，没有正式 release；使用 thanos，prometheus 通过 th
 
 VictoriaMetrics 集群版本 的架构如下：
 
-<img src=".assets/cm-cluster-arch.jpg" alt="架构" style="zoom:80%;" />
+![img](.assets/cm-cluster-arch.jpg)
 
 vminsert 和 vmselect 是无状态的写入、查询节点，vmstorage 是有状态的存储节点。数据平均分配到 vmstorage 节点，每个 vmstorage 分担一部分数据，没有冗余，如果 vmstorage 节点丢失，那么数据对应丢失。
 
@@ -120,7 +120,7 @@ vmagent 相比于 Prometheus 抓取指标来说具有更多的灵活性，比如
 - 可以通过在抓取时间和将其发送到远程存储系统之前限制唯一时间序列的数量来处理高基数和高流失率问题
 - 可以从多个文件中加载 scrape 配置
 
-<img src=".assets/vmagent-arch.jpg" alt="vmagent-arch.jpg" style="zoom:67%;" />
+![img](.assets/vmagent-arch.jpg)
 
 ### vmalert
 

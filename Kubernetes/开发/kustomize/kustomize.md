@@ -8,7 +8,7 @@ kustomize 是一个通过 kustomization 文件定制 kubernetes 对象的工具�
 
 一个比较典型的场景是我们有一个应用，在不同的环境例如生产环境和测试环境，它的 yaml 配置绝大部分都是相同的，只有个别的字段不同，这时候就可以利用 kustomize 来解决，kustomize 也比较适合用于 gitops 工作流。
 
-<img src=".assets/image-20230106175858359.png" alt="image-20230106175858359" style="zoom:50%;" />
+![img](.assets/image-20230106175858359.png)
 
 如上图所示，有一个 `ldap` 的应用
 

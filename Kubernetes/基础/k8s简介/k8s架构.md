@@ -2,11 +2,11 @@
 
 依托着 Borg 项目的理论优势，确定了一个如下图所示的全局架构图：
 
-<img src=".assets/20200510122933.png" alt="kubernetes arch" style="zoom:50%;" />
+![img](.assets/20200510122933.png)
 
 Kubernetes 由 Master 和 Node 两种节点组成，这两种角色分别对应着控制节点和工作节点
 
-<img src=".assets/640-0465006.png" alt="图片" style="zoom:50%;" />
+![img](.assets/640-0465006.png)
 
 从宏观上来看 kubernetes 的整体架构，包括 Master、Node 以及 Etcd
 

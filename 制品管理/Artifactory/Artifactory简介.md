@@ -37,4 +37,4 @@ JFrog 发布了社区版本的 JCR (JFrog Container Registry)，作为一款功�
 
 选择一种类型后，就可以在此类型的仓库下创建不同类型的制品仓库
 
-<img src=".assets/image-20221217144414088.png" alt="image-20221217144414088" style="zoom:80%;" />
+![img](.assets/image-20221217144414088.png)

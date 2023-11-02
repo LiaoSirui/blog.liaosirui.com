@@ -62,7 +62,7 @@ kubectl patch configmap/mymap -n default --type json --patch='[ { "op": "remove"
 
 这是最终的状态图
 
-<img src=".assets/KubernetesFinalizers/vNHkZdwXUGOM4jRic7fPFXJvBuVxJyLJY4OUeuWbcHOlb6RkzBnx3by1Vtsme1Rq3S0F1Xntpvt4L5d134ETicxA.png" alt="img" style="zoom:67%;" />
+![img](.assets/KubernetesFinalizers/vNHkZdwXUGOM4jRic7fPFXJvBuVxJyLJY4OUeuWbcHOlb6RkzBnx3by1Vtsme1Rq3S0F1Xntpvt4L5d134ETicxA.png)
 
 因此，如果尝试删除具有终结器的对象，它将保持终结状态，直到控制器删除终结器建或使用 kubectl 删除终结器。一旦终结器列表为空，kubernetes 实际上可以回收该对象并将其放入队列中以从注册表中删除
 

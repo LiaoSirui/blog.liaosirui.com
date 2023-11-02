@@ -8,7 +8,7 @@ Buddy Group 允许存储服务在两个目标之一失败时仍可以访问所�
 
 Storage Buddy Mirroring: 4 Servers with 1 Target per Server
 
-<img src=".assets/how-to-build-a-parallel-file-system-beegfs-on-aws-high-availability1.png" alt="img" style="zoom: 67%;" />
+![img](.assets/how-to-build-a-parallel-file-system-beegfs-on-aws-high-availability1.png)
 
 存储服务器 Buddy 镜像也可以用于奇数个存储服务器。因为 BeeGFS Buddy Group 由独立的存储目标组成，独立于它们对服务器的分配是可行的，
 
@@ -16,7 +16,7 @@ Storage Buddy Mirroring: 4 Servers with 1 Target per Server
 
 Storage Buddy Mirroring: 3 Servers with 2 Targets per Server
 
-<img src=".assets/how-to-build-a-parallel-file-system-beegfs-on-aws-high-availability2.png" alt="img" style="zoom:67%;" />
+![img](.assets/how-to-build-a-parallel-file-system-beegfs-on-aws-high-availability2.png)
 
 
 注意，这在元数据服务器上是不可能的，因为 BeeGFS 中元数据没有目标的概念。需要偶数个元数据服务器，以便每个元数据服务器都可以属于一个 Buddy Group。

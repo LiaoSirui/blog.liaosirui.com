@@ -58,7 +58,7 @@ b.trace_print()
 
 ### eBPF 的开发和执行过程
 
-<img src=".assets/image-20230222170839754.png" alt="image-20230222170839754" style="zoom:50%;" />
+![img](.assets/image-20230222170839754.png)
 
 - 第一步，使用 C 语言开发一个 eBPF 程序；
 - 第二步，借助 LLVM 把 eBPF 程序编译成 BPF 字节码；

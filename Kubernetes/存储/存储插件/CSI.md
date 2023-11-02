@@ -6,7 +6,7 @@
 
 在 CSI 之前，K8S 里提供存储服务基本上是通过 `in-tree` 的方式来提供，如下图：
 
-<img src=".assets/20220215193127.png" alt="without csi" style="zoom: 67%;" />
+![img](.assets/20220215193127.png)
 
 这种方式需要将存储提供者的代码逻辑放到 K8S 的代码库中运行，调用引擎与插件间属于强耦合，这种方式会带来一些问题：
 
@@ -24,7 +24,7 @@ CSI 规范定义了存储提供商实现 CSI 兼容插件的最小操作集合�
 
 在 Kubernetes 上整合 CSI 插件的整体架构如下图所示：
 
-<img src=".assets/20220215160824.png" alt="kubernetes csi structrue" style="zoom: 50%;" />
+![img](.assets/20220215160824.png)
 
 Kubernetes CSI 存储体系主要由两部分组成：
 
@@ -163,7 +163,7 @@ RPC 官方文档：<https://github.com/container-storage-interface/spec/blob/mas
 
 虽然 Kubernetes 并未规定 CSI 插件的打包安装，但是提供了以下建议来简化我们在 Kubernetes 上容器化 CSI Volume 驱动程序的部署方案，具体的方案介绍可以查看 CSI 规范介绍文档 https://github.com/container-storage-interface/spec/blob/master/spec.md
 
-<img src=".assets/20220215161609.png" alt="container storage interface deploy" style="zoom: 67%;" />
+![img](.assets/20220215161609.png)
 
 按照上图的推荐方案
 

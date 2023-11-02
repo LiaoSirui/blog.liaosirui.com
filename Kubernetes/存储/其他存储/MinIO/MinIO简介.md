@@ -92,7 +92,7 @@ Set / Drive 的关系（Set / Drive 这两个概念是 MinIO 里面最重要的�
 - 一个对象最终是存储在 Drive 上面的
 - Set 是另外一个概念，Set 是一组 Drive 的集合，图中，所有蓝色、橙色背景的 Drive（硬盘）的就组成了一个 Set
 
-<img src=".assets/image-20230111161142213.png" alt="image-20230111161142213" style="zoom:67%;" />
+![img](.assets/image-20230111161142213.png)
 
 ## 纠删码（Erasure Code）
 
@@ -116,19 +116,19 @@ MinIO 采用 Reed-Solomon code 将对象拆分成 N/2 数据和 N/2 奇偶校验
 
 ### 单主机，单硬盘模式
 
-<img src=".assets/image-20230111160422262.png" alt="image-20230111160422262" style="zoom: 67%;" />
+![img](.assets/image-20230111160422262.png)
 
 该模式下，Minio 只在一台服务器上搭建服务，且数据都存在单块磁盘上，该模式存在单点风险，主要用作开发、测试等使用
 
 ### 单主机，多硬盘模式
 
-<img src=".assets/image-20230111160517786.png" alt="image-20230111160517786" style="zoom:67%;" />
+![img](.assets/image-20230111160517786.png)
 
 该模式下，Minio 在一台服务器上搭建服务，但数据分散在多块（大于 4 块）磁盘上，提供了数据上的安全保障
 
 ### 多主机、多硬盘模式（分布式）
 
-<img src=".assets/image-20230111160539025.png" alt="image-20230111160539025" style="zoom:67%;" />
+![img](.assets/image-20230111160539025.png)
 
 该模式是 Minio 服务最常用的架构，通过共享一个 access_key 和 secret_key，在多台服务器上搭建服务，且数据分散在多块（大于 4 块，无上限）磁盘上，提供了较为强大的数据冗余机制（Reed-Solomon 纠删码）
 

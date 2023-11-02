@@ -18,7 +18,7 @@ OIDC 的全称是 OpenID Connect，是一个基于 OAuth 2.0 的轻量级认证 
 
 以下是 OIDC 授权码模式的交互模式：
 
-<img src=".assets/OIDC/up-41f4544a58675d5582c01afdc69e2f4e5e4.png" alt="img" style="zoom:67%;" />
+![img](.assets/OIDC/up-41f4544a58675d5582c01afdc69e2f4e5e4.png)
 
 
 

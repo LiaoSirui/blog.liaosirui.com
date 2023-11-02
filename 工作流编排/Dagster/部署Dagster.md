@@ -2,7 +2,7 @@
 
 ## 部署架构
 
-<img src=".assets/image-20230110114051203.png" alt="image-20230110114051203" style="zoom: 67%;" />
+![img](.assets/image-20230110114051203.png)
 
 概览：
 

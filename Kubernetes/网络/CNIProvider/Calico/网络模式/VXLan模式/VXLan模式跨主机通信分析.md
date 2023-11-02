@@ -1,4 +1,4 @@
-<img src=".assets/VXLan模式跨主机通信分析/13360402-3ddc5a436ce6fa16.png" alt="img" style="zoom:67%;" />
+![img](.assets/VXLan模式跨主机通信分析/13360402-3ddc5a436ce6fa16.png)
 
 ## pod 内的 eth0 -> calixx 网卡
 
@@ -10,9 +10,9 @@ calixxx 为容器命名空间内网卡 veth 对的另一端，存在于主机的
 
 calixx 收到二层包之后，向上进行传递。
 
-<img src=".assets/VXLan模式跨主机通信分析/13360402-aea7d7000edbc33d.png" alt="img" style="zoom: 67%;" />
+![img](.assets/VXLan模式跨主机通信分析/13360402-aea7d7000edbc33d.png)
 
-<img src=".assets/VXLan模式跨主机通信分析/13360402-be19daeb2faeeca8.png" alt="img" style="zoom:50%;" />
+![img](.assets/VXLan模式跨主机通信分析/13360402-be19daeb2faeeca8.png)
 
 1、 calixx 驱动收到报文后，经过二层处理，经过 ip_rcv 进入 ip 层处理。
 
@@ -179,7 +179,7 @@ static const struct net_device_ops vxlan_netdev_ether_ops = {
 };
 ```
 
-<img src=".assets/VXLan模式跨主机通信分析/13360402-068965732a5cc98c.png" alt="img" style="zoom:67%;" />
+![img](.assets/VXLan模式跨主机通信分析/13360402-068965732a5cc98c.png)
 
 这里这个箭头从下面指到上面并不是画图空间不足，而是为了表现数据包是从二层又回到了三层的处理中。
 

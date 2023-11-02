@@ -88,7 +88,7 @@ dive build -t <镜像TAG> .
 CI=true dive <镜像TAG>
 ```
 
-<img src=".assets/image-20221217135417571.png" alt="image-20221217135417571" style="zoom: 50%;" />
+![img](.assets/image-20221217135417571.png)
 
 dive 提供功能如下：
 

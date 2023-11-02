@@ -20,4 +20,4 @@ CRI-O在不同方面使用了最佳的品种库：
 - 存储：使用 `containers/storage` 来存储和管理镜像层
 - 联网：通过使用 CNI的 联网支持
 
-<img src=".assets/image-20221217135749579.png" alt="image-20221217135749579" style="zoom:50%;" />
+![img](.assets/image-20221217135749579.png)

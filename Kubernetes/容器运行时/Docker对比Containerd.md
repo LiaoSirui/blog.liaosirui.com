@@ -18,11 +18,11 @@ Kubelet -> Containerd
 
 命令对比：containerd不支持docker API和docker CLI， 但是可以通过cri-tool实现类似的功能。
 
-<img src="https://i0.hdslb.com/bfs/article/8ff90cc2e33ba859ea8b804e36f49c4273df63dd.png" title="" alt="" data-align="center">
+![img](https://i0.hdslb.com/bfs/article/8ff90cc2e33ba859ea8b804e36f49c4273df63dd.png" title=")
 
-<img src="https://i0.hdslb.com/bfs/article/8d11eae9273ac136d38004a34ca5037be16ed7be.png" title="" alt="" data-align="center">
+![img](https://i0.hdslb.com/bfs/article/8d11eae9273ac136d38004a34ca5037be16ed7be.png" title=")
 
-<img src="https://i0.hdslb.com/bfs/article/1540a7c3ad05b7f87a3d000a6bf5bf770643a69c.png" title="" alt="" data-align="center">
+![img](https://i0.hdslb.com/bfs/article/1540a7c3ad05b7f87a3d000a6bf5bf770643a69c.png" title=")
 
 配置参数对比:
 
@@ -38,7 +38,7 @@ Tips: 从k8s1.11引入了 kubelet stream proxy (https://github.com/kubernetes/ku
 
 CNI 网络区别
 
-<img src="https://i0.hdslb.com/bfs/article/b5fe567304ae533fb189b255562f045b10981316.png" title="" alt="" data-align="center">
+![img](https://i0.hdslb.com/bfs/article/b5fe567304ae533fb189b255562f045b10981316.png" title=")
 
 名称空间（Namespace）:
 

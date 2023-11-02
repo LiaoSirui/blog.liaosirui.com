@@ -34,7 +34,7 @@ kubectl create ns logging
 
 ElasticSearch 安装有最低安装要求，如果安装后 Pod 无法正常启动，请检查是否符合最低要求的配置，官方文档 <https://www.elastic.co/guide/cn/elasticsearch/guide/current/hardware.html>，要求如下：
 
-<img src=".assets/20210420112844.png" alt="es 集群要求" style="zoom:50%;" />
+![img](.assets/20210420112844.png)
 
 使用一个 LocalPV 类型的 StorageClass 来做持久化存储。
 
@@ -483,7 +483,7 @@ kibana-kibana                   NodePort    10.3.25.210    <none>        5601:30
 
 登录成功后进入如下所示的 Kibana 主页：
 
-<img src=".assets/搭建EFK日志系统/1654506382241.jpg" alt="Kibana 主页面" style="zoom: 25%;" />
+![img](.assets/搭建EFK日志系统/1654506382241.jpg)
 
 ### 部署 Fluentd
 
@@ -903,7 +903,7 @@ kubectl create -f counter.yaml
 
 Pod 创建并运行后，回到 Kibana Dashboard 页面，点击左侧最下面的 `Management` -> `Stack Management`，进入管理页面，点击左侧 `Kibana` 下面的 `索引模式`，点击 `创建索引模式` 开始导入索引数据：
 
-<img src=".assets/搭建EFK日志系统/1654507935976.jpg" alt="create index" style="zoom:67%;" />
+![img](.assets/搭建EFK日志系统/1654507935976.jpg)
 
 在这里可以配置需要的 Elasticsearch 索引，前面 Fluentd 配置文件中采集的日志使用的是 logstash 格式，定义了一个 `k8s` 的前缀，所以这里只需要在文本框中输入 `k8s-*` 即可匹配到 Elasticsearch 集群中采集的 Kubernetes 集群日志数据，然后点击下一步，进入以下页面：
 

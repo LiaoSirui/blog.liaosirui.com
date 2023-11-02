@@ -218,7 +218,7 @@ spec:
 
 Pipelines 最基本的四个概念：Task、TaskRun、Pipeline、PipelineRun
 
-<img src=".assets/pipeline.png" style="zoom: 50%;" />
+![img](.assets/pipeline.png)
 
 ### Task
 
@@ -228,7 +228,7 @@ Task 为构建任务，是 Tekton 中不可分割的最小单位，正如同 Pod
 
 Pipeline 由一个或多个 Task 组成。在 Pipeline 中，用户可以定义这些 Task 的执行顺序以及依赖关系来组成 DAG（有向无环图）。
 
-<img src=".assets/pipeline_run.png" style="zoom: 50%;" />
+![img](.assets/pipeline_run.png)
 
 ### PipelineRun
 
@@ -246,7 +246,7 @@ PipelineRun 被创建出来后，会对应 Pipeline 里面的 Task 创建各自�
 
 覆盖整个集群的任务，而不是单一的某一个命名空间，这是和 Task 最大的区别，其他基本上一致的。
 
-<img src=".assets/pipeline_resource.png" style="zoom: 50%;" />
+![img](.assets/pipeline_resource.png)
 
 ### PipelineResource
 
@@ -267,7 +267,7 @@ Tekton Triggers 是一个基于事件的触发器，它可以检测到事件的�
 
 Tekton Triggers 最基本的四个概念：TriggerTemplate、TriggerBinding、EventListener、Interceptor。
 
-<img src=".assets/triggers.png" style="zoom: 50%;" />
+![img](.assets/triggers.png)
 
 ### TriggerTemplate
 
@@ -289,5 +289,4 @@ Tekton Triggers 最基本的四个概念：TriggerTemplate、TriggerBinding、Ev
 
 tekton 可以通过 EventListener 监听 gitlab 的 push 事件，从而触发定制好的流水线作业
 
-<img src=".assets/automation.png" style="zoom: 50%;" />
-
+![img](.assets/automation.png)

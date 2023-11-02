@@ -222,7 +222,7 @@ pipeline {
 
 考虑到实际情况下为了节约持续集成流水线的执行时间，假定实际的构建为三个模块同时进行，后续的测试和部署则是正常方式，结构和顺序如下所示
 
-<img src=".assets/image-20221217145154673.png" alt="image-20221217145154673" style="zoom:50%;" />
+![img](.assets/image-20221217145154673.png)
 
 ```groovy
 pipeline {
@@ -268,7 +268,7 @@ pipeline {
 
 前文的示例将流水线分按照功能分为逻辑上的三段：构建(Build) 、测试(Test)、部署(Deploy)。这里的示例加入一个 选择输入参数 的过程，然后在后续的节点中对选择的参数的内容进行显示
 
-<img src=".assets/image-20221217145206918.png" alt="image-20221217145206918" style="zoom:50%;" />
+![img](.assets/image-20221217145206918.png)
 
 ```bash
 pipeline {

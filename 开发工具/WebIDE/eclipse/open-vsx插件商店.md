@@ -28,7 +28,7 @@ ghcr.io/eclipse/openvsx-server:v0.6.0
 ghcr.io/eclipse/openvsx-webui:v0.6.0
 ```
 
-<img title="" src=".assets/openvsx-architecture.png" alt="" width="551">
+<img title="" src=".assets/openvsx-architecture.png)
 
 - 主体为OpenVSX-Server，spring boot框架的java服务，我们在部署时需要自行添加 application.yml 配置文件，并将其放置对应位置，以便Server启动后加载。
 - 后台数据库使用PostgreSql，并使用Pgadmin进行数据库的管理和查询等操作，数据库的创建和表结构的初始化过程Server进程启动时会自动执行。

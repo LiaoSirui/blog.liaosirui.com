@@ -20,7 +20,7 @@ Cilium 是一个基于 eBPF 和 XDP 的高性能容器网络方案的开源项�
 
 Cilium 通过利用 BPF 具有能够透明的注入网络安全策略并实施的功能，区别于传统的 IP 地址标识的方式，Cilium 是基于 service / pod /container 标识来实现的，并且可以在应用层实现 L7 Policy 网络过滤。总之，Cilium 通过解藕 IP 地址，不仅可以在高频变化的微服务环境中应用简单的网络安全策略，还能在支持 L3/L4 基础上通过对 http 层进行操作来提供更强大的网络安全隔离。BPF 的使用使 Cilium 甚至可以在大规模环境中以高度可扩展的方式解决这些挑战问题
 
-<img src=".assets/Cilium%E7%AE%80%E4%BB%8B/9885453-6b09787b4b207027.png" alt="img" style="zoom: 50%;" />
+![img](.assets/Cilium%E7%AE%80%E4%BB%8B/9885453-6b09787b4b207027.png)
 
 ### Cilium 的主要功能特性
 

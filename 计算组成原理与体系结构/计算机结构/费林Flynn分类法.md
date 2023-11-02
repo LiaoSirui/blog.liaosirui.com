@@ -20,7 +20,7 @@
 
 ### SISD
 
-<img src=".assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/SISD.svg" alt="img" style="zoom: 67%;" />
+![img](.assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/SISD.svg)
 
 > "PU" 是指程序单元（processing unit）
 
@@ -34,7 +34,7 @@
 
 各处理器以异步的形式处理同一条指令
 
-<img src=".assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/SIMD.svg" alt="img" style="zoom:67%;" />
+![img](.assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/SIMD.svg)
 
 代表：
 
@@ -56,13 +56,13 @@ SIMT 架构类似于 SIMD（单指令流多数据流）向量组织方法，共�
 
 ### MISD
 
-<img src=".assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/MISD.svg" alt="img" style="zoom:67%;" />
+![img](.assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/MISD.svg)
 
 被证明是不可能的，至少是不实际的
 
 ### MIMD
 
-<img src=".assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/MIMD.svg" alt="img" style="zoom:67%;" />
+![img](.assets/%E8%B4%B9%E6%9E%97Flynn%E5%88%86%E7%B1%BB%E6%B3%95/MIMD.svg)
 
 代表：
 

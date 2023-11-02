@@ -53,7 +53,7 @@ cert-manager 将证书和证书颁发者作为资源类型添加到 Kubernetes �
 - clusterissuers
 - issuers
 
-<img src=".assets/image-20221217124255398.png" alt="image-20221217124255398" style="zoom: 67%;" />
+![img](.assets/image-20221217124255398.png)
 
 查看所有的 crd：
 

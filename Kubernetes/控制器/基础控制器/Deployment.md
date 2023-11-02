@@ -1,6 +1,6 @@
 每个 Deployment 就对应集群中的一次部署
 
-<img src=".assets/640-20221208102220294.png" alt="图片" style="zoom:50%;" />
+![img](.assets/640-20221208102220294.png)
 
 创建 deployment 资源做了如下工作：
 

@@ -6,7 +6,7 @@ CUDA 是 NVIDIA 公司所开发的 GPU 编程模型，它提供了 GPU 编程的
 
 CUDA 提供了对其它编程语言的支持，如 C/C++，Python，Fortran 等语言
 
-<img src=".assets/CUDA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/v2-708897c8e1b627e3b08de922412a3347_1440w.webp" alt="img" style="zoom:50%;" />
+![img](.assets/CUDA%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/v2-708897c8e1b627e3b08de922412a3347_1440w.webp)
 
 ### 异构计算
 

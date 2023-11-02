@@ -4,7 +4,7 @@ Kubevirt 是 Redhat 开源一套以容器方式运行虚拟机的项目，通过
 
 它通过使用自定义资源（CRD）和其它 Kubernetes 功能来无缝扩展现有的集群，以提供一组可用于管理虚拟机的虚拟化的 API。CRD 形式将 VM 管理接口接入到 kubernetes，通过一个 podvirtd 方式，实现管理 pod 与以 lib 的 VM 接口，以作为容器通用的虚拟管理机，并使用与容器相同的资源管理、调度计划。
 
-<img src=".assets/architecture-simple.png" alt="img" style="zoom:20%;" />
+![img](.assets/architecture-simple.png)
 
 官方：
 
@@ -36,7 +36,7 @@ kubevirt 主要实现了下面几种资源，以实现对虚拟机的管理：
 
 Kubevirt 的整体架构：
 
-<img src=".assets/architecture.png" alt="img" style="zoom:20%;" />
+![img](.assets/architecture.png)
 
 
 

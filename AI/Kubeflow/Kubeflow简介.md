@@ -10,7 +10,7 @@ Kubeflow 是 google 开源的一个基于 Kubernetes 的 ML workflow 平台，�
 
 kubeflow 是一个胶水项目，它把诸多对机器学习的支持，比如模型训练，超参数训练，模型部署等进行组合并已容器化的方式进行部署，提供整个流程各个系统的高可用及方便的进行扩展部署了 kubeflow 的用户就可以利用它进行不同的机器学习任务
 
-<img src=".assets/Kubeflow简介/f585e89060bc4d24b8ebe1b99534dfc5.png" alt="img" style="zoom:50%;" />
+![img](.assets/Kubeflow简介/f585e89060bc4d24b8ebe1b99534dfc5.png)
 
 在实验阶段，根据初始假设开发模型，并迭代测试和更新模型以产生正在寻找的结果：
 
@@ -30,7 +30,7 @@ kubeflow 是一个胶水项目，它把诸多对机器学习的支持，比如�
 
 ML 工作流中的 Kubeflow 组件如下图所示
 
-<img src=".assets/Kubeflow简介/067827292544471aa0ad1bb0af8e7bf2.png" alt="img" style="zoom:67%;" />
+![img](.assets/Kubeflow简介/067827292544471aa0ad1bb0af8e7bf2.png)
 
 ### 核心组件
 

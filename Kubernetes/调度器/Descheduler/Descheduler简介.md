@@ -12,7 +12,7 @@ Kubernetes 的调度是基于 Request，但是每个 Pod 的实际使用值是�
 
 当然我们可以去手动做一些集群的平衡，比如手动去删掉某些 Pod，触发重新调度就可以了，但是显然这是一个繁琐的过程，也不是解决问题的方式。
 
-<img src=".assets/descheduler-stacked-color.png" alt="descheduler" style="zoom:25%;" />
+![img](.assets/descheduler-stacked-color.png)
 
 为了解决实际运行中集群资源无法充分利用或浪费的问题，可以使用 descheduler 组件对集群的 Pod 进行调度优化，descheduler 可以根据一些规则和配置策略来帮助我们重新平衡集群状态，其核心原理是根据其策略配置找到可以被移除的 Pod 并驱逐它们，其本身并不会进行调度被驱逐的 Pod，而是依靠默认的调度器来实现，目前支持的策略有：
 
@@ -253,7 +253,7 @@ Pod 在节点上的分布，这是在没有配置任何亲和性、反亲和性�
 
 Pod 的数量分布非常均衡，其中 node2-4 虚拟机配置一样，node5 配置较低。如下图是整个过程的示意图：
 
-<img src=".assets/V6icG3TMUkiazNVnPWYNnd7Z3VeBqM8T8dyMotKSsxT67TfUFIJQ6k9dyfhUU2XYfypicazfC3EnA3TiaYEB1OFY4Q.png" alt="img" style="zoom:50%;" />
+![img](.assets/V6icG3TMUkiazNVnPWYNnd7Z3VeBqM8T8dyMotKSsxT67TfUFIJQ6k9dyfhUU2XYfypicazfC3EnA3TiaYEB1OFY4Q.png)
 
 ## 其他
 

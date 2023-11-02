@@ -43,7 +43,7 @@ Velero 的整体模块架构如下图
   - 底层的数据拷贝层是对接 Restic
   - 其它都是外部的插件实现，`velero.io/plugins` 就代表内部的插件实现，由 Velero 或者第三方厂商来实现
 
-<img src=".assets/Velero/image-20230529110147582.png" alt="image-20230529110147582" style="zoom: 33%;" />
+![img](.assets/Velero/image-20230529110147582.png)
 
 ### 按需备份（On-demand backups）
 

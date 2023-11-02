@@ -37,7 +37,7 @@ select name from test group by name
 
 （2）`from test group by name`：该句执行后，我们想象生成了虚拟表 3，如下所图所示，生成过程是这样的：group by name，那么找 name 那一列，具有相同 name 值的行，合并成一行，如对于 name 值为 aa 的，那么 `<1 aa 2>` 与 `<2 aa 3>` 两行合并成 1 行，所有的 id 值和 number 值写到一个单元格里面。
 
-<img src=".assets/image-20221217142215439.png" alt="image-20221217142215439" style="zoom:50%;" />
+![img](.assets/image-20221217142215439.png)
 
 （3）接下来就要针对虚拟表 3 执行 select 语句了：
 
@@ -57,7 +57,7 @@ select name from test group by name
 
 group by 多个字段该怎么理解呢：如 `group by name,number`，我们可以把 name 和 number 看成一个整体字段，以他们整体来进行分组的
 
-<img src=".assets/image-20221217142204907.png" alt="image-20221217142204907" style="zoom:50%;" />
+![img](.assets/image-20221217142204907.png)
 
 接下来就可以配合 select 和聚合函数进行操作了。如执行 `select name,sum(id) from test group by name,number`，结果如下：
 

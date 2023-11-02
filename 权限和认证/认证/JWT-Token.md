@@ -10,7 +10,7 @@ JWT 在生成时会被签名，相同的签名 JWT 在收到时会被验证，�
 
 ## 认证流程
 
-<img src=".assets/jwt-flow.2035c3b5.png" alt="img" style="zoom: 25%;" />
+![img](.assets/jwt-flow.2035c3b5.png)
 
 - 用户使用账号（手机/邮箱/用户名）密码请求服务器
 - 服务器验证用户账号是否和数据库匹配

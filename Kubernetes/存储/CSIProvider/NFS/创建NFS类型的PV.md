@@ -110,7 +110,7 @@ nfs pv content
 
 整个存储的架构可以用下图来说明： 
 
-<img src=".assets/20220213172357.png" alt="存储架构" style="zoom:50%;" />
+![img](.assets/20220213172357.png)
 
 - PV Controller：负责 PV/PVC 的绑定，并根据需求进行数据卷的 Provision/Delete 操作
 - AD Controller：负责存储设备的 Attach/Detach 操作，将设备挂载到目标节点

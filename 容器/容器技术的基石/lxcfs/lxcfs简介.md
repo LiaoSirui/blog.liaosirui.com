@@ -19,7 +19,7 @@ Linuxs 利用 Cgroup 实现了对容器的资源限制，但在容器内部依�
 
 ## lxcfs 简介
 
-<img src=".assets/image-20221213141917212.png" alt="image-20221213141917212" style="zoom:33%;" />
+![img](.assets/image-20221213141917212.png)
 
 官方地址：<https://linuxcontainers.org/lxcfs/introduction/>
 
@@ -58,7 +58,7 @@ LXCFS 通过用户态文件系统，在容器中提供下列 `procfs` 的文件
 
 LXCFS 的示意图如下
 
-<img src=".assets/e1165184e7ffe5d96e4b863932c2a26f078.jpg" alt="img" style="zoom:50%;" />
+![img](.assets/e1165184e7ffe5d96e4b863932c2a26f078.jpg)
 
 比如，把宿主机的 `/var/lib/lxcfs/proc/memoinfo` 文件挂载到Docker容器的`/proc/meminfo`位置后
 

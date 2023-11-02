@@ -1,6 +1,6 @@
 ## lxcfs 的 Kubernetes 实践
 
-<img src=".assets/d21cc9032174006d97a770ca4396a533.png" alt="图片" style="zoom: 67%;" />
+![img](.assets/d21cc9032174006d97a770ca4396a533.png)
 
 ### 启用 fuse 模块
 

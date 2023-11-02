@@ -22,7 +22,7 @@ Linux 社区也提供了旁路机制 Netmap，官方数据 10G 网卡 1400 万 P
 
 DPDK 旁路原理：
 
-<img src=".assets/image-20230223144643981.png" alt="image-20230223144643981" style="zoom:67%;" />
+![img](.assets/image-20230223144643981.png)
 
 左边是原来的方式数据从 `网卡 -> 驱动 -> 协议栈 -> Socket接口 -> 业务`
 
@@ -46,7 +46,7 @@ DPDK 支持的网卡列表：<https://core.dpdk.org/supported/nics/>
 
 UIO 原理：
 
-<img src=".assets/image-20230223145207043.png" alt="image-20230223145207043" style="zoom:67%;" />
+![img](.assets/image-20230223145207043.png)
 
 要开发用户态驱动有几个步骤：
 
@@ -66,7 +66,7 @@ UIO 旁路了内核，主动轮询去掉硬中断，DPDK 从而可以在用户�
 
 Interrupt DPDK： 
 
-<img src=".assets/image-20230223145906662.png" alt="image-20230223145906662" style="zoom:67%;" />
+![img](.assets/image-20230223145906662.png)
 
 它的原理和 NAPI 很像，就是没包可处理时进入睡眠，改为中断通知。并且可以和其他进程共享同个 CPU Core，但是 DPDK 进程会有更高调度优先级。
 

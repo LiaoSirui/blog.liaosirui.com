@@ -4,7 +4,7 @@
 2. node 的 pod 之间可以通
 3. 不同 node 之间的 pod 可以通
 
-<img src=".assets/640-20221208102601005.png" alt="图片" style="zoom:50%;" />
+![img](.assets/640-20221208102601005.png)
 
 简单来说，不同 pod 之间通过 cni0/docker0 网桥实现了通信，node 访问 pod 也是通过 cni0/docker0 网桥通信即可。
 

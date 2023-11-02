@@ -32,7 +32,7 @@
 
 此外 Linkerd 还提供了一个 CLI 工具，可用于控制平面和数据平面进行交互。
 
-<img src=".assets/1661048659806.jpg" alt="架构" style="zoom:50%;" />
+![img](.assets/1661048659806.jpg)
 
 **控制平面(control plane)**
 

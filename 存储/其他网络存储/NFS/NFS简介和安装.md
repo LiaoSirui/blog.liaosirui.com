@@ -4,7 +4,7 @@ NFS 是 Network File System 的缩写，即网络文件系统。
 
 NFS 服务会经常用到，它用于在网络上共享存储。举例来说，假如有 3 台机器 A、B 和 C，它们需要访问同一个目录，且目录中都是图片。传统的做法是把这些图片分别放到 A、B、C 中，但若使用 NFS，只需要把图片放到 A 上，然后 A 共享给 B 和 C 即可。访问 B 和 C 时，是通过网络的方式去访问 A 上的那个目录的。
 
-<img src=".assets/ZTYjw6KickuDibLneVd3NBdNXpyTiaMhF6XNTLW5oZe4G8ZThSTZCoM9XWwpDGfCPOjoxbplTacPEBwPqMJwQBE0w.png" alt="img" style="zoom:50%;" />
+![img](.assets/ZTYjw6KickuDibLneVd3NBdNXpyTiaMhF6XNTLW5oZe4G8ZThSTZCoM9XWwpDGfCPOjoxbplTacPEBwPqMJwQBE0w.png)
 
 ## 服务端安装
 
