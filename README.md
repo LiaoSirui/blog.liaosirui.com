@@ -1,17 +1,17 @@
 <div align="center">
-![img](.assets/logo.jpeg" height="90" width="200" />
+<img src=".assets/logo.jpeg" height="90" width="200" />
 <h2 align="center"> 廖思睿的个人博客 </h2>
 <p align="center">
 欢迎访问我的博客站点！
 </p>
 <p align="center">
-  ![img](https://img.shields.io/badge/Maintainer-cyril@liaosirui.com-blue.svg">
-  ![img](https://img.shields.io/badge/Language-Markdown-green.svg">
-  ![img](https://img.shields.io/badge/license-Apache2-blue.svg?style=flat">
+  <img src="https://img.shields.io/badge/Maintainer-cyril@liaosirui.com-blue.svg">
+  <img src="https://img.shields.io/badge/Language-Markdown-green.svg">
+  <img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat">
   <br />
-  ![img](https://img.shields.io/github/stars/LiaoSirui/blog-docs.svg?style=social&label=Star">
-  ![img](https://img.shields.io/github/forks/LiaoSirui/blog-docs.svg?style=social&label=Fork">
-  ![img](https://img.shields.io/github/forks/LiaoSirui/blog-docs.svg?style=social&label=Watch">
+  <img src="https://img.shields.io/github/stars/LiaoSirui/blog-docs.svg?style=social&label=Star">
+  <img src="https://img.shields.io/github/forks/LiaoSirui/blog-docs.svg?style=social&label=Fork">
+  <img src="https://img.shields.io/github/forks/LiaoSirui/blog-docs.svg?style=social&label=Watch">
 </p>
 </div>
 
