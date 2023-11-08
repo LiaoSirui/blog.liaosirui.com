@@ -53,7 +53,7 @@ kind: Namespace
 metadata:
   name: istio-system
   labels:
-    istio-injection: disabled
+    # istio-injection: disabled
     istio-operator-managed: Reconcile
     kubernetes.io/metadata.name: istio-system
 ```
