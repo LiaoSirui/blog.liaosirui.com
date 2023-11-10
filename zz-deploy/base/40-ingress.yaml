@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: blog-websites
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    cert-manager.io/cluster-issuer: cert-http01
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - blog.liaosirui.com
+      secretName: https-blog-certs
+  rules:
+    - host: blog.liaosirui.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: blog-websites
+                port:
+                  number: 80

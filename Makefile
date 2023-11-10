@@ -5,4 +5,3 @@ push:
 	git commit -m 'update site at $(shell date +%Y%m%d-%H%M%S), machine $(shell hostname)'
 	git pull --rebase
 	git push --set-upstream origin HEAD
-

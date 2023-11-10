@@ -56,28 +56,3 @@ kubectl port-forward --namespace <命名空间> svc/<service名字> <本地端�
 
 https://mp.weixin.qq.com/s/bmRqaWgF0GNVj6RqaXcz9w
 
-## 从 ServiceAccount 生成 kubeconfig
-
-```yaml
-apiVersion: v1
-current-context: dev-quant-admin@dev-quant
-kind: Config
-preferences: {}
-clusters:
-- cluster:
-    insecure-skip-tls-verify: true
-    server: https://kubernetes.default.svc.cluster.local
-  name: dev-quant
-users:
-- name: dev-quant-admin
-  user:
-    token:
-contexts:
-- context:
-    cluster: dev-quant
-    namespace: kube-system
-    user: dev-quant-admin
-  name: dev-quant-admin@dev-quant
-
-```
-
