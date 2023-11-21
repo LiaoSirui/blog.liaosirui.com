@@ -4,9 +4,12 @@
 
 Crane-scheduler 作为 Crane 的调度插件实现了基于真实负载的调度功能，旨在从调度层面帮助业务降本增效
 
+原生 kubernetes 调度器只能基于资源的 resource request 进行调度，然而 Pod 的真实资源使用率，往往与其所申请资源的 request/limit 差异很大，导致集群负载不均的问题
+
 官方：
 
 - GitHub 仓库：<https://github.com/gocrane/crane-scheduler>
+- 文档：<https://gocrane.io/zh-cn/docs/tutorials/dynamic-scheduler-plugin/>
 
 ### 解决的问题
 
@@ -38,6 +41,21 @@ Crane-scheduler 作为 Crane 的调度插件实现了基于真实负载的调度
 下图是官方提供的 Pod 的调度上下文以及调度框架公开的扩展点：
 
 ![img](.assets/Crane-scheduler%E7%AE%80%E4%BB%8B/2041406-20220601175607171-1206409384.png)
+
+调度过程：
+
+1. Sort - 用于对 Pod 的待调度队列进行排序，以决定先调度哪个 Pod
+2. Pre-filter - 用于对 Pod 的信息进行预处理
+3. Filter - 用于排除那些不能运行该 Pod 的节点
+4. Post-filter - 一个通知类型的扩展点,更新内部状态，或者产生日志
+5. Scoring - 用于为所有可选节点进行打分
+6. Normalize scoring - 在调度器对节点进行最终排序之前修改每个节点的评分结果
+7. Reserve - 使用该扩展点获得节点上为 Pod 预留的资源，该事件发生在调度器将 Pod 绑定到节点前
+8. Permit - 用于阻止或者延迟 Pod 与节点的绑定
+9. Pre-bind - 用于在 Pod 绑定之前执行某些逻辑
+10. Bind - 用于将 Pod 绑定到节点上
+11. Post-bind - 是一个通知性质的扩展
+12. Unreserve - 如果为 Pod 预留资源，又在被绑定过程中被拒绝绑定，则将被调用
 
 Crane-scheduler 主要作用于图中的 Filter 与 Score 阶段，并对用户提供了一个非常开放的策略配置
 
@@ -153,5 +171,51 @@ Annotations:        cpu_usage_avg_5m: 0.33142,2022-04-18T00:45:18Z
 
 官方 helm chart：<https://github.com/gocrane/helm-charts>
 
-## 参考
+监控数据源
 
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: crane-scheduler
+  namespace: monitoring
+  labels:
+    prometheus: k8s
+    role: alert-rules
+spec:
+  groups:
+    - name: cpu_mem_usage_active
+      interval: 30s
+      rules:
+        - record: cpu_usage_active
+          expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[30s])) * 100)
+        - record: mem_usage_active
+          expr: 100*(1-node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes)
+    - name: cpu-usage-5m
+      interval: 5m
+      rules:
+        - record: cpu_usage_max_avg_1h
+          expr: max_over_time(cpu_usage_avg_5m[1h])
+        - record: cpu_usage_max_avg_1d
+          expr: max_over_time(cpu_usage_avg_5m[1d])
+    - name: cpu-usage-1m
+      interval: 1m
+      rules:
+        - record: cpu_usage_avg_5m
+          expr: avg_over_time(cpu_usage_active[5m])
+    - name: mem-usage-5m
+      interval: 5m
+      rules:
+        - record: mem_usage_max_avg_1h
+          expr: max_over_time(mem_usage_avg_5m[1h])
+        - record: mem_usage_max_avg_1d
+          expr: max_over_time(mem_usage_avg_5m[1d])
+    - name: mem-usage-1m
+      interval: 1m
+      rules:
+        - record: mem_usage_avg_5m
+          expr: avg_over_time(mem_usage_active[5m])
+
+```
+
+> The sampling interval of Prometheus must be less than 30 seconds, otherwise the above rules(such as cpu_usage_active) may not take effect.
