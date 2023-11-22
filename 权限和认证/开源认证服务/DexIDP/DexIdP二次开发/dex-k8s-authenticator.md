@@ -17,8 +17,8 @@ Title: 核心认证流程
 autonumber
 
 participant user as 用户
-participant dex-k8s-authenticator as dex-k8s-authenticator <br/>(https://login.k8s.example.com)
-participant dex as Dex <br/> (https://dex.k8s.example.com)
+participant dex-k8s-authenticator as dex-k8s-authenticator (https://login.k8s.example.com)
+participant dex as Dex (https://dex.k8s.example.com)
 participant github as GitHub
 participant kubectl as kubectl
 participant apiserver as K8s APIServer
@@ -32,7 +32,7 @@ dex-k8s-authenticator-->>user: id_token
 user->>kubectl: id_token
 kubectl->>apiserver: id_token
 apiserver-->>kubectl: is valid <br/> is expired <br/> is authorized
-kubectl-->>user: 
+kubectl-->>user: return
 ```
 
 ## 安装

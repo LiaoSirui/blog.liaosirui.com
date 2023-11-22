@@ -8,8 +8,6 @@ OIDC 的全称是 OpenID Connect，是一个基于 OAuth 2.0 的轻量级认证 
 
 ## OIDC Provider
 
-会有很多结果：
-
 - JS：<https://github.com/panva/node-oidc-provider>
 - Golang：<https://github.com/dexidp/dex>
 - Python：<https://github.com/juanifioren/django-oidc-provider>
@@ -43,5 +41,4 @@ OIDC Provider 对外暴露一些接口：
 每次调用这个接口，就像是对 OIDC Provider 说：这是我的 access_token，给我换一下用户信息
 
 到此用户信息获取完毕
-
 
