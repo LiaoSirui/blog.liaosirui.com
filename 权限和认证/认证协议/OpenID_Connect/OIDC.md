@@ -41,4 +41,3 @@ OIDC Provider 对外暴露一些接口：
 每次调用这个接口，就像是对 OIDC Provider 说：这是我的 access_token，给我换一下用户信息
 
 到此用户信息获取完毕
-

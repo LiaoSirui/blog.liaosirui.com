@@ -109,7 +109,7 @@ Docker 官方 hub 仓库 -> docker.io             # 官网地址: <https://hub.d
 alias skopeo='skopeo --insecure-policy --tls-verify=false '
 ```
 
-### Skopeo login /logout - 远程仓库 Auth
+### Skopeo login / logout - 远程仓库 Auth
 
 在使用 skopeo 前如果 src 或 dest 镜像是在 registry 仓库中的并且配置了非 public 的镜像需要相应的 auth 认证。
 
