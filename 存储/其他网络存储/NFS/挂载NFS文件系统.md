@@ -29,3 +29,6 @@ mount -t nfs \
   10.244.244.201:/ /mnt
 ```
 
+参考文档
+
+- <https://help.aliyun.com/zh/nas/user-guide/mount-an-nfs-file-system-on-a-linux-ecs-instance>

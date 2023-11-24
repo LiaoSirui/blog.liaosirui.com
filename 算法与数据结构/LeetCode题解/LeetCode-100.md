@@ -12,6 +12,3 @@
 - 基础算法
 - 动态规划
 
-## 参考资料
-
-- <https://algo.itcharge.cn/Solutions/0001-0099/two-sum/>

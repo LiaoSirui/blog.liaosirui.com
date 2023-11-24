@@ -1,0 +1,45 @@
+安装依赖
+
+```bash
+dnf install -y cmake
+```
+
+编译安装 GPU 版本（CUDA）
+
+```bash
+git clone --recursive https://github.com/microsoft/LightGBM
+
+cd LightGBM
+mkdir build
+cd build
+cmake -DUSE_CUDA=1 ..
+
+make -j$(nproc)
+
+sh ./build-python.sh install --precompile
+
+pip3 install numpy==1.20
+```
+
+测试用 demo
+
+```python
+import lightgbm as lgb
+import numpy as np
+# from sklearn.datasets import make_regression
+ 
+# X, y = make_regression(n_samples=10_000000)
+X = np.random.rand(500000, 200)  # 500个样本，10个特征
+y = np.random.randint(2, size=500000)  # 二分类标签
+dtrain = lgb.Dataset(X, label=y)
+bst = lgb.train(
+    params={
+        "objective": "regression",
+        "device": "cuda",
+        "verbose": 1
+    },
+    train_set=dtrain,
+    num_boost_round=100
+)
+```
+
