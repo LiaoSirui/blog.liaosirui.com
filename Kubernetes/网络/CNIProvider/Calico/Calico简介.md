@@ -1,8 +1,10 @@
-Calico 是一种开源网络和网络安全解决方案，适用于容器，虚拟机和基于主机的本机工作负载。Calico 支持广泛的平台，包括 Kubernetes，docker，OpenStack 和裸机服务。Calico 后端支持多种网络模式。
+## Calico 简介
 
-- BGP 模式：将节点做为虚拟路由器通过 BGP 路由协议来实现集群内容器之间的网络访问。
-- IPIP 模式：在原有 IP 报文中封装一个新的 IP 报文，新的 IP 报文中将源地址 IP 和目的地址 IP 都修改为对端宿主机 IP。
-- cross-subnet：Calico-ipip 模式和 calico-bgp 模式都有对应的局限性，对于一些主机跨子网而又无法使网络设备使用 BGP 的场景可以使用 cross-subnet 模式，实现同子网机器使用 calico-BGP 模式，跨子网机器使用 calico-ipip 模式。
+Calico 是一种开源网络和网络安全解决方案，适用于容器，虚拟机和基于主机的本机工作负载。Calico 支持广泛的平台，包括 Kubernetes，docker，OpenStack 和裸机服务。Calico 后端支持多种网络模式
+
+- BGP 模式：将节点做为虚拟路由器通过 BGP 路由协议来实现集群内容器之间的网络访问
+- IPIP 模式：在原有 IP 报文中封装一个新的 IP 报文，新的 IP 报文中将源地址 IP 和目的地址 IP 都修改为对端宿主机 IP
+- cross-subnet：Calico-ipip 模式和 calico-bgp 模式都有对应的局限性，对于一些主机跨子网而又无法使网络设备使用 BGP 的场景可以使用 cross-subnet 模式，实现同子网机器使用 calico-BGP 模式，跨子网机器使用 calico-ipip 模式
 
 ## 安装
 
@@ -45,9 +47,9 @@ kubectl apply -f calico.yaml
 
 <https://system51.github.io/2020/05/27/using-calico/>
 
-![img](.assets/436EF78A6A0877DE5732F186CE1406A9-20221219201641196.jpg)
+![img](.assets/Calico简介/436EF78A6A0877DE5732F186CE1406A9-20221219201641196.jpg)
 
 ## BGP 模式
 
-![img](.assets/F94A48ADC2A1721363C79FB990B94A85.jpg)
+![img](.assets/Calico简介/F94A48ADC2A1721363C79FB990B94A85.jpg)
 
