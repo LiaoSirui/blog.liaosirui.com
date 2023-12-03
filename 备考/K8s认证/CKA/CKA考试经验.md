@@ -76,6 +76,33 @@ CKA认证考试包括这些一般领域及其在考试中的权重：
 
 - 排除网络故障
 
+## 考试模拟
+
+可以有两次 `https://killer.sh/dashboard` 的模拟考试
+
+![image-20231202155409838](.assets/CKA考试经验/image-20231202155409838.png)
+
+## 考试准备
+
+设置自动补全
+
+```bash
+alias k=kubectl
+complete -F __start_kubectl k
+```
+
+## 学习资料
+
+- <https://github.com/stretchcloud/cka-lab-practice>
+- <https://github.com/David-VTUK/CKA-StudyGuide>
+
+需要熟悉使用 [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/) 创建集群、升级集群
+
+在线练习环境：
+
+- [katacoda](https://www.katacoda.com/courses/kubernetes/kubectl-run-containers)
+- [play-with-k8s](https://labs.play-with-k8s.com/)
+
 ## 参考链接
 
 - <https://www.zhaohuabing.com/post/2022-02-08-how-to-prepare-cka/>
