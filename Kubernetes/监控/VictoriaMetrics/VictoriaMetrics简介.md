@@ -9,7 +9,7 @@ VictoriaMetrics 是一个支持水平扩展的时序数据库，可以作为 Pro
 
 ## 对比其他方案
 
-cortex过于复杂，没有正式 release；使用 thanos，prometheus 通过 thanos 进行 remote read 内存开销增加1倍，oom；m3db 复杂，学习、管理成本高。
+cortex 过于复杂，没有正式 release；使用 thanos，prometheus 通过 thanos 进行 remote read 内存开销增加1倍，oom；m3db 复杂，学习、管理成本高。
 
 ## 业务量指标
 
