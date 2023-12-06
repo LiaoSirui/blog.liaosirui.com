@@ -76,21 +76,7 @@ complete -F __start_kubectl k
 
 6. 在 Check System Requirements 后面点击 `Check Now` ,
 
-   在新界面中的三个选项中选择 `Option 3` ,
-
-   Sponsor 选择 `Linux Foundation` ,
-
-   Exam 选择 `Certified Kubernetes Administrator China Exam (CKA-CN) (CKA-CN) - English` ,
-
-   然后点击 `Go` ,
-
-   在新的界面点击 `Install Extension` 安装考试监控插件,
-
-   安装完成之后点击页面上方的 `Run Compatibility Check Again` ,
-
-   通过检测的界面如下:
-
-   ![img](.assets/CKA考试经验/d29ab2cb4e81e42d63361881a658c8f1.png)
+   在新界面中选择页面上方的 `Run Compatibility Check Again` ,
 
    
 
