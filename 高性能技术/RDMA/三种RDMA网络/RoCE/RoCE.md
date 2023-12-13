@@ -24,11 +24,11 @@ RDMA_CM 设置客户端和服务器之间用来传输数据的可靠连接。RDM
 
 Soft-RoCE 架构：
 
-![soft-roce.png](.assets/soft-roce.png)
+![soft-roce.png](.assets/RoCE/soft-roce.png)
 
 其中 Soft-RoCE 内核驱动模块完成了 RoCE 网络层（UDP/IP）处理：
 
-![rdma-stack.png](.assets/rdma-stack.png)
+![rdma-stack.png](.assets/RoCE/rdma-stack.png)
 
 参考资料：<https://runsisi.com/2021/02/21/soft-roce/>
 

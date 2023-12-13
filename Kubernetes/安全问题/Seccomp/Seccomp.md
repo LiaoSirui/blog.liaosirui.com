@@ -178,22 +178,3 @@ docker中，通过配置一个profile.json文件来告知容器需要限制的�
 
 在 kubernetes 中配置：<https://kubernetes.io/zh-cn/docs/tutorials/security/seccomp/>
 
-## 配置安全计算模式
-
-Docker  `daemon.json`
-
-```json
-{
-  "seccomp-profile": "/etc/docker/seccomp/default-no-limit.json"
-}
-```
-
-默认放开所有限制：
-
-```json
-{
-    "defaultAction": "SCMP_ACT_ALLOW",
-    "syscalls": []
-}
-```
-
