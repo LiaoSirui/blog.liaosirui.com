@@ -13,7 +13,7 @@ calico 在多网络接口时自动检测到错误的网络接口,导致网络无
 kubectl set env daemonset/calico-node -n kube-system IP_AUTODETECTION_METHOD=skip-interface=enp0s8
 ```
 
-IP_AUTODETECTION_METHOD 配置项默认为 first-found，这种模式中 calico 会使用第一获取到的有效网卡，虽然会排除 docker 网络，localhos t啥的，但是在复杂网络环境下还是有出错的可能。
+IP_AUTODETECTION_METHOD 配置项默认为 first-found，这种模式中 calico 会使用第一获取到的有效网卡，虽然会排除 docker 网络，localhost 啥的，但是在复杂网络环境下还是有出错的可能
 
 `IP_AUTODETECTION_METHOD` 还提供了如下配置 
 
