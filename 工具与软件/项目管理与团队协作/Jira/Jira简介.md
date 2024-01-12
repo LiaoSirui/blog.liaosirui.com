@@ -89,7 +89,12 @@ services:
 
 ```
 
+反向代理：
 
+```bash
+ATL_PROXY_NAME: "jira.alpha-quant.com.cn"
+ATL_PROXY_PORT: "443"
+```
 
 ## 常见问题处理
 
@@ -109,4 +114,4 @@ services:
 
 - <https://doc.devpod.cn/jsm/jira-service-management-17105048.html>
 
-- <https://github.com/nineaiyu/atlassian-agent>
+- Jira 使用：<https://www.yiibai.com/jira/jira-introduction.html>
