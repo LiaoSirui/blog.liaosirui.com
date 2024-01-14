@@ -17,3 +17,15 @@ CKAD 认证考试包括这些一般领域及其在考试中的权重：
 ## 学习资料
 
 - <https://github.com/dgkanatsios/CKAD-exercises>
+
+## 题目
+
+题目描述：
+
+- 
+
+官方文档：
+
+- 
+
+参考解答：
