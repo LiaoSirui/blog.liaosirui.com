@@ -1,4 +1,4 @@
-FROM docker.io/squidfunk/mkdocs-material:9.4.7
+FROM docker.io/squidfunk/mkdocs-material:9.5.3
 
 # docs
 COPY . /app/docs/blog.liaosirui.com
