@@ -4,7 +4,9 @@ JumpServer 是一款全球首创的完全开源堡垒机，采用 GNU GPL v2.0 �
 
 JumpServer 是基于 Python/Django 开发的，符合 Web 2.0 规范，具备业界领先的 Web Terminal 解决方案，提供美观的交互界面和出色的用户体验。系统采用分布式架构，支持多机房跨区域部署。中心节点提供 API，而各机房部署登录节点，可以轻松横向扩展，没有并发访问限制
 
-JumpServer 采纳分布式架构，支持多机房跨区域部署，支持横向扩展，无资产数量及并发限制；这使得 Jumpserver 成为一个高度灵活和可扩展的堡垒机解决方案。
+JumpServer 采纳分布式架构，支持多机房跨区域部署，支持横向扩展，无资产数量及并发限制；这使得 Jumpserver 成为一个高度灵活和可扩展的堡垒机解决方案
+
+![img](.assets/JumpServer/js-enterprise-20240118053609156.png)
 
 官方：
 
@@ -31,3 +33,6 @@ helm repo add jumpserver https://jumpserver.github.io/helm-charts
 ### OIDC 登录
 
 官方文件：<https://docs.jumpserver.org/zh/master/admin-guide/authentication/openid/>
+
+### 新建超管用户
+
