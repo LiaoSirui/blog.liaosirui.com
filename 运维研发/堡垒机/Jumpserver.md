@@ -1,8 +1,8 @@
-## Jumpserver 简介
+## JumpServer 简介
 
-Jumpserver 是一款全球首创的完全开源堡垒机，采用 GNU GPL v2.0 开源协议。它是一个专业的运维审计系统，符合 4A（认证 Authentication、账号 Account、授权 Authorization、审计 Audit）标准
+JumpServer 是一款全球首创的完全开源堡垒机，采用 GNU GPL v2.0 开源协议。它是一个专业的运维审计系统，符合 4A（认证 Authentication、账号 Account、授权 Authorization、审计 Audit）标准
 
-Jumpserver 是基于 Python/Django 开发的，符合 Web 2.0 规范，具备业界领先的 Web Terminal 解决方案，提供美观的交互界面和出色的用户体验。系统采用分布式架构，支持多机房跨区域部署。中心节点提供 API，而各机房部署登录节点，可以轻松横向扩展，没有并发访问限制
+JumpServer 是基于 Python/Django 开发的，符合 Web 2.0 规范，具备业界领先的 Web Terminal 解决方案，提供美观的交互界面和出色的用户体验。系统采用分布式架构，支持多机房跨区域部署。中心节点提供 API，而各机房部署登录节点，可以轻松横向扩展，没有并发访问限制
 
 JumpServer 采纳分布式架构，支持多机房跨区域部署，支持横向扩展，无资产数量及并发限制；这使得 Jumpserver 成为一个高度灵活和可扩展的堡垒机解决方案。
 
@@ -12,14 +12,22 @@ JumpServer 采纳分布式架构，支持多机房跨区域部署，支持横向
 - <https://github.com/jumpserver/helm-charts>
 - <https://docs.jumpserver.org/zh/v3/>
 
-## helm 安装
+## JumpServer 安装
+
+### helm 安装
 
 ```bash
 helm repo add jumpserver https://jumpserver.github.io/helm-charts
 ```
 
-## compose 安装
+### compose 安装
 
 初始用户名/密码：admin/admin，第一次登录，会强制要求修改密码
 
 参考：<https://github.com/jumpserver/Dockerfile/blob/master/docker-compose.yml>
+
+## JumpServer 配置
+
+### OIDC 登录
+
+官方文件：<https://docs.jumpserver.org/zh/master/admin-guide/authentication/openid/>

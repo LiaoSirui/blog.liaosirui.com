@@ -72,7 +72,7 @@ gitlab-rails console
 user = User.where(id:1).first
 ```
 
-输入`user.password='密码'`，密码位置填写您新的密码即可。然后再输入`user.save!` 保存用户对象
+输入`user.password='密码'`，密码位置填写新的密码即可。然后再输入`user.save!` 保存用户对象
 
 ```ruby
 user.password='abcd1234!'
