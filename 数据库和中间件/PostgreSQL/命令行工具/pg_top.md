@@ -8,7 +8,7 @@ pg_top 是 PostgreSQL 的’top’。它源自 Unix Top。与 top 类似，pg_to
 - 查看每个进程的 I/O 统计信息
 - 查看下游节点的复制统计信息
 
-GitLab地址：<https://gitlab.com/pg_top/pg_top>
+GitLab 地址：<https://gitlab.com/pg_top/pg_top>
 
 编译：
 
