@@ -34,5 +34,23 @@ helm repo add jumpserver https://jumpserver.github.io/helm-charts
 
 官方文件：<https://docs.jumpserver.org/zh/master/admin-guide/authentication/openid/>
 
-### 新建超管用户
+## PAM
+
+管理密码忘记了或者重置管理员密码
+
+```bash
+source /opt/py3/bin/activate
+cd /opt/jumpserver/apps
+
+python manage.py changepassword <user_name>
+```
+
+新建超级用户的命令如下命令
+
+```bash
+source /opt/py3/bin/activate
+cd /opt/jumpserver/apps
+
+python manage.py createsuperuser --username=user --email=user@domain.com
+```
 
