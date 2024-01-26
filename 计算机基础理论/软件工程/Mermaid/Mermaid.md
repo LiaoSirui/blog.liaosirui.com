@@ -1,3 +1,5 @@
+## Mermaid 简介
+
 Mermaid 是一种简单的类似 Markdown 的脚本语言，通过 JavaScript 编程语言，将文本转换为图片
 
 Mermaid 支持绘制非常多种类的图：
@@ -16,6 +18,8 @@ Mermaid 支持绘制非常多种类的图：
 
 Mermaid 官方有一个在线的工具，可以导出 SVG 和 PNG：<https://mermaid-js.github.io/mermaid-live-editor/edit>
 
-更多参考文档：
+## 参考文档
 
 - <https://snowdreams1006.github.io/write/mermaid-flow-chart.html>
+
+- <https://www.xiehai.zone/tags.html?tag=mermaid>

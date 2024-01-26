@@ -85,3 +85,26 @@ TOTAL                          999          25771              3          73376
 [![-](https://img.shields.io/static/v1?style=flat-square&label=&logoColor=ffffff&color=F05032&message=Git&logo=Git)](https://git-scm.com/)[![-](https://img.shields.io/static/v1?style=flat-square&label=&logoColor=ffffff&color=181717&message=GitHub&logo=GitHub)](https://github.com/)[![-](https://img.shields.io/static/v1?style=flat-square&label=&logoColor=ffffff&color=FC6D26&message=GitLab&logo=GitLab)](https://about.gitlab.com/)
 
 [![-](https://img.shields.io/static/v1?style=flat-square&label=&logoColor=ffffff&color=0052CC&message=Trello&logo=Trello)](https://trello.com/)[![-](https://img.shields.io/static/v1?style=flat-square&label=&logoColor=ffffff&color=0052CC&message=Jira&logo=Jira)](https://www.atlassian.com/software/jira/work-management)
+
+### 目标
+
+构建知识体系，理解事物运行规则，洞察事物本质，拥有看透事物本质的能力
+
+确定主题 -> 确定接口 -> 确定框架
+
+按照下面的顺序着手：
+
+1. 重要问题，第一性原理 -- 确定主题
+   - 从重要问题触发的知识体系
+   - 从第一原理出发的知识体系
+2. 世界观，方法论 -- 顶层框架结构
+   - 世界观类知识，这类知识可以帮助我们认识世界
+   - 方法论知识，可以帮助我们改变世界
+3. 第一性原理 -- 知识原本树状结构
+   - 世界观让我们了解万事万物的形成原因，了解我们遇到的问题是如何产生的；方法论是基于我们对事物的了解，凝练出针对这些了解的解决方案
+4. 知识之间关系，因果关系，层次关系
+   - 结构来源于关系，决定某些知识到底应该以何种结构呈现的核心原因在知识与知识之间的关系；只要先思考清楚知识和知识之间的关系，知识体系的结构很容易梳理
+   - 因果关系是指做这件事情导致那件事的发生，例如种瓜得豆
+   - 层次关系是指某个事物包含另外一些事物
+5. 知识主要结构 -- 树状结构
+   - 知识的主要结构是树状的，要是将知识看成一颗语义树，从第一原理出发找到它们的本来面貌
