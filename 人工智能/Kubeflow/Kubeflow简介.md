@@ -59,3 +59,5 @@ kubectl patch storageclass \
 ## 参考资料
 
 - <https://developer.aliyun.com/article/784044>
+
+- Kubeflow 认证 <https://chanyilin.github.io/kubeflow-istio-authnz-2>
