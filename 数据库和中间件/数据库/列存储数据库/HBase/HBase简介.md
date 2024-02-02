@@ -1,0 +1,2 @@
+Apache HBase是构建在Hadoop之上的列定向NoSQL数据库。它旨在为大数据提供随机、实时的读/写访问。HBase非常适用于需要快速和随机访问大型数据集的工作负载，并且与Hadoop的MapReduce数据处理范例很好地集成
+
