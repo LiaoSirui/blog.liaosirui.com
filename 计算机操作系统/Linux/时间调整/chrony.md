@@ -146,3 +146,11 @@ Running chronyc activity, get:
 0 sources doing burst (return to offline)
 8 sources with unknown address
 ```
+
+最终调试为 server 端未指定：
+
+```
+local stratum 10 orphan distance 0.1
+```
+
+client 端需要给 chronyd 增加 `-4` 参数，因为关闭了 ipv6

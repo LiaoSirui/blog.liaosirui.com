@@ -45,6 +45,17 @@ vSAN 8 witness JF61H-48K8K-488X9-W98Z0-1FH24
 Horizon Enterprise v8.x 0G4DA-49J81-M80R1-012N4-86KH4
 ```
 
+注册账号
+
+```
+Address 1    1ONE
+Address 2    
+City    Sacramento
+Postal code    94203
+Country/Territory    United States
+State or province    California
+```
+
 ## 常用链接
 
 - VMWare 硬件支持（VMware Compatibility Guide，查询网卡的驱动情况：<https://www.vmware.com/resources/compatibility/search.php?deviceCategory=io&details=1&partner=46&releases=589&keyword=226&deviceTypes=6&page=1&display_interval=10&sortColumn=Partner&sortOrder=Asc>
