@@ -17,3 +17,11 @@ https://zhuanlan.zhihu.com/p/113222681
 
 
 - 文档翻译：<https://www.fanwen.eduboo.com/read/CN-VScode-Docs/769-120526-ddylkzt>
+
+## Python
+
+设置 Python PATH
+
+参考：<https://code.visualstudio.com/docs/python/environments#_use-of-the-pythonpath-variable>
+
+创建一个 `.env` 文件即可

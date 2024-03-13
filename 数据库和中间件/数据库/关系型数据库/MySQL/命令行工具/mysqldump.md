@@ -35,3 +35,54 @@ mysqldump \
   --databases <db1> <db2> <..>
 ```
 
+导出示例
+
+```bash
+#!/usr/bin/env bash
+
+set -eo pipefail
+set -vx
+
+: "${MYSQL_CLUSTER_HOST:=127.0.0.1}"
+: "${MYSQL_CLUSTER_PORT:=3306}"
+: "${MYSQL_CLUSTER_USER:=root}"
+: "${MYSQL_CLUSTER_PASSWORD:=xxx}"
+
+: "${BACKUP_ROOT_DIR:=/backup/mysql_cluster}"
+
+BACKUP_DIR="${BACKUP_ROOT_DIR}/mysql_cluster_$(date +"%Y%m%d_%H%M%S")"
+[[ -d ${BACKUP_DIR} ]] || mkdir -p "${BACKUP_DIR}"
+
+# mysqldump \
+#     -u"$MYSQL_CLUSTER_USER" \
+#     -p"$MYSQL_CLUSTER_PASSWORD" \
+#     -h "$MYSQL_CLUSTER_HOST" \
+#     -P "$MYSQL_CLUSTER_PORT" \
+#     --single-transaction \
+#     --skip-lock-tables \
+#     --all-databases > "${BACKUP_DIR}/all_database.sql"
+
+databases=$(\
+    mysql \
+    -u"$MYSQL_CLUSTER_USER" \
+    -p"$MYSQL_CLUSTER_PASSWORD" \
+    -h "$MYSQL_CLUSTER_HOST" \
+    -P "$MYSQL_CLUSTER_PORT" \
+    -e "SHOW DATABASES\G" | grep 'Database:' | awk -F 'Database: ' '{print $2}' \
+)
+for db in $databases; do
+    if [[ "$db" != "information_schema" ]] && [[ "$db" != "performance_schema" ]] && [[ "$db" != "mysql" ]] && [[ "$db" != _* ]] ; then
+        echo "Dumping database: $db"
+        mysqldump \
+            -u"$MYSQL_CLUSTER_USER" \
+            -p"$MYSQL_CLUSTER_PASSWORD" \
+            -h "$MYSQL_CLUSTER_HOST" \
+            -P "$MYSQL_CLUSTER_PORT" \
+            --single-transaction \
+            --skip-lock-tables \
+            --databases "$db" > "${BACKUP_DIR}/$db.sql"
+    fi
+done
+
+```
+

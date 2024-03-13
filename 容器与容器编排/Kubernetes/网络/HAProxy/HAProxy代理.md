@@ -63,8 +63,8 @@ backend route-80
     mode http
     option forwardfor
     server      master1 192.168.146.211:80  send-proxy  check inter 3000 fall 3 rise 5
-    server      master1 192.168.146.212:80  send-proxy  check inter 3000 fall 3 rise 5
-    server      master1 192.168.146.213:80  send-proxy  check inter 3000 fall 3 rise 5
+    server      master2 192.168.146.212:80  send-proxy  check inter 3000 fall 3 rise 5
+    server      master3 192.168.146.213:80  send-proxy  check inter 3000 fall 3 rise 5
 
 frontend route-443
     bind *:443
@@ -101,3 +101,4 @@ backend route-6443
     server      master3 192.168.146.213:6443   check inter 3000 fall 3 rise 5
 ```
 
+如果不需要 proxy protocol 的话，去掉 `send-proxy` 参数
