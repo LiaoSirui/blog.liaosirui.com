@@ -26,6 +26,12 @@ node_hwmon_temp_celsius{instance="192.168.16.140:9100", chip=~".+coretemp.+"}
 0 * node_hwmon_sensor_label{instance="192.168.16.140:9100", chip=~".+coretemp.+"} + on (sensor) group_left(node_hwmon_temp_celsius) node_hwmon_temp_celsius{instance="192.168.16.140:9100", chip=~".+coretemp.+"}
 ```
 
+画图
+
+- 使用 stat panel
+
+- 显示名：`${__field.labels.label}`
+
 参考图表
 
 - <https://grafana.com/grafana/dashboards/12950-hwmon/>
