@@ -112,6 +112,10 @@ ATL_PROXY_PORT: "443"
 
 ## 参考文档
 
+- <https://www.atlassian.com/zh/software/jira/templates/software-development>
+
 - <https://doc.devpod.cn/jsm/jira-service-management-17105048.html>
 
 - Jira 使用：<https://www.yiibai.com/jira/jira-introduction.html>
+
+- <https://doc.devpod.cn/jira/jira-15237264.html>
