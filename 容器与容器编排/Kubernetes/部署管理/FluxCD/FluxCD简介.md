@@ -11,10 +11,15 @@
 
 官方的方式是推荐使用 Flux CLI
 
+官方文档：<https://fluxcd.io/flux/installation/>
+
 首先是安装 Flux CLI （即 Flux）
 
 ```bash
 curl -s https://fluxcd.io/install.sh | bash
+
+# 设置补全
+. <(flux completion bash)
 ```
 
  在启动前，先 check 下 flux 的版本等信息是否已经可以了；使用命令 `flux check --pre` 检查
@@ -72,6 +77,16 @@ NetworkPolicy/flux-system/allow-webhooks created
 ✔ notification-controller: deployment ready
 ✔ source-controller: deployment ready
 ✔ install finished
+```
+
+更多安装命令
+
+```bash
+flux install \
+--registry harbor.alpha-quant.com.cn:5000/3rd_party/ghcr.io/fluxcd \
+--image-pull-secret platform-oci-image-pull-secret \
+--namespace flux-system \
+--components helm-controller
 ```
 
 ### 使用 helm 部署 

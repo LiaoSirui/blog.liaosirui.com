@@ -52,6 +52,10 @@
 
 2022 年 9 月发布，NVIDIA 官网宣称 Ada Lovelace GPU 架构能够为光线追踪和基于 AI 的神经图形提供革命性的性能，该架构显著提高了 GPU 性能基准，更代表着光线追踪和神经图形的转折点，使用该架构的 GPU 有 RTX6000、RTX4060Ti 等
 
+- Blackwell
+
+Blackwell 架构以美国统计学和数学先驱David Harold Blackwell 博士的名字命名，他撰写了第一本贝叶斯统计学教科书，Blackwell 架构再次成为 NVIDIA 在公司许多标志性架构设计上加倍努力的理念，希望找到更智能、更努力地工作的方法，以提高其最重要的数据中心/HPC 加速器的性能
+
 ## 实例
 
 TX4060Ti 基于 Ada Lovelace 架构（AD102）
