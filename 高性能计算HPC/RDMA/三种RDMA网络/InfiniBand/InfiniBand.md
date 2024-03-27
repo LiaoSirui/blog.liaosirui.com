@@ -174,6 +174,12 @@ CA 'mlx4_0'
 		Link layer: InfiniBand
 ```
 
+查看网络中的 ib 设备
+
+```bash
+ibnodes
+```
+
 ## IPoIB
 
 InfiniBand 不使用 IP 进行通信。但是，IP over InfiniBand(IPoIB) 在 InfiniBand 远程直接访问 (RDMA) 网络之上提供一个 IP 网络模拟层。这允许现有未经修改的应用程序通过 InfiniBand 网络传输数据，但性能低于应用程序原生使用 RDMA 时的数据。
@@ -274,7 +280,7 @@ ibping(需要 root 权限) 程序采用客户端/服务器模式。
 - 服务端
 
 ```bash
-ibping -S -C mlx4_0 -P 1 
+ibping -S -C <ca> -P 1 
 ```
 
 `-S`：以服务器端运行
@@ -286,7 +292,7 @@ ibping -S -C mlx4_0 -P 1
 - 客户端
 
 ```bash
-ibping -c 10000 -f -C mlx4_0 -P 1 -L 1
+ibping -c 10000 -f -C <ca> -P 1 -L 1
 ```
 
 `-c`：发送 10000 个 packet 之后停止
@@ -298,6 +304,20 @@ ibping -c 10000 -f -C mlx4_0 -P 1 -L 1
 `-P`：端口号，来自服务器端运行 ibping 命令时指定的 -P 参数值.
 
 `-L`：Base lid，来自服务器端运行 ibping 命令时指定的端口（-P 参数值）的 base lid（参考 ibstat），具体要查看服务端的 Base lid。
+
+### 性能测试
+
+服务端运行
+
+```bash
+ib_send_bw -a -c UD -d mlx4_0 -i 1
+```
+
+客户端运行
+
+```bash
+ib_send_bw -a -c UD -d mlx4_0 -i 1 172.16.0.102
+```
 
 ### 测试带宽
 
@@ -443,3 +463,8 @@ Conflicting CPU frequency values detected: 2500.000000 != 4769.441000. CPU Frequ
 ---------------------------------------------------------------------------------------
 ```
 
+## 参考文档
+
+- <https://www.cnblogs.com/sctb/p/13179542.html>
+
+- <https://www.sdnlab.com/26283.html>

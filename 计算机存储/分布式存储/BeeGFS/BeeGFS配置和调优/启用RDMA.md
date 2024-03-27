@@ -2,3 +2,8 @@
 
 最新版：<https://doc.beegfs.io/latest/advanced_topics/rdma_support.html>
 
+```bash
+#支持Infiniband RDMA功能，必须在元数据和存储节点安装
+dnf install -y libbeegfs-ib
+```
+
