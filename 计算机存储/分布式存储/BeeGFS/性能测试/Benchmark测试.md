@@ -19,6 +19,22 @@ sysbench --test=fileio --threads=20 --file-total-size=1G --file-test-mode=rndrw 
 sysbench --test=fileio --threads=20 --file-total-size=1G --file-test-mode=rndrw run
 ```
 
+## 网络测试
+
+开启测试模式
+
+```bash
+echo 1 > /proc/fs/beegfs/<clientID>/netbench_mode
+```
+
+开始测试
+
+关闭测试模式
+
+```bash
+echo 0 > /proc/fs/beegfs/<clientID>/netbench_mode
+```
+
 ## 官方 Benchmark
 
 官方文档：<https://www.beegfs.io/wiki/Benchmark>

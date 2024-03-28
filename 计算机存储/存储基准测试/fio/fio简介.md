@@ -1,130 +1,82 @@
 ## 参数
 
-| 参数名          | 说明                                                         | 取值样例 |
-| :-------------- | :----------------------------------------------------------- | :------: |
-| name            | 定义测试任务名称                                             |   N/A    |
-| filename        | 测试对象，即待测试的磁盘设备名称                             |   N/A    |
-| bs              | 每次请求的块大小。取值包括4k、8k 及 16k 等                   |    4k    |
-| bsrange         | `bsrange=512-2048` 数据块的大小范围                          |   N/A    |
-| size            | I/O 测试的寻址空间。也可是百分数，比如size=20%，表示读/写的数据量占该设备总文件的20%的空间 |  100GB   |
-| ioengine        | I/O 引擎。推荐使用 Linux 的异步 I/O 引擎                     |  libaio  |
-| iodepth         | 请求的 I/O 队列深度。此处定义的队列深度是指每个线程的队列深度，如果有多个线程测试，意味着每个线程都是此处定义的队列深度。fio 总的 I/O 并发数 = iodepth * numjobs |    1     |
-| numjobs         | 定义测试的并发线程数                                         |    1     |
-| direct          | 定义是否使用direct I/O，可选值如下：值为0，表示使用buffered I/O值为1，表示使用direct I/O |    1     |
-| rw              | 读写模式。取值包括顺序读（read）、顺序写（write）、随机读（randread）、随机写（randwrite）、混合随机读写（randrw）和混合顺序读写（rw，readwrite） |   read   |
-| rwmixwrite      | rwmixwrite=30 在混合读写的模式下，写占30%                    |          |
-| time_based      | 指定采用时间模式。无需设置该参数值，只要 FIO 基于时间来运行  |   N/A    |
-| runtime         | 指定测试时长，即 FIO 运行时长                                |   600    |
-| refill_buffers  | FIO 将在每次提交时重新填充 I/O 缓冲区。默认设置是仅在初始时填充并重用该数据 |   N/A    |
-| norandommap     | 在进行随机 I/O 时，FIO 将覆盖文件的每个块。若给出此参数，则将选择新的偏移量而不查看 I/O 历史记录 |   N/A    |
-| randrepeat      | 随机序列是否可重复，True（1）表示随机序列可重复，False（0）表示随机序列不可重复。默认为 True（1） |    0     |
-| group_reporting | 多个 job 并发时，打印整个 group 的统计值                     |   N/A    |
+| **参数**        | **说明**                                                     |
+| --------------- | ------------------------------------------------------------ |
+| direct          | 表示是否使用direct I/O。默认值：1。值为1：表示使用direct I/O，忽略I/O缓存，数据直写。值为0：表示不使用direct I/O。 |
+| iodepth         | 表示测试时的IO队列深度。例如`-iodepth=128`表示FIO控制请求中的I/O最大个数为128。 |
+| rw              | 表示测试时的读写策略。您可以设置为：**randwrite**：随机写。**randread**：随机读。**read**：顺序读。**write**：顺序写。**randrw**：混合随机读写。 |
+| ioengine        | 表示测试时FIO选择哪种I/O引擎，通常选择libaio，更符合日常应用模式，更多的选择请查阅FIO官方文档。 |
+| bs              | 表示I/O单元的块大小（block size）。默认值：4 KiB。读取和写入的值可以以read、write格式单独指定，其中任何一个都可以为空以将该值保留为其默认值。 |
+| size            | 表示测试文件大小。FIO会将指定的文件大小全部读/写完成，然后才停止测试，除非受到其他选项（例如运行时）的限制。如果未指定该参数，FIO将使用给定文件或设备的完整大小。也可以将大小作为1到100之间的百分比给出。例如指定size=20%，FIO将使用给定文件或设备完整大小的20%空间。 |
+| numjobs         | 表示测试的并发线程数。默认值：1。                            |
+| runtime         | 表示测试时间，即FIO运行时长。如果未指定该参数，则FIO会持续将上述**size**指定大小的文件，以每次**bs**值为块大小读/写完。 |
+| group_reporting | 表示测试结果显示模式。如果指定该参数，测试结果会汇总每个进程的统计信息，而不是以不同任务来统计信息。 |
+| filename        | 表示待测试的对象路径，路径可以是云盘设备名称或者一个文件地址。本文中的FIO测试全部是以整盘为测试对象，不含文件系统，即裸盘测试。同时为了避免误测试到其他盘导致数据被破坏，本示例地址为/dev/your_device，请您正确替换。 |
+| name            | 表示测试任务名称，可以随意设定。例如本示例的Rand_Write_Testing。 |
 
 ## 示例
+
+安装 libaio
+
+```bash
+dnf install -y libaio libaio-devel
+```
 
 测试命令
 
 ```bash
 #!/usr/bin/env bash
-#
- 
-# 4k 顺序读
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_100read_4k
-  
-# 4k 顺序写
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=write -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_100write_4k
-  
-# 4k 顺序混合读写
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=rw -rwmixread=70 -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_70read_4k
- 
-# 1024k 顺序读
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_100read_1024k
-  
-# 1024k 顺序写
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=write -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_100write_1024k
-  
-# 1024k 混合读写
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=rw -rwmixread=70 -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_70read_1024k
- 
-# 4k 顺序读 128 iodepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=read -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_100read_4k_128depth
-  
-# 4k 顺序写 128 iodepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=write -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_100write_4k_128depth
-  
-# 4k 混合读写 128 iodepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=rw -rwmixread=70 -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_70read_4k_128depth
- 
-# 1024k 顺序读 128 iodepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=read -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_100read_1024k_128depth
-  
-# 1024k 顺序写 128 iodepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=write -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_100write_1024k_128depth
-  
-# 1024k 混合读写 128 iodepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=rw -rwmixread=70 -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=sqe_70read_1024k_128depth
- 
-# 4k 随机读
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=randread -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=rand_100read_4k
-  
-# 4k 随机写
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=rand_100write_4k
-  
-# 4k 混合随机读写
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=100 -group_reporting -name=fiotest -output=randrw_70read_4k
- 
-#1024k 随机读
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=randread -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=rand_100read_1024k
-  
-#1024k 随机写
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=randwrite -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=rand_100write_1024k
-  
-#1024k 混合随机读写
-fio -directory=/data/input -direct=1 -iodepth 1 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=100 -group_reporting -name=fiotest -output=randrw_70read_1024k
- 
-#4k 随机读 128 oidepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=randread -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=rand_100read_4k_128depth
-  
-#4k 随机写 128 oidepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=randwrite -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=rand_100write_4k_128depth
-  
-#4k 混合随机读写 128 oidepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=4k -size=200G -numjobs=10 -runtime=100 -group_reporting -name=fiotest -output=randrw_70read_4k_128depth
- 
-#1024k 随机读 128 oidepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=randread -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=rand_100read_1024k_128depth
-  
-#1024k 随机写 128 oidepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=randwrite -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=1000 -group_reporting -name=fiotest -output=rand_100write_1024k_128depth
-  
-#1024k 混合随机读写 128 oidepth
-fio -directory=/data/input -direct=1 -iodepth 128 -thread -rw=randrw -rwmixread=70 -ioengine=psync -bs=1024k -size=200G -numjobs=10 -runtime=100 -group_reporting -name=fiotest -output=randrw_70read_1024k_128depth
-```
 
+set -e
 
+export FIO_TEST_CMD=(
+    "fio"
+    "-direct=1"
+    "-ioengine=libaio"
+    "-group_reporting"
+    "-name=fiotest"
+    "-directory=/data/input"
+    "-size=1G"
+    "-runtime=1000"
+    "-time_based=1"
+)
 
-顺序读测试 (任务数：1):
+# 随机写 IOPS
+"${FIO_TEST_CMD[@]}" \
+    -iodepth=128 -numjobs=1 \
+    -bs=4k -rw=randwrite \
+    -output=Rand_Write_Testing
 
-```bash
-fio --name=sequential-read --directory=${TEST_DIR} --rw=read --refill_buffers --bs=4M --size=4G
-```
+# 随机读 IOPS
+"${FIO_TEST_CMD[@]}" \
+    -iodepth=128 -numjobs=1 \
+    -bs=4k -rw=randread \
+    -output=Rand_Read_Testing
 
-顺序写测试 (任务数：1):
+# 顺序写吞吐量
+"${FIO_TEST_CMD[@]}" \
+    -iodepth=64 -numjobs=1 \
+    -bs=1024k -rw=write \
+    -output=Write_PPS_Testing
 
-```bash
-fio --name=sequential-write --directory=${TEST_DIR} --rw=write --refill_buffers --bs=4M --size=4G --end_fsync=1
-```
+# 顺序读吞吐量
+"${FIO_TEST_CMD[@]}" \
+    -iodepth=64 -numjobs=1 \
+    -bs=1024k -rw=read \
+    -output=Read_PPS_Testing
 
-顺序读测试 (任务数：16):
+# 随机写时延
+"${FIO_TEST_CMD[@]}" \
+    -iodepth=1 -numjobs=1 \
+    -bs=4k -rw=randwrite \
+    -output=Rand_Write_Latency_Testing
 
-```bash
-fio --name=big-file-multi-read --directory=${TEST_DIR} --rw=read --refill_buffers --bs=4M --size=4G --numjobs=16
-```
+# 随机读时延
+"${FIO_TEST_CMD[@]}" \
+    -iodepth=1 -numjobs=1 \
+    -bs=4k -rw=randread \
+    -output=Rand_Read_Latency_Testing
 
-顺序写测试 (任务数：16):
-
-```bash
-fio --name=big-file-multi-write --directory=${TEST_DIR} --rw=write --refill_buffers --bs=4M --size=4G --numjobs=16 --end_fsync=1
 ```
 
 ## 参考文档
