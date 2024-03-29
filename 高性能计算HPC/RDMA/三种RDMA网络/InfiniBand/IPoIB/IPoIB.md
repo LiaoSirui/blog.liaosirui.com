@@ -58,5 +58,3 @@ nmcli connection modify ib0 ipv4.addresses 10.245.245.101/24
 # nmcli connection modify ib0 ipv4.dns 10.244.245.253
 # nmcli connection modify ib0 ipv4.method manual
 ```
-
-## 

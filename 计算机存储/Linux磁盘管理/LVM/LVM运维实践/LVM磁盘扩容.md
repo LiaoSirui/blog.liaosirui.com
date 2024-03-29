@@ -6,7 +6,7 @@
 pvcreate /dev/sdb
 ```
 
-2、 vgzxtend 扩容vg
+2、 vgextend 扩容 vg
 
 ```bash
 vgextend <VG_NAME> /dev/sdb
