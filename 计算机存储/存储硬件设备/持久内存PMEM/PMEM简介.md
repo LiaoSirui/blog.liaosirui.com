@@ -20,4 +20,4 @@ PMEM 位于内存总线上，支持像 DRAM 一样访问数据，这意味着它
 
 ## 参考资料
 
-<https://www.netapp.com/zh-hans/data-storage/what-is-persistent-memory/>
+- <https://www.netapp.com/zh-hans/data-storage/what-is-persistent-memory/>
