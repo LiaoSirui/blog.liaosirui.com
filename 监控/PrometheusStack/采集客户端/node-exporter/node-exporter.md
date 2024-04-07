@@ -218,3 +218,7 @@ curl -s localhost:9100/metrics | curl -u USERNAME:PASSWORD --data-binary @- $PUS
 ## 参考文档
 
 - <https://mafeifan.com/DevOps/Prometheus/10.%E4%B8%BB%E6%9C%BA%E7%9B%91%E6%8E%A7%E6%8C%87%E6%A0%87.html>
+
+- Node Exporter 常用查询 <https://song-jia-yang.gitbook.io/prometheus/exporter/nodeexporter_query>
+
+- <https://song-jia-yang.gitbook.io/prometheus>
