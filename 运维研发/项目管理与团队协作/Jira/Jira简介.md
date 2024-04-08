@@ -26,6 +26,8 @@ Jira 是 Atlassian 公司出品的项目与事务跟踪工具，被广泛应用�
 - 界面（提交的部分）
 - 字段（记录问题信息）
 
+![image-20240408112825678](./.assets/Jira简介/image-20240408112825678.png)
+
 ![img](./.assets/Jira简介/fields_diagram.png)
 
 通过自定义字段、界面和方案，可以充分利用 JIRA 系统的全部功能，并确保 Jira 的用户高效地工作
@@ -41,3 +43,7 @@ Jira 是 Atlassian 公司出品的项目与事务跟踪工具，被广泛应用�
 - Jira 使用：<https://www.yiibai.com/jira/jira-introduction.html>
 
 - <https://doc.devpod.cn/jira/jira-15237264.html>
+
+- <https://blog.csdn.net/Nicolege678/article/details/124605511>
+
+- <https://blog.csdn.net/qq_41386332/article/details/108658431>
