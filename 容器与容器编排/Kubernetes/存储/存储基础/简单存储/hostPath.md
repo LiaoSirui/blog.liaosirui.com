@@ -76,7 +76,7 @@ pv-hostpath   10Gi       RWO            Retain           Available           man
 
 现在创建一个 `PersistentVolumeClaim`，Pod 使用 PVC 来请求物理存储，这里创建的 PVC 请求至少 3G 容量的卷，该卷至少可以为一个节点提供读写访问，下面是 PVC 的配置文件：
 
-```
+```yaml
 # pvc-hostpath.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
