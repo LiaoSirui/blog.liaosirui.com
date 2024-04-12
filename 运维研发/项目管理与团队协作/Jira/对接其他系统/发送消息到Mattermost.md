@@ -15,3 +15,5 @@ Mattermost 减少了在 Jira 进行项目合作的开发团队的摩擦。无缝
 ## 参考资料
 
 - <https://cloud.tencent.com/developer/article/1639840>
+
+- <https://support.atlassian.com/jira-service-management-cloud/docs/integrate-with-mattermost/>
