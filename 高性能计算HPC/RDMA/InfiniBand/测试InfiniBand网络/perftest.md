@@ -100,3 +100,6 @@ ib_write_lat <对端的 IP 地址>
 ib_read_lat <对端的 IP 地址>
 ```
 
+## 参考文档
+
+- <https://yaohuablog.com/zh/Infiniband%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95>
