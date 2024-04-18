@@ -5,3 +5,17 @@
 blast 默认使用 TCP 的 8443 端口
 
 vram 不足？
+
+文档：<https://docs.vmware.com/cn/VMware-Horizon/2312/virtual-desktops/GUID-4FA4885C-EF55-4472-8B0C-D39BCACFDA84.html>
+
+VMware 间接显卡驱动程序无法与 Hypervisor 直接通信，并且不支持使用 Hypervisor 远程控制台，在 `HKLM\Software\Policies\VMware, Inc.\VMware Blast\Config` 中，配置以下注册表设置：
+
+```
+HypervisorConsoleForcedEnabled REG_SZ : 1
+```
+
+要激活低延迟模式，请在 HKLM\Software\Policies\VMware, Inc.\VMware Blast\Config 中配置以下注册表设置：
+
+```
+PixelProviderLowLatencyEnabled REG_SZ : 1
+```
