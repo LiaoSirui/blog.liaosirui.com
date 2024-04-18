@@ -7,3 +7,11 @@
 dnf install -y libbeegfs-ib
 ```
 
+RDMA 调优
+
+配置文件 `/etc/modprobe.d/mlx4_core.conf`
+
+EDR 建议：
+
+- `connRDMABufNum = 22`
+- `connRDMABufSize = 32768`
