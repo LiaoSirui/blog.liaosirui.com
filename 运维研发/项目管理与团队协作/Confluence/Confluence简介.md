@@ -14,3 +14,13 @@ Confluence 可以解决的问题：
 镜像：<https://hub.docker.com/r/atlassian/confluence>
 
 8091 是多人协同编辑用的 TCP 端口
+
+## 插件
+
+- Draw.io 支持
+- Excalidraw for Confluence 绘制手绘风格的图形，其中包含多种内置的图形库
+- Mermaid 渲染插件
+- Comala Workflows 文档审批
+- EasyMind for Confluence 绘制脑图的工具
+- Questions for Confluence (Server) 支持知识问答
+- Slide Presenter for Confluence
