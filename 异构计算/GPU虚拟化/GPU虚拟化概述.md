@@ -20,6 +20,14 @@ PCIe 直通是一种虚拟化技术，允许虚拟机 (Virtual Machine，VM) 直
 
 ![img](.assets/GPU虚拟化概述/b9c86cb353879d81a8e633c5d84b14d13d3699.png)
 
+vmvare 单独设置：<https://www.techtarget.com/searchitoperations/tutorial/Map-physical-GPUs-to-VMs-with-this-GPU-passthrough-guide>
+
+```
+ hypervisor.cpuid.v0=FALSE
+```
+
+只能安装 open 版本，或者 `./NVIDIA-Linux-x86_64-525.116.04.run -m=kernel-open`
+
 ### PCIe SR-IOV
 
 PCIe SR-IOV (Single Root Input/Output Virtualization) 是一种更高级的虚拟化技术，允许一个 PCIe 设备在多个虚拟机之间共享，同时保持较高的性能。它是通过在物理设备 (Physical Functions，PF) 上创建多个虚拟功能 (Virtual Functions，VF) 来实现的，每个虚拟功能可以被分配给一个虚拟机，让虚拟机直接访问和控制这些虚拟功能，从而实现高效的 I/O 虚拟化。基于 PCIe SR-IOV 的 GPU 虚拟化方案，本质是把一个物理 GPU 显卡设备 (PF) 拆分成多份虚拟 (VF) 的显卡设备，而且 VF 依然是符合 PCIe 规范的设备。核心架构如下图：
