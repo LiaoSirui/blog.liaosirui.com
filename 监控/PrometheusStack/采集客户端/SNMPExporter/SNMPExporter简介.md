@@ -1,4 +1,4 @@
-官方 Grafana Dashbord 面板: https://grafana.com/grafana/dashboards/11169-snmp-stats/
+官方 Grafana Dashbord 面板：<https://grafana.com/grafana/dashboards/11169-snmp-stats/>
 
 SNMP协议全称是：Simple Network Management Protocol，译为简单网络管理协议，是作为TCP/IP网络管理标准协议，为不同的设备提供统一接口，实现了网络设备之间的统一管理
 
