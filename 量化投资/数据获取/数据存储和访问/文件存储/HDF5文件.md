@@ -30,4 +30,11 @@ df = pd.read_hdf(file_path)
 print(df)
 ```
 
-`pd.read_hdf()` 函数用于读取 HDF5 文件，参数 file_path 为指定的文件路径和文件名
+`pd.read_hdf()` 函数用于读取 HDF5 文件，参数 file_path 为指定的文件路径和文件
+
+并发读取 H5 设置
+
+```
+os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
+```
+
