@@ -17,3 +17,5 @@ HypervisorConsoleForcedEnabled REG_SZ : 1
 ```
 PixelProviderLowLatencyEnabled REG_SZ : 1
 ```
+
+Windows 操作系统自动优化：<https://techzone.omnissa.com/resource/windows-os-optimization-tool-vmware-horizon-guide#_Building_an_Image>>
