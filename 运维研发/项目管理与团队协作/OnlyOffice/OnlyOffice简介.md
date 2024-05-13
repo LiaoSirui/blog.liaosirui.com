@@ -73,6 +73,7 @@ services:
 参考：
 
 - <https://github.com/ONLYOFFICE/Docker-DocumentServer/blob/master/docker-compose.yml>
+- OnlyOffice Helm Chart 部署 <https://elma365.com/en//help/install-onlyoffice.html>
 
 ## 集成
 
