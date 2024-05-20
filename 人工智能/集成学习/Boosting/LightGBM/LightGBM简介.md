@@ -7,12 +7,15 @@ dnf install -y cmake
 编译安装 GPU 版本（CUDA）
 
 ```bash
-git clone --recursive https://github.com/microsoft/LightGBM
+wget https://github.com/microsoft/LightGBM/archive/refs/tags/v4.3.0.tar.gz
+mkdir LightGBM
+tar zxvf v4.3.0.tar.gz -C LightGBM
 
 cd LightGBM
 mkdir build
 cd build
 cmake -DUSE_CUDA=1 ..
+# cmake -DCMAKE_CUDA_ARCHITECTURES=native -DCMAKE_CUDA_COMPILER=/usr/local/cuda-12.4/nvcc  -DUSE_CUDA=1 ..
 
 make -j$(nproc)
 
@@ -21,7 +24,7 @@ sh ./build-python.sh install --precompile
 pip3 install numpy==1.20
 ```
 
-测试用 demo
+GPU 测试用 demo
 
 ```python
 import lightgbm as lgb
