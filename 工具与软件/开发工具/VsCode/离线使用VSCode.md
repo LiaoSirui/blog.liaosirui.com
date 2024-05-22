@@ -25,8 +25,16 @@
 {
    "remote.downloadDependencyMirror": "https://somehostname.com/somedir/" 
    // https://update.code.visualstudio.com/commit:$COMMIT_ID$/server-linux-x64/stable 
-   // https://update.code.visualstudio.com/commit:5554b12acf27056905806867f251c859323ff7e9/server-linux-x64/stable
-   // expected call https://somehostname.com/somedir/5554b12acf27056905806867f251c859323ff7e9/server-linux-x64/stable
+   // https://update.code.visualstudio.com/commit:863d2581ecda6849923a2118d93a088b0745d9d6/server-linux-x64/stable
+   // expected call https://somehostname.com/somedir/863d2581ecda6849923a2118d93a088b0745d9d6/server-linux-x64/stable
 }
+```
+
+
+
+CLI 下载
+
+```
+	https://update.code.visualstudio.com/commit:863d2581ecda6849923a2118d93a088b0745d9d6/cli-linux-x64/stable
 ```
 
