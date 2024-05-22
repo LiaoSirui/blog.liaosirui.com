@@ -19,3 +19,29 @@ PixelProviderLowLatencyEnabled REG_SZ : 1
 ```
 
 Windows 操作系统自动优化：<https://techzone.omnissa.com/resource/windows-os-optimization-tool-vmware-horizon-guide#_Building_an_Image>>
+
+## Linux Agent
+
+- 下载地址：<https://customerconnect.omnissa.com/downloads/info/slug/desktop_end_user_computing/vmware_horizon/2312>
+
+- <https://cios.dhitechnical.com/VMware/Horizon/VMware.Horizon.8.Ent/VMware%20Horizon%208/>
+
+安装 Agent
+
+```
+cd VMware-horizonview-agent/
+
+./install_viewagent.sh -U yes -a yes
+```
+
+配置默认桌面
+
+```c
+vi /etc/vmware/viewagent-custom.conf
+
+SSODesktopType=UseKdePlasma
+```
+
+参考文档
+
+- <https://blog.csdn.net/mgaofeid/article/details/131577125>
