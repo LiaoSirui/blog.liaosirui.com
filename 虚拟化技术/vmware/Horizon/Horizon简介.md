@@ -184,9 +184,24 @@ vi /etc/vmware/viewagent-custom.conf
 SSODesktopType=UseKdePlasma
 ```
 
+限制桌面挂载 `/etc/vmvare/config` 中的 `cdrserver.forceByAdmin=FALSE`
+
 参考文档
 
 - <https://blog.csdn.net/mgaofeid/article/details/131577125>
 - <https://foxi.buduanwang.vip/vdi/horizon/1087.html/>
 
 - <https://blog.csdn.net/Bksz_guest/article/details/128672998>
+
+多用户会话，托管
+
+```bash
+./install_viewagent.sh --multiple-session -M no
+```
+
+完整参数：<https://docs.omnissa.com/zh-CN/bundle/Desktops-and-Applications-in-HorizonV2312/page/CommandlineOptionsforInstallingHorizonAgentforLinux.html>
+
+| Parameters | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| -b         | Hostname or IP address of the Horizon Connection Server. This parameter is only supported when you install Horizon Agent in unmanaged mode. |
+| -d         | Domain name of the Horizon Connection Server administrator. This parameter is only supported when you install Horizon Agent in unmanaged mode. |

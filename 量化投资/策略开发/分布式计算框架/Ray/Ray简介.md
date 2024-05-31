@@ -35,13 +35,13 @@ assert ray.is_initialized() == False
 
 从 CLI使用`ray start`在机器上启动 1 节点 ray 运行时。这台机器成为“头节点”
 
-```
+```bash
 ray start --head
 ```
 
 这样启动后，在该节点上的程序可通过绑定`address='auto'`，来连接到该 Ray 集群
 
-```
+```python
 import ray 
 ray.init(address='auto')
 ```
