@@ -6,36 +6,46 @@
 
 ## 安装版本
 
-使用当前最新分支：v1.4.0，<https://github.com/NetApp/beegfs-csi-driver/tree/v1.4.0>
-
-k8s 版本为 1.26.1（此版本不在文档声明的支持范围，建议使用 1.25.2）
-
-```bash
-NAME        STATUS   ROLES           AGE    VERSION
-devmaster   Ready    control-plane   7d9h   v1.26.1
-devnode1    Ready    <none>          7d9h   v1.26.1
-devnode2    Ready    <none>          7d9h   v1.26.1
-```
-
-beegfs 集群的版本：v7.3.2（文档中声明支持的版本为 BeeGFS versions 7.3.1+ or 7.2.7+）
-
-```bash
-Management
-==========
-devmaster [ID: 1]: reachable at 10.245.245.201:8008 (protocol: TCP)
-
-Metadata
-==========
-devmaster [ID: 1]: reachable at 10.245.245.201:8005 (protocol: RDMA)
-
-Storage
-==========
-devmaster [ID: 1]: reachable at 10.245.245.201:8003 (protocol: RDMA)
-devnode1 [ID: 2]: reachable at 10.245.245.211:8003 (protocol: RDMA)
-devnode2 [ID: 3]: reachable at 10.245.245.212:8003 (protocol: RDMA)
-```
+使用当前最新分支：v1.6.0
 
 ## 安装
+
+### 配置宿主机环境
+
+```bash
+# 安装 dkms 模块
+dnf install -y beegfs-client-dkms beegfs-helperd beegfs-utils crudini
+```
+
+构建日志存放在：
+
+```bash
+/var/lib/dkms/beegfs/<BeeGFS version>/$(uname -r)/x86_64/log/make.log
+```
+
+加载内核模块
+
+```bash
+modprobe beegfs
+```
+
+自动加载
+
+```bash
+> cat /etc/modules-load.d/beegfs-client-dkms.conf
+# Load the BeeGFS client module at boot
+beegfs
+```
+
+同步所需镜像
+
+```bash
+registry.k8s.io/sig-storage/csi-provisioner:v3.5.0
+registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.8.0
+ghcr.io/thinkparq/beegfs-csi-driver:v1.6.0
+```
+
+
 
 ### 客户端配置
 
@@ -125,6 +135,7 @@ nodeSpecificConfigs:
 ```
 
 本次使用的配置为：
+
 ```yaml
 config:
   connInterfaces:

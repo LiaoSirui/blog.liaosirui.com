@@ -147,6 +147,56 @@ DEVPATH=="/devices/pci0000:00/0000:00:17.0/ata6/host5/target5:0:0/5:0:0:0/block/
 
 ### 绑定 NVME 磁盘
 
+首先，找到每个 NVMe 设备的唯一属性，如序列号或 WWN（世界范围名称）。使用以下命令列出 NVMe 设备的详细信息：
+
+```bash
+sudo nvme id-ctrl /dev/nvme0
+sudo nvme id-ctrl /dev/nvme1
+sudo nvme id-ctrl /dev/nvme2
+sudo nvme id-ctrl /dev/nvme3
+```
+
+输出示例（只列出关键部分）：
+
+```
+NVME Identify Controller:
+vid       : 0x8086
+ssvid     : 0x8086
+sn        : PHBT750300P32P0DGN  
+mn        : INTEL SSDPEKKW512G7                         
+fr        : PSF121C
+```
+
+在这里，`sn`（序列号）是唯一的标识符
+
+创建一个新的 `udev` 规则文件，例如 `/etc/udev/rules.d/99-nvme.rules`：
+
+```bash
+# /etc/udev/rules.d/99-nvme.rules
+
+# NVMe device 1
+SUBSYSTEM=="block", KERNEL=="nvme0n1", ATTRS{serial}=="PHBT750300P32P0DGN", SYMLINK+="nvme_disk1"
+
+# NVMe device 2
+SUBSYSTEM=="block", KERNEL=="nvme1n1", ATTRS{serial}=="PHBT750300P32P1DGN", SYMLINK+="nvme_disk2"
+
+# NVMe device 3
+SUBSYSTEM=="block", KERNEL=="nvme2n1", ATTRS{serial}=="PHBT750300P32P2DGN", SYMLINK+="nvme_disk3"
+
+# NVMe device 4
+SUBSYSTEM=="block", KERNEL=="nvme3n1", ATTRS{serial}=="PHBT750300P32P3DGN", SYMLINK+="nvme_disk4"
+
+```
+
+重新加载 `udev` 规则并触发：
+
+```bash
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+暂存
+
 ```bash
 #!/bin/bash
 disk="0 1"
@@ -171,6 +221,8 @@ udevadm test /sys/block/sdb
 udevadm info --query=all --path=/sys/block/sdb
 
 udevadm info --query=all --name=nvme1n1
+
+udevadm control --reload-rules
 ```
 
 ## 问题记录

@@ -18,6 +18,10 @@ dnf install -y opensm
 systemctl enable --now opensm
 ```
 
+参考文档
+
+- <https://docs.nvidia.com/networking/display/mlnxofedv461000/opensm>
+
 ### 配置 
 
 使用 `ibstat` 程序获取端口的 GUID：
@@ -67,4 +71,12 @@ GUIDS="GUID_1 GUID_2"
 PRIORITY=15
 ```
 
-## 
+### 配置日志
+
+配置文件 `/etc/rdma/opensm.log`
+
+```bash
+# Maximum size of the log file in MB. If overrun, log is restarted.
+log_max_size 100
+```
+
