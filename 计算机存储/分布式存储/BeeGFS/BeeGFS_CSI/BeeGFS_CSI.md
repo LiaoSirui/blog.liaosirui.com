@@ -45,8 +45,6 @@ registry.k8s.io/sig-storage/csi-node-driver-registrar:v2.8.0
 ghcr.io/thinkparq/beegfs-csi-driver:v1.6.0
 ```
 
-
-
 ### 客户端配置
 
 由于集群不使用认证信息，因此需要更改 `deploy/k8s/overlays/default/csi-beegfs-config.yaml`
