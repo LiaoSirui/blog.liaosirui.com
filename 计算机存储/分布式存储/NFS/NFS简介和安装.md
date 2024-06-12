@@ -77,41 +77,15 @@ chmod -R 755 <NFS目录>
 注意启动顺序，先启动 rpcbind
 
 ```bash
-> systemctl enable --now rpcbind
-> systemctl status rpcbind
-● rpcbind.service - RPC Bind
-     Loaded: loaded (/usr/lib/systemd/system/rpcbind.service; enabled; vendor preset: enabled)
-     Active: active (running) since Fri 2023-02-03 17:45:23 CST; 6s ago
-TriggeredBy: ● rpcbind.socket
-       Docs: man:rpcbind(8)
-   Main PID: 1487901 (rpcbind)
-      Tasks: 1 (limit: 819961)
-     Memory: 1.5M
-        CPU: 8ms
-     CGroup: /system.slice/rpcbind.service
-             └─1487901 /usr/bin/rpcbind -w -f
-
-Feb 03 17:45:23 devmaster systemd[1]: Starting RPC Bind...
-Feb 03 17:45:23 devmaster systemd[1]: Started RPC Bind.
+systemctl enable --now rpcbind
+systemctl status rpcbind
 ```
-
-看到上面的 Started 证明启动成功了
 
 然后启动 NFS 服务：
 
 ```bash
-> systemctl enable --now nfs-server.service
-> systemctl status nfs-server.service
-● nfs-server.service - NFS server and services
-     Loaded: loaded (/usr/lib/systemd/system/nfs-server.service; enabled; vendor preset: disabled)
-    Drop-In: /run/systemd/generator/nfs-server.service.d
-             └─order-with-mounts.conf
-     Active: active (exited) since Fri 2023-02-03 17:46:41 CST; 18s ago
-   Main PID: 1488678 (code=exited, status=0/SUCCESS)
-        CPU: 9ms
-
-Feb 03 17:46:41 devmaster systemd[1]: Starting NFS server and services...
-Feb 03 17:46:41 devmaster systemd[1]: Finished NFS server and services.
+systemctl enable --now nfs-server.service
+systemctl status nfs-server.service
 ```
 
 同样看到 Started 则证明 NFS Server 启动成功

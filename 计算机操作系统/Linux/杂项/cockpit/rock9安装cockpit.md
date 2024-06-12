@@ -10,14 +10,8 @@ dnf install -y \
 开启服务
 
 ```bash
-systemctl start cockpit.socket
+systemctl enable --now cockpit.socket
 systemctl status cockpit.socket
-```
-
-设置开机自动启动
-
-```bash
-systemctl enable cockpit.socket
 ```
 
 如果防火墙是开启状态，需要放行

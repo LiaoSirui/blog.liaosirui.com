@@ -13,6 +13,9 @@ rpm -ivh MegaCli-8.07.14-1.noarch.rpm
 
 # wget http://mirror.cogentco.com/pub/misc/MegaCli-8.07.14-1.noarch.rpm
 # rpm -ivh MegaCli-8.07.14-1.noarch.rpm
+
+# 软链接目录
+ln -s /opt/MegaRAID/MegaCli/MegaCli64 /usr/bin/MegaCli
 ```
 
 ## 常用命令
