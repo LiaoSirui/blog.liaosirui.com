@@ -1,5 +1,7 @@
 ## AWX 简介
 
+Ansible Tower 是企业级的 Ansible web 管理平台，提供了较为完善的观察 Ansible 任务运行的 Dashboard。Tower 允许控制访问帐号，以及分发 SSH 证书。可以通过图形界面管理清单文件或者从云进行同步。Tower 提供了任务的日志，集成 LDAP 以及 REST API。提供了方便和 Jenkins 集成的命令工具，和支持自动扩展拓扑的回调
+
 AWX 是 Ansible Tower 的开源版，Ansible Tower 是一个可视化界面的服务器自动部署和运维管理平台。AWX 提供基于 Web 的用户界面，REST API 和构建在 Ansible 之上的任务引擎
 
 官方：

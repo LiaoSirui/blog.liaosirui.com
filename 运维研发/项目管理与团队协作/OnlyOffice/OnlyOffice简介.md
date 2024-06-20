@@ -103,3 +103,13 @@ Office内部的nodejs的配置：在容器内 `/etc/onlyoffice/documentserver/de
 Win10 系统提取中文字体的方法：控制面板——搜字体——查看安装的字体——再在搜索栏输入中文 2个字，这些就是需要的中文字体了。首次加载会比较慢，因为加载中文字体，一般达到 50M 以上。
 
 将当前文件夹 `C:\Users\Administrator\` 下的 winfont 文件夹内的字体全部拷贝到容器]的文件夹 `/usr/share/fonts/truetype` 中
+
+## DocSpace
+
+- <https://github.com/ONLYOFFICE/Kubernetes-DocSpace>
+
+- <https://blog.csdn.net/m0_68274698/article/details/132069372>
+
+- <https://blog.csdn.net/VincentYoung/article/details/132384047>
+- <https://linuxstory.org/onlyoffice-doc-space/>
+- <https://www.dhorde.com/news/305.html>
