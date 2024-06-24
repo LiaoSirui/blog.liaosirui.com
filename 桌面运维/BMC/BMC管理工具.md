@@ -5,3 +5,27 @@ IPMItool 是一种可用在 linux 系统下的命令行方式的 ipmi 平台管�
 ## 参考文档
 
 - <https://www.cnblogs.com/HByang/p/16127044.html>
+
+## 其他问题
+
+Using JNLP file after installing Oracle Java v. 8 Update 351
+
+Open the "java.security" file available in the following directory: `[installation_path]\server\java\jre\lib\security\java.security`
+
+Locate the "jdk.certpath.disabledAlgorithms" property and set it to the following value:
+
+```java
+MD2, MD5, SHA1 jdkCA & usage TLSServer, \
+RSA keySize < 1024, DSA keySize < 1024, EC keySize < 224, \
+include jdk.disabled.namedCurves
+```
+
+Java 控制台添加例外站点无效 错误：请求无限制访问系统
+
+```
+# 注释以 jdk.jar 开头的行
+# jdk.jar.disabledAlgorithms=MD2, MD5, RSA keySize < 1024, \
+# DSA keySize < 1024, include jdk.disabled.namedCurves,  \
+# SHA1 denyAfter 2019-01-01
+```
+
