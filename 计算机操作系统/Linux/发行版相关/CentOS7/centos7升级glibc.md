@@ -25,7 +25,7 @@ RUN --mount=type=cache,target=/var/cache,id=cache \
     # add 'libnsl-routines += nss-default' after line 71
     && sed -i '71alibnsl-routines += nss-default' nis/Makefile \
     && mkdir build && cd build \
-    && ../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include \
+    && ../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/opt/rh/...../root/usr/include --with-headers=/usr/include \
     --with-binutils=/usr/bin --disable-sanity-checks --disable-werror --enable-obsolete-nsl > /dev/null \
     && make -j4 > /dev/null && make install > /dev/null 
 

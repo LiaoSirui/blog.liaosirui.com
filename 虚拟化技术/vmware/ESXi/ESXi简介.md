@@ -26,7 +26,10 @@ vSphere Essentials 和 Essentials Plus 专门为刚开始体验虚拟化的小�
 
 8.0 下载：<https://customerconnect.vmware.com/downloads/info/slug/datacenter_cloud_infrastructure/vmware_vsphere/8_0>
 
-其他下载链接：<https://www.dinghui.org/vmware-iso-download.html>
+其他下载链接：
+
+- <https://www.dinghui.org/vmware-iso-download.html>
+- <https://sysin.org/blog/vmware/>
 
 一些神秘的代码：
 
