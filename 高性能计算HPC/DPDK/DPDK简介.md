@@ -86,3 +86,6 @@ Interrupt DPDK：
 
 Seastar 也很强大和灵活，内核态和 DPDK 都随意切换，也有自己的传输协议 Seastar Native TCP/IP Stack 支持，但是目前还未看到有大型项目在使用 Seastar，可能需要填的坑比较多。
 
+## 参考资料
+
+- <https://blog.csdn.net/qq_20817327/category_10796562.html>
