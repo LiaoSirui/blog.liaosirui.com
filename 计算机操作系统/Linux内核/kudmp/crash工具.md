@@ -24,14 +24,54 @@ crash vmcore /usr/lib/debug/lib/modules/<对应内核调试文件>/vmlinux
 
 ## 常用命令
 
-| 命令         | 功能                 | 示例                                                         |
-| ------------ | -------------------- | ------------------------------------------------------------ |
-| `bt`         | 打印函数调用栈       | displays a task's kernel-stack backtrace，可以指定进程号 `bt <pid>` |
-| `log`        | 打印系统消息缓冲区   | displays the kernel log_buf contents，如 `log \| tail -n 30` |
-| `ps`         | 显示进程的状态       | `>` 表示活跃的进程，如 `ps | grep RU`                        |
-| `sys`        | 显示系统概况         |                                                              |
-| `kmem -i`    | 显示内存使用信息     |                                                              |
-| `dis <addr>` | 对给定地址进行反汇编 |                                                              |
+查看系统中所有进程的信息
+
+```bash
+# crash /path/to/vmcore
+crash> ps
+```
+
+查看进程的内存映射情况
+
+```bash
+# crash /path/to/vmcore
+crash> vm
+```
+
+查看所有CPU的状态
+
+```bash
+# crash /path/to/vmcore
+crash> cpu
+```
+
+查看内核模块信息
+
+```bash
+# crash /path/to/vmcore
+crash> mod
+```
+
+查看某个函数的调用栈
+
+```bash
+# crash /path/to/vmcore
+crash> bt func_name
+```
+
+列出所有可用的命令
+
+```bash
+# crash /path/to/vmcore
+crash> help
+```
+
+分析崩溃发生的位置
+
+```bash
+# crash /path/to/vmcore
+crash> bt -a
+```
 
 ## 常见问题
 
