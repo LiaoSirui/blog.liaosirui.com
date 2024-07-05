@@ -11,3 +11,18 @@ python get-pip.py
 ```bash
 curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py
 ```
+
+## Pip 离线装包
+
+下载依赖
+
+```
+pip3 download -d ./ -r requirements.txt
+```
+
+离线安装 whl
+
+```bash
+pip3 install --no-index --find-links=DIR -r requirements.txt
+```
+

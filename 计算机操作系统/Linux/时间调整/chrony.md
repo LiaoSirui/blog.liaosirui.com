@@ -18,6 +18,8 @@ chrony 默认使用 323 UDP 端口
 
 ```bash
 allow 10.20.0.0/16
+allow 0/0
+allow ::0/0
 ```
 
 查看服务端监听端口
