@@ -1,4 +1,29 @@
+## Mattermost 简介
+
+Mattermost 是一个 Slack 的开源替代品，用于跨团队和工具的安全通信、协作和工作编排。它为团队带来跨 PC 和移动设备的消息、文件分享、应用程序集成以及归档和搜索功能。
+
 Mattermost 是为开发团队推动创新而构建的开源消息传递平台。支持私有云部署在不牺牲隐私的情况下提供了现代通信的优势。Mattermost 为企业提供了自治能力和可扩展性，使他们能够在满足需求的同时提高生产力 IT 和安全团队的要求
+
+## 部署文档
+
+Mattermost 是服务器端命令，mmctl 基于 API 的客户端命令
+
+Docker 部署：<https://docs.mattermost.com/install/install-docker.html#>
+
+部署文件：
+
+- <https://github.com/mattermost/docker/blob/main/docker-compose.yml>
+
+初始化：
+
+- 系统控制台 【SITE CONFIGURATION】>【Users and Teams】> 【Max Users Per Team】值来设置团队人数
+- 登录 Mattermost 控制台，打开：【ENVIRONMENT】>【Web Server】，修改 【Site URL】值
+- 配置 SMTP，登录 Mattermost控制台，打开【ENVIROMENT】>【SMTP】
+- 支持多语言（包含中文），可以登录控制台，通过【SITE CONFIGURATION】>【Localization】设置语言
+
+推荐的插件：
+
+- jitmi
 
 ## Jira 集成
 
