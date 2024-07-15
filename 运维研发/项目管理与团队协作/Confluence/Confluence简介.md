@@ -24,3 +24,7 @@ Confluence 可以解决的问题：
 - EasyMind for Confluence 绘制脑图的工具
 - Questions for Confluence (Server) 支持知识问答
 - Slide Presenter for Confluence
+
+## 参考资料
+
+- 如何使页面布局更舒适 <https://www.evget.com/article/2019/12/11/33916.html>
