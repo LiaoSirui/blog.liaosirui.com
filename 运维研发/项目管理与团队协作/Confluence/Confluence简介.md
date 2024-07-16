@@ -17,13 +17,17 @@ Confluence 可以解决的问题：
 
 ## 插件
 
-- Draw.io 支持
-- Excalidraw for Confluence 绘制手绘风格的图形，其中包含多种内置的图形库
-- Mermaid 渲染插件
-- Comala Workflows 文档审批
-- EasyMind for Confluence 绘制脑图的工具
-- Questions for Confluence (Server) 支持知识问答
-- Slide Presenter for Confluence
+| 插件名                                 | 插件用途                                                     | 插件下载地址                                                 |
+| -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Chinese Language Patch for Confluence  |                                                              | <https://marketplace.atlassian.com/apps/1219843/chinese-language-patch-for-confluence> |
+|                                        | Draw.io 支持                                                 |                                                              |
+| Excalidraw for Confluence              | 绘制手绘风格的图形，其中包含多种内置的图形库                 |                                                              |
+|                                        | Mermaid 渲染插件                                             |                                                              |
+| Comala Workflows                       | 文档审批                                                     |                                                              |
+| EasyMind for Confluence                | 绘制脑图的工具                                               |                                                              |
+| Questions for Confluence (Server)      | 支持知识问答                                                 |                                                              |
+| Slide Presenter for Confluence         | 快速制作幻灯片                                               |                                                              |
+| Table Filter and Charts for Confluence | 实现表格过滤和图表生成工具，允许用户在 Confluence 中对表格数据进行筛选、排序和汇总，并生成多种类型的图表 |                                                              |
 
 ## 参考资料
 

@@ -25,6 +25,14 @@ Docker 部署：<https://docs.mattermost.com/install/install-docker.html#>
 
 - jitmi
 
+## Hack
+
+参考：<https://i.urox.cn/2020-05-10-i-learned-assembly-language.html>
+
+![image-20240715155703006](./.assets/Mattermost简介/image-20240715155703006.png)
+
+![image-20240715155713178](./.assets/Mattermost简介/image-20240715155713178.png)
+
 ## Jira 集成
 
 第一步：mattermost 上开启 jira 插件
