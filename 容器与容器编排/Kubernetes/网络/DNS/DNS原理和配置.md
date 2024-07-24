@@ -1,7 +1,7 @@
 集群中 kubelet 的启动参数有
 
 - `--cluster-dns=<dns-service-ip>`
-- ``--cluster-domain=<default-local-domain>`
+- `--cluster-domain=<default-local-domain>`
 
 这两个参数分别被用来设置集群 DNS 服务器的 IP 地址和主域名后缀
 

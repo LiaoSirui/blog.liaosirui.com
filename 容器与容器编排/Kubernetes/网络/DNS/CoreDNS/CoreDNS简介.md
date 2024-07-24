@@ -34,6 +34,40 @@ CoreDNS 是由 CNCF 孵化的开源软件，用于 Cloud-Native 环境下的 DNS
 - CoreDNS 内置的两个健康检查插件 health 和 ready
 - CoreDNS 服务在外部域名递归结果过程中容易出现一些问题，使用 dnsredir 插件进行分流和 alternate 插件进行重试优化的操作
 
+## 自建解析服务器
+
+参考文档：
+
+<https://draveness.me/dns-coredns/>
+
+需要重点注意 SOA 记录和 NS 记录
+
+```dns
+$ORIGIN alpha-quant.com.cn.
+@	3600 IN	SOA sns.dns.icann.org. noc.dns.icann.org. (
+				2017042745 ; serial
+				7200       ; refresh (2 hours)
+				3600       ; retry (1 hour)
+				1209600    ; expire (2 weeks)
+				3600       ; minimum (1 hour)
+				)
+
+	3600 IN NS a.iana-servers.net.
+	3600 IN NS b.iana-servers.net.
+```
+
+解决 `Got recursion not available from xx.xx.xx.xx, trying next server`
+
+```
+header {
+  response set ra # set RecursionAvailable flag
+}
+```
+
+推荐使用
+
+- <https://coredns.io/plugins/file/>
+
 ## 参考资料
 
 - <https://help.aliyun.com/document_detail/195425.html>
