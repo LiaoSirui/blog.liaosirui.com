@@ -1,3 +1,5 @@
+## EUI64 冲突
+
 磁盘序列号冲突
 
 ```
@@ -23,3 +25,44 @@ nvme format /dev/nvme0n1 -n 1
 excli nvme device namespace list -A vmhba5
 ```
 
+## 磁盘分区
+
+磁盘
+
+```bash
+ls -lha /vmfs/devices/disks/
+```
+
+查看分区表
+
+```
+partedUtil getptbl /vmfs/devices/disks/xxxx
+```
+
+重建分区表
+
+```
+partedUtil setptbl /vmfs/devices/disks/xxx msdos
+```
+
+查看磁盘
+
+```
+esxcli storage vmfs extent list
+```
+
+
+
+```
+# List all Logical Devices known on this system with device information
+esxcfg-scsidevs -l
+
+# Filter Logical Devices by display name and vendor
+esxcfg-scsidevs -l | egrep -i 'display name|vendor'
+
+# (compact)
+# List all Logical Devices each on a single line with limited information
+esxcfg-scsidevs -c
+```
+
+## 
