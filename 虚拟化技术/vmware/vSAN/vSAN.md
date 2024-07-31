@@ -70,3 +70,5 @@ ESA 所宣传的“不需要专门的缓存盘”，不意味着不使用缓存�
 - <https://www.smartx.com/blog/2022/10/disks-vs-vmware/>
 
 - <https://www.h3c.com/cn/Service/Document_Software/Document_Center/Server/Catalog/Rack_server/H3C_UniServer_R4900_G3/Configure/Practice/R4900_VMware_vSAN-6W100/>
+
+- <https://blog.csdn.net/u011783233/article/details/139241971>
