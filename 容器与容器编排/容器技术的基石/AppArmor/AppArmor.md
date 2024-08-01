@@ -5,8 +5,6 @@ cat /sys/module/apparmor/parameters/enabled
 Y
 ```
 
-
-
 可供参考的文档：
 
 - <https://kubernetes.io/zh-cn/docs/tutorials/security/apparmor/>

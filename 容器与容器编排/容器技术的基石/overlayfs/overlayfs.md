@@ -16,8 +16,6 @@ overlay file system 可以做到：将两个 file system merge 在一起，下�
 
 <https://blog.csdn.net/luckyapple1028/article/details/77916194>
 
-
-
 了解了原理之后，你会发现，这种设计对于 Docker 来说非常合适：
 
 1. 如果 2 个 image 都是基于 Ubuntu，那么两个 Image 可以共用 Ubuntu 的 base image，只需要存储一份；
