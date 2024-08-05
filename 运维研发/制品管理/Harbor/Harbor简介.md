@@ -41,3 +41,9 @@ Harbor 主要包含以下组件：
   - 支持对 Docker 镜像进行数字签名和验证
   - 支持自定义签名策略和验证策略
 
+## 对接 OIDC
+
+CLI 密钥与 OIDC ID 令牌相关联。Harbor 将尝试刷新令牌，因此 CLI 密钥在 ID 令牌过期后仍然有效。但是，如果 OIDC 提供商未提供刷新令牌或刷新失败，CLI 密钥将失效。在这种情况下，请注销并通过 OIDC 提供商重新登录 Harbor，以便 Harbor 可以获取新的 ID 令牌。然后 CLI 密钥将再次起作用。
+
+原文：<https://goharbor.io/docs/2.1.0/administration/configure-authentication/oidc-auth/>
+

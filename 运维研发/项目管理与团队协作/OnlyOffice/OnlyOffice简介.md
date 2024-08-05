@@ -7,7 +7,6 @@ OnlyOffice 是一款强大的在线 office 工具，我们通过他可以让客�
 ## 部署
 
 ```yaml
-version: '3'
 services:
 
   onlyoffice-rabbitmq:
@@ -104,12 +103,3 @@ Win10 系统提取中文字体的方法：控制面板——搜字体——查�
 
 将当前文件夹 `C:\Users\Administrator\` 下的 winfont 文件夹内的字体全部拷贝到容器]的文件夹 `/usr/share/fonts/truetype` 中
 
-## DocSpace
-
-- <https://github.com/ONLYOFFICE/Kubernetes-DocSpace>
-
-- <https://blog.csdn.net/m0_68274698/article/details/132069372>
-
-- <https://blog.csdn.net/VincentYoung/article/details/132384047>
-- <https://linuxstory.org/onlyoffice-doc-space/>
-- <https://www.dhorde.com/news/305.html>
