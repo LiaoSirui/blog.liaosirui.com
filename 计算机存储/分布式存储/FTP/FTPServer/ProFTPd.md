@@ -14,14 +14,11 @@ ProFTPd（Pro FTP daemon）也是一款开源 FTP 服务器，类似于 Vsftpd�
 </Limit>
 ```
 
-
-
-参考文档：
-
-- <https://blog.csdn.net/jeccisnd/article/details/126341820>
-- <https://www.cnblogs.com/tongh/p/16190626.html#%E6%9D%83%E9%99%90%E7%AE%A1%E6%8E%A7>
+接入 AD 域：
 
 ```
+RequireValidShell     off
+
 <IfModule mod_ldap.c>
 # Connection information
 LDAPServer ldap://dc01.domain.com/??sub
@@ -53,3 +50,10 @@ LDAPForceGeneratedHomedir on
 
 ```
 
+只有当查询通过 OU 进行过滤时，Proftpd 查询才会起作用。这些查询在 LDAP 根级别不起作用，参考：<https://unix.stackexchange.com/questions/79049/configuring-proftpd-and-mod-ldap-c-query-not-working-any-ideas>
+
+其他参考文档：
+
+- <https://blog.csdn.net/jeccisnd/article/details/126341820>
+- <https://www.cnblogs.com/tongh/p/16190626.html#%E6%9D%83%E9%99%90%E7%AE%A1%E6%8E%A7>
+- <http://vsftpd.beasts.org/vsftpd_conf.html>
