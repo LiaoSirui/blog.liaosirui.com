@@ -2,7 +2,7 @@ VMware DRS（Distributed Resource Scheduler）是一种资源管理功能，旨�
 
 简单点来说，DRS 就是会通过 vMotion，自动帮你迁移虚拟机，以达至集群中所有 ESXi 主机整体的 CPU 和内存的资源平衡。
 
-![img](./.assets/RDS/tn-vmotion-esxi.jpg)
+![img](./.assets/DRS/tn-vmotion-esxi.jpg)
 
 分布式资源调度器（DRS）是一种 VMware vSphere 集群，它通过将虚拟机从负载过重的 ESXi 主机迁移到具有足够计算资源的另一个主机上来实现负载平衡，同时虚拟机仍在运行。这种方法被用于防止 ESXi 主机过载。虚拟机可能在不同时间有不均衡的工作负载，如果一个 ESXi 主机过载，那么在该主机上运行的所有虚拟机的性能都会降低。VMware DRS 集群通过提供自动虚拟机迁移来帮助解决这种情况。
 
@@ -12,7 +12,7 @@ VMware DRS（Distributed Resource Scheduler）是一种资源管理功能，旨�
 
 DRS 解决方案通常用于具有不均衡虚拟机工作负载的大型 VMware 虚拟环境中，以提供合理的资源管理。使用 DRS 和 HA 的组合可以实现具有负载均衡的高可用性集群。DRS 还有助于自动迁移虚拟机，使其从由管理员置于维护模式的 ESXi 服务器中迁移。该模式必须开启才能让 ESXi 服务器执行维护操作，如固件升级、安装安全补丁、ESXi 更新等。在进入维护模式的 ESXi 服务器上不能运行任何虚拟机。
 
-![什么是DRS](./.assets/RDS/什么是DRS-1024x645.jpg)
+![什么是DRS](./.assets/DRS/什么是DRS-1024x645.jpg)
 
 DRS 可以通过 vSphere Web Client 或 vSphere Client 管理界面进行配置和管理。
 
@@ -28,4 +28,4 @@ DRS 事件历史记录：可以查看 DRS 事件历史记录，以便管理员�
 
 DRS 预测：可以查看 DRS 的预测结果，以便管理员了解群集中可能会发生的资源需求，并做出相应的计划。
 
-![DRS级别](./.assets/RDS/DRS级别.jpg)
+![DRS级别](./.assets/DRS/DRS级别.jpg)

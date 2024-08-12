@@ -14,6 +14,43 @@ ProFTPd（Pro FTP daemon）也是一款开源 FTP 服务器，类似于 Vsftpd�
 </Limit>
 ```
 
+权限设置
+
+```
+umask 000 
+ 此目录下所有用户上传的掩码都是000,这样新文件权限是666,新文件夹是777,这样做是为了保证member传的文件,其他人也可以删,默认掩码是022 
+  
+<Limit DELE RMD> 
+    DenyGroup kefu 
+此目录下对于DELE(删除文件)RMD(删除目录)操作加以限制,对kefu组是拒绝,也就保证了kefu组成员无法执行删除操作.如果需要对单个用户(例如member)限制就用 DenyUser member 
+ 其实就是无法执行(DELE ,RMD)这两个ftp指令  
+ProFTP下的参数说明：
+
+CWD：Change Working Directory 改变目录
+
+MKD：MaKe Directory 建立目录的权限
+
+RNFR： ReName FRom 更改目录名的权限
+
+DELE：DELETE 删除文件的权限
+
+RMD：ReMove Directory 删除目录的权限
+
+RETR：RETRieve 从服务端下载到客户端的权限
+
+STOR：STORe 从客户端上传到服务端的权限
+
+READ：可读的权限，不包括列目录的权限，相当于RETR，STAT等
+
+WRITE：写文件或者目录的权限，包括MKD和RMD
+
+DIRS：是否允许列目录，相当于LIST，NLST等权限，还是比较实用的
+
+ALL：所有权限
+
+LOGIN：是否允许登陆的权限
+```
+
 接入 AD 域：
 
 ```

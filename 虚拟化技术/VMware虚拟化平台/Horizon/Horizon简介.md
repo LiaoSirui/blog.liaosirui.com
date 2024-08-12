@@ -14,6 +14,17 @@ Horizon 下支持部署多台 CS 以保证高可用性，环境中部署的第�
 
 为了实现虚拟桌面的单一的访问入口，可以为 CS 配置负载均衡器。
 
+## VDMDS
+
+Horizon LDAP 是所有 VMware Horizon 8 配置信息的数据存储库。Horizon LDAP 是一种嵌入式轻型目录访问协议 (Lightweight Directory Access Protocol, LDAP) 目录，随连接服务器安装程序一起提供
+
+复制功能可能会因以下任何原因而受到影响：
+
+- 防火墙可能会阻止通信
+- 连接服务器实例上可能停止 VMware VDMDS 服务
+- VMware VDMDS DSA 选项可能会阻止复制
+- 发生网络问题
+
 ## 发布桌面
 
 Horizon 8 支持多种虚拟桌面发布方式，例如自动桌面池（又包含完整克隆和即时克隆）、手动桌面池、RDS 桌面池
