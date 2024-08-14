@@ -15,3 +15,11 @@
 ![image-20240814160247597](./.assets/Web重置密码/image-20240814160247597.png)
 
 ![image-20240814160308724](./.assets/Web重置密码/image-20240814160308724.png)
+
+打开浏览器，输入访问密码修改界面
+
+```
+<访问入口>/RDWeb/PAGES/ZH-cn/password.aspx?Error=PasswordSuccess
+```
+
+在上面打开的界面中，输入域名\用户名、旧密码、2 次新密码，点击修改测试
