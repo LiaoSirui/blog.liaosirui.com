@@ -3,7 +3,10 @@
 安装需要的软件包
 
 ```bash
-dnf install -y krb5-workstation realmd sssd samba-common adcli oddjob oddjob-mkhomedir samba samba-common-tools
+dnf install -y krb5-workstation realmd sssd \
+adcli \
+oddjob oddjob-mkhomedir \
+samba samba-common samba-common-tools
 ```
 
 确定 DNS 解析正常
@@ -15,8 +18,6 @@ dnf install -y krb5-workstation realmd sssd samba-common adcli oddjob oddjob-mkh
 将 ubuntu 加入 AD 域，使用的是 realm
 
 ```bash
-apt install realmd sssd-ad sssd-tools adcli -y
-
 realm discover xxx.com
 # 有如下输出即可
 xxx.com

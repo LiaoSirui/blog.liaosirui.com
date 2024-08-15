@@ -18,26 +18,26 @@ CMDB 提供手动录入功能并可批量录入，将资源信息进行标准化
 
 可参考项目：
 
-- NetBox <https://github.com/netbox-community/netbox>
+- NetBox
 
-- iTop <https://github.com/Combodo/iTop>
+<https://github.com/netbox-community/netbox>
 
-- 蓝鲸智云配置平台(BlueKing CMDB) <https://github.com/TencentBlueKing/bk-cmdb>
+ NetBox 是一个 IP 地址管理（IP address management，IPAM）和数据中心基础设施管理（data center infrastructure management，DCIM）工具。最初起源于 DigitalOcean 的网络工程团队，专门用于满足网络和基础设施工程师的需求。它是一个基础设施资源建模 (IRM) 应用程序，旨在支持网络自动化。
 
-```bash
-docker run -d -p 8090:8090 ccr.ccs.tencentyun.com/bk.io/cmdb-standalone:v3.13.7
+- Spug
 
-user: admin
-pass: admin
-```
+<https://github.com/openspug/spug>
 
-- CMDB: configuration and management of IT resources | 运维的权威数据库 <https://github.com/veops/cmdb>
+开源运维平台：面向中小型企业设计的轻量级无Agent的自动化运维平台，整合了主机管理、主机批量执行、主机在线终端、文件在线上传下载、应用发布部署、在线任务计划、配置中心、监控、报警等一系列功能。
 
-- WeCMDB（Configuration Management Database 配置管理数据库），是源自微众银行运维管理实践的的一套配置管理数据库系统：<https://github.com/WeBankPartners/we-cmdb>
+- 蓝鲸
 
-```bash
-docker run -d -p 8096:8096 wecmdb:{{version}}
+腾讯蓝鲸智云，简称蓝鲸，是腾讯互动娱乐事业群（Interactive Entertainment Group，简称 IEG）技术运营部自主研发的一套用于构建企业研发运营一体化的 PaaS 解决方案，提供了 aPaaS（DevOps 流水线、运行环境托管、前后台开发框架）和 iPaaS（持续集成、CMDB、作业平台、容器管理、计算平台、AI 等原子平台）等模块，帮助企业技术人员快速构建基础运营 PaaS。
 
-user: super_admin
-pass: Abcd1234
-```
+蓝鲸智云配置平台(BlueKing CMDB) <https://github.com/TencentBlueKing/bk-cmdb>
+
+- WeCMDB
+
+<https://github.com/WeBankPartners/we-cmdb>
+
+WeCMDB（Configuration Management Database 配置管理数据库），是源自微众银行运维管理实践的的一套配置管理数据库系统。CMDB，作为运维工具的核心，提供了全体系IT信息唯一数据源，是IT运维自动化、智能化的基础和前提条件。依赖可靠的CMDB，IT信息从物理层（数据中心、机架机位、服务器、网络信息等）， 到逻辑层（IP、系统架构信息），到应用层（业务应用系统信息）被完整的记录并管理起来。
