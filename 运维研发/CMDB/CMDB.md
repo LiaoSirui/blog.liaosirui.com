@@ -90,3 +90,7 @@ WeCMDB（Configuration Management Database 配置管理数据库），是源自�
 ## 其他
 
 Nacos 实现异地 CMDB：<https://nacos.io/en-us/blog/cmdb.html>
+
+- <https://www.uwintech.cn/blog/cmdb>
+
+- <https://studygolang.com/articles/36078>
