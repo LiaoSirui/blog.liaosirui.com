@@ -15,9 +15,19 @@ Ansible 是一款基于 Python 开发，能够实现了批量系统配置、程�
 
 Ansible 主要有两种类型的服务器：控制机器和节点。
 
-![img](./.assets/Ansible简介/image-20221217144104619.png)
+![img](./.assets/Ansible简介/OdIoEOgFgUFZ3EglqOpwS0O7a3zaVI8bAspFJK1h8CVd0bOS0bIPwRAu8I831SibvOJEiaviaGGNbuVumoRdbQfCA.png)
 
 控制机器用于控制协调，而节点由控制机器通过 SSH 进行管理，并且控制机通过 inventory 来描述节点的位置。在节点的编排上，Ansible 通过 SSH 部署模块到节点上，模块临时存储在节点上，并以标准输出的 JSON 协议进行通信，从而在远程机上检索信息，发送命令等。
+
+## 配置文件
+
+`.ansible.cfg` 的路径：~/.ansible.cfg
+
+```ini
+[defaults]
+# inventory 是声明 hosts 配置文件
+inventory=~/.ansible/hosts
+```
 
 ## 常用命令
 
@@ -66,4 +76,4 @@ ansible-vault 主要用于配置文件的加密，如编写的 playbook 配置�
 
 ## 参考文档
 
-- <https://mp.weixin.qq.com/s?__biz=MjM5ODc5ODgyMw==&mid=2653585728&idx=1&sn=e12e9dcaa3a0271084e1e0c678756f79>
+- <https://www.cnblogs.com/brianzhu/category/1368500.html>

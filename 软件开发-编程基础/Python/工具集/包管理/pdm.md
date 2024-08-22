@@ -108,3 +108,27 @@ pdm export -f setuppy -o setup.py
 pdm export -o requirements.txt
 ```
 
+## 创建 3.6 环境
+
+py36 无法使用 pdm，因此手动创建 venv
+
+```bash
+cd py36
+$(pyenv root)/shims/python3.6 -m venv --copies .venv
+```
+
+首次初始化
+
+```bash
+pdm init --python .venv/bin/python3
+```
+
+安装
+
+```bash
+pdm install --venv .venv
+```
+
+## 参考资料
+
+- <http://fancyerii.github.io/2024/03/11/pdm-tutorial/>
