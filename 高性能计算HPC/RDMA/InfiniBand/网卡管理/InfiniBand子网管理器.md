@@ -73,7 +73,7 @@ PRIORITY=15
 
 ### 配置日志
 
-配置文件 `/etc/rdma/opensm.log`
+配置文件 `/etc/rdma/opensm.conf`
 
 ```bash
 # Maximum size of the log file in MB. If overrun, log is restarted.
