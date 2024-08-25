@@ -18,7 +18,7 @@ perftest 提供了很全面的 RDMA 测试工具，如下：
 
 ```bash
 # 在服务端执行
-ib_read_bw -a -d mlx4_0
+ib_read_bw -a -d mlx4_0 -F --report_gbits
 
 # 在客户端执行(注意：10.244.244.164 为服务端的 IB 网络中的 IP 地址)
 ib_read_bw -a -F 10.244.244.164 -d mlx4_0 --report_gbits
