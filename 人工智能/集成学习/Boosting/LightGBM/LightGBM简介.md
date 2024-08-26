@@ -19,7 +19,8 @@ cmake -DUSE_CUDA=1 ..
 
 make -j$(nproc)
 
-sh ./build-python.sh install --precompile
+# 直接封装 whl
+sh ./build-python.sh bdist_wheel --cuda --precompile
 
 pip3 install numpy==1.20
 ```
