@@ -149,20 +149,3 @@ Configuration NC 内存储的主要是配置信息，关站点，服务，分区
 Schema NC 存储的 Active Directory 中存储的对象的定义，个人感觉类似 Mysql 中的元数据库的概念，包含 Schema 信息，定义了 Active Directory 中使用的类和属性。
 
 Domain NC 每个域都有一个域 Naming Context，不同的域内有不同的域 Naming Context，其中包含特定于域的数据。之前我们说过，域内的所有计算机，所有用户的具体信息都存在 Active Directory 底下
-
-### 搜索 Active Directory
-
-通过查询目录，可以直接收集到要求的数据。查询目录需要指定两个要素
-
-- BaseDN
-- 过滤规则
-
-比如指定 BaseDN 为 `DC=test.DC=local` 就是以 `DC=test.DC=local`为根往下搜索
-
-LDAP 搜索过滤器语法有以下子集：
-
-- 用与号 (`&`) 表示的 AND 运算符
-- 用竖线 (`|`) 表示的 OR 运算符
-- 用感叹号 (`!`) 表示的 NOT 运算符
-- 用名称和值表达式的等号 (`=`) 表示的相等比较
-- 用名称和值表达式中值的开头或结尾处的星号 (`*`) 表示的通配符
