@@ -222,3 +222,7 @@ curl -s localhost:9100/metrics | curl -u USERNAME:PASSWORD --data-binary @- $PUS
 - Node Exporter 常用查询 <https://song-jia-yang.gitbook.io/prometheus/exporter/nodeexporter_query>
 
 - <https://song-jia-yang.gitbook.io/prometheus>
+
+- <https://flashcat.cloud/blog/prometheus-performance-and-cardinality-in-practice/>
+
+- 硬件分析：<https://www.cnblogs.com/wuzhengc/p/16123077.html>
