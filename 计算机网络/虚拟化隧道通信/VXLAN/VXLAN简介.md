@@ -18,7 +18,7 @@ VXLAN（`Virtual eXtensible Local Area Network`，虚拟可扩展局域网），
 
 在host2上进行对应配置（remote/local互换，以及ip）
 
-#ip link add vxlan0 type vxlan id 42 dstport 4789 remote 192.168.199.248 local 192.168.16.29 dev ens33
+#ip link add vxlan0 type vxlan id 42 dstport 4789 remote 192.168.199.248 local 192.168.16.29 dev eth0
 #ip addr add 20.0.0.2/24 dev vxlan0
 #ip link set vxlan0 up
 
@@ -28,5 +28,7 @@ iptables -A FORWARD -i vxlan0 -o ens33 -j ACCEPT
 iptables -A FORWARD -i ens33 -o vxlan0 -j ACCEPT
 iptables -t nat -A POSTROUTING -o ens33 -j MASQUERADE
 
+添加路由
+#ip r add 192.168.52.8 via 20.0.0.1 dev vxlan0
 ```
 
