@@ -20,7 +20,9 @@
 
 ### 在线阅读
 
-![-](.assets/blog-svgrepo-com-256.svg) 在线阅读博客地址：<https://blog.liaosirui.com/>
+<img src=".assets/blog-svgrepo-com-256.svg" alt="-" style="zoom: 10%;" />
+
+在线阅读博客地址：<https://blog.liaosirui.com/>
 
 ### About me
 
