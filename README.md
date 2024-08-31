@@ -18,13 +18,11 @@
 
 如果喜欢或对你有所帮助，欢迎 Star，对作者是一种鼓励和推进 😀
 
-### 在线阅读
-
-<img src=".assets/blog-svgrepo-com-256.svg" alt="-" style="zoom: 10%;" />
+### 📖 在线阅读
 
 在线阅读博客地址：<https://blog.liaosirui.com/>
 
-### About me
+### 🙍 关于我
 
 欢迎访问我的个人主页：<https://www.liaosirui.com>
 
@@ -32,7 +30,7 @@
 
 Code & Skills: [![-](https://img.shields.io/static/v1?style=flat-square&label=&logoColor=ffffff&color=00ADD8&message=Golang&logo=Go)](https://golang.org/) [![-](https://img.shields.io/static/v1?style=flat-square&label=&logoColor=ffffff&color=3670A0&message=Python&logo=Python)](https://www.python.org/) [![-](https://img.shields.io/static/v1?style=flat-square&label=&logoColor=ffffff&color=326CE5&message=Kubernetes&logo=Kubernetes)](https://kubernetes.io/)
 
-### 目标
+### 🔖 目标
 
 构建知识体系，理解事物运行规则，洞察事物本质，拥有看透事物本质的能力
 
