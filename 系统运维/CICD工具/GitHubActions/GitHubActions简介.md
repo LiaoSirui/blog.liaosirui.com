@@ -53,3 +53,63 @@ jobs:
         echo $MY_VAR $FIRST_NAME $MIDDLE_NAME $LAST_NAME.
 ```
 
+构建镜像示例
+
+```yaml
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare
+        id: prep
+        run: |
+          VERSION=sha-${GITHUB_SHA::8}
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF/refs\/tags\//}
+          fi
+          echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+      - name: Generate images meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/liaosirui/blog-liaosirui-com
+          tags: type=raw,value=${{ steps.prep.outputs.VERSION }}
+      - name: Publish multi-arch image
+        uses: docker/build-push-action@v5
+        id: build
+        with:
+          push: true
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64
+          tags: ghcr.io/liaosirui/blog-liaosirui-com:${{ steps.prep.outputs.VERSION }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+```
+
