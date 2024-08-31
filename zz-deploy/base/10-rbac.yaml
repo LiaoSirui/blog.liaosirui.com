@@ -1,8 +1,0 @@
----
-kind: ServiceAccount
-apiVersion: v1
-metadata:
-  name: blog-websites
-automountServiceAccountToken: false
-# imagePullSecrets:
-#   - name: 
