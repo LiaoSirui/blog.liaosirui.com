@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 <div align="center">
 <h2 align="center"> 廖思睿的个人博客 </h2>
 <p align="center">
