@@ -1,4 +1,4 @@
 ---
-title: 数学
+title: 杂记
 weight: 8
 ---
