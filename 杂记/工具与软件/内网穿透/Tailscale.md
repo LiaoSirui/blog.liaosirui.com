@@ -113,7 +113,7 @@ Tailscale 使用的算法很有趣，所有客户端之间的连接都是先选�
 ```yaml
 services:
   headscale:
-    image: docker.io/headscale/headscale:0.22.3
+    image: docker.io/headscale/headscale:0.23.0-beta3
     volumes:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
@@ -138,14 +138,14 @@ networks:
 docker-pull() {
   skopeo copy docker://${1} docker-daemon:${1}
 }
-docker-pull "docker.io/headscale/headscale:0.22.3"
+docker-pull "docker.io/headscale/headscale:0.23.0-beta3"
 ```
 
 创建 Headscale 配置文件：
 
 ```bash
 mkdir -p ./headscale/config
-wget https://github.com/juanfont/headscale/raw/v0.22.3/config-example.yaml \
+wget https://github.com/juanfont/headscale/raw/v0.23.0-beta3/config-example.yaml \
   -O ./headscale/config/config.yaml
 ```
 
@@ -229,7 +229,7 @@ headscale apikey create
 ```yaml
 services:
   headscale:
-    image: docker.io/headscale/headscale:0.22.3
+    image: docker.io/headscale/headscale:0.23.0-beta3
     volumes:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
@@ -544,13 +544,11 @@ tailscale up --accept-routes --ssh --advertise-exit-node
 - stunport: 3478 默认情况下也会开启 STUN 服务，UDP 端口是 3478
 - derpport: 23479
 
-使用内嵌的 DERP 服务
+确认关闭内嵌的 DERP 服务
 
 ```bash
-yq -i '.derp.server.enabled = true' ./headscale/config/config.yaml
+yq -i '.derp.server.enabled = false' ./headscale/config/config.yaml
 ```
-
-重启即可
 
 再部署一个自定义的  DEPR 服务器
 
@@ -560,17 +558,17 @@ yq -i '.derp.server.enabled = true' ./headscale/config/config.yaml
 - 另一种是本地文件，格式是 YAML
 
 ```yaml
-# /etc/headscale/derp.yaml
+# ./headscale/config/derp.yaml
 regions:
   901:
     regionid: 901
-    regioncode: gz 
-    regionname: Tencent Guangzhou 
+    regioncode: bj 
+    regionname: JDCloud Beijing 
     nodes:
       - name: 901a
         regionid: 901
-        hostname: '实际域名'
-        ipv4: '可不需要'
+        hostname: 'derp-bj-jdcloud.liaosirui.com'
+        ipv4: ''
         stunport: 3478
         stunonly: false
         derpport: 23479
@@ -586,31 +584,59 @@ regions:
 
 接下来还需要修改 Headscale 的配置文件，引用上面的自定义 DERP 配置文件。需要修改的配置项如下：
 
+```bash
+# https://controlplane.tailscale.com/derpmap/default
+yq -i '.derp.urls = []' ./headscale/config/config.yaml
+
+yq -i '.derp.paths = ["/etc/headscale/derp.yaml"]' ./headscale/config/config.yaml
+```
+
+部署
+
 ```yaml
-# /etc/headscale/config.yaml
-derp:
-  # List of externally available DERP maps encoded in JSON
-  urls:
-    - https://controlplane.tailscale.com/derpmap/default
+services:
+  headscale:
+    image: docker.io/headscale/headscale:0.23.0-beta3
+    volumes:
+      - ./headscale/config:/etc/headscale
+      - ./headscale/data:/var/lib/headscale
+    network_mode: "host"
+    command: headscale serve
+    restart: always
+    # networks:
+    #   tailscale: {}
+    # ports:
+    #   - 8080:8080
+  headscale-admin:
+    image: docker.io/goodieshq/headscale-admin:0.1.12b
+    restart: always
+    networks:
+      tailscale: {}
+    ports:
+      - 16080:80
+  tailscale-derp:
+    image: docker.io/fredliang/derper:
+    volumes:
+      - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
+    restart: always
+    network_mode: "host"
+    # networks:
+    #   tailscale: {}
+    # ports:
+    #   - 3478:3478/udp
+    #   - 19850:19850
+    environment:
+      - DERP_DOMAIN=derp-bj-jdcloud.liaosirui.com
+      - DERP_CERT_MODE=letsencrypt
+      - DERP_ADDR=:19850
+      - DERP_VERIFY_CLIENTS=true
+networks:
+  tailscale:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.29.1.0/24"
 
-  # Locally available DERP map files encoded in YAML
-  #
-  # This option is mostly interesting for people hosting
-  # their own DERP servers:
-  # https://tailscale.com/kb/1118/custom-derp-servers/
-  #
-  # paths:
-  #   - /etc/headscale/derp-example.yaml
-  paths:
-    - /etc/headscale/derp.yaml
-
-  # If enabled, a worker will be set up to periodically
-  # refresh the given sources and update the derpmap
-  # will be set up.
-  auto_update_enabled: true
-
-  # How often should we check for DERP updates?
-  update_frequency: 24h
 ```
 
 在 Tailscale 客户端上使用以下命令查看目前可以使用的 DERP 服务器：
@@ -622,6 +648,8 @@ tailscale netcheck
 tailscale netcheck 实际上只检测 3478/udp 的端口， 就算 netcheck 显示能连，也不一定代表 23479 端口可以转发流量
 
 最好是打开 `ip:23479`
+
+端口见：<https://tailscale.com/kb/1082/firewall-ports>
 
 设置一下 DERP 的访问权限，derper 启动时加上参数 --verify-clients
 
