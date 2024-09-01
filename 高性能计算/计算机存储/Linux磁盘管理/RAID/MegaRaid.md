@@ -131,3 +131,9 @@ Megacli 查看硬盘状态，盘笼 ID，slot 以及是否是热备盘：
 ```bash
 /opt/MegaRAID/MegaCli/MegaCli64 -PdLocate -start –physdrv[252:0] -a0 
 ```
+
+## 参考文档
+
+- <https://www.cnblogs.com/easonscx/p/10438053.html>
+
+- <http://www.chenlianfu.com/?p=2636>
