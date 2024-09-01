@@ -1,5 +1,6 @@
 ---
 title: 主页
+weight: 1
 hide:
   - navigation
 ---
