@@ -572,18 +572,47 @@ tailscale up --accept-routes --ssh --advertise-exit-node
 - blr: 368.5ms (Bangalore)
 ```
 
-为了实现低延迟、高安全性，可以参考 Tailscale 官方文档自建私有的 DERP 服务器 <https://tailscale.com/kb/1118/custom-derp-servers/>
+为了实现低延迟、高安全性，可以参考 Tailscale 官方文档自建私有的 DERP 服务器
 
-- stunport: 3478 默认情况下也会开启 STUN 服务，UDP 端口是 3478
-- derpport: 23479
+- <https://tailscale.com/kb/1118/custom-derp-servers/>
+- <https://tailscale.com/kb/1118/custom-derp-servers#why-run-your-own-derp-server>
+
+部署有以下的要求：
+
+- 需要能够公网访问。这是为了让各个 Tailscale 节点可以直接访问到该 DERP 服务器，以此来便于进行后续的流量转发等操作
+
+- 需要运行 HTTPS 服务。本质上是为了在传输数据给 DERP 服务器时数据可以通过 TLS 加密。HTTPS 服务通常需要 带有一个 TLS 证书。DERP 服务器只认 Let‘ s Encrypt 这家服务商颁发的证书，但该服务商不会给纯 IP 的服务器颁发证书。这实际上就隐含了一个条件：还需要一个公共域名
+
+- 必须分配 80 端口来运行 HTTP 服务。这个要求很强烈，限制死了端口
+- 需要额外暴露两个端口来运行 HTTPS 和 STUN 服务
+  - stunport: 3478 默认情况下也会开启 STUN 服务，UDP 端口是 3478
+- 必须允许 ICMP 流量的出入。Tailscale Document 中用的是 must 来指定其重要性，但个人感觉应该是不需要这个要求
+- 可以指定参数 `verify-clients` 来限制使用当前 DERP 服务的只能是自己的 tailscale 节点，防止白嫖。不过启用该服务需要当前 DERP 服务器本身就是一个 tailscale 节点，或者存在 socket 文件 `/var/run/tailscale/tailscaled.sock`
+
+注册当前节点：
+
+```bash
+# 官方提供了静态编译的二进制文件
+curl -fsSL https://tailscale.com/install.sh | sh
+
+# 启动 tailscaled.service 并设置开机自启
+systemctl enable --now tailscaled
+
+ls -al /var/run/tailscale/tailscaled.sock
+
+tailscale up \
+  --login-server=https://headscale.liaosirui.com \
+  --accept-routes=false \
+  --accept-dns=false \
+  --authkey $KEY
+
+```
 
 确认关闭内嵌的 DERP 服务
 
 ```bash
 yq -i '.derp.server.enabled = false' ./headscale/config/config.yaml
 ```
-
-再部署一个自定义的  DEPR 服务器
 
 部署好 derper 之后，就可以修改 Headscale 的配置来使用自定义的 DERP 服务器了。Headscale 可以通过两种形式的配置来使用自定义 DERP：
 
@@ -595,16 +624,18 @@ yq -i '.derp.server.enabled = false' ./headscale/config/config.yaml
 regions:
   901:
     regionid: 901
-    regioncode: bj 
+    regioncode: Beijing
     regionname: JDCloud Beijing 
     nodes:
       - name: 901a
         regionid: 901
-        hostname: 'derp-bj-jdcloud.liaosirui.com'
+        hostname: 'derp-bj.com'
         ipv4: ''
         stunport: 3478
         stunonly: false
-        derpport: 23479
+        derpport: 19851
+        insecurefortests: true
+
 ```
 
 - egions 是 YAML 中的对象，下面的每一个对象表示一个可用区，每个可用区里面可设置多个 DERP 节点，即 nodes。
@@ -624,6 +655,39 @@ regions:
 yq -i '.derp.paths = ["/etc/headscale/derp.yaml"]' ./headscale/config/config.yaml
 ```
 
+自签证书
+
+```bash
+mkdir -p ./derper/certs && cd ./derper/certs
+
+# 生成私钥
+DERP_HOST="derp-bj.com"
+openssl genpkey -algorithm RSA -out ${DERP_HOST}.key
+
+# 生成证书请求 (CSR)：
+openssl req -new -key ${DERP_HOST}.key -out ${DERP_HOST}.csr
+
+# 生成自签名证书，设置过期期限为 100 年，防止后续再重新操作
+openssl x509 -req \
+    -days 36500 \
+    -in ${DERP_HOST}.csr \
+    -signkey ${DERP_HOST}.key \
+    -out ${DERP_HOST}.crt \
+    -extfile <(printf "subjectAltName=DNS:${DERP_HOST}")
+
+# 查看生成的证书
+openssl x509 -in ${DERP_HOST}.crt -noout -text 
+```
+
+拉取镜像
+
+```bash
+docker-pull() {
+  skopeo copy docker://${1} docker-daemon:${1}
+}
+docker-pull "docker.io/fredliang/derper:latest"
+```
+
 部署
 
 ```yaml
@@ -634,36 +698,36 @@ services:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
     network_mode: "host"
+    restart: always
     command:
       - serve
-    restart: always
     # networks:
-    #   tailscale: {}
+    #   - tailscale
     # ports:
     #   - 8080:8080
   headscale-admin:
     image: docker.io/goodieshq/headscale-admin:0.1.12b
     restart: always
     networks:
-      tailscale: {}
+      - tailscale
     ports:
       - 16080:80
-  tailscale-derp:
-    image: docker.io/fredliang/derper:
+  derper:
+    image: docker.io/fredliang/derper:latest
     volumes:
       - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
-    restart: always
     network_mode: "host"
-    # networks:
-    #   tailscale: {}
-    # ports:
-    #   - 3478:3478/udp
-    #   - 19850:19850
+    restart: always
     environment:
-      - DERP_DOMAIN=derp-bj-jdcloud.liaosirui.com
+      - DERP_DOMAIN=derp-bj.com
       - DERP_CERT_MODE=letsencrypt
       - DERP_ADDR=:19850
       - DERP_VERIFY_CLIENTS=true
+    # networks:
+    #   - tailscale
+    # ports:
+    #   - 3478:3478/udp
+    #   - 19850:19850
 networks:
   tailscale:
     ipam:
@@ -679,9 +743,7 @@ networks:
 tailscale netcheck
 ```
 
-tailscale netcheck 实际上只检测 3478/udp 的端口， 就算 netcheck 显示能连，也不一定代表 23479 端口可以转发流量
-
-最好是打开 `ip:23479`
+tailscale netcheck 实际上只检测 3478/udp 的端口， 就算 netcheck 显示能连，也不一定代表 23479 端口可以转发流量，最好是打开 DERP_ADDR 验证一下
 
 端口见：<https://tailscale.com/kb/1082/firewall-ports>
 
