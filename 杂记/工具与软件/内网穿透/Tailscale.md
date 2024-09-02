@@ -118,7 +118,8 @@ services:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
     network_mode: "host"
-    command: headscale serve
+    command:
+      - serve
     restart: always
     # networks:
     #   - tailscale
@@ -176,13 +177,14 @@ wget https://github.com/mikefarah/yq/releases/download/v4.44.3/yq_linux_amd64 \
 # 基础配置
 yq -i '.server_url = "http://<真实IP>:8080"' ./headscale/config/config.yaml
 yq -i '.listen_addr = "0.0.0.0:8080"' ./headscale/config/config.yaml
-yq -i '.ip_prefixes = ["100.64.0.0/16", "fd7a:115c:a1e0::/48"]' ./headscale/config/config.yaml
+yq -i '.prefixes.v4 = "100.64.0.0/16"' ./headscale/config/config.yaml
+yq -i '.prefixes.v6 = "fd7a:115c:a1e0::/48"' ./headscale/config/config.yaml
 yq -i '.randomize_client_port = true' ./headscale/config/config.yaml
 
 # 如果使用 DNS
-yq -i '.dns_config.magic_dns = true' ./headscale/config/config.yaml
-yq -i '.dns_config.nameservers = ["114.114.114.114"]' ./headscale/config/config.yaml
-yq -i '.dns_config.base_domain = "<域名>"' ./headscale/config/config.yaml
+yq -i '.dns.magic_dns = true' ./headscale/config/config.yaml
+yq -i '.dns.nameservers = ["114.114.114.114"]' ./headscale/config/config.yaml
+yq -i '.dns.base_domain = "<域名>"' ./headscale/config/config.yaml
 ```
 
 创建数据
@@ -224,7 +226,7 @@ headscale user list
 headscale apikey create
 ```
 
-部署（未解决 CORS，外面加一层 Nginx）
+部署
 
 ```yaml
 services:
@@ -234,7 +236,8 @@ services:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
     network_mode: "host"
-    command: headscale serve
+    command: 
+      - serve
     restart: always
     # networks:
     #   - tailscale
@@ -253,6 +256,32 @@ networks:
       driver: default
       config:
         - subnet: "172.29.1.0/24"
+```
+
+（未解决 CORS，外面加一层 Nginx）
+
+```nginx
+location / {
+    proxy_pass http://127.0.0.1:8080;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "$connection_upgrade";
+}
+
+location /admin/ {
+    proxy_pass http://127.0.0.1:16080;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "$connection_upgrade";
+}
 ```
 
 拉取镜像
@@ -299,13 +328,15 @@ Tailscale 接入 Headscale：
 tailscale up \
   --login-server=http://<HEADSCALE_PUB_ENDPOINT>:8080 \
   --accept-routes=true \
-  --accept-dns=true
+  --accept-dns=false
 ```
 
 将其中的命令复制粘贴到 headscale 所在机器的终端中，并将 USERNAME 替换为前面所创建的 user
 
 ```bash
-headscale nodes register --user default --key mkey:016f63275a41d8a8d87319ca1c9e8e1adfd6aab66b34710978c60e3d64377b31
+headscale nodes register \
+--user '<用户名>' \
+--key mkey:016f63275a41d8a8d87319ca1c9e8e1adfd6aab66b34710978c60e3d64377b31
 ```
 
 注册成功，查看注册的节点：
@@ -325,13 +356,15 @@ ip route show table 52
 首先在服务端生成 pre-authkey 的 token，有效期可以设置为 1 小时：
 
 ```bash
-headscale preauthkeys create -e 1h --user <用户名>
+headscale preauthkeys create \
+-e 1h \
+--user '<用户名>'
 ```
 
 查看已经生成的 key：
 
 ```bash
-headscale --user <用户名> preauthkeys list
+headscale --user '<用户名>' preauthkeys list
 ```
 
 现在新节点就可以无需服务端同意直接接入
@@ -340,7 +373,7 @@ headscale --user <用户名> preauthkeys list
 tailscale up \
   --login-server=http://<HEADSCALE_PUB_ENDPOINT>:8080 \
   --accept-routes=true \
-  --accept-dns=true \
+  --accept-dns=false \
   --authkey $KEY
 ````
 
@@ -410,7 +443,7 @@ sysctl -p /etc/sysctl.d/ipforwarding.conf
 tailscale up \
   --login-server=http://<HEADSCALE_PUB_ENDPOINT>:8080 \
   --advertise-routes=192.168.0.0/24,192.168.1.0/24 \
-  --accept-routes \
+  --accept-routes=true \
   --accept-dns=false \
   --reset
 ```
@@ -585,8 +618,8 @@ regions:
 接下来还需要修改 Headscale 的配置文件，引用上面的自定义 DERP 配置文件。需要修改的配置项如下：
 
 ```bash
-# https://controlplane.tailscale.com/derpmap/default
-yq -i '.derp.urls = []' ./headscale/config/config.yaml
+# disable??: https://controlplane.tailscale.com/derpmap/default
+# yq -i '.derp.urls = []' ./headscale/config/config.yaml
 
 yq -i '.derp.paths = ["/etc/headscale/derp.yaml"]' ./headscale/config/config.yaml
 ```
@@ -601,7 +634,8 @@ services:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
     network_mode: "host"
-    command: headscale serve
+    command:
+      - serve
     restart: always
     # networks:
     #   tailscale: {}
