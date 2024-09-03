@@ -601,7 +601,7 @@ systemctl enable --now tailscaled
 ls -al /var/run/tailscale/tailscaled.sock
 
 tailscale up \
-  --login-server=https://headscale.liaosirui.com \
+  --login-server=https://headscale.com \
   --accept-routes=false \
   --accept-dns=false \
   --authkey $KEY

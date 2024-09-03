@@ -65,4 +65,12 @@ esxcfg-scsidevs -l | egrep -i 'display name|vendor'
 esxcfg-scsidevs -c
 ```
 
-## 
+## 启动报错
+
+- `Failed to verify signatures of the following vib(s)`
+
+在 BIOS 中关闭 Security boot 就可以解决
+
+- Jumpstart plugin late-filesystems activation failed   Logs are stored on non-persistent storage. Consult product documentation to configure a st*** log server or a scratch partition.
+
+try skipping it by adding `jumpstart.disable=late-filesystems` in the boot options (SHIFT+O on boot)

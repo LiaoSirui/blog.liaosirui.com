@@ -1,10 +1,14 @@
+## NGinx 简介
+
+nginx 官方网站 <https://nginx.org/>
+
 ## 二进制安装 nginx
 
-nginx 官方网站 <https://nginx.org/download/>
+nginx 官方下载 <https://nginx.org/download/>
 
 rpm 包下载(官方 rpm 包下载地址) <http://nginx.org/packages/rhel/7/x86_64/RPMS/>
 
-## SELinux
+### SELinux
 
 ```bash
 # 放行监听端口
