@@ -71,3 +71,9 @@ Vulnerabilities:
 指硬件核心/硬件处理器。一个 package 里面可能会包含多个处理器，如下图所示
 
 ![img](./.assets/CPU的基础知识/pkg-core.jpg)
+
+或者从芯片视图看：
+
+![img](./.assets/CPU的基础知识/pkg-die.jpg)
+
+（3）超线程（Hyper-threading）/硬件线程（hardware thread）
