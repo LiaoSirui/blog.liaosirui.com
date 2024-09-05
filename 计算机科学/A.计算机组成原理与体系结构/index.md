@@ -3,7 +3,7 @@ title: 组成原理与体系结构
 weight: 1
 ---
 
-{{ pagetree }}
+{{ pagetree(children) }}
 
 ## 参考资料
 

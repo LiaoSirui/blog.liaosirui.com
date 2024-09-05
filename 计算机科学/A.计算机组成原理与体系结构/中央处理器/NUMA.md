@@ -1,4 +1,12 @@
-## 简介
+## NUMA
+
+NUMA（Non-Uniform Memory Access，非一致性内存访问）绑核工具，主要为了防止 CPU 资源争抢引发性能降低的问题
+
+## numactl
+
+`numactl` 通过将 `CPU` 划分多个 `node` 减少 `CPU` 对总线资源的竞争，一般使用在高配置服务器部署多个 `CPU` 消耗性服务使用
+
+### 简介
 
 - 查看 numa 状态
 
@@ -60,9 +68,9 @@ other_node                     0
 
 注意：`miss` 和 `foreign` 的值越高，就考虑 `CPU` 绑定
 
-## 使用示例
+### 使用示例
 
-### 内存交织分配模式
+（1）内存交织分配模式
 
 使用 `--interleave` 参数，如占用内存的 mongodb 程序，共享所有 node 内存：
 
@@ -70,14 +78,14 @@ other_node                     0
 numactl --interleave=all mongod -f /etc/mongod.conf
 ```
 
-### 内存绑定
+（2）内存绑定
 
 ```bash
 numactl --cpunodebind=0 --membind=0 python param
 numactl --physcpubind=0 --membind=0 python param
 ```
 
-### CPU绑定
+（3）CPU 绑定
 
 ```bash
 numactl -C 0-1 ./test
