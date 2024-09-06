@@ -121,4 +121,6 @@ TDP 表示的处理器运行在基频时的平均功耗（average power）
 
 以 AMD 的 turbo 技术为例：
 
-![img](https://arthurchiao.art/assets/img/linux-cpu/AMD_PowerTune_Bonaire.png)
+![img](./.assets/CPU功耗与性能管理/AMD_PowerTune_Bonaire-20240906092439221.png)
+
+参考文档：<https://arthurchiao.art/blog/linux-cpu-2-zh/>

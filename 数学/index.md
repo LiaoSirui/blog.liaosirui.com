@@ -1,4 +1,4 @@
 ---
 title: 数学
-weight: 6
+weight: 9
 ---

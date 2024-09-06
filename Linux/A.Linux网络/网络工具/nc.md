@@ -6,7 +6,7 @@ ncat/nc 是一个类似于cat的网络命令，常用语网络读、写、重定
 
 目标服务器，启动一个端口监听
 
-```
+```bash
 nc -l 9999 > save.txt
 ```
 
@@ -38,4 +38,3 @@ ncat -l 8080 0<2way | ncat 192.168.0.2 80 1>2way
 ```bash
 ncat -u -l 80 -c 'ncat -u -l 8080'
 ```
-
