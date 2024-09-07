@@ -339,4 +339,6 @@ print(sum(ray.get(doubled_list_refs), []))
 
 ## 参考资料
 
-<https://www.51cto.com/article/681540.html>
+- <https://www.51cto.com/article/681540.html>
+
+- <https://www.cnblogs.com/fanzhidongyzby/p/7901139.html>
