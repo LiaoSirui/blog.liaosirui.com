@@ -130,3 +130,25 @@ rm -r Library/Homebrew Library/Aliases Library/Formula Library/Contributions
 rm -rf .git
 rm -rf ~/Library/Caches/Homebrew
 ```
+
+## 安装 Nginx
+
+安装
+
+```bash
+brew install nginx
+```
+
+启动 nginx 服务，如下命令：
+
+```bash
+brew services start nginx
+# brew services restart nginx
+```
+
+nginx 的配置目录
+
+```bash
+/opt/homebrew/etc/nginx/nginx.conf
+```
+

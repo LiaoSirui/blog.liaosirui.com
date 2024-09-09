@@ -1,6 +1,8 @@
 ## Confluence 简介
 
-Confluence 是由 Atlassian 开发的一个团队协作软件，它是一款专业的企业级的知识管理与协作工具。Confluence 的主要功能是帮助团队创建，组织和讨论工作。它为团队提供一个平台，在这个平台上，团队成员可以共享信息，记录决策过程，以及管理项目
+Confluence 是由 Atlassian 开发的一个团队协作软件，它是一款专业的企业级的知识管理与协作工具
+
+Confluence 的主要功能是帮助团队创建，组织和讨论工作。它为团队提供一个平台，在这个平台上，团队成员可以共享信息，记录决策过程，以及管理项目
 
 Confluence 可以解决的问题：
 
@@ -8,6 +10,12 @@ Confluence 可以解决的问题：
 - 团队协作：Confluence 使团队可以在同一文档上协作。可以提出问题，讨论解决方案，提供反馈，或记录决策过程
 - 项目管理：结合 Jira, 可以创建页面来跟踪项目的状态，记录决策，并追踪关键的项目里程碑
 - 文档存档：Confluence 可以存储所有的文档，包括会议纪要，研究报告，计划等。并且可以很容易地搜索和找到这些文档
+
+Confluence 是专门针对技术团队的文档系统，所以有各种丰富的模板，能提升工作效率
+
+![image-20240909101359174](./.assets/Confluence简介/image-20240909101359174.png)
+
+Confluence 集成国外几乎所有主流的工具
 
 ## 部署
 
@@ -48,6 +56,4 @@ Confluence 可以解决的问题：
 | Handy Macros                          | 向页面添加号召性用语、页面投票、自定义状态元素和其他有用的协作小工具 | <https://marketplace.atlassian.com/apps/1214971/handy-macros-for-confluence-formatting-and-interactive-ui> |
 | Polls                                 | 无论您要计划团队活动，还是收集客户反馈，此应用都能帮助您在 Confluence 中轻松创建投票 | <https://marketplace.atlassian.com/apps/1211126/polls-for-confluence> |
 
-## 参考资料
-
-- 如何使页面布局更舒适 <https://www.evget.com/article/2019/12/11/33916.html>
+插件参考：<https://doc.devpod.cn/conf/confluence-17104954.html>
