@@ -52,6 +52,28 @@ LDAP 搜索过滤器语法有以下子集：
 
 工具 ldapsearch
 
+## LDAP 加密
+
+- LDAP over SSL（即 ldaps）
+
+Ldap 默认不加密情况下使用 389 端口，当使用 ldaps 的时候使用 636 端口
+
+连接方式
+
+```bash
+ldapsearch -H ldaps://127.0.0.1
+```
+
+- LDAP over TLS（即 ldap + TLS）StartTLS
+
+LDAP over TLS 可以简单理解为 ldaps 的升级；它默认使用 389 端口，但是会通讯的时候加密；客户端连接 LDAP 时，需要指明通讯类型为 TLS
+
+连接方式
+
+```bash
+ldapsearch -ZZ -H ldap://127.0.0.1
+```
+
 ## 参考文档
 
 - <https://wiki.eryajf.net/pages/ea10fa/>
