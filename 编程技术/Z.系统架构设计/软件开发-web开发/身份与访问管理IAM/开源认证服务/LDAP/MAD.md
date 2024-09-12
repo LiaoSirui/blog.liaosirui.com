@@ -134,7 +134,7 @@ netdom remove %computername% /domain:domain /UserD:user /PasswordD:password
 ldapsearch -H ldap://xxx.xxx.xxx.xxx:389 -x -D "cn=德哥,ou=digoal,ou=SKYMOBI,dc=sky-mobi,dc=com" -W
 ```
 
-![img](./.assets/AD域简介/20210312220711462.png)
+![img](./.assets/MAD/20210312220711462.png)
 
 微软将 Active Directory 划分为若干个分区(这个分区我们称为 Naming Context，简称 NC)，每个 Naming Context 都有其自己的安全边界
 
@@ -149,3 +149,62 @@ Configuration NC 内存储的主要是配置信息，关站点，服务，分区
 Schema NC 存储的 Active Directory 中存储的对象的定义，个人感觉类似 Mysql 中的元数据库的概念，包含 Schema 信息，定义了 Active Directory 中使用的类和属性。
 
 Domain NC 每个域都有一个域 Naming Context，不同的域内有不同的域 Naming Context，其中包含特定于域的数据。之前我们说过，域内的所有计算机，所有用户的具体信息都存在 Active Directory 底下
+
+## NTP
+
+AD 域控配置 NTP 时间服务器方法
+
+查看该域控是否为 NTPServer；如下图 Ntpserver 中，“Enabled” 值为 “1” 说明当前域控是 NTP 服务器；若该值为 “0”，则需要在注册表的下列位置
+
+```powershell
+w32tm /query /configuration
+#  HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders\NtpServer
+# 将 Enabled 值改为 1
+```
+
+用命令查看主机的时间源信息，可以看到当前 PDC 主机的时间来源为系统时钟
+
+```powershell
+w32tm /query /status
+```
+
+验证 NTP 时间源是否与 AD 域通讯是否正常
+
+```powershell
+w32tm /stripchart /computer:[NTP_IP]
+```
+
+在域控主机上执行命令
+
+```powershell
+w32tm /config /manualpeerlist:[NTP_IP] /syncfromflags:manual /reliable:yes /update
+```
+
+## Web 重置密码
+
+参考：<https://www.xh86.me/?p=924>
+
+在公司日常运维中会发现目前很多公司 的 AD 域成员（域用户）密码到期后修改密码的方法只有两种：
+
+第一种，密码到期提醒策略，用户电脑接入公司内网自行进 行修改，修改办法：CTrl+Alt+delete 键进行修改，此办法对于公司的销售人员、外出办公或出差同事来说，不适宜。
+
+第二种，用户密码到期后，无法登陆，申请后台进行重置密 码，此办法可以解决问题，但是不是长久之计，一般制度健 全的公司，申请流程审批很漫长，浪费时间。
+
+推荐通过 WEB 界面自行修改密码
+
+在打开的服务器管理界面点击”添加角色和功能”；选择”基于角色或基于功能的安装”；选择 Web 服务和远程桌面 Web 服务；等待片刻，安装滚动条完成后，重启服务器来完成配置
+
+配置 IIS 服务：打开”管理工具”选择 IIS 管理器；配置IIS 启用密码修改功能，将 “PasswordChangeEnabled”的值改为”True”
+
+![image-20240814160247597](./.assets/MAD/image-20240814160247597.png)
+
+![image-20240814160308724](./.assets/MAD/image-20240814160308724.png)
+
+打开浏览器，输入访问密码修改界面
+
+```
+<访问入口>/RDWeb/PAGES/ZH-cn/password.aspx?Error=PasswordSuccess
+```
+
+在上面打开的界面中，输入域名\用户名、旧密码、2 次新密码，点击修改测试
+

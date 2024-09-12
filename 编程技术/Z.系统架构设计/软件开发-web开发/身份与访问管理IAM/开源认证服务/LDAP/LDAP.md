@@ -14,7 +14,7 @@ DN（Distinguished Name），专有名称，LDAP中对象的唯一路径，一�
 - OU（Organisation Unit）组织单元，类比公司中的部门，最多可以有四级，每级最长 32 个字符，可以为中文
 - CN（Common Name）代表一个具体实例，即具体用户的名称（非路径），为用户名或者服务器名，最长可以到 80 个字符，可以为中文
 
-![img](./.assets/LDAP简介/dit.png)
+![img](./.assets/LDAP/dit.png)
 
 ### LDAP解析
 
