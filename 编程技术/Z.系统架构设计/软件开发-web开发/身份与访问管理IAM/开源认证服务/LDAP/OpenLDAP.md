@@ -109,8 +109,10 @@ ldapsearch \
 可以用 LDAPS 来访问 LDAP Server：
 
 ```bash
+echo "127.0.0.1 alpha-quant.cc" >> /etc/hosts
+
 LDAPTLS_CACERT=$PWD/certs/openldap.crt ldapsearch \
-    -H ldaps://localhost:636/ \
+    -H ldaps://alpha-quant.cc:636/ \
     -x \
     -D "cn=admin,dc=alpha-quant,dc=cc" \
     -b "dc=alpha-quant,dc=cc" \
@@ -139,6 +141,31 @@ olcAccess: {1}to *
 __EOF__
 
 ```
+
+通过管理员修改密码
+
+```bash
+LDAPTLS_CACERT=$PWD/certs/openldap.crt ldappasswd \
+    -H ldaps://alpha-quant.cc:636/ \
+    -x \
+    -S \
+    -D "cn=admin,dc=alpha-quant,dc=cc" \
+    -W \
+    cn=user01,ou=users,dc=alpha-quant,dc=cc
+```
+
+用户修改密码
+
+```bash
+LDAPTLS_CACERT=$PWD/certs/openldap.crt ldappasswd \
+    -H ldaps://alpha-quant.cc:636/ \
+    -x \
+    -S \
+    -D "cn=user01,ou=users,dc=alpha-quant,dc=cc" \
+    -W
+```
+
+并且 userPassword 也对非 admin 用户被隐藏
 
 ## 自助修改密码系统
 
