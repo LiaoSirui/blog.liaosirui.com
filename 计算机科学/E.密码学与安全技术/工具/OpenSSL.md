@@ -1,14 +1,75 @@
-![img](.assets/生成自签证书/ssl.jpeg)
+## OpenSSL
 
-| 参数名称                 | 参数值                                                 |
-| ------------------------ | ------------------------------------------------------ |
-| Country Name             | 国家代码，比如中国就是CN                               |
-| State or Province Name   | 省名称                                                 |
-| Locality Name            | 城市名称                                               |
-| Organization Name        | 机构名称                                               |
-| Organizational Unit Name | 机构单位名称                                           |
-| Common Name              | 重点参数：授权给什么，因为机构是根节点所以是授权给自己 |
-| Email Address            | 邮件地址                                               |
+OpenSSL 是一个开源项目，其组成主要包括一下三个组件：
+
+- openssl：多用途的命令行工具
+- libcrypto：加密算法库
+- libssl：加密模块应用库，实现了 ssl 及 tls
+
+### 对称加密
+
+对称加密需要使用的标准命令为 enc ，用法如下：
+
+```bash
+openssl enc -ciphername [-in filename] [-out filename] [-pass arg] [-e] [-d] [-a/-base64]
+       [-A] [-k password] [-kfile filename] [-K key] [-iv IV] [-S salt] [-salt] [-nosalt] [-z] [-md]
+       [-p] [-P] [-bufsize number] [-nopad] [-debug] [-none] [-engine id]
+```
+
+
+
+## 证书
+
+### 常见的生成工具
+
+- OpenSSL
+- JDK 自带的 KeyStone
+- cfssl
+
+### 各字段的含义
+
+| 参数名称                 | 简称 | 参数值                                                 |
+| ------------------------ | ---- | ------------------------------------------------------ |
+| Country Name             | C    | 国家代码，比如中国就是 CN                              |
+| State or Province Name   | ST   | 省名称                                                 |
+| Locality Name            | L    | 城市名称                                               |
+| Organization Name        | O    | 机构名称                                               |
+| Organizational Unit Name | OU   | 机构单位名称                                           |
+| Common Name              | CN   | 重点参数：授权给什么，因为机构是根节点所以是授权给自己 |
+| Email Address            |      | 邮件地址                                               |
+
+查看证书的内容
+
+```bash
+openssl x509 -in ca.crt -noout -text|egrep -i "issuer|subject|serial|dates"
+openssl x509 -noout -text -in tls.crt
+cfssl-certinfo -cert tls.crt
+```
+
+### 证书格式
+
+PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其它安全系统开发商为促进公钥密码的发展而制订的一系列标准，PKCS 目前共发布过 15 个标准。 常用的有：
+
+1. `PKCS#7` Cryptographic Message Syntax Standard
+2. `PKCS#10` Certification Request Standard
+3. `PKCS#12` Personal Information Exchange Syntax Standard
+
+`X.509` 是常见通用的证书格式。所有的证书都符合为 Public Key Infrastructure (PKI) 制定的 ITU-T X509 国际标准。
+
+1. `PKCS#7` 常用的后缀是： `.P7B`、`.P7C`、`.SPC`
+2. `PKCS#12` 常用的后缀有： `.P12`、`.PFX`
+3. `X.509 DER` 编码(ASCII)的后缀是： `.DER`、`.CER`、`.CRT`
+4. `X.509 PAM` 编码(Base64)的后缀是： `.PEM`、`.CER`、`.CRT`
+5. .`cer/.crt` 是用于存放证书，它是 2 进制形式存放的，不含私钥
+6. `.pem` 跟 crt/cer 的区别是它以 ASCII 来表示
+7. `pfx/p12` 用于存放个人证书/私钥，他通常包含保护密码，2 进制方式
+8. `p10` 是证书请求
+9. `p7r` 是 CA 对证书请求的回复，只用于导入
+10. `p7b`以树状展示证书链(certificate chain)，同时也支持单个证书，不含私钥
+
+## 证书生成过程
+
+![image-20240913084007516](./.assets/OpenSSL/image-20240913084007516.png)
 
 ## 完整生成过程
 
@@ -17,13 +78,21 @@
 生成 CA 私钥：
 
 ```bash
-openssl genpkey -algorithm RSA -out ca-key.pem -pkeyopt rsa_keygen_bits:2048
+openssl genpkey \
+  -algorithm RSA \
+  -out ca-key.pem \
+  -pkeyopt rsa_keygen_bits:2048
 ```
 
 生成 CA 证书：
 
 ```bash
-openssl req -x509 -new -nodes -key ca-key.pem -sha256 -days 3650 -out ca-cert.pem -subj "/C=US/ST=State/L=City/O=Organization/OU=Unit/CN=example.com"
+openssl req \
+  -x509 -new -nodes \
+  -key ca-key.pem -sha256 \
+  -days 36500 \
+  -out ca-cert.pem \
+  -subj "/C=CN/ST=State/L=City/O=Organization/OU=Unit/CN=example.com"
 ```
 
 ### 创建泛域名证书
@@ -31,7 +100,10 @@ openssl req -x509 -new -nodes -key ca-key.pem -sha256 -days 3650 -out ca-cert.pe
 生成服务器私钥：
 
 ```bash
-openssl genpkey -algorithm RSA -out server-key.pem -pkeyopt rsa_keygen_bits:2048
+openssl genpkey \
+  -algorithm RSA \
+  -out server-key.pem \
+  -pkeyopt rsa_keygen_bits:2048
 ```
 
 创建证书签名请求 (CSR)， 创建一个配置文件 `server.csr.cnf`：
@@ -44,7 +116,7 @@ default_md         = sha256
 distinguished_name = dn
 
 [dn]
-C  = US
+C  = CN
 ST = State
 L  = City
 O  = Organization
