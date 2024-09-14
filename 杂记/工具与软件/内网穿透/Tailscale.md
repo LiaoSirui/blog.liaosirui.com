@@ -37,6 +37,14 @@ Tailscale 是一款基于 WireGuard 的异地组网工具，它可以将不同�
 - 内网设备可以直接使用 Tailscale 分配的 IP 来访问连接到 Tailscale 的设备
 - 支持多个局域网互相访问，每个局域网只需一台设备安装 Tailscale ( 每个局域网的网段不能相同 )
 
+Tailscale 部署方案
+
+![image-20240914192440802](./.assets/Tailscale/image-20240914192440802.png)
+
+需要部署的组件
+
+![image-20240914194105973](./.assets/Tailscale/image-20240914194105973.png)
+
 ### WireGuard
 
 WireGuard 相比于传统 VPN 的核心优势是没有 VPN 网关，所有节点之间都可以点对点（P2P）连接，也就是我之前提到的全互联模式（Full Mesh），效率更高，速度更快，成本更低

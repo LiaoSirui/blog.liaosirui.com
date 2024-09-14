@@ -361,6 +361,26 @@ kubectl -n $consoleNS  create secret tls ${k8sSecretName}  --key ${consoleNS}-tl
 
 ```
 
+## 检查证书
+
+使用如下命令
+
+```bash
+openssl s_client -showcerts \
+    -servername dev.alpha-quant.com.cn \
+    -connect 10.244.244.11:443 </dev/null 2>&1 | \
+grep -i "server certificate" -A 2 | \
+perl -pe 's/\\x(..)/chr(hex($1))/eg'
+```
+
+获得输出：
+
+```bash
+Server certificate
+subject=C = US, ST = State, L = City, O = Organization, OU = Unit, CN = *.alpha-quant.com.cn
+issuer=C = US, ST = State, L = City, O = Organization, OU = Unit, CN = alpha-quant.com.cn
+```
+
 ## 参考链接
 
 - <https://www.tangyuecan.com/2021/12/17/%E5%B1%80%E5%9F%9F%E7%BD%91%E5%86%85%E6%90%AD%E5%BB%BA%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8F%AF%E4%BF%A1%E4%BB%BB%E7%9A%84ssl%E8%AF%81%E4%B9%A6/>
