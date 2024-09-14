@@ -261,3 +261,9 @@ pip install quantstats --upgrade --no-cache-dir
 ## 参考资料
 
 - <https://wizardforcel.gitbooks.io/python-quant-uqer/content/192.html>
+
+- AI 量化交易 <https://blog.51cto.com/quantfabric/2450916>
+
+- <https://github.com/QuantFabric>
+
+- <https://blog.51cto.com/quantfabric>
