@@ -16,9 +16,91 @@ openssl enc -ciphername [-in filename] [-out filename] [-pass arg] [-e] [-d] [-a
        [-p] [-P] [-bufsize number] [-nopad] [-debug] [-none] [-engine id]
 ```
 
+- `-in filename`：指定要加密的文件存放路径
+- `-out filename`：指定加密后的文件存放路径
+- `salt`：自动插入一个随机数作为文件内容加密，默认选项
+- `e`：可以指明一种加密算法，若不指的话将使用默认加密算法
+- `d`：解密，解密时也可以指定算法，若不指定则使用默认算法，但一定要与加密时的算法一致
+- `a/-base64`：使用 base64 编码格式
 
+### 单向加密
+
+单向加密需要使用的标准命令为 dgst ，用法如下：
+
+```bash
+openssl dgst [-md5|-md4|-md2|-sha1|-sha|-mdc2|-ripemd160|-dss1] [-c] [-d] [-hex] [-binary]
+       [-out filename] [-sign filename] [-keyform arg] [-passin arg] [-verify filename] [-prverify
+       filename] [-signature filename] [-hmac key] [file...]
+```
+
+- `[-md5|-md4|-md2|-sha1|-sha|-mdc2|-ripemd160|-dss1]`：指定一种加密算法
+- `-out filename`：将加密的内容保存到指定文件中
+
+### 生成密码
+
+生成密码需要使用的标准命令为 passwd ，用法如下：
+
+```bash
+openssl passwd [-crypt] [-1] [-apr1] [-salt string] [-in file] [-stdin] [-noverify] [-quiet] [-table] {password}
+```
+
+- `-1`：使用 md5 加密算法
+- `-salt string`：加入随机数，最多 8 位随机数
+- `-in file`：对输入的文件内容进行加密
+- `-stdion`：对标准输入的内容进行加密
+
+### 生成密钥对
+
+首先需要先使用 genrsa 标准命令生成私钥，然后再使用 rsa 标准命令从私钥中提取公钥
+
+genrsa 的用法如下：
+
+```bash
+openssl genrsa [-out filename] [-passout arg] [-des] [-des3] [-idea] [-f4] [-3] [-rand file(s)] [-engine id] [numbits]
+```
+
+- `-out filename`：将生成的私钥保存至指定的文件中
+- `-des|-des3|-idea`：不同的加密算法
+- `-numbits`：指定生成私钥的大小，默认是2048
+
+ras 的用法如下：
+
+```bash
+openssl rsa [-inform PEM|NET|DER] [-outform PEM|NET|DER] [-in filename] [-passin arg] [-out filename] [-passout arg]
+       [-sgckey] [-des] [-des3] [-idea] [-text] [-noout] [-modulus] [-check] [-pubin] [-pubout] [-engine id]
+```
+
+- `-in filename`：指明私钥文件
+- `-out filename`：指明将提取出的公钥保存至指定文件中
+- `-pubout`：根据私钥提取出公钥
+
+### 生成密钥对
 
 ## 证书
+
+传输层安全
+
+- 安全通信
+- 避免窃听
+- 确认另一端连接者的身份
+
+`CA (Certificate Authority)` 证书授权中心，是数字证书颁发和管理的机构。
+
+`DN (Distinguished Name)` 标识名，指定实体身份的字段。
+
+`CSR (Certificate Signing Request)` 数字证书签名请求，其中包含了公钥和`DN`。
+
+![image-20240913084007516](./.assets/OpenSSL/image-20240913084007516.png)
+
+根证书：是 CA 机构颁发 SSL 证书的核心，是信任链的起始点。受信任的根证书是属于证书颁发机构（CA），而 CA 机构是验证和颁发 SSL 证书的组织机构。
+
+证书链：由两个环节组成，信任锚证书环节 和 已签名证书环节。信任锚证书环节可以对中间证书签名；中间证书的所有者可以用自己的私钥对另一个证书签名，两者结合就构成证书链。用户获取 SSL 证书之前，首先生成 证书签名请求 和 私钥，然后将生成的签名请求发送到证书颁发机构，再使用证书颁发机构的根证书的私钥签署用户的 SSL 证书，并将 SSL 证书发回给用户。
+
+中间证书：证书颁发机构不会直接从根目录颁发 SSL 证书，一旦发生错误，颁发者或需求者需要撤销根证书，则使用根证书签名的每个证书都会被撤销信任。为了避免这种风险发生，CA 机构一般会引用中间根。CA 机构使用中间根的私钥来签署用户申请的 SSL 证书。这种中间根的形式可以重复多次，即使用中间根签署另一个中间证书。
+
+根证书 CA 和 中间根 CA 的区别：根证书 CA 是拥有一个或多个受信任的根证书颁发机构，即 CA 机构已经扎根在主要浏览器的信任库中，而中间根 CA 或子 CA 是颁发中间根的证书颁发机构，他们不一定在浏览器的信任库中有根证书，而是将他们的中间根链接到信任的第三方根，被称为交叉签名。
+
+链式根 和 单一根 之间的区别：单一根是由 CA 拥有的，可直接颁发证书。链式根是 SubCA 用于颁发证书的内容，是一个中间证书，必须链接到第三方受信任的 CA。链式根需要复杂的安装方法，因为中间根需要加载到托管证书的每个服务器和应用程序。链式根需要受到链接的 CA 支配，无法控制 root 用户，一旦 root CA 停业，就会受到巨大的牵连。
 
 ### 常见的生成工具
 
@@ -67,10 +149,6 @@ PKCS 全称是 Public-Key Cryptography Standards ，是由 RSA 实验室与其�
 9. `p7r` 是 CA 对证书请求的回复，只用于导入
 10. `p7b`以树状展示证书链(certificate chain)，同时也支持单个证书，不含私钥
 
-## 证书生成过程
-
-![image-20240913084007516](./.assets/OpenSSL/image-20240913084007516.png)
-
 ## 完整生成过程
 
 ### 创建自签名的 CA 证书
@@ -92,7 +170,7 @@ openssl req \
   -key ca-key.pem -sha256 \
   -days 36500 \
   -out ca-cert.pem \
-  -subj "/C=CN/ST=State/L=City/O=Organization/OU=Unit/CN=example.com"
+  -subj "/C=CN/ST=State/L=City/O=Organization/OU=Unit/CN=alpha-quant.cc"
 ```
 
 ### 创建泛域名证书
@@ -121,7 +199,7 @@ ST = State
 L  = City
 O  = Organization
 OU = Unit
-CN = *.example.com
+CN = *.alpha-quant.cc
 
 ```
 
@@ -141,8 +219,8 @@ extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 
 [alt_names]
-DNS.1 = *.example.com
-DNS.2 = example.com
+DNS.1 = *.alpha-quant.cc
+DNS.2 = alpha-quant.cc
 
 ```
 
@@ -207,7 +285,7 @@ openssl verify server-cert.pem
 1. 打开浏览器：
    - 打开浏览器（如 Chrome、Edge、Firefox）。
 2. 访问受信任的网站：
-   - 尝试访问使用自签名证书保护的网站。例如，`https://example.com`。
+   - 尝试访问使用自签名证书保护的网站。例如，`https://alpha-quant.cc`。
 3. 检查证书：
    - 在浏览器中，点击地址栏中的锁图标，然后查看证书详细信息。确认证书链中包含刚刚安装的 CA 证书。
 
@@ -250,7 +328,7 @@ openssl verify server-cert.pem
 
 1. 使用浏览器测试：
    - 打开浏览器（如 Safari、Chrome、Firefox）。
-   - 访问自签名 CA 签发的证书保护的 HTTPS 网站。例如，`https://example.com`。
+   - 访问自签名 CA 签发的证书保护的 HTTPS 网站。例如，`https://alpha-quant.cc`。
    - 检查地址栏中的锁图标，点击它查看证书详细信息，确认证书是由自签名 CA 签发的，并且浏览器信任该证书。
 
 通过以上步骤，已经在 macOS 系统中成功安装了自签名的 CA 证书。这样，浏览器或其他应用程序将信任由该 CA 签发的证书。
