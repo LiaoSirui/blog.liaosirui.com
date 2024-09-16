@@ -121,7 +121,7 @@ Tailscale 使用的算法很有趣，所有客户端之间的连接都是先选�
 ```yaml
 services:
   headscale:
-    image: docker.io/headscale/headscale:0.23.0-beta3
+    image: docker.io/headscale/headscale:0.23.0-rc.1
     volumes:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
@@ -147,14 +147,14 @@ networks:
 docker-pull() {
   skopeo copy docker://${1} docker-daemon:${1}
 }
-docker-pull "docker.io/headscale/headscale:0.23.0-beta3"
+docker-pull "docker.io/headscale/headscale:0.23.0-rc.1"
 ```
 
 创建 Headscale 配置文件：
 
 ```bash
 mkdir -p ./headscale/config
-wget https://github.com/juanfont/headscale/raw/v0.23.0-beta3/config-example.yaml \
+wget https://github.com/juanfont/headscale/raw/v0.23.0-rc.1/config-example.yaml \
   -O ./headscale/config/config.yaml
 ```
 
@@ -239,7 +239,7 @@ headscale apikey create
 ```yaml
 services:
   headscale:
-    image: docker.io/headscale/headscale:0.23.0-beta3
+    image: docker.io/headscale/headscale:0.23.0-rc.1
     volumes:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
@@ -337,6 +337,9 @@ tailscale up \
   --login-server=http://<HEADSCALE_PUB_ENDPOINT>:8080 \
   --accept-routes=true \
   --accept-dns=false
+
+# snat-subnet-routes 通过本节点访问局域网设备时，不做源地址转换，默认为 true，仅支持 Linux
+# --snat-subnet-routes=false
 ```
 
 将其中的命令复制粘贴到 headscale 所在机器的终端中，并将 USERNAME 替换为前面所创建的 user
@@ -442,7 +445,7 @@ echo 'net.ipv6.conf.all.forwarding = 1' | tee -a /etc/sysctl.d/ipforwarding.conf
 sysctl -p /etc/sysctl.d/ipforwarding.conf
 ```
 
-客户端修改注册节点的命令，在原来命令的基础上加上参数 `--advertise-routes=192.168.100.0/24 --advertise-exit-node`，告诉 Headscale 服务器“我这个节点可以转发这些地址的路由”。
+客户端修改注册节点的命令，在原来命令的基础上加上参数 `--advertise-routes=10.244.244.0/24 --advertise-exit-node`，告诉 Headscale 服务器“我这个节点可以转发这些地址的路由”。
 
 ```bash
 # --advertise-routes 路由到此设备的网段
@@ -450,7 +453,7 @@ sysctl -p /etc/sysctl.d/ipforwarding.conf
 # --reset 重置设置
 tailscale up \
   --login-server=http://<HEADSCALE_PUB_ENDPOINT>:8080 \
-  --advertise-routes=192.168.0.0/24,192.168.1.0/24 \
+  --advertise-routes=10.244.244.0/24 \
   --accept-routes=true \
   --accept-dns=false \
   --reset
@@ -472,6 +475,30 @@ headscale routes enable -r 1
 ```
 
 其他节点启动时需要增加 `--accept-routes=true` 选项来声明 “我接受外部其他节点发布的路由”
+
+其他非 tailscaled 的节点
+
+```bash
+# linux
+ip route add 100.64.0.0/10 via 10.244.244.12 # 此为 tailscale vpn 的网段
+ip route add 10.244.244.0/24 via 10.244.244.12 # 此为 LAN1 的网段
+# windows
+route add 100.64.0.0 mask 255.192.0.0 10.244.244.12 # 此为 tailscale vpn 的网段
+route add 10.244.244.0 mask 255.255.255.0 10.244.244.12 # 此为 LAN1 的网段
+```
+
+根据官方推荐 <https://tailscale.com/kb/1214/site-to-site>，需要设置如下防止 MTU 不一致导致无法通信：
+
+```bash
+iptables -t mangle -A FORWARD -o tailscale0 -p tcp -m tcp \
+--tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+```
+
+调试方式：
+
+```bash
+tracepath 10.244.244.11
+```
 
 ## 路由查看
 
@@ -701,7 +728,7 @@ docker-pull "docker.io/fredliang/derper:latest"
 ```yaml
 services:
   headscale:
-    image: docker.io/headscale/headscale:0.23.0-beta3
+    image: docker.io/headscale/headscale:0.23.0-rc.1
     volumes:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
