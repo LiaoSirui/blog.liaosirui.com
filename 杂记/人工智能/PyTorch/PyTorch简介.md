@@ -1,5 +1,30 @@
 ## 问题处理
 
+检查 cuda
+
+```bash
+import torch
+
+# 检查 cuda 是否可用
+torch.cuda.is_available()
+
+# 查看 cuda 版本
+torch.version.cuda
+```
+
+检查 cudnn
+
+```bash
+# 检查 cudnn 是否可用
+torch.backends.cudnn.is_available()
+
+# 查看 cudnn 版本
+torch.backends.cudnn.version()
+
+```
+
+
+
 cuda 配置：
 
 ```bash
