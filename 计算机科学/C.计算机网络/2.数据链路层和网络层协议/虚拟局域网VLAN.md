@@ -51,3 +51,11 @@ VLAN（Virtual Local Area Network）即虚拟局域网，是将一个物理的 L
 
 
 ![img](./.assets/虚拟局域网VLAN/32b5ce099fd7009a03a544616aa1029d.png)
+
+## 参考资料
+
+- <https://www.cnblogs.com/wang-a/p/15959272.html>
+- <https://blog.51cto.com/u_15073468/2795169>
+- <https://support.huawei.com/enterprise/zh/doc/EDOC1100086528>
+
+- <https://blog.csdn.net/qq_40610003/article/details/133342658>

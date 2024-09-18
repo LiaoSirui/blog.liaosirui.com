@@ -78,3 +78,14 @@ Systemd 默认从目录 /etc/systemd/system/ 读取配置文件。但是，里�
 - <https://blog.csdn.net/m0_62816482/article/details/126748302>
 
 - <https://www.liuvv.com/p/c9c96ac3.html>
+
+- <http://www.pedestrian.com.cn/embedded/systemd/systemd.html#id8>
+
+timer
+
+- <https://systemd-book.junmajinlong.com/systemd_timer.html>
+- <https://www.ruanyifeng.com/blog/2018/03/systemd-timer.html>
+
+- <https://k8sdev.com/2021/03/06/Linux%EF%BC%9A%E4%BD%BF%E7%94%A8systemd%E7%AE%A1%E7%90%86%E8%BF%9B%E7%A8%8B/index.html>
+- <https://blog.csdn.net/2301_79996063/article/details/138006614>
+- <https://blog.csdn.net/m0_62816482/article/details/126748302>
