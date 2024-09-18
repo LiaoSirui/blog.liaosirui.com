@@ -147,6 +147,21 @@ DELETE FROM journalentry;
    rm -rf shared-home/dcl-thumbnail/*
    ```
 
+宏名称乱码：<https://blog.csdn.net/csdn_ds/article/details/126513385>
+
+<https://blog.espnlol.com/?p=548
+
+清空 confluence 的 home 下 viewfile 目录和 shared-home/dcl-document 目录里的所有缓存文档文件，不清空的话，confluence 预览旧文件时还是会显示方框，只有新文件才会正常
+
+```
+/viewfile/<br>
+/thumbnails/<br>
+/shared-home/dcl-document/<br>
+/shared-home/dcl-document_hd/<br>
+/shared-home/dcl-thumbnail/
+```
+
+
 
 ## PDF 导出中文失败
 

@@ -59,3 +59,7 @@ Confluence 集成国外几乎所有主流的工具
 插件参考：<https://doc.devpod.cn/conf/confluence-17104954.html>
 
 - <https://marketplace.atlassian.com/apps/1222194/advanced-tabs-tabbed-page-navigation-for-confluence?hosting=datacenter&tab=overview>
+
+- 备份数据：<https://www.baimeidashu.com/13115.html>
+
+- <https://confluence.atlassian.com/conf89/production-backup-strategy-1387596173.html>

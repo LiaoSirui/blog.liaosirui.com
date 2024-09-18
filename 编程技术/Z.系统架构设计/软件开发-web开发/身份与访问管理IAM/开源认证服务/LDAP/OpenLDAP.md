@@ -19,7 +19,7 @@ docker-pull "docker.io/bitnami/openldap:2.6.8-debian-12-r9"
 给 OpenLDAP 配置 TLS。首先用 OpenSSL 生成 CA 和证书：
 
 ```bash
-CERT_HOST="alpha-quant.cc"
+CERT_HOST="alpha-quant.tech"
 
 # setup CA
 mkdir -p certs
@@ -58,8 +58,8 @@ services:
       - LDAP_LDAPS_PORT_NUMBER=636
       - LDAP_ADMIN_USERNAME=admin
       - LDAP_ADMIN_PASSWORD=adminpassword
-      - LDAP_ROOT=dc=alpha-quant,dc=cc
-      - LDAP_ADMIN_DN=cn=admin,dc=alpha-quant,dc=cc
+      - LDAP_ROOT=dc=alpha-quant,dc=tech
+      - LDAP_ADMIN_DN=cn=admin,dc=alpha-quant,dc=tech
       - LDAP_ALLOW_ANON_BINDING=no
       - LDAP_ENABLE_TLS=yes
       - LDAP_TLS_CERT_FILE=/opt/bitnami/openldap/certs/openldap.crt
@@ -101,21 +101,21 @@ env_file: .env
 ldapsearch \
     -H ldap://localhost:389/ \
     -x \
-    -D "cn=admin,dc=alpha-quant,dc=cc" \
-    -b "dc=alpha-quant,dc=cc" \
+    -D "cn=admin,dc=alpha-quant,dc=tech" \
+    -b "dc=alpha-quant,dc=tech" \
     -W
 ```
 
 可以用 LDAPS 来访问 LDAP Server：
 
 ```bash
-echo "127.0.0.1 alpha-quant.cc" >> /etc/hosts
+echo "127.0.0.1 alpha-quant.tech" >> /etc/hosts
 
 LDAPTLS_CACERT=$PWD/certs/openldap.crt ldapsearch \
-    -H ldaps://alpha-quant.cc:636/ \
+    -H ldaps://alpha-quant.tech:636/ \
     -x \
-    -D "cn=admin,dc=alpha-quant,dc=cc" \
-    -b "dc=alpha-quant,dc=cc" \
+    -D "cn=admin,dc=alpha-quant,dc=tech" \
+    -b "dc=alpha-quant,dc=tech" \
     -W
 ```
 
@@ -146,22 +146,22 @@ __EOF__
 
 ```bash
 LDAPTLS_CACERT=$PWD/certs/openldap.crt ldappasswd \
-    -H ldaps://alpha-quant.cc:636/ \
+    -H ldaps://alpha-quant.tech:636/ \
     -x \
     -S \
-    -D "cn=admin,dc=alpha-quant,dc=cc" \
+    -D "cn=admin,dc=alpha-quant,dc=tech" \
     -W \
-    cn=user01,ou=users,dc=alpha-quant,dc=cc
+    cn=user01,ou=users,dc=alpha-quant,dc=tech
 ```
 
 用户修改密码
 
 ```bash
 LDAPTLS_CACERT=$PWD/certs/openldap.crt ldappasswd \
-    -H ldaps://alpha-quant.cc:636/ \
+    -H ldaps://alpha-quant.tech:636/ \
     -x \
     -S \
-    -D "cn=user01,ou=users,dc=alpha-quant,dc=cc" \
+    -D "cn=user01,ou=users,dc=alpha-quant,dc=tech" \
     -W
 ```
 
@@ -228,3 +228,5 @@ networks:
 ## 参考资料
 
 - <https://blog.csdn.net/achi010/article/details/130655238>
+
+- <http://114.242.246.250:8036/basetool/ldap.html>

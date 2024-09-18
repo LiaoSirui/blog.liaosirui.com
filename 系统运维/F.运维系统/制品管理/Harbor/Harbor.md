@@ -11,7 +11,7 @@ Harbor 是一款开源的企业级 Docker Registry 服务，它提供了一个�
 
 ## Harbor 的设计架构
 
-![docker-harbor-arch](.assets/Harbor简介/docker_harbor_arch.png)
+![docker-harbor-arch](./.assets/Harbor/docker_harbor_arch.png)
 
 ### 主要组件
 
@@ -40,10 +40,3 @@ Harbor 主要包含以下组件：
 - Notary：签名和验证服务，用于对镜像进行数字签名和验证
   - 支持对 Docker 镜像进行数字签名和验证
   - 支持自定义签名策略和验证策略
-
-## 对接 OIDC
-
-CLI 密钥与 OIDC ID 令牌相关联。Harbor 将尝试刷新令牌，因此 CLI 密钥在 ID 令牌过期后仍然有效。但是，如果 OIDC 提供商未提供刷新令牌或刷新失败，CLI 密钥将失效。在这种情况下，请注销并通过 OIDC 提供商重新登录 Harbor，以便 Harbor 可以获取新的 ID 令牌。然后 CLI 密钥将再次起作用。
-
-原文：<https://goharbor.io/docs/2.1.0/administration/configure-authentication/oidc-auth/>
-

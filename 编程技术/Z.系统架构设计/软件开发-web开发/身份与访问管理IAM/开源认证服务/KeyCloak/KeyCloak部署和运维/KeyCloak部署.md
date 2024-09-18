@@ -1,14 +1,14 @@
 Keycloak 基于官方镜像定制：
 
 ```dockerfile
-# syntax=harbor.alpha-quant.cc:5000/3rd_party/docker.io/docker/dockerfile:1.5.2
+# syntax=harbor.alpha-quant.tech:5000/3rd_party/docker.io/docker/dockerfile:1.5.2
 
-# FROM harbor.alpha-quant.cc:5000/3rd_party/quay.io/keycloak/keycloak:24.0.1
-FROM harbor.alpha-quant.cc:5000/3rd_party/docker.io/bitnami/keycloak:23.0.7-debian-12-r3
+# FROM harbor.alpha-quant.tech:5000/3rd_party/quay.io/keycloak/keycloak:24.0.1
+FROM harbor.alpha-quant.tech:5000/3rd_party/docker.io/bitnami/keycloak:23.0.7-debian-12-r3
 
 # COPY libs/keywind/theme/keywind /opt/keycloak/themes/keywind
 COPY libs/keywind/theme/keywind /opt/bitnami/keycloak/themes/keywind
-# git@gitlab.alpha-quant.cc:mirrors/github.com/lukin/keywind.git
+# git@gitlab.alpha-quant.tech:mirrors/github.com/lukin/keywind.git
 ```
 
 使用如下的 values
@@ -19,7 +19,7 @@ global:
     - name: platform-oci-image-pull-secrets
 
 image:
-  registry: harbor.alpha-quant.cc
+  registry: harbor.alpha-quant.tech
   repository: 3rd_party/registry.cn-chengdu.aliyuncs.com/alpha-quant/keycloak
   tag: "main-94e51b0-240320180624"
   pullPolicy: IfNotPresent
@@ -78,7 +78,7 @@ resources:
 ingress:
   enabled: true
   ingressClassName: "nginx"
-  hostname: platform.alpha-quant.cc
+  hostname: platform.alpha-quant.tech
 
 logging:
   output: default
@@ -100,7 +100,7 @@ postgresql:
     database: keycloak
   architecture: standalone
   image:
-    registry: harbor.alpha-quant.cc
+    registry: harbor.alpha-quant.tech
     repository: 3rd_party/docker.io/bitnami/postgresql
     tag: 16.2.0-debian-12-r8
   nodeSelector: *customNodeSelector
@@ -132,7 +132,7 @@ helm pull \
 
 helm push --insecure-skip-tls-verify \
     keycloak-19.3.3.tgz \
-    oci://harbor.alpha-quant.cc/3rd_party/charts
+    oci://harbor.alpha-quant.tech/3rd_party/charts
 
 helm upgrade \
     --install \
@@ -142,7 +142,7 @@ helm upgrade \
     -f ./values.yaml \
     keycloak \
     --version 19.3.3 \
-    oci://harbor.alpha-quant.cc/3rd_party/charts/keycloak
+    oci://harbor.alpha-quant.tech/3rd_party/charts/keycloak
 ```
 
 
