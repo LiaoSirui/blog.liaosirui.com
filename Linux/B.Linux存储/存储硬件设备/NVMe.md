@@ -59,3 +59,6 @@ sudo nvme list-ns /dev/nvme0
 - <https://www.cnblogs.com/ingram14/p/15778947.html>
 
 - <https://cloud-atlas.readthedocs.io/zh-cn/latest/linux/storage/nvme/nvme-cli.html>
+
+查看那 nvme 寿命 <https://yan-jian.com/%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8B%E5%9B%BA%E6%80%81%E7%A1%AC%E7%9B%98%E5%AF%BF%E5%91%BD.html>
+
