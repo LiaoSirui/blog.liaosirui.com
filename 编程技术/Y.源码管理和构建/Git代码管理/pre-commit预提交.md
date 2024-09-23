@@ -72,8 +72,6 @@ repos:
 
 ```
 
-
-
 ## Golang 配置
 
 ## Python 配置

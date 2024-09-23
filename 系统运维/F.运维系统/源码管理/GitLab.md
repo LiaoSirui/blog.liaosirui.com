@@ -1,11 +1,4 @@
-## 参考文档
-
-- <https://docs.authing.cn/v2/integration/gitlab/?step=2>
-
-- <https://todoit.tech/k8s/gitlab-ci/>
-- <https://www.qikqiak.com/k8s-book/docs/65.Gitlab%20CI.html>
-
-## gitlab 常用命令
+## GitLab 常用命令
 
 启动所有 gitlab 组件
 
@@ -79,3 +72,33 @@ user.password='abcd1234!'
 user.save!
 ```
 
+## 仓库和 hash 对应
+
+Gitlab 的仓库存放在 `@hashed` 目录中
+
+对应方式：
+
+```bash
+echo -n $ID | sha256sum
+```
+
+## 参考资料
+
+- GitLab 全局搜索之 SourceGraph <https://wiki.eryajf.net/pages/042695/#_4-%E5%B0%8F%E7%BB%93>
+
+- <https://guoxudong.io/post/gitlab-beautify-issue/>
+
+- <https://docs.authing.cn/v2/integration/gitlab/?step=2>
+
+- <https://todoit.tech/k8s/gitlab-ci/>
+- <https://www.qikqiak.com/k8s-book/docs/65.Gitlab%20CI.html>
+
+- <https://zj-git-guide.readthedocs.io/zh-cn/latest/platform/%5BGitLab%5D%E5%AE%89%E8%A3%85/>
+
+
+
+github 主页美化
+
+- <https://zj-git-guide.readthedocs.io/zh-cn/latest/platform/%5BGithub%5D%E4%B8%BB%E9%A1%B5%E7%BE%8E%E5%8C%96/>
+
+- <https://cloud.tencent.com/developer/article/2118691>
