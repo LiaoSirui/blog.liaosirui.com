@@ -751,18 +751,19 @@ services:
     image: docker.io/fredliang/derper:latest
     volumes:
       - /var/run/tailscale/tailscaled.sock:/var/run/tailscale/tailscaled.sock
-    network_mode: "host"
+    # network_mode: "host"
     restart: always
     environment:
       - DERP_DOMAIN=derp-bj.com
       - DERP_CERT_MODE=letsencrypt
-      - DERP_ADDR=:19850
+      - DERP_ADDR=:19851
       - DERP_VERIFY_CLIENTS=true
-    # networks:
-    #   - tailscale
-    # ports:
-    #   - 3478:3478/udp
-    #   - 19850:19850
+    networks:
+      - tailscale
+    ports:
+      - 3478:3478/udp
+      - 19850:80
+      - 19851:19851
 networks:
   tailscale:
     ipam:
@@ -778,7 +779,7 @@ networks:
 tailscale netcheck
 ```
 
-tailscale netcheck 实际上只检测 3478/udp 的端口， 就算 netcheck 显示能连，也不一定代表 23479 端口可以转发流量，最好是打开 DERP_ADDR 验证一下
+tailscale netcheck 实际上只检测 3478/udp 的端口， 就算 netcheck 显示能连，也不一定代表端口可以转发流量，最好是打开 DERP_ADDR 验证一下
 
 端口见：<https://tailscale.com/kb/1082/firewall-ports>
 
