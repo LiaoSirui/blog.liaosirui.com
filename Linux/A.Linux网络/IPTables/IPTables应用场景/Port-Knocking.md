@@ -102,6 +102,16 @@ knock -v SERVER_IP 7000 8000 9000 -d 500
 knock -v SERVER_IP 9000 8000 7000 -d 500
 ```
 
+ssh config 中添加
+
+```bash
+Match host repo03 exec "nc -zw 3 %h 10022 || knock -d 500 %h 7000 8000 9000"
+Host repo03
+    HostName 192.168.16.45
+    User root
+    Port 10022
+```
+
 ## 其他
 
 注意事项：
