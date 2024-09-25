@@ -154,3 +154,18 @@ iscsiadm -m node \
   -u
 ```
 
+验证是否还存在 iSCSI Session
+
+```bash
+iscsiadm -m session -P 3 | grep Attached
+```
+
+删除发现 iSCSI 信息
+
+```bash
+iscsiadm -m node \
+  -T iqn.2021-11.pip.cc:server \
+  -o delete
+```
+
+`ll /var/lib/iscsi/nodes/` 查看为空，即在客户端删除了 iSCSI Target
