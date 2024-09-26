@@ -96,6 +96,14 @@ Advanced -> ACPI Settings -> NUMA -> Enabled
 
 选择【管理】-【硬件】-【电源管理】-【更改策略】- 高性能
 
+- 关闭内存交换
+
+- 更改密码策略
+
+选择“管理”选项卡——“高级设置”，找到“Security.AccountLockFailures”，然后右键选择“编辑选项“ 设置为 0
+
+- 找到“VMkernel.Boot.hyperthreadingMitigationIntraVM”，鼠标右键选择“编辑设置”。设置为 False
+
 ## 参考文档
 
 - <https://blog.csdn.net/z136370204/article/details/110794027>

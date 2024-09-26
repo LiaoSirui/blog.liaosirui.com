@@ -74,3 +74,15 @@ esxcfg-scsidevs -c
 - Jumpstart plugin late-filesystems activation failed   Logs are stored on non-persistent storage. Consult product documentation to configure a st*** log server or a scratch partition.
 
 try skipping it by adding `jumpstart.disable=late-filesystems` in the boot options (SHIFT+O on boot)
+
+##  (53/189) for the SMP_BootAPs module
+
+The KVM is a TrendNet PS/2 KVM and there was a USB->PS/2 adapter on it. Once that was removed and a standard USB keyboard attached (monitor still from KVM), the system booted right into the installer and completed setup with no trouble.
+
+尝试：先关闭超线程进行安装
+
+the solution is really simple, go to bios and disable the hyper threading first, you will able to get back to ESXi host without hyper threading.
+
+Then, set VMkernel.Boot.hyperthreadingMitigationIntraVM = false (don't set the wrong one), esxi will use SCAv2 after reboot, then restart.
+
+After that, go to bios enable hyper threading, the esxi should be able to start without CVE-2018-3646 warning now
