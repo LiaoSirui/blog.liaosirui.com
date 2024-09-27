@@ -74,6 +74,12 @@ iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 iptables -A INPUT -p tcp --dport 10022 -j REJECT
 ```
 
+查看规则
+
+```bash
+iptables -L INPUT
+```
+
 假设目标服务器开启了 knockd 敲门服务，序列号为 7000/8000/9000，开启其 ssh 端口方法为：
 
 ```bash
