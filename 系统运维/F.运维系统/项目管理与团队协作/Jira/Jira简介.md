@@ -40,16 +40,16 @@ Jira 是 Atlassian 公司出品的项目与事务跟踪工具，被广泛应用�
 
 | 插件名                                  | 用途                                                         | 地址                                                         |
 | --------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| JSU Automation Suite for Jira Workflows | 1、制作复杂，严谨的工作流必备<br/>2、增强工作流的条件、验证器、后处理工程<br/>2、 添加jira问题工作流转关的依赖检查， 数据聚合<br/>3、 添加灵活的工作流检查条件 | <https://marketplace.atlassian.com/apps/5048/jsu-automation-suite-for-jira-workflows?hosting=server&tab=overview> |
-| ScriptRunner for Jira                   | 1、JIRA 工作流定制化开发<br/>2、JIRA 界面定制化开发<br/>3、通过 script 脚本灵活扩展 JIRA 功能 | <https://marketplace.atlassian.com/apps/6820/scriptrunner-for-jira?hosting=server&tab=overview> |
-| Chinese (China) Language Patch for Jira | 专业的中文翻译包，修复原厂翻译的错误， 修复超过 1000 处翻译问题 | <https://marketplace.atlassian.com/apps/1218796/chinese-china-language-patch-for-jira?hosting=server&tab=overview> |
-| Xporter - Export issues from Jira       | Issue 导出工具，可以定制模板，导出成 Excel 、 Word、 PDF 格式 | <https://marketplace.atlassian.com/apps/891368/xporter-export-issues-from-jira?hosting=server&tab=overview> |
+| JSU Automation Suite for Jira Workflows | 1、制作复杂，严谨的工作流必备<br/>2、增强工作流的条件、验证器、后处理工程<br/>2、 添加jira问题工作流转关的依赖检查， 数据聚合<br/>3、 添加灵活的工作流检查条件 | <https://marketplace.atlassian.com/apps/5048/jsu-automation-suite-for-jira-workflows?tab=overview&hosting=datacenter> |
+| ScriptRunner for Jira                   | 1、JIRA 工作流定制化开发<br/>2、JIRA 界面定制化开发<br/>3、通过 script 脚本灵活扩展 JIRA 功能 | <https://marketplace.atlassian.com/apps/6820/scriptrunner-for-jira?hosting=datacenter&tab=overview> |
+| Chinese (China) Language Patch for Jira | 专业的中文翻译包，修复原厂翻译的错误， 修复超过 1000 处翻译问题 | <https://marketplace.atlassian.com/apps/1218796/chinese-china-language-patch-for-jira?tab=overview&hosting=datacenter> |
+| Xporter - Export issues from Jira       | Issue 导出工具，可以定制模板，导出成 Excel 、 Word、 PDF 格式 | <https://marketplace.atlassian.com/apps/891368/xporter-export-issues-from-jira?hosting=datacenter&tab=overview> |
+| eazyBI Reports and Charts for Jira      | 1、JIRA 数据分析工具，灵活的定制报表和数据展现<br />2、 支持通过拓展， 实现多维度的数据统计及展示 | <https://marketplace.atlassian.com/apps/1211051/eazybi-reports-and-charts-for-jira?tab=overview&hosting=datacenter> |
 | Mattermost Connector for Jira           | 连接到 Mattermost                                            | <https://marketplace.atlassian.com/apps/1219477/mattermost-connector-for-jira?hosting=server&tab=overview> |
 | Timesheets by Tempo                     | 1、JIRA 记录工时<br/>2、按个人，项目、团队统计工时，生成报表<br/>3、工时审批流程 |                                                              |
 | Table Grid Editor                       | 增加 table的字段，可以在issue中使用表格类型字段              |                                                              |
 | Structure - Project Management at Scale | 1、结构化、层次化展现JIRA Issue的关系<br/>2、项目计划        |                                                              |
 | ProForma: Forms & Checklist for Jira    | JIRA 动态表单                                                |                                                              |
-| eazyBI Reports and Charts for Jira      | 1、JIRA 数据分析工具，灵活的定制报表和数据展现<br />2、 支持通过拓展， 实现多维度的数据统计及展示 |                                                              |
 | Xray : 测试管理                         | 1、测试用例管理<br/>2、测试过程管理，包括测试执行，测试计划<br/>3、测试需求覆盖率<br/>4、测试 bug 关系管理<br/>5、各种报表 |                                                              |
 
 ## 参考文档
@@ -65,3 +65,5 @@ Jira 是 Atlassian 公司出品的项目与事务跟踪工具，被广泛应用�
 - <https://blog.csdn.net/Nicolege678/article/details/124605511>
 
 - <https://blog.csdn.net/qq_41386332/article/details/108658431>
+
+- <https://doc.devpod.cn/jira/jira-360469.html>

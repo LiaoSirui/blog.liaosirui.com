@@ -344,7 +344,7 @@ https://confluence.atlassian.com/doc/configuring-system-properties-168002854.htm
 
 ## 备份与恢复
 
-## 参考文档：
+## 参考文档
 
 - <https://confluence.atlassian.com/doc/production-backup-strategy-38797389.html>
 
