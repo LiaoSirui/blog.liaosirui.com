@@ -20,7 +20,7 @@ chmod a+x ./setup.sh
 配置 mailserver 本身。首先需要添加一个邮件账户并设置密码，在未添加账户的情况下 mailserver 会反复重启
 
 ```bash
-./setup.sh email add admin@alpha-quant.tech
+docker compose exec -ti mailserver setup email add postmaster@alpha-quant.tech
 ```
 
 ## DNS
@@ -48,6 +48,19 @@ rDNS 的设置并不在你的域名管理处，而是在你的主机管理处。
 
 如果你的主机管理面板没有设置 rDNS 的地方，你可能需要咨询主机提供商客服。在这里，我将承载我邮件服务器的主机的 rDNS 设为 `mail.alpha-quant.tech`，和上文设置的 A 记录遥相呼应
 
+测试
+
+```
+$ dig @1.1.1.1 +short MX alpha-quant.tech
+mail.alpha-quant.tech
+$ dig @1.1.1.1 +short A mail.alpha-quant.tech
+11.22.33.44
+$ dig @1.1.1.1 +short -x 11.22.33.44
+mail.alpha-quant.tech
+```
+
+## DKIM, DMARC & SPF
+
 ### SPF
 
 SPF 记录用于指定哪些服务器是指定的发信服务器，以阻止伪造的信件。
@@ -60,6 +73,11 @@ SPF 记录用于指定哪些服务器是指定的发信服务器，以阻止伪�
 
 在设置这条记录后，仅有来源于 MX 的发信能够通过 SPF 检查。如果你需要从多个服务器发信，可以按 SPF 记录语法加入所需的其他服务器
 
+```bash
+"v=spf1 mx mx:alpha-quant.tech -all"
+# 允许当前域名和 alpha-quant.tech 的 mx 记录对应的 IP 地址。
+```
+
 ### DKIM
 
 相较于 SPF，DKIM 是更进一步的身份验证。DKIM 使用了与 SSL 证书类似的非对称机制，但通过 TXT 记录取代了 CA 的位置。我们通过一条符合 DKIM 语法的 TXT 记录发布公钥，在发信时附上私钥的签名。收信人通过 DNS 查询获得公钥验签，以确认发信人权威性。
@@ -67,7 +85,7 @@ SPF 记录用于指定哪些服务器是指定的发信服务器，以阻止伪�
 在设置记录前，需要先生成用于 DKIM 的密钥对。在这里指定使用 2048 位长度，因为默认的 4096 位可能存在兼容性问题
 
 ```bash
-./setup.sh config dkim keysize 2048
+docker compose exec -ti mailserver setup config dkim keysize 2048
 cat docker-data/dms/config/opendkim/keys/alpha-quant.tech/mail.txt
 ```
 
@@ -93,7 +111,7 @@ _dmarc IN TXT "v=DMARC1; p=quarantine; rua=mailto:dmarc.report@example.com; ruf=
 
 | TYPE | HOST                             | ANSWER                                                       |
 | ---- | -------------------------------- | ------------------------------------------------------------ |
-| TXT  | alpha-quant.tech                 | v=spf1 mx include:_spf.porkbun.com ~all                      |
+| TXT  | alpha-quant.tech                 | v=spf1 mx include:alpha-quant.tech ~all                      |
 | TXT  | _dmarc.alpha-quant.tech          | v=DMARC1; p=quarantine; rua=mailto:dmarc.report@alpha-quant.tech; ruf=mailto:dmarc.report@alpha-quant.tech; sp=quarantine; ri=86400 |
 | TXT  | mail._domainkey.alpha-quant.tech | v=DKIM1; h=sha256; k=rsa;p=MII…LONG_PUBLIC_KEY…QAB           |
 
@@ -104,7 +122,7 @@ _dmarc IN TXT "v=DMARC1; p=quarantine; rua=mailto:dmarc.report@example.com; ruf=
 - `Catch-All`
 
 ```bash
-./setup.sh email add info@alpha-quant.tech
+docker compose exec -ti mailserver setup email add info@alpha-quant.tech
 echo "@alpha-quant.tech info@alpha-quant.tech" >> docker-data/dms/config/postfix-virtual.cf
 ```
 
@@ -121,7 +139,7 @@ echo "admin@alpha-quant.tech admin@alpha-quant.tech" >> docker-data/dms/config/p
 - `no-reply`
 
 ```bash
-./setup.sh email add no-reply@alpha-quant.tech 
+docker compose exec -ti mailserver setup email add no-reply@alpha-quant.tech 
 echo "devnull: /dev/null" >> docker-data/dms/config/postfix-aliases.cf
 echo "no-reply@alpha-quant.tech devnull\ndevnull@alpha-quant.tech devnull" >> docker-data/dms/config/postfix-virtual.cf
 ```
