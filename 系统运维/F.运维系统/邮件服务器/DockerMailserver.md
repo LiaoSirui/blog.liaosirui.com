@@ -147,3 +147,11 @@ echo "no-reply@alpha-quant.tech devnull\ndevnull@alpha-quant.tech devnull" >> do
 注册一个别名 `devnull` 指向 `/dev/null`，然后将 `no-reply` 账户的邮件全部转到 `devnull`。此时此刻我们又要感谢虚拟的高优先级，否则我们无法将发往 `no-reply` 这个真实账户的信件转发
 
 需要特别注意的是，如果设置了任何 Catch-All 规则，则需要额外添加一条 `devnull@alpha-quant.tech devnull` 规则
+
+- `config/postfix-main.cf`
+
+```bash
+smtpd_helo_required=no
+smtpd_helo_restrictions=
+```
+

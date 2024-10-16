@@ -75,7 +75,43 @@ PromQL 查询中对时间的引用只有相对引用，比如 `[5m]`，表示过
 
 ### 区间查询
 
+## 聚合操作
 
+提供了下列内置的聚合操作符，这些操作符作用域瞬时向量。可以将瞬时表达式返回的样本数据进行聚合，形成一个新的时间序列。
+
+- `sum` (求和)
+- `min` (最小值)
+- `max` (最大值)
+- `avg` (平均值)
+- `stddev` (标准差)
+- `stdvar` (标准方差)
+- `count` (计数)
+- `count_values` (对 value 进行计数)
+- `bottomk` (后 n 条时序)
+- `topk` (前 n 条时序)
+- `quantile` (分位数)
+
+使用聚合操作的语法如下：
+
+```
+<aggr-op>([parameter,] <vector expression>) [without|by (<label list>)]
+```
+
+其中只有`count_values`, `quantile`, `topk`, `bottomk`支持参数(parameter)。
+
+without 用于从计算结果中移除列举的标签，而保留其它标签。by 则正好相反，结果向量中只保留列出的标签，其余标签则移除。通过 without 和 by 可以按照样本的问题对数据进行聚合
+
+例如：
+
+```
+sum(http_requests_total) without (instance)
+```
+
+等价于
+
+```
+sum(http_requests_total) by (code, handler, job, method)
+```
 
 ## 参考文档
 

@@ -1,52 +1,63 @@
+## 安装
 
-## 仓库访问方式
+使用 Docker 安装的官方文档地址：<https://www.jfrog.com/confluence/display/JFROG/Installing+Artifactory#InstallingArtifactory-DockerInstallation>
 
-当选择镜像仓库后，按照基础配置只需要填写一个 RepositoryKey 就可以了，key 很重要，作为仓库的唯一标识
+### 镜像拉取
 
-在jfrog系统http配置中，对于docker access提供了三种不同的访问方式，默认为Repository path，这三种方式影响的是push/pull镜像时所使用的格式。
+版本发布页面：<https://www.jfrog.com/confluence/display/JFROG/Artifactory+Release+Notes>
 
-### Port
-
-使用port方式访问时，在新建docker仓库时需要指定docker registry的binding port，对于每个镜像仓库都会使用一个不同的端口来区分不同的repository
-
-镜像格式：
-
-```bash
-docker pull / push 192.168.26.2:<REPOSITORY_PORT>/<IMAGE>:<TAG>
-docker login -u <USER_NAME> -p <USER_PASSWORD> 192.168.26.2:<REPOSITORY_PORT>
-```
-
-### Repository Path(default)
-
-使用path方式时，不需要占用和配置额外的registry端口，而是通过url的path来区分
-
-镜像格式：
-
-```bash
-docker pull / push 192.168.26.2:8081/<REPOSITORY_KEY>/<IMAGE>:<TAG>
-docker login -u <USER_NAME> -p <USER_PASSWORD> 192.168.26.2:8081
-```
-
-### Sub domain
-
-使用sub domain时，需要配置 server name expression
-
-镜像格式：
-
-```bash
-docker pull / push <REPOSITORY_KEY>.192.168.26.2/<IMAGE>:<TAG>
-docker login -u <USER_NAME> -p <USER_PASSWORD> <REPOSITORY_KEY>.192.168.26.2
-```
-
-## 启动容器
+目前最新版本是 7.90.14，详见：<https://jfrog.com/help/r/jfrog-release-information/artifactory-release-notes>
 
 文档使用的镜像清单
 
 ```bash
 docker.io/openresty/openresty:1.21.4.1-2-alpine
-releases-docker.jfrog.io/jfrog/artifactory-jcr:7.41.7
+releases-docker.jfrog.io/jfrog/artifactory-jcr:7.90.14
 # releases-docker.jfrog.io/jfrog/artifactory-jcr:latest
 ```
+
+### 持久化目录
+
+先准备一个持久化目录
+
+```bash
+export JFROG_HOME=/registry
+```
+
+新建一个配置文件
+
+```bash
+mkdir -p $JFROG_HOME/artifactory/var/etc/
+
+touch $JFROG_HOME/artifactory/var/etc/system.yaml
+```
+
+更改目录权限
+
+```bash
+chown -R 1030:1030 $JFROG_HOME/artifactory/var
+```
+
+### 启动容器
+
+按照如下方式启动容器
+
+```bash
+docker run \
+  --name artifactory \
+  -itd \
+  --restart=always \
+  -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory \
+  -p 8081:8081 \
+  -p 8082:8082 \
+  releases-docker.jfrog.io/jfrog/artifactory-jcr:7.46.11
+```
+
+
+
+
+
+## 启动容器
 
 准备数据目录
 
@@ -62,7 +73,6 @@ chown -R 1030:1030 $JFROG_HOME/artifactory/var
 启动 artifactory-jcr
 
 ```bash
-
 docker run \
     --name artifactory \
     -itd \
@@ -78,7 +88,7 @@ docker run \
 
 登录后进行初始化流程：<http://192.168.31.100:8082/ui/admin/onboarding-page>
 
-## 配置 nginx 代理
+## 配置 Nginx 代理
 
 先配置好镜像仓库使用的类型，比如这里选择的 port 方式
 

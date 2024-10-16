@@ -6,6 +6,10 @@ JFrog 发布了社区版本的 JCR (JFrog Container Registry)，作为一款功�
 
 官方简介页面：<https://www.jfrog.com/confluence/display/JFROG/JFrog+Container+Registry>
 
+## 开源产品
+
+
+
 ## 制品仓库类型
 
 在 jfrog 中，制品仓库又可分为四种类型：
