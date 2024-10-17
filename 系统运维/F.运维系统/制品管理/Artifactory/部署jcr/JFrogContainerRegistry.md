@@ -148,6 +148,3 @@ docker run \
   docker.io/library/nginx:1.23.2-alpine
 ```
 
-## 参考资料
-
-- <https://www.cnblogs.com/anliven/p/13543970.html>

@@ -2,6 +2,8 @@
 
 使用 Docker 安装的官方文档地址：<https://www.jfrog.com/confluence/display/JFROG/Installing+Artifactory#InstallingArtifactory-DockerInstallation>
 
+下载地址：<https://jfrog.com/download-jfrog-container-registry/>
+
 ### 镜像拉取
 
 版本发布页面：<https://www.jfrog.com/confluence/display/JFROG/Artifactory+Release+Notes>
@@ -13,10 +15,21 @@
 ```bash
 docker.io/openresty/openresty:1.21.4.1-2-alpine
 releases-docker.jfrog.io/jfrog/artifactory-jcr:7.90.14
+# docker.bintray.io/jfrog/artifactory-jcr:latest
 # releases-docker.jfrog.io/jfrog/artifactory-jcr:latest
 ```
 
 ### 持久化目录
+
+编辑 `.env` 文件
+
+执行初始化脚本
+
+```bash
+./config.sh
+```
+
+
 
 先准备一个持久化目录
 
@@ -38,6 +51,39 @@ touch $JFROG_HOME/artifactory/var/etc/system.yaml
 chown -R 1030:1030 $JFROG_HOME/artifactory/var
 ```
 
+修改 `system.yaml`
+
+```bash
+```
+
+
+
+生成 master key
+
+创建  Master Key
+
+```bash
+# Create a key
+export MASTER_KEY=$(openssl rand -hex 32)
+echo ${MASTER_KEY}
+# 68884a25b2d196815f78583c85434f800d1c497d4ab95284af9d08bdf8c95b0d
+ 
+# Create a secret containing the key. The key in the secret must be named master-key
+# kubectl create secret generic my-masterkey-secret -n artifactory --from-literal=master-key=${MASTER_KEY}
+```
+
+创建 Join Key
+
+```bash
+# Create a key
+export JOIN_KEY=$(openssl rand -hex 32)
+echo ${JOIN_KEY}
+# 2e367b1ef373d43f018ef965fbffe03f1bbe399f0e3d69a8ea28643153e86f78
+
+# Create a secret containing the key. The key in the secret must be named join-key
+# kubectl create secret generic my-joinkey-secret -n artifactory --from-literal=join-key=${JOIN_KEY}
+```
+
 ### 启动容器
 
 按照如下方式启动容器
@@ -50,36 +96,7 @@ docker run \
   -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory \
   -p 8081:8081 \
   -p 8082:8082 \
-  releases-docker.jfrog.io/jfrog/artifactory-jcr:7.46.11
-```
-
-
-
-
-
-## 启动容器
-
-准备数据目录
-
-```bash
-# 定义基础数据目录
-export JFROG_HOME=/data/artifactory-data
-
-mkdir -p $JFROG_HOME/artifactory/var/etc/ && cd $JFROG_HOME/artifactory/var/etc/
-touch ./system.yaml
-chown -R 1030:1030 $JFROG_HOME/artifactory/var
-```
-
-启动 artifactory-jcr
-
-```bash
-docker run \
-    --name artifactory \
-    -itd \
-    -v $JFROG_HOME/artifactory/var/:/var/opt/jfrog/artifactory \
-    -p 8081:8081 \
-    -p 8082:8082 \
-    releases-docker.jfrog.io/jfrog/artifactory-jcr:7.41.7
+  releases-docker.jfrog.io/jfrog/artifactory-jcr:7.90.14
 ```
 
 访问浏览器，输入地址，例如 192.168.31.100:8081
@@ -87,6 +104,10 @@ docker run \
 初始用户名密码：admin /  password 登录后修改即可
 
 登录后进行初始化流程：<http://192.168.31.100:8082/ui/admin/onboarding-page>
+
+## 配置 LDAP
+
+![image-20241017174216135](./.assets/JCR部署和运维/image-20241017174216135.png)
 
 ## 配置 Nginx 代理
 
@@ -187,3 +208,5 @@ docker run -itd --name nginx-artifactory-proxy \
 
 - 安装 Artifactory：<https://www.jfrog.com/confluence/display/JFROG/Installing+Artifactory#1147598461cac81dc9df443cca4c115804d331211>
 - Artifactory Docker Registry 的配置 <https://www.jfrog.com/confluence/display/JFROG/Docker+Registry>
+
+- <https://www.cnblogs.com/anliven/p/13543970.html>
