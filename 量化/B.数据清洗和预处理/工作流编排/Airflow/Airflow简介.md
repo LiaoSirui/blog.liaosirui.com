@@ -50,3 +50,5 @@ astronomer 基于airflow 做了一些扩展，可以实现 airflow 安全，产�
 ## 参考资料
 
 - <https://www.kancloud.cn/luponu/airflow-doc-zh/889658>
+
+- <https://blog.csdn.net/weixin_40046357/article/details/127456285>
