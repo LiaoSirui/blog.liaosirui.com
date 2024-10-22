@@ -42,12 +42,12 @@ cp harbor.yml.tmpl harbor.yml
 
 ```bash
 # 访问域名
-yq -i '.hostname = "harbor.local.liaosirui.com"' harbor.yml
-yq -i '.external_url = "https://harbor.local.liaosirui.com:5000"' harbor.yml
+yq -i '.hostname = "harbor.alpha-quant.tech"' harbor.yml
+yq -i '.external_url = "https://harbor.alpha-quant.tech"' harbor.yml
 
 # 端口
-yq -i '.http.port = 5001' harbor.yml
-yq -i '.https.port = 5000' harbor.yml
+yq -i '.http.port = 80' harbor.yml
+yq -i '.https.port = 443' harbor.yml
 
 # https 证书
 yq -i '.https.certificate = "/data/harbor/https-cert/tls.crt"' harbor.yml
@@ -73,9 +73,15 @@ bash ./install.sh --with-trivy
 
 部署完毕后，就可以使用这台机器的 5000 端口看到 Harbor 界面了
 
+## 第三方登录
 
+### 对接 MAD
 
-## 对接 OIDC
+文档：<https://goharbor.io/docs/2.11.0/administration/configure-authentication/>
+
+![image-20241022144408462](./.assets/Harbor部署和运维/image-20241022144408462.png)
+
+### 对接 OIDC
 
 CLI 密钥与 OIDC ID 令牌相关联。Harbor 将尝试刷新令牌，因此 CLI 密钥在 ID 令牌过期后仍然有效。但是，如果 OIDC 提供商未提供刷新令牌或刷新失败，CLI 密钥将失效。在这种情况下，请注销并通过 OIDC 提供商重新登录 Harbor，以便 Harbor 可以获取新的 ID 令牌。然后 CLI 密钥将再次起作用。
 
@@ -84,3 +90,35 @@ CLI 密钥与 OIDC ID 令牌相关联。Harbor 将尝试刷新令牌，因此 CL
 ## 升级 Harbor
 
 - <https://goharbor.io/docs/2.11.0/administration/upgrade/>
+
+## 仓库主从同步配置
+
+![img](./.assets/Harbor部署和运维/680719-20181226002146884-1230033513.png)
+
+在 Harbor 从仓库管理配置 Harbor 主仓库的信息，可以测试验证连通性
+
+![image-20241022134947395](./.assets/Harbor部署和运维/image-20241022134947395.png)
+
+在 Harbor 从仓库 复制管理配置 新建规则，可以创建手动执行规则和定时规则，对应选项有相关解析
+
+- 名称:复制规则的名称，自定义
+
+- 复制模式：Pull-based
+
+- 原仓库：选这个上面新建的连接
+
+- 触发模式：可以手动，也可以定时
+
+- 勾选覆盖
+
+保存
+
+## Trivy 镜像扫描
+
+- <https://mp.weixin.qq.com/s/hTnKPBDUqjbaLpX3Q9BEYQ>
+
+## Notary 镜像签名
+
+- <https://mp.weixin.qq.com/s/pwFa4M1tqG6OnNmZr2BwQg>
+
+`Docker Content Trust`(`DCT`)提供了对从远程 `Docker` 仓库上传和下载的镜像文件，使用数字签名的能力，其能够保证镜像文件的完整性和发布者的可信性。`DCT` 通过 `Docker` 标签对镜像文件是否进行签名进行区分，镜像发布者可以自行决定在哪些标签上进行签名
