@@ -1,10 +1,12 @@
-## 简介
+## OnlyOffice
+
+### OnlyOffice 简介
 
 OnlyOffice 是一款强大的在线 office 工具，我们通过他可以让客户脱离于客户端环境，直接从 web 端进行文档编写
 
 官网：https://www.onlyoffice.com/zh/
 
-## 部署
+### OnlyOffice 部署
 
 ```yaml
 services:
@@ -74,13 +76,13 @@ services:
 - <https://github.com/ONLYOFFICE/Docker-DocumentServer/blob/master/docker-compose.yml>
 - OnlyOffice Helm Chart 部署 <https://elma365.com/en//help/install-onlyoffice.html>
 
-## 集成
+### OnlyOffice 集成其他系统
 
 集成到 Jira：<https://api.onlyoffice.com/zh/editors/jira>
 
 集成到 Conflunce：<https://api.onlyoffice.com/zh/editors/confluence>
 
-## 其他
+### OnlyOffice 运维
 
 关闭证书校验
 
@@ -103,3 +105,23 @@ Win10 系统提取中文字体的方法：控制面板——搜字体——查�
 
 将当前文件夹 `C:\Users\Administrator\` 下的 winfont 文件夹内的字体全部拷贝到容器]的文件夹 `/usr/share/fonts/truetype` 中
 
+## DocSpace
+
+团队协作工具
+
+ONLYOFFICE 工作区也叫做 ONLYOFFICE Workspace，它是一款 ONLYOFFICE 推出的基于云计算的协同办公平台，适用于企业和团队协作。提供了文档编辑、电子表格、演示文稿、邮件、日历、即时通讯等功能。它支持多人协作，可以实现实时协作、版本控制、文档评论等功能
+
+仓库：
+
+- <https://github.com/ONLYOFFICE/Kubernetes-DocSpace>
+
+
+## 参考文档
+
+- <https://post.smzdm.com/p/avx9w257/>
+
+- <https://blog.csdn.net/m0_68274698/article/details/132069372>
+
+- <https://blog.csdn.net/VincentYoung/article/details/132384047>
+- <https://linuxstory.org/onlyoffice-doc-space/>
+- <https://www.dhorde.com/news/305.html>

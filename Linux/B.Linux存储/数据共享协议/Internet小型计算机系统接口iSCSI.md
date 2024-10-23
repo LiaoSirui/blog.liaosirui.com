@@ -143,6 +143,9 @@ iscsiadm -m node \
 
 ```bash
 /dev/sdb /data ext4 defaults,_netdev 0 0
+
+# 用于 systemd
+# systemctl list-units --type=mount
 ```
 
 卸载卷的方式如下
@@ -169,3 +172,10 @@ iscsiadm -m node \
 ```
 
 `ll /var/lib/iscsi/nodes/` 查看为空，即在客户端删除了 iSCSI Target
+
+查看挂载
+
+```bash
+iscsiadm -m node
+```
+
