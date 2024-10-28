@@ -29,6 +29,59 @@ Docker 部署：<https://docs.mattermost.com/install/install-docker.html#>
 
 - jitmi
 
+## Mattermost 维护
+
+### 中文搜索
+
+文档地址：<https://docs.mattermost.com/configure/enabling-chinese-japanese-korean-search.html>
+
+配置 SCWS
+
+```bash
+# 取得 SCWS 代码
+wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2
+# 解压缩
+tar xvjf scws-1.2.3.tar.bz2
+# 进入解压后的目录
+cd scws-1.2.3
+# 执行配置脚本、编译并安装
+./configure --prefix=/usr/local/scws ; make ; make install
+
+# 可选：检查文件是否存在
+ls -al /usr/local/scws/lib/libscws.la
+/usr/local/scws/bin/scws -h
+# 可选：将词典安装在 /usr/local/scws/etc 中
+cd /usr/local/scws/etc
+wget http://www.xunsearch.com/scws/down/scws-dict-chs-gbk.tar.bz2
+wget http://www.xunsearch.com/scws/down/scws-dict-chs-utf8.tar.bz2
+tar xvjf scws-dict-chs-gbk.tar.bz2
+tar xvjf scws-dict-chs-utf8.tar.bz2
+```
+
+配置 Zhparser
+
+```
+# 下载 Zhparser 源代码
+git clone https://github.com/amutu/zhparser.git
+# 进入下载后的目录
+cd zhparser
+# 编译并安装
+SCWS_HOME=/usr/local/scws make && make install
+```
+
+自己构建
+
+```bash
+# 更新本地缓存
+apt update
+# 配置 SCWS 时需要的依赖
+apt install wget make gcc
+# 配置 Zhparser 时需要的依赖
+apt install git postgresql-server-dev-13
+```
+
+使用 ES 进行索引 <https://docs.mattermost.com/scale/elasticsearch.html>
+
 ## Hack
 
 参考：<https://i.urox.cn/2020-05-10-i-learned-assembly-language.html>

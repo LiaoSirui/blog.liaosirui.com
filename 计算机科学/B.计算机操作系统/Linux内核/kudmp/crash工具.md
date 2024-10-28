@@ -27,50 +27,49 @@ crash vmcore /usr/lib/debug/lib/modules/<对应内核调试文件>/vmlinux
 查看系统中所有进程的信息
 
 ```bash
-# crash /path/to/vmcore
-crash> ps
+ps
 ```
 
 查看进程的内存映射情况
 
 ```bash
-# crash /path/to/vmcore
-crash> vm
+vm
 ```
 
 查看所有CPU的状态
 
 ```bash
-# crash /path/to/vmcore
-crash> cpu
+cpu
 ```
 
 查看内核模块信息
 
 ```bash
-# crash /path/to/vmcore
-crash> mod
+mod
 ```
 
 查看某个函数的调用栈
 
 ```bash
-# crash /path/to/vmcore
-crash> bt func_name
+bt func_name
 ```
 
 列出所有可用的命令
 
 ```bash
-# crash /path/to/vmcore
-crash> help
+help
 ```
 
 分析崩溃发生的位置
 
 ```bash
-# crash /path/to/vmcore
-crash> bt -a
+bt -a
+```
+
+查看内存使用信息
+
+```bash
+kmem -i
 ```
 
 ## 常见问题
