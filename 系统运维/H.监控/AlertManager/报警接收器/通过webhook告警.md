@@ -46,6 +46,66 @@
 
 ```
 
+示例发送
+
+```python
+import json
+from datetime import datetime
+import requests
+ 
+ 
+access_token = (
+    "25fcbdc3b09c5ac1e76bb911bb17d2a0d748397f9d958cc98a4bffa4032e996c"
+)
+ 
+url = (
+    "http://192.168.16.185:18081/prometheusalert?"
+    "type=dd&tpl=prometheus-dd&"
+    f"ddurl=https://oapi.dingtalk.com/robot/send?access_token={access_token}"
+)
+ 
+labels = {
+    "alertname": "测试告警",
+    "instance": "localhost:8848",
+    "job": "test",
+    "severity": "veryCritical",
+}
+ 
+annotations = {
+    "description": "测试告警详情 description",
+    "summary": "测试告警详情 summary",
+}
+ 
+payload = json.dumps(
+    {
+        "receiver": "webhook",
+        "status": "firing",
+        "alerts": [
+            {
+                "status": "firing",
+                "labels": labels,
+                "annotations": annotations,
+                "startsAt": f"{datetime.now().isoformat()}",
+                "endsAt": "0001-01-01T00:00:00Z",
+                "fingerprint": "451c9ca7ae1697e6",
+            }
+        ],
+        "groupLabels": labels,
+        "commonLabels": labels,
+        "commonAnnotations": annotations,
+        "externalURL": "https://platform.liangkui.co/platform/alertmanager",
+        "version": "4",
+        "groupKey": "{}:" + str(labels),
+        "truncatedAlerts": 0,
+    }
+)
+headers = {"Content-Type": "application/json"}
+ 
+response = requests.request("POST", url, headers=headers, data=payload)
+ 
+print(response.text)
+```
+
 项目列表：
 
 - <https://github.com/feiyu563/PrometheusAlert>

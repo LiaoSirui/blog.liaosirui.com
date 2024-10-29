@@ -9,7 +9,7 @@ QuestDB 是一款针对时序数据实时处理优化的关系型列存数据库
 
 ## 部署 QuestDB
 
-- 9000 - REST API and Web Console
+- 9000 - REST API和 Web 控制台
 - 9009 - InfluxDB line protocol
 - 8812 - Postgres wire protocol
 - 9003 - Min health server
@@ -45,8 +45,12 @@ services:
     cpuset: '0-3'
 ```
 
-
-
 ## 参考资料
 
 - <https://zhuanlan.zhihu.com/p/434424288>
+
+- <https://spytensor.com/index.php/archives/7/>
+
+- <https://docs.dolphindb.cn/zh/tutorials/l2_stk_data_proc_2.html>
+
+- <https://lib.tsinghua.edu.cn/resource/qh/guide/RESSET%20dictionary%20enhanced.xlsx#:~:text=1.%E8%A1%A8%E5%90%8D%E7%BC%A9%E5%86%99%EF%BC%9A%E6%8C%87%E6%95%B0,%E8%B5%84%E4%BA%A7%E6%94%AF%E6%8C%81%E8%AF%81%E5%88%B8%EF%BC%88Abs%EF%BC%89%E3%80%82>
