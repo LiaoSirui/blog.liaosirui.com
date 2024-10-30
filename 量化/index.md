@@ -191,7 +191,7 @@ constraints = ({'type': 'eq', 'fun': lambda weights: np.sum(weights) - 1})
 optimal_weights = minimize(portfolio_variance, initial_weights, args=(covariance_matrix,), bounds=bounds, constraints=constraints)
 ```
 
-- Scikit-learn 
+- Scikit-learn
 
 Scikit-learn 是一个用于机器学习的库。在量化投资中，Scikit-learn 可以用于预测股票价格或者创建股票的分类模型。例如，你可以使用 Scikit-learn 的随机森林模型来预测股票价格：
 

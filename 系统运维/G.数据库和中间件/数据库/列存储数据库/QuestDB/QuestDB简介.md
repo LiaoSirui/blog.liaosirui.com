@@ -54,3 +54,11 @@ services:
 - <https://docs.dolphindb.cn/zh/tutorials/l2_stk_data_proc_2.html>
 
 - <https://lib.tsinghua.edu.cn/resource/qh/guide/RESSET%20dictionary%20enhanced.xlsx#:~:text=1.%E8%A1%A8%E5%90%8D%E7%BC%A9%E5%86%99%EF%BC%9A%E6%8C%87%E6%95%B0,%E8%B5%84%E4%BA%A7%E6%94%AF%E6%8C%81%E8%AF%81%E5%88%B8%EF%BC%88Abs%EF%BC%89%E3%80%82>
+
+- 委托数据和成交数据合在一起，称为TAQ（Trades and Quotes）行情
+
+- <https://blog.csdn.net/jilo88/article/details/135683453>
+
+- <https://www.donet5.com/home/Doc?typeId=2434>
+
+- <https://juejin.cn/post/7176878196892106808>
