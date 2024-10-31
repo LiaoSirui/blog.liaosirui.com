@@ -8,6 +8,8 @@ AllowTcpForwarding yes
 AllowAgentForwarding yes
 ```
 
+setting `"remote.SSH.enableDynamicForwarding": false`
+
 ## 参考文档
 
 - <https://gcslaoli.github.io/openeuler/S1-connect-openeuler-with-vscoderemote.html>
