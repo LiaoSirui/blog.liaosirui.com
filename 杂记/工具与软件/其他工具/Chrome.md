@@ -32,6 +32,16 @@ https://www.google.cn/chrome/?standalone=1&platform=win64&extra=stablechannel
 
 到最下方找到 Delete domain security policies 设定，输入 localhost 按下 Delete
 
+## ERR_UNSAFE_PORT
+
+添加信任站点 
+1. 打开Chrome浏览器的设置页面，方法是在地址栏中输入`chrome://settings`并回车
+2. 在搜索栏中输入“网站设置”
+3. 找到并点击“内容设置”中的“更多内容设置”
+4. 选择“不安全内容”选项
+5. 在“允许显示不安全内容”区域，点击“添加”按钮
+6. 输入您要信任的网站地址，点击“添加”确认
+
 ## 插件
 
 - AdBlock <https://chrome.google.com/webstore/detail/gighmmpiobklfepjocnamgkkbiglidom>
