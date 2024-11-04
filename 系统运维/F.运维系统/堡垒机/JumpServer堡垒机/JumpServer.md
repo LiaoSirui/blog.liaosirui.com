@@ -12,11 +12,13 @@ JumpServer 采纳分布式架构，支持多机房跨区域部署，支持横向
 
 - <https://github.com/jumpserver>
 - <https://github.com/jumpserver/helm-charts>
-- <https://docs.jumpserver.org/zh/v3/>
+- <https://docs.jumpserver.org/zh/v4/>
 
 ## JumpServer 安装
 
 ### helm 安装
+
+
 
 ```bash
 helm repo add jumpserver https://jumpserver.github.io/helm-charts

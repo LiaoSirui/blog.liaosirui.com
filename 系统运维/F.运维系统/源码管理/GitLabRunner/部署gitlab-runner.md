@@ -22,8 +22,6 @@ docker run --rm -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-ru
   --description "docker-runner"
 ```
 
-
-
 进入 config 目录，会发现一个 config.toml 文件，里面是 gitlab-runner 相关的配置信息
 
 ```toml
