@@ -94,3 +94,15 @@ LDAPForceGeneratedHomedir on
 - <https://blog.csdn.net/jeccisnd/article/details/126341820>
 - <https://www.cnblogs.com/tongh/p/16190626.html#%E6%9D%83%E9%99%90%E7%AE%A1%E6%8E%A7>
 - <http://vsftpd.beasts.org/vsftpd_conf.html>
+
+创建虚拟用户
+
+```
+/usr/bin/ftpasswd \
+--passwd --name=ftpuser1 \
+--uid=2000 \
+--home=/usr/local/proftpd/virtual_user_home/ftpuser1 \
+--shell=/bin/bash \
+--file=/usr/local/proftpd/etc/passwd
+```
+
