@@ -157,3 +157,23 @@ yum --disablerepo=\* --enablerepo=elrepo-kernel install -y \
     kernel-lt-devel.x86_64 \
     kernel-lt-headers.x86_64
 ```
+
+## Kernel 历史版本
+
+- <https://buildlogs.centos.org/c7-kernels.x86_64/kernel/20200330213326/4.19.113-300.el8.x86_64/>
+- <https://mirrors.coreix.net/elrepo-archive-archive/kernel/el7/x86_64/RPMS/>
+
+- <http://193.49.22.109/elrepo/kernel/el7/x86_64/RPMS/>
+- <https://mirror.hep.wisc.edu/upstream/cc/elrepo.with.5.19/kernel/el7/x86_64/RPMS/>
+
+```bash
+kernel-lt-5.4.278-1.el7.elrepo.x86_64.rpm
+kernel-lt-devel-5.4.278-1.el7.elrepo.x86_64.rpm
+kernel-lt-headers-5.4.278-1.el7.elrepo.x86_64.rpm
+kernel-lt-tools-5.4.278-1.el7.elrepo.x86_64.rpm
+
+http://193.49.22.109/elrepo/kernel/el7/x86_64/RPMS/kernel-ml-tools-4.19.10-1.el7.elrepo.x86_64.rpm
+http://193.49.22.109/elrepo/kernel/el7/x86_64/RPMS/kernel-ml-tools-libs-4.19.10-1.el7.elrepo.x86_64.rpm
+
+```
+

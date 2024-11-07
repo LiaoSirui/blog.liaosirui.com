@@ -17,3 +17,14 @@ cpupower frequency-set -g performance
 ```bash
 cat /proc/cpuinfo | grep -i "cpu mhz"
 ```
+
+AMD 设置空载最大频率
+
+```bash
+# 查看状态
+cpupower idle-info
+
+# 设置
+cpupower idle-set -D 0
+```
+
