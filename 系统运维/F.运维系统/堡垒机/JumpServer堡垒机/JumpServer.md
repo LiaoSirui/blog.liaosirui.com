@@ -73,3 +73,6 @@ cd /opt/jumpserver/apps
 python manage.py createsuperuser --username=user --email=user@domain.com
 ```
 
+## 参考资料
+
+- Jumpserver安全一窥：Sep系列漏洞深度解析 <https://www.leavesongs.com/PENETRATION/jumpserver-sep-2023-multiple-vulnerabilities-go-through.html>

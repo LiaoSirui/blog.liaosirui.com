@@ -6,8 +6,8 @@
 
 ## fail2ban 自定义过滤器
 
-- fail2ban自带了很多常见服务的过滤器，但是jumpserver不在其中，于是乎自己弄一个吧
-- fai2ban支持基于正则表达式的过滤，因此可以先用正则表达式匹配一下登录失败的日志
+- Fail2ban 自带了很多常见服务的过滤器，但是 jumpserver 不在其中，需要自己编写
+- Fai2ban 支持基于正则表达式的过滤，因此可以先用正则表达式匹配一下登录失败的日志
 
 ```
 fail2ban-regex /opt/koko/data/logs/koko.log 'Failed password for [A-Za-z0-9]+ from <HOST>'
@@ -121,7 +121,7 @@ systemctl enable --now fail2ban.service
 fail2ban-client status jms-koko
 ```
 
-- 根据输出结果可以看到`172.105.86.202`已经被ban了
+- 根据输出结果可以看到`172.105.86.202` 已经被 ban
 
 ```
 Status for the jail: jms-koko
@@ -137,7 +137,7 @@ Status for the jail: jms-koko
 
 ### 查看fail2ban日志
 
-- /var/log/fail2ban.log
+- `/var/log/fail2ban.log`
 
 ```
 2020-08-30 20:25:33,924 fail2ban.server         [1346]: INFO    --------------------------------------------------
@@ -174,7 +174,7 @@ iptables -t filter -L -n -v
 ```
 
 - 输出如下
-  - 被ban的ip会提示端口不可达
+  - 被 ban 的 ip 会提示端口不可达
 
 ```
 Chain INPUT (policy ACCEPT 779K packets, 71M bytes)
@@ -191,8 +191,8 @@ Chain f2b-jms-koko (1 references)
 
 ## 解封操作
 
-- 说不准有时候会有倒霉蛋输错密码导致IP被ban，可以通过用`fail2ban-client`命令解封IP地址
-- JumpServer账号锁定的话要在JumpServer里面解锁账号
+- 说不准有时候会输错密码导致 IP 被 ban，可以通过用`fail2ban-client`命令解封 IP 地址
+- JumpServer 账号锁定的话要在 JumpServer 里面解锁账号
 
 ```
 fail2ban-client set jms-koko unbanip IP地址

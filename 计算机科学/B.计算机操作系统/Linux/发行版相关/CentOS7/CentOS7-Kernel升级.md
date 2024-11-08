@@ -172,6 +172,9 @@ kernel-lt-devel-5.4.278-1.el7.elrepo.x86_64.rpm
 kernel-lt-headers-5.4.278-1.el7.elrepo.x86_64.rpm
 kernel-lt-tools-5.4.278-1.el7.elrepo.x86_64.rpm
 
+http://193.49.22.109/elrepo/kernel/el7/x86_64/RPMS/kernel-ml-4.19.10-1.el7.elrepo.x86_64.rpm
+http://193.49.22.109/elrepo/kernel/el7/x86_64/RPMS/kernel-ml-devel-4.19.10-1.el7.elrepo.x86_64.rpm
+http://193.49.22.109/elrepo/kernel/el7/x86_64/RPMS/kernel-ml-headers-4.19.10-1.el7.elrepo.x86_64.rpm
 http://193.49.22.109/elrepo/kernel/el7/x86_64/RPMS/kernel-ml-tools-4.19.10-1.el7.elrepo.x86_64.rpm
 http://193.49.22.109/elrepo/kernel/el7/x86_64/RPMS/kernel-ml-tools-libs-4.19.10-1.el7.elrepo.x86_64.rpm
 

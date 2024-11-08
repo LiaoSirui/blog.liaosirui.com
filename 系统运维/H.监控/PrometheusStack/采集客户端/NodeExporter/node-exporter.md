@@ -226,3 +226,5 @@ curl -s localhost:9100/metrics | curl -u USERNAME:PASSWORD --data-binary @- $PUS
 - <https://flashcat.cloud/blog/prometheus-performance-and-cardinality-in-practice/>
 
 - 硬件分析：<https://www.cnblogs.com/wuzhengc/p/16123077.html>
+
+内存计数不准的问题，由于 buffer cache 的存在：<https://cloud.tencent.com/developer/article/1637682>
