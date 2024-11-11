@@ -829,3 +829,5 @@ services:
 ## 参考资料
 
 - <https://junyao.tech/posts/18297f50.html>
+
+- <https://kiprey.github.io/2023/11/tailscale-derp/>
