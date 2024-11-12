@@ -71,6 +71,17 @@ Systemd 默认从目录 /etc/systemd/system/ 读取配置文件。但是，里�
 - 编辑 .service 文件，定义服务的启动命令、工作目录等信息。
 - 使用 systemctl --user 命令启用、停止、启动或重启服务
 
+## 普通用户
+
+systemd 提供了一个名为 `lingering` 的功能，允许普通用户在登录会话结束后继续运行他们的服务。要启用 `lingering` 功能，请使用以下命令：
+
+```bash
+sudo loginctl enable-linger new_user
+
+# 加入 bashrc 中
+export XDG_RUNTIME_DIR=/run/user/$(id -u $USER)
+```
+
 ## 参考资料
 
 - <https://blog.csdn.net/easylife206/article/details/101730416>
