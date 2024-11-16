@@ -65,6 +65,10 @@ CMDB 是 ITIL（IT Infrastructure Library） 框架中的一个关键组件，�
 
  NetBox 是一个 IP 地址管理（IP address management，IPAM）和数据中心基础设施管理（data center infrastructure management，DCIM）工具。最初起源于 DigitalOcean 的网络工程团队，专门用于满足网络和基础设施工程师的需求。它是一个基础设施资源建模 (IRM) 应用程序，旨在支持网络自动化。
 
+- phpIPAM
+
+<https://www.guoqiangli.com/2023/09/14/open-source-ip-address-management-tool-phpipam-deployment/>
+
 - Spug
 
 <https://github.com/openspug/spug>
