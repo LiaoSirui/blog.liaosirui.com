@@ -99,28 +99,56 @@ Num   ErrCount  SQId   CmdId  Status  PELoc          LBA  NSID    VS
 ```
 
 指标含义
-```
-# 字段的含义
-=== START OF READ SMART DATA SECTION ===
-SMART Attributes Data Structure revision number: 16
-Vendor Specific SMART Attributes with Thresholds:
-ID# ATTRIBUTE_NAME          
-  1 Raw_Read_Error_Rate     读取错误率
-  3 Spin_Up_Time            起转时间
-  4 Start_Stop_Count        启动停止次数
-  5 Reallocated_Sector_Ct   重新分配扇区计数
-  7 Seek_Error_Rate         寻道错误率
-  9 Power_On_Hours          通电时间
- 10 Spin_Retry_Count        起转重试次数
- 11 Calibration_Retry_Count 重新校准重试次数
- 12 Power_Cycle_Count       启动<->关闭循环次数
-192 Power-Off_Retract_Count 断电磁头缩回计数
-193 Load_Cycle_Count        磁头加载/卸载循环计数
-194 Temperature_Celsius     温度
-196 Reallocated_Event_Count 在分配扇区物理位置事件计数（与坏道无关）
-197 Current_Pending_Sector  当前等待中扇区数（状态存疑/不稳定-等待后续判断）
-198 Offline_Uncorrectable   无法修正的扇区总数
-199 UDMA_CRC_Error_Count    UltraDMA CRC错误计数
-200 Multi_Zone_Error_Rate   写入错误率
-```
+ID1：Critical Warning 警告状态
+RAW 数值显示 0 为正常无警告，1 为过热警告，2 为闪存介质引起的内部错误导致可靠性降级，3 为闪存进入只读状态，4 为增强型断电保护功能失效（只针对有该特性的固态硬盘）。
 
+正常情况下 ID1 的 RAW 属性值应为 0，当显示为 1 时代表 NVMe 固态硬盘已经过热，需要改善散热条件或降低工作负载。属性值为 2 时应考虑返修或更换新硬盘，当属性值为 3 时硬盘已经进入只读状态，无法正常工作，应抓紧时间备份其中的数据。家用固态硬盘通常不会配备增强型断电保护（完整断电保护），所以通常该项目不会显示为 4。
+
+ID2：Temperature 当前温度（十进制显示）
+
+ID3：Available Spare 可用冗余空间（百分比显示）
+指示当前固态硬盘可用于替换坏块的保留备用块占出厂备用块总数量的百分比。该数值从出厂时的 100% 随使用过程降低，直至到零。ID3 归零之前就有可能产生不可预料的故障，所以不要等到该项目彻底归零才考虑更换新硬盘。
+
+ID4：Available Spare Threshold 备用空间阈值
+与 ID3 相关，当 ID3 的数值低于 ID4 所定义的阈值之后，固态硬盘被认为达到极限状态，此时系统可能会发出可靠性警告。该项数值由厂商定义，通常为 10% 或 0%。
+
+ID5：Percentage Used 已使用的写入耐久度（百分比显示）
+该项显示已产生的写入量占厂商定义总写入寿命的百分比。该项数值为动态显示，计算结果与写入量及固态硬盘的 TBW 总写入量指标有关。新盘状态下该项目为 0%
+
+ID6：Data Units Read 读取扇区计数（1000）
+该项数值乘以 1000 后即为读取的扇区（512Byte）数量统计。
+
+ID7：Data Units Write 写入扇区计数（1000）
+该项数值乘以 1000 后即为写入的扇区（512Byte）数量统计。
+
+ID8：Host Read Commands 读取命令计数
+硬盘生命周期内累计接收到的读取命令数量统计。
+
+ID9：Host Write Commands 写入命令计数
+硬盘生命周期内累计接收到的写入命令数量统计。
+
+ID10：Controller Busy Time 主控繁忙时间计数
+该项统计的是主控忙于处理 IO 命令的时间总和（单位：分钟）。当 IO 队列有未完成的命令时，主控即处于 “忙” 的状态。
+
+ID11：Power Cycles 通电次数
+
+ID12：Power On Hours 通电时间
+
+ID13：Unsafe Shut downs 不安全关机次数（异常断电计数）
+
+ID14：Media and Data Integrity Errors 闪存和数据完整性错误
+
+主控检测到未恢复的数据完整性错误的次数。正常情况下主控不应检测到数据完整性错误（纠错应该在此之前完成），当有不可校正的 ECC、CRC 校验失败或者 LBA 标签不匹配错误发生时，该数值会增加。正常情况下 ID14 应保持为零。
+
+ID15：Number of Error Information Log Entries 错误日志条目计数
+
+控制器使用期限内，发生的错误信息日志条目的数量统计。正常情况该项目应为零。
+
+以下项目为非标准项，并非所有 NVMe SSD 都支持显示。
+ID16：Warning Composite Temperature Time 过热警告时间
+ID17：Critical Composite Temerature Time 过热临界温度时间
+ID18-25：Temperature Sensor X：多个温度传感器（若存在）的读数
+
+## 参考资料
+
+- <https://blog.csdn.net/qq_24343177/article/details/122521952>

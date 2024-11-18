@@ -46,6 +46,8 @@ vi /etc/sssd/sssd.conf
 
 fallback_homedir = /home/%u
 use_fully_qualified_names = False
+dyndns_update_ptr = False
+ad_gpo_access_control = permissive
 
 chmod 600 /etc/sssd/sssd.conf
 
@@ -53,8 +55,8 @@ chown root:root /etc/sssd/sssd.conf
 
 systemctl restart sssd
 
-id sz
-uid=1854401236(sz) gid=1854400363(domain users) groups=1854400363(domain users)
+id sirui.liao
+uid=1854401236(sirui.liao) gid=1854400363(domain users) groups=1854400363(domain users)
 
 ```
 
@@ -68,7 +70,9 @@ pam-auth-update --enable mkhomedir
 
 ```bash
 sudo visudo
-%domain\ users  ALL=(ALL)      ALL
+ 
+sirui\.liao ALL=(ALL)      ALL
+# %domain\ users  ALL=(ALL)      ALL
 ```
 
 GSSAPI Error: Unspecified GSS failure. Minor code may provide more information (Server not found in Kerberos database)
@@ -171,6 +175,8 @@ SSODesktopType=UseKdePlasma
 
 - <https://blog.csdn.net/Bksz_guest/article/details/128672998>
 
+## 多用户会话
+
 多用户会话，托管
 
 ```bash
@@ -183,3 +189,15 @@ SSODesktopType=UseKdePlasma
 | ---------- | ------------------------------------------------------------ |
 | -b         | Hostname or IP address of the Horizon Connection Server. This parameter is only supported when you install Horizon Agent in unmanaged mode. |
 | -d         | Domain name of the Horizon Connection Server administrator. This parameter is only supported when you install Horizon Agent in unmanaged mode. |
+
+## 问题处理
+
+修复：`Broken GPO data received from AD`
+
+增加
+
+```
+# /etc/sssd/sssd.conf
+ad_gpo_access_control = permissive
+```
+

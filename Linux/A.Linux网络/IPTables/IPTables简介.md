@@ -164,8 +164,8 @@ iptables 4 张”表”处于同一条”链”时，执行的优先级（由高
 
 ## 参考资料
 
-<https://blog.51cto.com/u_15080031/3480190>
+- <https://blog.51cto.com/u_15080031/3480190>
 
-<https://www.tkng.io/services/clusterip/dataplane/iptables/>
+- <https://www.tkng.io/services/clusterip/dataplane/iptables/>
 
-<https://dustinspecker.com/posts/iptables-how-kubernetes-services-direct-traffic-to-pods/>
+- <https://dustinspecker.com/posts/iptables-how-kubernetes-services-direct-traffic-to-pods/>
