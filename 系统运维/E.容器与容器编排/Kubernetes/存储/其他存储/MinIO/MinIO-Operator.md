@@ -78,6 +78,3 @@ kubectl minio init \
 ```bash
 kubectl minio proxy -n minio
 ```
-
-
-

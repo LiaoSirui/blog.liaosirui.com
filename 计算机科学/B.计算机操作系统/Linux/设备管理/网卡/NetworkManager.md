@@ -60,6 +60,26 @@ nmcli c reload               # 重新读取配置
 nmcli con add help           # 查看帮助
 ```
 
+### 配置静态路由
+
+给 eth0 网卡添加一个到达 192.168.2.0/24 网络，下一跳为 192.168.1.254 的路由
+
+```bash
+nmcli connection modify eth0 +ipv4.routes "192.168.2.0/24 192.168.1.254"
+```
+
+如果需要添加多个路由，可以用逗号分隔的方式添加：
+
+```bash
+nmcli connection modify eth0 +ipv4.routes "192.168.2.0/24 192.168.1.254,192.168.3.0/24 192.168.1.254"
+```
+
+删除静态路由
+
+```bash
+nmcli connection modify eth0 -ipv4.routes "192.168.2.0/24 192.168.1.254"
+```
+
 ### 常见故障处理
 
 关闭 dns 自动配置

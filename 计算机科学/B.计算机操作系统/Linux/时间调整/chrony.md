@@ -156,3 +156,18 @@ local stratum 10 orphan distance 0.1
 ```
 
 client 端需要给 chronyd 增加 `-4` 参数，因为关闭了 ipv6
+
+对端是 win ，客户端需要修改
+
+A common issue with Windows NTP servers is that they report a very large root dispersion (e.g. three seconds or more), which causes `chronyd` to ignore the server for being too inaccurate. The `sources` command might show a valid measurement, but the server is not selected for synchronisation. You can check the root dispersion of the server with the `chronyc`'s `ntpdata` command.
+
+The `maxdistance` value needs to be increased in `chrony.conf` to enable synchronisation to such a server. For example:
+
+```
+# 如果不改，可能会出现与 windows 同步失败
+maxdistance 16.0
+```
+
+## 参考文档
+
+- <https://chrony-project.org/faq.html>
