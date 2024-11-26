@@ -5,6 +5,7 @@ IPMItool 是一种可用在 linux 系统下的命令行方式的 ipmi 平台管�
 ## 参考文档
 
 - <https://www.cnblogs.com/HByang/p/16127044.html>
+- <https://cloud.tencent.com/developer/article/2422636>
 
 ## 其他问题
 
