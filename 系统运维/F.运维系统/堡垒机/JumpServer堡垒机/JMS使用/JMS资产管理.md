@@ -42,3 +42,72 @@ JumpServer 系统中角色可以分为系统角色和组织角色。系统角色
 
 - Windows 资产新增支持了 WINRM 协议，例如：修改账号改密等可以使用 WINRM 协议，需要在 Windows 上面开启 WINRM 协议对于端口
 
+## 添加 WebSite 应用
+
+vCenter
+
+```
+https://x.x.x.x/ui/
+
+id=username
+id=password
+id=submit
+```
+
+ESXi
+
+```
+https://x.x.x.x/ui/
+
+id=username
+id=password 
+id=loginButtonRow
+```
+
+Sungo BMC
+
+```
+id=userid
+id=password
+id=btn-login
+```
+
+SuperMicro BMC
+
+```
+name=name
+name=pwd
+id=login_word
+```
+
+华为 USG 防火墙
+
+```javascript
+[
+  {
+    "step": 1,
+    "value": "{USERNAME}",
+    "target": "id=username",
+    "command": "type"
+  },
+  {
+    "step": 2,
+    "value": "",
+    "target": "id=hide_pwd",
+    "command": "click"
+  },
+  {
+    "step": 3,
+    "value": "{SECRET}",
+    "target": "id=platcontent",
+    "command": "type"
+  },
+  {
+    "step": 4,
+    "value": "",
+    "target": "id=btn_login-button",
+    "command": "click"
+  }
+]
+```
+
