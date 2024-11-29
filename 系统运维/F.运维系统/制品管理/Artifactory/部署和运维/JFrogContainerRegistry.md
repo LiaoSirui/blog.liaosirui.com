@@ -29,8 +29,6 @@ releases-docker.jfrog.io/jfrog/artifactory-jcr:7.90.14
 ./config.sh
 ```
 
-
-
 先准备一个持久化目录
 
 ```bash

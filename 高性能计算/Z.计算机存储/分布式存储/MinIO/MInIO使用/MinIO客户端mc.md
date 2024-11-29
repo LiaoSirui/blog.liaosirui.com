@@ -80,3 +80,68 @@ alias find='mc find'
 mc --autocompletion
 ```
 
+## 桶的基本命令
+
+创建 buk2 的桶
+
+```bash
+mc mb minio/buk2
+```
+
+上传当前目录所有文件到 buk2 桶上
+
+```bash
+mc cp -r * minio/buk2
+```
+
+查找 buk2 存储桶中 html 结尾文件
+
+```bash
+mc find minio/buk2 --name "*.html"
+```
+
+设置 buk2 只读权限 download
+
+共可以设置四种权限：
+
+- none
+- download 只读
+- upload 只写
+- public
+
+```bash
+mc anonymous set download minio/buk2
+```
+
+查看 buk2 存储桶权限
+
+```bash
+mc anonymous list minio/buk2
+```
+
+共享 buk2 下 baidu.html 文件下载路径
+
+```bash
+mc share download minio/buk2/baidu.html
+```
+
+查看存储桶
+
+```bash
+mc ls minio
+```
+
+查看 buk2 存储桶文件
+
+```bash
+mc ls minio/buk2
+```
+
+设置桶策略为 public 模式，这样 MinIO 可以提供永久文件服务
+
+```bash
+mc anonymous set public minio/buk2
+```
+
+
+
