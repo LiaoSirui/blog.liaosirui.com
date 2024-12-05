@@ -73,7 +73,7 @@ ARRAY /dev/md/r10a metadata=1.2 name=dev-nas:r10a UUID=15a98904:5e59a203:68845e5
 （1）停止运行 RAID
 
 ```bash
-mdadm -S /dev/md0
+mdadm --stop /dev/md0
 ```
 
 （2）删除自动配置文件
@@ -91,6 +91,8 @@ mdadm -S /dev/md0
 将 RAID 分区中的元数据删除
 
 ```bash
-mdadm --zero-superblock /dev/sdb
+mdadm --misc --zero-superblock /dev/sda
 ```
+
+
 
