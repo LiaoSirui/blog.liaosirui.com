@@ -121,7 +121,7 @@ Tailscale 使用的算法很有趣，所有客户端之间的连接都是先选�
 ```yaml
 services:
   headscale:
-    image: docker.io/headscale/headscale:0.23.0-rc.1
+    image: docker.io/headscale/headscale:0.23.0
     volumes:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
@@ -147,14 +147,14 @@ networks:
 docker-pull() {
   skopeo copy docker://${1} docker-daemon:${1}
 }
-docker-pull "docker.io/headscale/headscale:0.23.0-rc.1"
+docker-pull "docker.io/headscale/headscale:0.23.0"
 ```
 
 创建 Headscale 配置文件：
 
 ```bash
 mkdir -p ./headscale/config
-wget https://github.com/juanfont/headscale/raw/v0.23.0-rc.1/config-example.yaml \
+wget https://github.com/juanfont/headscale/raw/v0.23.0/config-example.yaml \
   -O ./headscale/config/config.yaml
 ```
 
@@ -239,7 +239,7 @@ headscale apikey create
 ```yaml
 services:
   headscale:
-    image: docker.io/headscale/headscale:0.23.0-rc.1
+    image: docker.io/headscale/headscale:0.23.0
     volumes:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
@@ -728,7 +728,7 @@ docker-pull "docker.io/fredliang/derper:latest"
 ```yaml
 services:
   headscale:
-    image: docker.io/headscale/headscale:0.23.0-rc.1
+    image: docker.io/headscale/headscale:0.23.0
     volumes:
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale

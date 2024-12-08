@@ -27,3 +27,11 @@ Elasticsearch 集成插件列表。
 索引自动清理：<https://blog.csdn.net/qq_41631365/article/details/109773675>
 
 <https://docs.shanhe.com/v6.1/bigdata/elk/es_manual/elk_all_cn/>
+
+- <https://juejin.cn/post/7432371961207259199>
+
+- <https://xie.infoq.cn/article/8861f0075aaf32aaae93923b2>
+- <https://blog.51cto.com/WinJay/5716449>
+- <https://blog.51cto.com/u_16175458/9903099>
+- <https://www.cnblogs.com/liugp/p/17692337.html>
+- <https://www.cnblogs.com/caoweixiong/p/11988457.html>
