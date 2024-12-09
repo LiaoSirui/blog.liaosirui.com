@@ -20,6 +20,8 @@ ln -s /opt/MegaRAID/MegaCli/MegaCli64 /usr/bin/MegaCli
 
 ## 常用命令
 
+###  查看状态
+
 查 raid 级别、显示所有逻辑磁盘组信息
 
 ```bash
@@ -62,6 +64,17 @@ Megacli 查看硬盘状态，盘笼 ID，slot 以及是否是热备盘：
 /opt/MegaRAID/MegaCli/MegaCli64 -PDList -aALL | grep -E "^Enclosure Device|^Slot|^Raw|^Firmware|^Comm"
 ```
 
+### 外来配置
+
+扫描外来配置&清除
+
+```bash
+/opt/MegaRAID/MegaCli/MegaCli64 -cfgforeign -scan -a0
+/opt/MegaRAID/MegaCli/MegaCli64 -cfgforeign -clear -a0
+```
+
+### 磁盘管理
+
 在线添加磁盘
 
 ```bash
@@ -70,14 +83,16 @@ Megacli 查看硬盘状态，盘笼 ID，slot 以及是否是热备盘：
 
 创建阵列，不指定热备
 
+指定硬盘的位置时，`[Enclosure Device ID: Slot Number]`
+
 ```bash
-/opt/MegaRAID/MegaCli/MegaCli64 -CfgLdAdd -r5 [1:2,1:3,1:4] WB Direct -a0
+/opt/MegaRAID/MegaCli/MegaCli64 -CfgLdAdd -r5 [0:0,0:1,0:2,0:3] WB Direct -a0
 ```
 
 创建一个 raid5 阵列，由物理盘 2,3,4 构成，指定阵列的热备盘是物理盘 5
 
 ```bash
-/opt/MegaRAID/MegaCli/MegaCli64 -CfgLdAdd -r5 [1:2,1:3,1:4] WB Direct -Hsp[1:5] -a0
+/opt/MegaRAID/MegaCli/MegaCli64 -CfgLdAdd -r5 [1:0,1:1,1:2,1:3] WB Direct -Hsp[1:5] -a0
 ```
 
 指定第 5 块盘作为全局热备
@@ -137,3 +152,9 @@ Megacli 查看硬盘状态，盘笼 ID，slot 以及是否是热备盘：
 - <https://www.cnblogs.com/easonscx/p/10438053.html>
 
 - <http://www.chenlianfu.com/?p=2636>
+
+- <https://blog.51cto.com/u_15169172/2710846>
+
+- <https://www.cnblogs.com/weiyiming007/p/12600261.html>
+
+- <https://www.cnblogs.com/Pigs-Will-Fly/p/14327418.html>
