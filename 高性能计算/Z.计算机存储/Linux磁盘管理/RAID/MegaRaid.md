@@ -7,11 +7,18 @@ MegaCli 是一款管理维护硬件 RAID 软件，可以通过它来了解当前
 ```bash
 wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip
 uzip 8-07-14_MegaCLI.zip
-rpm -ivh MegaCli-8.07.14-1.noarch.rpm
+dnf localinstall -y MegaCli-8.07.14-1.noarch.rpm
 
 # wget http://mirror.cogentco.com/pub/misc/MegaCli-8.07.14-1.noarch.rpm
 # dnf localinstall -y MegaCli-8.07.14-1.noarch.rpm
 ```
+
+额外安装软件包
+
+```bash
+```
+
+
 
 安装完毕之后 MegaCli64 所在路径为`/opt/MegaRAID/MegaCli/ MegaCli64`，在此路径下可以运行 MegaCli64 工具，切换到其它路径下则不能执行，此时为了使用方便，可以考虑将 `/opt/MegaRAID/MegaCli/MegaCli64` 追加到系统 PATH 变量
 
