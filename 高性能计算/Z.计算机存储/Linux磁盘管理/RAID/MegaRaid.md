@@ -16,9 +16,8 @@ dnf localinstall -y MegaCli-8.07.14-1.noarch.rpm
 额外安装软件包
 
 ```bash
+dnf install -y ncurses-compat-libs
 ```
-
-
 
 安装完毕之后 MegaCli64 所在路径为`/opt/MegaRAID/MegaCli/ MegaCli64`，在此路径下可以运行 MegaCli64 工具，切换到其它路径下则不能执行，此时为了使用方便，可以考虑将 `/opt/MegaRAID/MegaCli/MegaCli64` 追加到系统 PATH 变量
 
@@ -256,24 +255,6 @@ MegaCli64 -CfgLdDel -L1 -a1
 MegaCli64 -LDRecon -Start -r5 -Add -PhysDrv[1:4] -L1 -a0
 ```
 
-### 查看创建进度
-
-初始化同步块的过程，可以看看其进度
-
-```bash
-MegaCli64 -LDInit -ShowProg -LALL -aALL
-
-MegaCli64 -LDInit -ProgDsply -LALL -aALL
-```
-
-查看阵列后台初始化进度
-
-```bash
-MegaCli64 -LDBI -ShowProg -LALL -aALL
-
-MegaCli64 -LDBI -ProgDsply -LALL -aALL
-```
-
 ### 全局热备
 
 指定第 5 块盘作为全局热备
@@ -322,6 +303,38 @@ MegaCli64 -PDRbld -ProgDsply -PhysDrv [1:5] -a0
 MegaCli64 -PDMakeJBOD -PhysDrv[?:4] -a0
 ```
 
+## 初始化
+
+快速初始化
+
+```bash
+ MegaCli64 -LDInit -start –L0 -a0
+```
+
+完全初始化
+
+```bash
+MegaCli64 -LDInit -start -full –L0 -a0
+```
+
+### 查看创建进度
+
+初始化同步块的过程，可以看看其进度
+
+```bash
+MegaCli64 -LDInit -ShowProg -LALL -aALL
+
+MegaCli64 -LDInit -ProgDsply -LALL -aALL
+```
+
+查看阵列后台初始化进度
+
+```bash
+MegaCli64 -LDBI -ShowProg -LALL -aALL
+
+MegaCli64 -LDBI -ProgDsply -LALL -aALL
+```
+
 ## 其他
 
 ### Direct PD  Mapping
@@ -346,8 +359,6 @@ the requested command.
 ```bash
 MegaCli64 -PDMakeGood -PhysDrv '[?:0]' -Force -a0
 ```
-
-
 
 ## 参考文档
 

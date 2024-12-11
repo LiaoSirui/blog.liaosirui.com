@@ -67,19 +67,24 @@ Systemd 默认从目录 /etc/systemd/system/ 读取配置文件。但是，里�
 
 可以创建一个用户级别的 systemd 服务来实现开机启动。这种方式更加灵活和规范，适用于需要长期运行的服务或后台任务。
 
-- 创建一个 .service 文件，通常放置在 `~/.config/systemd/user/` 目录下，例如` ~/.config/systemd/user/my_service.service`。
-- 编辑 .service 文件，定义服务的启动命令、工作目录等信息。
-- 使用 systemctl --user 命令启用、停止、启动或重启服务
+- 创建一个 `.service` 文件，通常放置在 `~/.config/systemd/user/` 目录下，例如` ~/.config/systemd/user/my_service.service`。
+- 编辑 `.service` 文件，定义服务的启动命令、工作目录等信息。
+- 使用 `systemctl --user` 命令启用、停止、启动或重启服务
 
 ## 普通用户
 
-systemd 提供了一个名为 `lingering` 的功能，允许普通用户在登录会话结束后继续运行他们的服务。要启用 `lingering` 功能，请使用以下命令：
+systemd 提供了一个名为 `lingering` 的功能，允许普通用户在登录会话结束后继续运行他们的服务。
+
+错误处理：`Failed to get D-Bus connection: No such file or directory`
+
+要启用 `lingering` 功能，请使用以下命令：
 
 ```bash
 sudo loginctl enable-linger new_user
 
 # 加入 bashrc 中
-export XDG_RUNTIME_DIR=/run/user/$(id -u $USER)
+[ -z "${XDG_RUNTIME_DIR}" ] && export XDG_RUNTIME_DIR="/run/user/$UID"
+[ -z "${DBUS_SESSION_BUS_ADDRESS}" ] && export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
 ```
 
 ## 参考资料
