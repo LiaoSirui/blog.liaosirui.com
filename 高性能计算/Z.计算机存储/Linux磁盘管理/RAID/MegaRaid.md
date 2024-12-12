@@ -335,6 +335,25 @@ MegaCli64 -LDBI -ShowProg -LALL -aALL
 MegaCli64 -LDBI -ProgDsply -LALL -aALL
 ```
 
+## RIAD 一致性检查
+
+```bash
+# 禁用一致性检查
+MegaCli64 -AdpCcSched -Dsbl -Aall
+
+# 启用一致性检查
+MegaCli64 -AdpCcSched -ModeConc -Aall
+
+# 查看一直性检查 信息
+MegaCli64 -AdpCcSched -info -Aall
+```
+
+## flush raid cache
+
+```bash
+MegaCli64 -AdpCacheFlush -Aall
+```
+
 ## 其他
 
 ### Direct PD  Mapping
@@ -365,3 +384,5 @@ MegaCli64 -PDMakeGood -PhysDrv '[?:0]' -Force -a0
 - <https://blog.51cto.com/u_15169172/2710846>
 
 - <https://www.cnblogs.com/Pigs-Will-Fly/p/14327418.html>
+
+- <https://www.cnblogs.com/machangwei-8/p/10403626.html>

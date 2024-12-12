@@ -73,6 +73,8 @@ Systemd 默认从目录 /etc/systemd/system/ 读取配置文件。但是，里�
 
 ## 普通用户
 
+### 启用 lingering
+
 systemd 提供了一个名为 `lingering` 的功能，允许普通用户在登录会话结束后继续运行他们的服务。
 
 错误处理：`Failed to get D-Bus connection: No such file or directory`
@@ -85,6 +87,57 @@ sudo loginctl enable-linger new_user
 # 加入 bashrc 中
 [ -z "${XDG_RUNTIME_DIR}" ] && export XDG_RUNTIME_DIR="/run/user/$UID"
 [ -z "${DBUS_SESSION_BUS_ADDRESS}" ] && export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
+```
+
+检查服务
+
+```bash
+systemctl enable --now systemd-logind
+```
+
+### RHEL7 单独设置
+
+系统守护进程（systemd）的用户服务并不像常规的 systemd 进程管理器那样常用。红帽（Red Hat）在 RHEL 7 中（以及所有源自 RHEL 的发行版，如 CentOS、Oracle Linux 7、Amazon Linux 2）禁用了 systemd 用户服务。然而，只要重新启用该服务，运行 systemd 用户服务是受支持的，见：<https://help.tableau.com/current/server-linux/en-us/systemd_user_service_error.htm>
+
+```bash
+# cat /etc/systemd/system/user@1000.service
+[Unit]
+Description=User Manager for UID %i
+After=systemd-user-sessions.service
+# These are present in the RHEL8 version of this file except that the unit is Requires, not Wants.
+# It's listed as Wants here so that if this file is used in a RHEL7 settings, it will not fail.
+# If a user upgrades from RHEL7 to RHEL8, this unit file will continue to work until it's
+# deleted the next time they upgrade Tableau Server itself.
+After=user-runtime-dir@%i.service
+Wants=user-runtime-dir@%i.service
+
+[Service]
+LimitNOFILE=infinity
+LimitNPROC=infinity
+User=%i
+PAMName=systemd-user
+Type=notify
+# PermissionsStartOnly is deprecated and will be removed in future versions of systemd
+# This is required for all systemd versions prior to version 231
+PermissionsStartOnly=true
+ExecStartPre=/bin/loginctl enable-linger %i
+ExecStart=-/lib/systemd/systemd --user
+Slice=user-%i.slice
+KillMode=mixed
+Delegate=yes
+TasksMax=infinity
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=default.target
+```
+
+设置自动启动
+
+```bash
+systemctl daemon-reload
+systemctl enable --now user@1000.service
 ```
 
 ## 参考资料
