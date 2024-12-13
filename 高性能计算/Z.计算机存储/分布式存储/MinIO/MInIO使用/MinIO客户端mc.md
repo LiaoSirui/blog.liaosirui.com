@@ -54,10 +54,9 @@ Enter Secret Key: admin123456
 # 获取已配置别名 "minio" 的 MinIO 服务器信息
 mc admin info minio
 
-# 添加外壳别名以获取信息，以便恢复。
+# 添加 Shell 别名以获取信息，以便恢复
 alias minfo='/usr/local/bin/mc admin info'
 alias mheal='/usr/local/bin/mc admin heal'
-
 ```
 
 ### shell 别名和补全
@@ -71,7 +70,6 @@ alias cat='mc cat'
 alias mkdir='mc mb'
 alias pipe='mc pipe'
 alias find='mc find'
-
 ```
 
 增加自动补全，<https://github.com/minio/mc#shell-autocompletion>
