@@ -1,388 +1,183 @@
-## MegaCli 简介
+## MegaRAID Storage Manager RAID 管理工具
 
-MegaCli 是一款管理维护硬件 RAID 软件，可以通过它来了解当前 raid 卡的所有信息，包括 raid 卡的型号，raid 的阵列类型，raid 上各磁盘状态等等。通常，我们对硬盘当前的状态不太好确定，一般通过机房人员巡检来完成，而 MegaCli 可以轻松通过远程完成硬盘类巡检。
+MegaRAID Storage Manager（以下简称为 "MSM"）是用于管理采用 LSI (Avago/Broadcom) RAID 架构阵列的图形化管理工具
 
-安装
+MSM 是一个用于服务器本机存储管理的软件，适用于现在属于 Broadcom（博通）公司产品线的磁盘阵列卡，是主流品牌服务器的标配。MSM 新版本 17.05.06，测试后发现对于较新的阵列卡可以提供更多的管控操作功能。
 
-```bash
-wget https://docs.broadcom.com/docs-and-downloads/raid-controllers/raid-controllers-common-files/8-07-14_MegaCLI.zip
-uzip 8-07-14_MegaCLI.zip
-dnf localinstall -y MegaCli-8.07.14-1.noarch.rpm
+注意：17.05.06新版本不再打包附带JRE，MSM 17.05.06需要使用Java 8
 
-# wget http://mirror.cogentco.com/pub/misc/MegaCli-8.07.14-1.noarch.rpm
-# dnf localinstall -y MegaCli-8.07.14-1.noarch.rpm
-```
+## 安装 MSM
 
-额外安装软件包
+本文仅以在服务器本地操作系统中运行为例。
 
-```bash
-dnf install -y ncurses-compat-libs
-```
+下载和解压缩 Windows 版 MSM 安装包，运行 "Setup.exe"。
 
-安装完毕之后 MegaCli64 所在路径为`/opt/MegaRAID/MegaCli/ MegaCli64`，在此路径下可以运行 MegaCli64 工具，切换到其它路径下则不能执行，此时为了使用方便，可以考虑将 `/opt/MegaRAID/MegaCli/MegaCli64` 追加到系统 PATH 变量
+![img](./.assets/MegaRaid/20181004103452933001.png)
 
-```bash
-ln -s /opt/MegaRAID/MegaCli/MegaCli64 /usr/sbin/MegaCli64
-```
 
-## 常用查看命令
 
-###  查看 RAID 卡状态
+运行后首先要求安装必要的运行库，如 VC++ 组件，点击 "Install" 按钮继续。
 
-查 raid 卡信息 （可以查看 raid 卡时间，raid 卡时间和系统时间可能不一致，raid 卡日志用的是 raid 卡时间）
+![img](./.assets/MegaRaid/20181004103514473.png)
 
-```bash
-MegaCli64 -AdpAllInfo -aALL
-```
 
-查看 raid 卡日志
 
-```bash
-MegaCli64 -FwTermLog -Dsply -aALL
-```
+接下来进入 MSM 安装向导，点击 "Next" 按钮继续。
 
-显示 Raid 卡型号，Raid 设置，Disk 相关信息
+![img](./.assets/MegaRaid/20181004103608948.png)
 
-```bash
-MegaCli64 -cfgdsply -aALL
-```
 
-### 查看 Controller 信息
 
-显示适配器个数
+许可协议，点击 "I accept..." 单选框，再点击 "Next" 按钮继续。
 
-```bash
-MegaCli64 -AdpCount
-```
+![img](./.assets/MegaRaid/20181004103622305.png)
 
-显示所有适配器信息
+用户信息，可以选择 "All users" 为所有用户安装或者 "Only for current user" 只为当前用户安装，点击 "Next" 按钮继续。
 
-```bash
-MegaCli64 -AdpAllInfo -aAll
-```
+![img](./.assets/MegaRaid/20181004103639793.png)
 
-显示适配器时间
 
-```bash
-MegaCli64 -AdpGetTime -aALL
-```
 
-### 查看 BBU 信息
+安装位置，选择要安装到的文件夹位置，一般默认即可，点击 "Next" 按钮继续。
 
-查看电池信息
+![img](./.assets/MegaRaid/20181004103702604.png)
 
-```bash
-MegaCli64 -AdpBbuCmd -aAll
-```
+安装类型，选择 "Complete" 完整安装或者 "Custom Installation" 自定义安装，默认完整安装，点击 "Next" 按钮继续。
 
-查看充电状态
+![img](./.assets/MegaRaid/20181004103713705.png)
 
-```bash
-MegaCli64 -AdpBbuCmd -GetBbuStatus -aALL |grep 'Charger Status'
-```
+设置 LDAP 登陆，如果仅在本机上使用也没有 LDAP 服务器的话，选择 "No"， 点击 "Next" 按钮继续。
 
-查看 BBU 状态信息
+![img](./.assets/MegaRaid/20181004103828114.png)
 
-```bash
-MegaCli64 -AdpBbuCmd -GetBbuStatus -aALL
-```
+密钥长度设置，仅在本机上使用则保持默认，点击 "Next" 按钮继续。
 
-显示 BBU 容量信息
+![img](./.assets/MegaRaid/20181004103923571.png)
 
-```bash
-MegaCli64 -AdpBbuCmd -GetBbuCapacityInfo -aALL
-```
+设置收集过往日志的范围，可选 "Since Last Shutdown" 从上次关机、"Since Log Clear" 从上次日志清除、"Since Last Reboot" 从上次重启，一般保持默认即可，点击 "Next" 按钮继续。
 
-显示 BBU 设计参数
+![img](./.assets/MegaRaid/20181004103949610.png)
 
-```bash
-MegaCli64 -AdpBbuCmd -GetBbuDesignInfo -aALL
-```
+准备开始安装，点击 "Next" 按钮继续。
 
-显示当前 BBU 属性
+![img](./.assets/MegaRaid/20181004104045552.png)
 
-```bash
-MegaCli64 -AdpBbuCmd -GetBbuProperties -aALL
-```
+安装完成，点击 "Finish" 按钮关闭向导。
 
-当前 raid 缓存状态，raid 缓存状态设置为 wb 的话要注意电池放电事宜，设置电池放电模式为自动学习模式
+![img](./.assets/MegaRaid/20181004104102157.png)
 
-```bash
-MegaCli64 -ldgetprop -dskcache -Lall -aALL
-```
+## 登陆 MSM 及 MSM 主界面介绍
 
-设置电池为学习模式为循环模式
+安装 MSM 后，会在桌面及开始菜单中生成快捷方式。
 
-```bash
-MegaCli -AdpBbuCmd -BbuLearn -aN|-a0,1,2|-aALL
-```
+![img](./.assets/MegaRaid/20181004104204301.png)
 
-### 查看硬盘信息
+运行后会识别出本机的主机名称及IP地址，双击或者点击下方 "Login" 按钮登陆。
 
-查看硬盘信息 （查看磁盘有无坏道：Media Error Count ）
+注意：刚完成 MSM 安装或者重启后，可能需要等待数分钟，待后台服务启动才发现本机。
 
-一般通过 MegaCli 巡检到的 Media Error Count: 0 Other Error Count: 0 这两个数值来确定阵列中磁盘是否有问题
+![二1.png](./.assets/MegaRaid/1539072493550999.png)
 
-- Medai Error Count 表示磁盘可能错误，可能是磁盘有坏道，这个值不为 0 值得注意，数值越大，危险系数越高
+输入操作系统的本地用户名及密码登录，不能使用域账户。
 
-- Other Error Count 表示磁盘可能存在松动，可能需要重新再插入
+"Login Mode" 登陆模式保持默认的 "Full Access" 全权访问。
 
-```bash
-MegaCli64 -PDList -aALL
-```
+![img](./.assets/MegaRaid/20181004104412451.png)
 
-Megacli 查看硬盘状态，盘笼 ID，slot 以及是否是热备盘：
 
-```bash
-MegaCli64 -PDList -aALL | grep -E "^Enclosure Device|^Slot|^Raw|^Firmware|^Comm"
-```
 
-让硬盘 LED 灯闪烁
+然后就进入了 MSM 的主界面。
 
-```bash
-MegaCli64 -PdLocate -start -physdrv[0:1] -a0
-```
+MSM 界面分为上、中、下三部分：
 
-### 查看 RAID 信息
+上部是菜单栏及工具按钮，按钮从左到右分别是：选择主机、刷新、调整、新建阵列、登出、帮助；
 
-查 raid 级别、显示所有逻辑磁盘组信息
+中部是交互窗口，包括 "Dashboard" 仪表板、"Physical" 物理视图及 "Logical" 逻辑视图三个标签页；
 
-```bash
-MegaCli64 -LDInfo -Lall -aALL
-```
+下部是日志窗口，会按日志类别ID、关键级别、时间日期及内容表述的方式排列日志。
 
-查看虚拟磁盘信息
+![1539072508483327.png](./.assets/MegaRaid/1539072508483327.png)
 
-```bash
-MegaCli64 -LdPdInfo -aALL |grep -E "Target Id|Slot Number|Firmware state"
-```
+在 Physical 标签页中，会显示所有物理硬件及其状态属性，包括阵列卡、背板(Expander)、硬盘、电池（超级电容）等。
 
-扫描外来配置&清除
+![1539072532543681.png](./.assets/MegaRaid/1539072532543681.png)
 
-```bash
-MegaCli64 -cfgforeign -scan -a0
-MegaCli64 -cfgforeign -clear -a0
-```
+在Logical标签页中，会显示所有逻辑配置及其状态属性，包括阵列(Drive Group)及卷(Virtual Drive)等。
 
-### 查看和设置磁盘缓存策略
+![二4.png](./.assets/MegaRaid/1539072545663320.png)
 
-查看磁盘缓存策略
+## 创建 RAID 阵列
 
-```bash
-# 显示 0 RAID 卡 0 RAID 组的缓存策略
-MegaCli64 -LDGetProp -Cache -L0 -a0
+为便于操作，以下均隐藏了日志窗口和状态属性窗口。
 
-# 显示 1 RAID 卡 0 RAID 组的缓存策略
-MegaCli64 -LDGetProp -Cache -L1 -a0
+在 Physical 标签页或者 Logical 标签页中，确认有足量且状态为 "Unconfigured Good" 的硬盘。
 
-# 显示所有 RAID 卡 0 RAID 组的缓存策略
-MegaCli64 -LDGetProp -Cache -LALL -a0
+![三1.png](./.assets/MegaRaid/1539072578352194.png)
 
-# 显示所有 RAID 卡 所有 RAID 组的缓存策略
-MegaCli64 -LDGetProp -Cache -LALL -aALL
+右键点击阵列卡型号，再点击 "Create Virtual Drive"
 
-MegaCli64 -LDGetProp -DskCache -LALL -aALL
-```
+![img](./.assets/MegaRaid/20181004111642561001.png)
 
-设置磁盘的缓存模式和访问方式 （Change Virtual Disk Cache and Access Parameters）
+如果存在 JBOD 状态的硬盘，会先提示是否将 JBOD 状态的硬盘转换为 Unconfigured Good 状态。
 
-缓存策略解释： 
+如要转换，则选中相应的硬盘，并点击 "Convent" 按钮；如不转换，则勾选 "Do not convent JBOD..."，再点击 "Next" 下一步。
 
-- WT (Write through) ，即直写，表示将数据写入硬盘时，不经过阵列卡缓存直接写入，是默认策略
-- WB (Write back)，即回写，表示数据写入硬盘时，先写入阵列卡缓存，当缓存写满时再写入硬盘；使用回写策略既能提高逻辑盘写入性能，也能增加磁盘寿命。使用回写策略，数据可能会留在缓存，在服务器断电且阵列卡没有电池时会导致数据丢失
-- NORA (No Read Ahead)，即不预读
-- RA (Read Ahead)，即强制预读，在进行读取操作时，预先把后面顺序的数据载入阵列卡卡缓存，这样能在顺序读写环境提供很好的性能，但是在随机读的环境中反而降低读取性能，它适合文件系统，而不适合数据库系统
-- ADRA (Adaptive Read Ahead)，即自适应预读，在缓存和I/O空闲时进行预读，是默认策略
-- C (Cached)，表示读取操作先缓存到阵列卡，这有利于数据的再次快速读取
-- D (Direct)，表示读取操作不缓存到阵列卡缓存，是默认策略
+![img](./.assets/MegaRaid/20181004125237937001.png)
 
-示例
+在创建阵列向导中，选择 "Advanced" 高级模式单选框，再点击 "Next" 下一步。
 
-```bash
-MegaCli64 -LDSetProp WT|WB|NORA|RA|ADRA -L0 -a0
+"Simple" 简单模式本文不介绍。
 
-MegaCli64 -LDSetProp -Cached|-Direct -L0 -a0
+![img](./.assets/MegaRaid/20181004112141175.png)
 
-# enable / disable disk cache
-MegaCli64 -LDSetProp -EnDskCache|-DisDskCache -L0 -a0
-```
+以创建由 4 个硬盘组成的 RAID5 阵列为例。"RAID Level" 选择 "RAID 5"，在 "Select unconfigured drives:" 中选中硬盘（可按 Shift 键或者 Ctrl 键同时选中多个硬盘），再点击 "Add >>" 按钮添加到 "Drive groups:" 中。
 
-## 阵列管理
+![img](./.assets/MegaRaid/20181004112631817001.png)
 
-指定硬盘的位置时，`[Enclosure Device ID: Slot Number]`
+在 "Drive groups:" 中确认硬盘无误后，点击 "Create Drive Group" 创建阵列，再点击 "Next" 下一步。
 
-特殊情况：
+![img](./.assets/MegaRaid/20181004112840747001.png)
 
-```bash
-Enclosure Device ID: N/A
-```
+接下来设置 RAID5 卷的属性，可以自定义 "Capacity" 卷容量、"Initialization State" 初始化等选项。
 
-此时使用 `?` 替换 Enclosure Device ID
+- "Capacity" 卷容量：默认是最大值，可根据需求调整数值和 "Units" 单位。
 
-```bash
-MegaCli64 -PdLocate -start -physdrv[?:1] -a0 
-```
+- "Initialization state" 初始化：默认是 "No Initialization" 不初始化，不会抹除硬盘上的数据；如果是要在创建阵列同时抹除硬盘上原有的数据的话，建议选择 "Fast Initialization" 快速初始化，"Full Initialization" 完全初始化可能需要数小时的时间才能完成。
 
-### 创建阵列
+- "Strip size" 条带尺寸：RAID 阵列的最小数据块尺寸，如非专业人员及有特定需求，否则不建议修改默认值。
 
-创建阵列，不指定热备
+- "Read policy" 读缓存策略，如非专业人员及有特定需求，否则不建议修改默认值。
 
-```bash
-MegaCli64 -CfgLdAdd -r5 [0:0,0:1,0:2,0:3] WB Direct -a0
-```
+- "Write policy" 写缓存策略，如非专业人员及有特定需求，否则不建议修改默认值。
 
-创建一个 raid5 阵列，指定阵列的热备盘是物理盘 4
+- "I/O policy"IO 策略：默认为 "Direct I/O"，如非专业人员及有特定需求，否则不建议修改默认值。
 
-```bash
-MegaCli64 -CfgLdAdd -r5 [0:0,0:1,0:2,0:3] WB Direct -Hsp [0:4] -a0
-```
+- "Access policy" 访问策略：默认为 "Read Write"，如非专业人员及有特定需求，否则不建议修改默认值。
 
-创建一个 raid10 阵列，由物理盘 1,2 和 3,4 分别做 raid1，再将两组 raid1 做 raid0
+- "Disk cache policy" 硬盘缓存策略，如非专业人员及有特定需求，否则不建议修改默认值。
 
-```bash
-MegaCli64 -CfgSpanAdd -r10 -Array0[0:1,0:2] -Array1[0:3,0:4] WB Direct -a0
-```
+设置完毕后，点击 "Create Virtual Drive"。
 
-### 删除阵列
+![img](./.assets/MegaRaid/20181004114639595001.png)
 
-```bash
-MegaCli64 -CfgLdDel -L1 -a1
-```
 
-### 在线添加磁盘
 
-```bash
-MegaCli64 -LDRecon -Start -r5 -Add -PhysDrv[1:4] -L1 -a0
-```
+根据 "Write policy" 选项设置的不同，会有相应的警告提示，确认后继续。
 
-### 全局热备
+Write Back 回写模式：提供最佳的阵列读写性能，但仅当阵列卡配备有电池、超级电容时才生效。如果没有电池、超级电容，或者未处于正常状态，则自动切换为 Write Through 直写模式。
 
-指定第 5 块盘作为全局热备
+![img](./.assets/MegaRaid/20181004115447373.png)
 
-```bash
-MegaCli64 -PDHSP -Set [-EnclAffinity] [-nonRevertible] -PhysDrv[1:5] -a0
-```
+Write Through 直写模式：当遇到停电事故时缓存数据丢失风险最低，但阵列读写性能也较低。
 
-指定第 5 块盘为某个阵列的专用热备
+![img](./.assets/MegaRaid/20181004115645610.png)
 
-```bash
-MegaCli64 -PDHSP -Set [-Dedicated [-Array1]] [-EnclAffinity] [-nonRevertible] -PhysDrv[1:5] -a0
-```
+Always Write Back 强制回写模式：不论是否配备有电池、超级电容，以及其状态是否正常，都强制使用回写模式。此时能提供最佳的读写性能，但数据丢失风险最高。
 
-删除全局热备
+![img](./.assets/MegaRaid/20181004115435183.png)
 
-```bash
-MegaCli64 -PDHSP -Rmv -PhysDrv[8:11] -a0
-```
+## 参考资料
 
-### 某块物理盘下线/上线
-
-将某块物理盘下线
-
-```bash
-MegaCli64 -PDOffline -PhysDrv [1:4] -a0
-```
-
-将某块物理盘上线
-
-```bash
-MegaCli64 -PDOnline -PhysDrv [1:4] -a0
-```
-
-### 查看物理磁盘重建进度
-
-```bash
-MegaCli64 -PDRbld -ShowProg -PhysDrv [1:5] -a0
-
-MegaCli64 -PDRbld -ProgDsply -PhysDrv [1:5] -a0
-```
-
-### 部分硬盘切换直通
-
-```bash
-MegaCli64 -PDMakeJBOD -PhysDrv[?:4] -a0
-```
-
-## 初始化
-
-快速初始化
-
-```bash
- MegaCli64 -LDInit -start –L0 -a0
-```
-
-完全初始化
-
-```bash
-MegaCli64 -LDInit -start -full –L0 -a0
-```
-
-### 查看创建进度
-
-初始化同步块的过程，可以看看其进度
-
-```bash
-MegaCli64 -LDInit -ShowProg -LALL -aALL
-
-MegaCli64 -LDInit -ProgDsply -LALL -aALL
-```
-
-查看阵列后台初始化进度
-
-```bash
-MegaCli64 -LDBI -ShowProg -LALL -aALL
-
-MegaCli64 -LDBI -ProgDsply -LALL -aALL
-```
-
-## RIAD 一致性检查
-
-```bash
-# 禁用一致性检查
-MegaCli64 -AdpCcSched -Dsbl -Aall
-
-# 启用一致性检查
-MegaCli64 -AdpCcSched -ModeConc -Aall
-
-# 查看一直性检查 信息
-MegaCli64 -AdpCcSched -info -Aall
-```
-
-## flush raid cache
-
-```bash
-MegaCli64 -AdpCacheFlush -Aall
-```
-
-## 其他
-
-### Direct PD  Mapping
-
-查询 DirectPDmapping 状态
-
-```bash
-MegaCli64 -directpdmapping -Dsply -a0
-```
-
-设置 DirectPDmapping 为关闭状态
-
-```bash
-Megacli64 -directpdmapping -Dsbl -a0
-```
-
-### 无法初始化排查
-
-The specified physical disk does not have the appropriate attributes to complete
-the requested command.
-
-```bash
-MegaCli64 -PDMakeGood -PhysDrv '[?:0]' -Force -a0
-```
-
-## 参考文档
-
-- <https://blog.51cto.com/u_15169172/2710846>
-
-- <https://www.cnblogs.com/Pigs-Will-Fly/p/14327418.html>
-
-- <https://www.cnblogs.com/machangwei-8/p/10403626.html>
+- <https://iknow.lenovo.com.cn/detail/178452#01>
+- <https://www.orcy.net.cn/3824.html>
+- <https://mirrors.orcy.net.cn:10101/MegaRAID_SAS_9260-4i_%209260-8i_%209260DE-8i_%209261-8i/>
