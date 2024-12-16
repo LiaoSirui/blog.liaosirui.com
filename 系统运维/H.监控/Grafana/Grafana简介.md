@@ -203,3 +203,6 @@ helm upgrade --install grafana  \
 kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
+## 参考资料
+
+- <https://cloud.tencent.com/developer/article/2192174?from_column=20421&from=20421>

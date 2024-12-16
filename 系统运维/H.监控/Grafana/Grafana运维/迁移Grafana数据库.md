@@ -1,3 +1,5 @@
+## 迁移数据到 postgresql
+
 使用 Postgres 作为 Grafana 后端，并迁移数据
 
 停止 Grafana，备份 grafana.db 文件
@@ -23,34 +25,22 @@
 
 停止 Grafana， 导出 pg 中的 grafana 库的 schema（表结构）
 
-```bash
-pg_dump --schema-only-U postgres grafana > schema.sql
+```
+pg_dump --schema-only -U grafana grafana > schema.sql
 ```
 
 删除 grafana 库，重新创建 grafana 库，导入表结构
 
 导入表结构
 
-```bash
-psql -d grafana -f schema.sql
+```
+psql -d grafana -U grafana -f schema.sql
 ```
 
-pgloader 导入数据
 
-```bash
-load database
-    from sqlite:///var/db/grafana.db
-    into postgresql://postgres:xxx@pg.postgres-system.svc:5432/grafana
-    with data only, reset sequences
-    set work_mem to '1024MB', maintenance_work_mem to '2048MB';
-```
 
-开始导入
+## 参考
 
-```bash
-pgloader db.load
-```
+- <https://github.com/percona/grafana-db-migrator>
 
-- <https://pgloader.io/>
-
-- <https://cloud.tencent.com/developer/ask/sof/53438>
+- <https://github.com/wbh1/grafana-sqlite-to-postgres>

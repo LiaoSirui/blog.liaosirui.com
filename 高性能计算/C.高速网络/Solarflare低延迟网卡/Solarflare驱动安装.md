@@ -91,8 +91,6 @@ lspci |grep Solar
 | Solarflare SFC9220 10/40G Ethernet Controller                | Flareon Ultra 8000 Series 10G Adapter                        |
 |                                                              |                                                              |
 
-
-
 ## 仅安装 SFC 驱动
 
 下载地址：<https://china.xilinx.com/support/download/nic-software-and-drivers.html#linux>

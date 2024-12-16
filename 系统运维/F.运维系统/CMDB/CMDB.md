@@ -91,6 +91,10 @@ WeCMDB（Configuration Management Database 配置管理数据库），是源自�
 
 <https://veops.cn/docs/docs/cmdb/cmdb_design>
 
+- OpsAny
+
+资源平台是 OpsAny 的 CMDB，同时支持以资源和应用为中心的管理，支持自定义 CI 模型，资产自动采集，自定义采集模板。结合云管平台、堡垒机、应用平台形成数据联邦
+
 ## 其他
 
 Nacos 实现异地 CMDB：<https://nacos.io/en-us/blog/cmdb.html>
