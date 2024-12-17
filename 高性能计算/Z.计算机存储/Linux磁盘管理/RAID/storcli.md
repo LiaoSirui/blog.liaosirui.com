@@ -28,7 +28,10 @@ MegaCLI 和 StorCLI 是 Broadcom（原 LSI）提供的两种命令行工具，�
 
 找到官方最新版本：<https://www.broadcom.com/site-search?page=1&per_page=10&q=storcli&sort_direction[pages]=desc&sort_field[pages]=sort_date>
 
-
+```bash
+update-alternatives --install /usr/bin/storcli64 storcli64 /opt/MegaRAID/storcli/storcli64 1
+update-alternatives --set storcli64 /opt/MegaRAID/storcli/storcli64
+```
 
 ## StorCLI 使用
 

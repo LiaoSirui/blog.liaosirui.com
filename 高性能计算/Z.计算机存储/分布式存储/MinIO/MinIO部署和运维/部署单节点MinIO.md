@@ -24,3 +24,32 @@ helm pull minio/minio --version 5.3.0
 helm pull minio/minio --version 5.3.0 --untar
 ```
 
+## Healthcheck
+
+增加如下健康检查：
+
+<https://github.com/minio/minio/blob/master/docs/metrics/healthcheck/README.md>
+
+```yaml
+livenessProbe:
+  httpGet:
+    path: /minio/health/live
+    port: 9000
+    scheme: HTTP
+  initialDelaySeconds: 120
+  periodSeconds: 30
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+readinessProbe:
+  httpGet:
+    path: /minio/health/ready
+    port: 9000
+    scheme: HTTP
+  initialDelaySeconds: 120
+  periodSeconds: 15
+  timeoutSeconds: 10
+  successThreshold: 1
+  failureThreshold: 3
+```
+

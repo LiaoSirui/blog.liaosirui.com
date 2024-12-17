@@ -1186,3 +1186,5 @@ linkStyle 11 stroke:#233ed9,stroke-width:3px;
 - <https://snowdreams1006.github.io/write/mermaid-flow-chart.html>
 
 - <https://www.xiehai.zone/tags.html?tag=mermaid>
+
+- <https://madmaxchow.github.io/VLOOK/chart.html>
