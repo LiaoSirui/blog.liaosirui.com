@@ -446,7 +446,7 @@ class TestClass:
 ```python
 # ./conftest.py
 
-@pytest.fixture(scope="module",autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def text():
     print("开始执行")
     yield
@@ -533,9 +533,14 @@ pytest --junitxml=report.xml
 
 Allure Report 是一种灵活的多语言测试报告工具，可展示已测试内容的详细表示，并从日常测试执行中提取最大程度的信息
 
-需要 JDK 环境
+安装 allure，需要 JDK 环境
 
-安装 allure
+```bash
+export INST_ALLURE_VERSION=v2.32.0
+export INST_ALLURE_PATCH="-1"
+
+dnf install -y https://github.com/allure-framework/allure2/releases/download/${INST_ALLURE_VERSION/v/}/allure_${INST_ALLURE_VERSION/v/}${INST_ALLURE_PATCH}.noarch.rpm
+```
 
 安装插件
 
@@ -554,3 +559,10 @@ pytest --alluredir ./report
 ```
 allure serve report # (报告文件夹名)
 ```
+
+生成 HTML 报告
+
+```bash
+allure generate --clean report
+```
+
