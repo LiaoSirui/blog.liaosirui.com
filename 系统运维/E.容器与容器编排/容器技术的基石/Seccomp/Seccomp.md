@@ -151,7 +151,25 @@ Seccomp 是对系统接口的限制，也就是系统接口有多少个，Seccom
 
 ## 容器中 seccomp 的使用
 
-官方文档地址：<https://docs.docker.com/engine/security/seccomp/>
+官方文档地址：
+
+- <https://docs.docker.com/engine/security/seccomp/>
+- <https://docs.docker.com/reference/compose-file/services/#sequences>
+
+```bash
+# docker 关闭 seccomp
+docker run --rm -it --security-opt seccomp=unconfined debian:latest
+```
+
+compose 关闭 seccomp
+
+```yaml
+services:
+  common:
+    image: busybox
+    security_opt:
+      - seccomp=unconfined
+```
 
 容器中 seccomp的使用，本质是对Seccomp-BPF的再封装使用；通过简单的配置文件来达快速设置多个容器的seccomp安全应用(以下全部以docker为例)。
 
