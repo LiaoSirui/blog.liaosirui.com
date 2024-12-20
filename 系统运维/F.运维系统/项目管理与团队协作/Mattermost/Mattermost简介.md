@@ -25,11 +25,11 @@ Docker 部署：<https://docs.mattermost.com/install/install-docker.html#>
 - 配置 SMTP，登录 Mattermost控制台，打开【ENVIROMENT】>【SMTP】
 - 支持多语言（包含中文），可以登录控制台，通过【SITE CONFIGURATION】>【Localization】设置语言
 
-推荐的插件：
-
-- jitmi
-
 ## Mattermost 维护
+
+### 插件
+
+在 config.json 中开启插件上传
 
 ### 中文搜索
 
