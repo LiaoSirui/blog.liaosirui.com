@@ -151,7 +151,7 @@ mount -t xfs ~/xfs.img /mnt/xfs -o noatime,nodiratime
 
 - allocsize：延时分配时，预分配缓冲区的大小
 - discard / nodiscard：块设备是否自动回收空间
-- largeio：大块分配
+- largeio：大块分配（建议不要使用）
 - nolargeio：尽量小块分配
 - noatime：读取文件时不更新访问时间
 - nodiratime：不更新目录的访问时间

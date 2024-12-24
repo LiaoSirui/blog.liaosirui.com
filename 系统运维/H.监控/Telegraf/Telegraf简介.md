@@ -7,3 +7,7 @@ Telegraf 有以下这些特点:
 - 输出目标: 一旦收集到数据，可以将其发送到各种输出目标，包括流行的数据库如 InfluxDB。这种灵活性使 Telegraf 适应不同的监视和分析设置。
 - 配置简易: Telegraf 的配置使用 TOML 文件进行。这种简单性使用户能够轻松定义输入、输出和处理器，使定制变得简单明了。
 - 社区与支持: 作为开源项目，Telegraf 受益于活跃的社区。用户可以通过论坛和文档贡献插件、报告问题并寻求帮助。
+
+## 参考资料
+
+- <https://flashcat.cloud/docs/content/flashcat-monitor/nightingale/agent/telegraf/>

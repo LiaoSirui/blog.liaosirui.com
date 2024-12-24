@@ -496,7 +496,7 @@ vdb    253:16   0   100G  0 disk
 └─vdb3 253:19   0    30G  0 part              4e3fa14a-9e04-4397-b1d9-65f0777ef75d
 ```
 
-编辑 fstab 文件，配置 Mount 点信息，添加：`UUID="abcd-efgh-1234-5678" /data/lun_meta xfs defaults,nofail 0 2`
+编辑 fstab 文件，配置 Mount 点信息，添加：`UUID="abcd-efgh-1234-5678" /data/lun_meta xfs defaults,nofail 0 2`（建议去掉 largio）
 
 ```bash
 echo 'UUID="f43eec11-4735-4beb-a681-5eb7118b2815" /beegfs/storge/target-1101 xfs sync,noatime,nodiratime,logbufs=8,logbsize=256k,largeio,inode64,swalloc,allocsize=131072k 0 0' >> /etc/fstab

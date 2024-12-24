@@ -9,6 +9,14 @@ Vector 是一种高性能的可观察性数据管道，可以收集、转换所�
 - 官网：<https://vector.dev/>
 - 官方文档：<https://vector.dev/docs/>
 
+## 基本概念
+
+Vector 将整个流程抽象为数据源（Source）、可选的数据处理（Transform）和数据目的地（Sink）三个模块
+
+在数据类型方面，Vector 将所有可观测数据统一抽象为 Event ，包含了指标（Metric）和日志（Log）两大类。其中 Metric 又进一步细分为 Gauge 、Counter 、Distribution、Histogram 和 Summary 等类型，这些分类与 Prometheus 中的概念十分相似
+
+![image-20241223174700333](./.assets/Vector简介/image-20241223174700333.png)
+
 ## Vector 使用
 
 配置文件
