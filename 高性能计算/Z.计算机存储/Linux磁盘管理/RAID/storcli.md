@@ -65,6 +65,42 @@ storcli 基础语法为：`storcli <[object identifier]> <verb><[adverb | attrib
 | import  | 将外部配置导入到驱动器                        |
 | expand  | 扩展虚拟磁盘容量                              |
 
+### 设置硬盘直通功能
+
+查看是否支持
+
+```bash
+storcli64 /c0 show all|grep -i jbod
+```
+
+可以看到 `support JBOD = Yes` , 也就是说raid卡支持 jbod 模式
+但是 `Enable JBOD = No` , 说明当前 raid 卡没有开启 jbod 模式,此时需要开启
+
+设置RAID卡的硬盘直通功能的使能情况，并指定直通硬盘
+
+命令格式
+
+```bash
+storcli64 /c<controller_id> set jbod=<state>
+
+storcli64 /c<controller_id>/e<enclosure_id>/s<slot_id> set JBOD
+```
+
+| 参数          | 参数说明                   | 取值        |
+| ------------- | -------------------------- | ----------- |
+| controller_id | 硬盘所在 RAID 卡的 ID      | –           |
+| enclosure_id  | 硬盘所在 Enclosure 的 ID   | –           |
+| slot_id       | 硬盘槽位号                 | –           |
+| state         | RAID 卡 JBOD功能的使能情况 | on 或者 off |
+
+例如使能 RAID 卡的硬盘直通功能，并设置 slot 7 硬盘为直通盘
+
+```
+storcli64 /c0 set jbod=on
+
+storcli64 /c0/e252/s7 set JBOD
+```
+
 ### 常用命令
 
 查看阵列和磁盘状态
@@ -106,3 +142,5 @@ storcli /c0 add vd r10 size=all drives=251:2-13 pdperarray=2 Strip=128 wb
 ## 参考资料
 
 - <https://www.cnblogs.com/luxf0/p/17630732.html>
+
+- <https://www.cnblogs.com/zhangxinglong/p/9771967.html>

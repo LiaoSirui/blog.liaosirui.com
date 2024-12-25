@@ -4,6 +4,8 @@ MQTT 是一种基于标准的消息传递协议或规则集，用于机器对机
 
 ## MQTT over QUIC
 
+![mqtt-over-quic](./.assets/MQTT/mqtt-over-quic.82iS7R0q.png)
+
 QUIC 桥接具有以下独特的优势和特性：
 
 - 多流传输 ： 自动创建 主题-流 的配对，避免 TCP 的队头阻塞问题。
