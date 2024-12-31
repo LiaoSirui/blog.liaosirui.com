@@ -135,3 +135,5 @@ MinIO 采用 Reed-Solomon code 将对象拆分成 N/2 数据和 N/2 奇偶校验
 ## 参考文档
 
 - <https://juejin.cn/post/7128064094061461534>
+
+- <https://www.elibaron.com/arch/minio/minio-concept.html>
