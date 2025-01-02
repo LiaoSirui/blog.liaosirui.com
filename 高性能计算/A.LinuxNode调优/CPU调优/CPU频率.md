@@ -80,10 +80,26 @@ performance
 
 ## cpufreq_driver
 
+<https://wiki.archlinux.org/title/CPU_frequency_scaling>
+
+|                  |                                                              |
+| :--------------: | :----------------------------------------------------------: |
+|      Driver      |                         Description                          |
+|  `acpi_cpufreq`  | CPUFreq driver which utilizes the ACPI Processor Performance States. This driver also supports the Intel Enhanced SpeedStep (previously supported by the deprecated `speedstep_centrino` module). For AMD Ryzen it only provides 3 frequency states. |
+|   `amd_pstate`   | This driver has three modes corresponding to different degrees of autonomy from the CPU hardware: active, passive, and guided. The `amd_pstate` CPU power scaling driver is used automatically in "active mode" on supported CPUs (Zen 2 and newer) since kernel version 6.5. See [#amd_pstate](https://wiki.archlinux.org/title/CPU_frequency_scaling#amd_pstate) for details. |
+| `amd_pstate_epp` | This driver implements a scaling driver selected by `amd_pstate=active` with an internal governor for AMD Ryzen (some Zen 2 and newer) processors. |
+|  `cppc_cpufreq`  | CPUFreq driver based on ACPI CPPC system (see [#Collaborative processor performance control](https://wiki.archlinux.org/title/CPU_frequency_scaling#Collaborative_processor_performance_control)). Common default on AArch64 systems. Works on modern x86 too, but the `intel_pstate` and `amd_pstate` drivers are better. |
+| `intel_cpufreq`  | Starting with kernel 5.7, the intel_pstate scaling driver selects "passive mode" aka `intel_cpufreq` for CPUs that do not support hardware-managed P-states (HWP), i.e. Intel Core i 5th generation or older. This "passive" driver acts similar to the ACPI driver on Intel CPUs, except that it does not have the 16-pstate limit of ACPI. |
+|  `intel_pstate`  | This driver implements a scaling driver with an internal governor for Intel Core (Sandy Bridge and newer) processors. It is used automatically for these processors instead of the other drivers below. This driver takes priority over other drivers and is built-in as opposed to being a module. `intel_pstate` may run in "passive mode" via the `intel_cpufreq` driver for older CPUs. If you encounter a problem while using this driver, add `intel_pstate=disable` to your kernel line in order to revert to using the `acpi_cpufreq` driver. |
+|  `p4_clockmod`   | CPUFreq driver for Intel Pentium 4/Xeon/Celeron processors which lowers the CPU temperature by skipping clocks. (You probably want to use `speedstep_lib` instead.) |
+|  `pcc_cpufreq`   | This driver supports Processor Clocking Control interface by Hewlett-Packard and Microsoft Corporation which is useful on some ProLiant servers. |
+|  `powernow_k8`   | CPUFreq driver for K8/K10 Athlon 64/Opteron/Phenom processors. Since Linux 3.7, 'acpi_cpufreq' will automatically be used for more modern AMD CPUs. |
+| `speedstep_lib`  | CPUFreq driver for Intel SpeedStep-enabled processors (mostly Atoms and older Pentiums) |
+
 ## `cpufreq`子系统
 
 - `cpufreq`子系统负责在运行时对CPU频率和电压的动态调整，以达到性能和功耗的平衡，它也叫`DVFS(Dynamic Voltage Frequency Scaling)`。
-- `DVFS`原理：CMOS 电路中功耗与电压的平方成正比，与频率也成正比。此外，频率越高，性能也越强，相应的能耗就增大了，所以 Tradeoff 依旧是一门艺术。
+- `DVFS`原理：CMOS 电路中功耗与电压的平方成正比，与频率也成正比。此外，频率越高，性能也越强，相应的能耗就增大（需要 Tradeoff）
 - `cpufreq framework`类似于`cpuidle framework`，提供机制（`cpufreq driver`）与策略（`cpufreq governor`），此外提供了`cpufreq core`来对机制和策略进行管理。
 
 ## 参考资料
