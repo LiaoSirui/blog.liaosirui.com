@@ -7,3 +7,9 @@
 Feather 数据格式
 
 - <https://arrow.apache.org/docs/python/feather.html>
+
+
+
+数据存储格式选择：Parquet、HDF还是Feather？
+
+- <https://www.sitstars.com/archives/113/>
