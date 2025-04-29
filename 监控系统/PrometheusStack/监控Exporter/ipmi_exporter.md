@@ -42,6 +42,12 @@ IPMI Exporter 可以获取很多指标，比如一些元数据、BMC 信息、 C
 
 指标文档：<https://github.com/prometheus-community/ipmi_exporter/blob/master/docs/metrics.md>
 
+CPU 温度信息
+
+```bash
+ipmi_temperature_celsius{name=~"CPU Temperature"}
+```
+
 ## Non-Root
 
 如果以非特权用户的身份运行 IPMI Exporter，但需要以 root 用户的身份执行 FreeIPMI 工具，可以这样做:
