@@ -59,6 +59,8 @@ Turbo 是 Intel 的技术方案，其他家也都有类似方案，基本原理�
 
 降压降频的操作，会极大的降低所需的功耗
 
+功耗降低 = 发热量减少 = 风扇转速降低 = 噪音更小
+
 ## 参考资料
 
 - <https://blog.mygraphql.com/zh/notes/low-tec/kernel/cpu-frequency/#cpupower>
