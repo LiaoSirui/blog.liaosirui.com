@@ -12,6 +12,8 @@ NetBox 是一个 IP 地址管理（IP address management，IPAM）和数据中�
 
 文档：
 
+- Awesome NetBox：<https://github.com/netbox-community/awesome-netbox>
+
 - 文档中心：<https://docs.netboxlabs.com/>
 - 社区版文档：<https://netboxlabs.com/docs/netbox/en/stable/>
 
@@ -21,9 +23,18 @@ NetBox 是一个 IP 地址管理（IP address management，IPAM）和数据中�
 
 ## NetBox 插件
 
-| 插件名称      | 插件功能                               | 源码地址                                            |
-| ------------- | -------------------------------------- | --------------------------------------------------- |
-| netbox-qrcode | 用于为对象生成二维码：机架、设备、线缆 | <https://github.com/netbox-community/netbox-qrcode> |
-|               |                                        |                                                     |
-|               |                                        |                                                     |
+| 插件名称       | 插件功能                                                     | 源码地址                                                    |
+| -------------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
+| netbox-qrcode  | 用于为对象生成二维码：机架、设备、线缆                       | <https://github.com/netbox-community/netbox-qrcode>         |
+| Prometheus SD  | 旨在通过 HTTP Service Discovery（SD）方式，将 Netbox 中存储的设备信息、虚拟机、IP 地址和服务转换成 Prometheus 所理解的格式。这一整合使得基于 Netbox 管理的信息能够无缝对接至 Prometheus，大大简化了监控配置流程，提升了自动化水平 | <https://github.com/FlxPeters/netbox-plugin-prometheus-sd>  |
+| Documents      |                                                              | <https://github.com/jasonyates/netbox-documents>            |
+| Reorder Rack   |                                                              | <https://github.com/netbox-community/netbox-topology-views> |
+| Topology views |                                                              | <https://github.com/netbox-community/netbox-reorder-rack>   |
+| Access Lists   |                                                              | <https://github.com/netbox-community/netbox-acls>           |
+| NextBox-UI     | 带有 topoSphere 的 NextBox-UI                                | <https://github.com/iDebugAll/nextbox-ui-plugin>            |
 
+## 参考资料
+
+- <https://songxwn.com/NetBox-PLUGINS-QR-CN/>
+- <https://songxwn.com/netbox4-CN/>
+- <https://songxwn.com/NetBox-use1-dcim/>
