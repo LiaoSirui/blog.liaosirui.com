@@ -30,6 +30,7 @@ NetBox 是一个 IP 地址管理（IP address management，IPAM）和数据中�
 | Documents      |                                                              | <https://github.com/jasonyates/netbox-documents>            |
 | Reorder Rack   |                                                              | <https://github.com/netbox-community/netbox-topology-views> |
 | Topology views |                                                              | <https://github.com/netbox-community/netbox-reorder-rack>   |
+| IP Calculator  | IP 地址计算器                                                | <https://github.com/PieterL75/netbox_ipcalculator>          |
 | Access Lists   |                                                              | <https://github.com/netbox-community/netbox-acls>           |
 | NextBox-UI     | 带有 topoSphere 的 NextBox-UI                                | <https://github.com/iDebugAll/nextbox-ui-plugin>            |
 
