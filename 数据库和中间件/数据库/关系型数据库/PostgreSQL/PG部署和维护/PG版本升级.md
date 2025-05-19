@@ -1,3 +1,5 @@
+## PG 手动升级
+
 文档：
 
 - <https://www.postgresql.org/docs/13/release-13.html#id-1.11.6.6.4>
@@ -127,3 +129,7 @@ cd /tmp
 ```bash
 GRANT ALL PRIVILEGES ON DATABASE gitlab TO gitlab;
 ```
+
+## 其他
+
+- <https://github.com/tianon/docker-postgres-upgrade>
