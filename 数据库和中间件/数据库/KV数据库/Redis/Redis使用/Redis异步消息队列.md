@@ -27,8 +27,6 @@ rds = redis.StrictRedis(
 )
 ```
 
-
-
 ## 异步消息队列
 
 Redis 通过 `list` 数据结构来实现消息队列
