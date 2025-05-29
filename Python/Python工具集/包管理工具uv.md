@@ -31,10 +31,18 @@ uv init --lib --description "DataSource SDK" --author-from git --vcs git --no-pi
 uv 更换源
 
 ```toml
+[tool.uv.pip]
+    index-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 [[tool.uv.index]]
     default = true
     url     = "https://pypi.tuna.tsinghua.edu.cn/simple"
 
+```
+
+或者设置环境变量
+
+```bash
+export UV_DEFAULT_INDEX="https://pypi.tuna.tsinghua.edu.cn/simple"
 ```
 
 添加依赖
