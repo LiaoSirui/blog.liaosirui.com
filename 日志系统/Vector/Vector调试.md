@@ -18,3 +18,10 @@ env:
 ## VRL 语法
 
 通过访问 <https://playground.vrl.dev/> ，可以检验 VRL 语法的正确性。
+
+## 调试性能
+
+```bash
+vector top --url http://127.0.0.1:8686/graphql
+```
+
