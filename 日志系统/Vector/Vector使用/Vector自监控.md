@@ -1,36 +1,31 @@
+## 查看 Vector 各任务的处理情况
+
+```toml
+[api]
+  enabled = true
+  address = "127.0.0.1:8686"
+```
+
+## Health Check API
+
+设置 Vector 开启 API 和探针，用于检查 Vector 的健康状态，以确保实例处于可用状态
+
 ## 指标（Metrics）
 
 Vector `internal_metrics source` 用于收集和导出 Vector 自身的内部指标。这些指标可以帮助监控 Vector 的性能和健康状态：
 
-```yaml
-role: "Agent"
+```toml
+[sources.vector_metrics]
+  type = "internal_metrics"
+  namespace = "vector"
+  scrape_interval_secs = 30
+ 
+[sinks.prometheus]
+  type = "prometheus_exporter"
+  inputs = [ "vector_metrics" ]
+  address = "0.0.0.0:9598"
+  default_namespace = "service"
 
-tolerations:
-  - operator: Exists
-
-service:
-  ports:
-    - name: prom-exporter
-      port: 9598
-
-containerPorts:
-  - name: prom-exporter
-    containerPort: 9598
-    protocol: TCP  
-
-customConfig:
-  data_dir: /vector-data-dir  
-  sources:
-    vector_metrics:
-      type: internal_metrics
-      scrape_interval_secs: 10
-
-  sinks:
-    prom-exporter:
-      type: prometheus_exporter
-      inputs:
-        - vector_metrics
-      address: 0.0.0.0:9598
 ```
 
 以下为指标（Metrics）参考：

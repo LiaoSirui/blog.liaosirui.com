@@ -62,3 +62,63 @@ Vector 可以部署为两个角色，既可以作为数据采集的 agent，也�
 
 ![image-20250605142552715](./.assets/Vector简介/image-20250605142552715.png)
 
+## 部署策略
+
+### 守护进程
+
+在这种情况下，它充当轻量级代理，在自己的进程中后台运行，用于收集该主机的所有数据
+
+![image-20250611233923295](.assets/Vector简介/image-20250611233923295.png)
+
+### Sidecar
+
+每个服务一个
+
+![image-20250611234007809](.assets/Vector简介/image-20250611234007809.png)
+
+## 完整架构
+
+![image-20250611234124382](.assets/Vector简介/image-20250611234124382.png)
+
+在这种情况下，将使用：
+
+- Elasticsearch，提供全文搜索和分析的搜索引擎
+- Kibana，它提供用于探索数据的 UI，并创建交互式仪表板
+- Vector 作为中央服务，用于转换事件并将其发送到 Elasticsearch
+- Kafka，作为上游代理
+- Vector 作为代理，用于提取原始源数据并将其发送到 Kafka
+
+## 其他
+
+systemd 部署
+
+```ini
+[Unit]
+Description="Vector - An observability pipelines tool"
+Documentation=https://vector.dev/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+LimitNOFILE=1000000
+#LimitCORE=infinity
+LimitSTACK=10485760
+User=root
+ExecStart=/data/ops/vector/bin/vector -t 128 --config-dir=/data/ops/vector/config/
+Restart=always
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
+## 全局配置参数
+
+### data_dir
+
+保存 Vector 状态的目录，例如磁盘缓冲区、文件 checkpoint 等。
+
+### 加密密码
+
+secret
