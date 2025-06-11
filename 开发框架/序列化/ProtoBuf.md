@@ -25,6 +25,8 @@ proto语法现在有 proto2 和 proto3 两个版本, 推荐使用 proto3
 ```protobuf
 syntax = "proto3";
 
+package tech.alpha-quant.code
+
 service Greeter {
     rpc SayHello(HelloRequest) returns (HelloReply) {}
     rpc SayHelloAgain(HelloRequest) returns (HelloReply) {}
@@ -42,3 +44,7 @@ message HelloReply {
 使用 protobuf 的过程：编写 proto 文件 -> 使用 protoc 编译 -> 添加 protobuf 运行时 -> 项目中集成
 
 更新 protobuf 的过程:修改 proto 文件 -> 使用 protoc 重新编译 -> 项目中修改集成的地方
+
+## 参考资料
+
+- <https://blog.csdn.net/hsy12342611/article/details/129263397>
