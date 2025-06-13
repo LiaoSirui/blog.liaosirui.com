@@ -1,6 +1,6 @@
-## Redpanda
+## RedPanda
 
-Redpanda 使用 C++ 编写，是一个与 Kafka 兼容的流数据平台，事实证明它的速度提高了10 倍。
+RedPanda 使用 C++ 编写，是一个与 Kafka 兼容的流数据平台，事实证明它的速度提高了10 倍。
 
 - 官方：<https://redpanda.com>
 
@@ -14,11 +14,11 @@ Redpanda 使用 C++ 编写，是一个与 Kafka 兼容的流数据平台，事�
 - Avro
 - Protobuf
 
-## Redpanda Console
+## RedPanda Console
 
-Redpanda Console 是一个 可视化 Kafka/Redpanda 集群管理工具
+RedPanda Console 是一个 可视化 Kafka/RedPanda 集群管理工具
 
-通过Redpanda Console，用户可以轻松执行消息的实时查询、消费者组状态的监控以及主题配置的审查，从而确保数据流的高效和稳定
+通过 RedPanda Console，用户可以轻松执行消息的实时查询、消费者组状态的监控以及主题配置的审查，从而确保数据流的高效和稳定
 
 ![image-20250606133756837](./.assets/RedPanda简介/image-20250606133756837.png)
 
@@ -33,5 +33,4 @@ Schema Registry 功能允许用户管理和查看存储在 Schema Registry 中�
 ## 参考资料
 
 - <https://blog.ktpro.ink/2024/07/06/ru-he-tong-guo-san-chong-fang-shi-bu-shu-redpanda/>
-
 - <https://docs.automq.com/zh/automq/integrations/kafka-ui/redpanda-console>

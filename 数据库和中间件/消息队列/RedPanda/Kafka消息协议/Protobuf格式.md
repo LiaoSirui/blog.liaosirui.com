@@ -11,4 +11,3 @@ the Protobuf data.
 ```java
 The raw Protobuf protocol. The full payload is the normal binary encoding of the Protobuf data.
 ```
-
