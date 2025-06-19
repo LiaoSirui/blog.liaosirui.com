@@ -32,5 +32,7 @@ Schema Registry 功能允许用户管理和查看存储在 Schema Registry 中�
 
 ## 参考资料
 
+- <https://www.echo.cool/docs/category/kafka-%E6%95%99%E7%A8%8B>
+
 - <https://blog.ktpro.ink/2024/07/06/ru-he-tong-guo-san-chong-fang-shi-bu-shu-redpanda/>
 - <https://docs.automq.com/zh/automq/integrations/kafka-ui/redpanda-console>
