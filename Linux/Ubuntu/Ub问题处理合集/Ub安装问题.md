@@ -1,6 +1,6 @@
 ## 23.04 遇到 out of memory
 
-![enter image description here](./.assets/Ub安装问题/PlEAr.jpg)
+<img src="./.assets/Ub安装问题/PlEAr.jpg" alt="enter image description here" style="zoom:50%;" />
 
 DMA 保护，参考资料：<https://learn.microsoft.com/zh-cn/windows/security/hardware-security/kernel-dma-protection-for-thunderbolt>
 
@@ -8,9 +8,9 @@ DMA 保护，参考资料：<https://learn.microsoft.com/zh-cn/windows/security/
 
 还需要开启 IoMMU during boot
 
-![fd7c255fd15c500c383e28edaa801d0f](./.assets/Ub安装问题/fd7c255fd15c500c383e28edaa801d0f.png)
+<img src="./.assets/Ub安装问题/fd7c255fd15c500c383e28edaa801d0f.png" alt="fd7c255fd15c500c383e28edaa801d0f" style="zoom:50%;" />
 
-![4f65a2b1e70f01d48ced3a67333964f8](./.assets/Ub安装问题/4f65a2b1e70f01d48ced3a67333964f8.png)
+<img src="./.assets/Ub安装问题/4f65a2b1e70f01d48ced3a67333964f8.png" alt="4f65a2b1e70f01d48ced3a67333964f8" style="zoom:50%;" />
 
 在 Ubuntu 安装完成之后，再进入 BIOS 重新开启 DMA 保护，经测试不影响已安装系统的正常启动与运行
 
