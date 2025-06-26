@@ -93,3 +93,5 @@ export VSCODE_SERVER_CUSTOM_GLIBC_PATH="$HOME/.local/opt/x86_64-linux-gnu/x86_64
 export VSCODE_SERVER_PATCHELF_PATH="$HOME/.local/bin/patchelf"
 ```
 
+实际上作用的是如下脚本的位置 <https://github.com/microsoft/vscode/blob/1.101.2/resources/server/bin/code-server-linux.sh>
+
