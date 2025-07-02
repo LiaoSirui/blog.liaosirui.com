@@ -1,3 +1,44 @@
+## VRP 系统
+
+VRP 系统（通用路由平台）是华为公司数据通信产品的通用网络操作系统平台，包括路由器、交换机、防火墙、WLAN 等众多系列产品
+
+查看命令行热键
+
+```bash
+display hotkey
+```
+
+VRP 系统提供了“不完整关键字输入”功能，例如查看当前配置：
+
+```bash
+display current-configuration 
+d cu
+dis cu
+```
+
+按 `?` 可以在线查找命令帮助文档，例如
+
+```bash
+display acl ?
+```
+
+若有多个交换机或路由器，需要给设备更改名称，方便区分不同设备，避免配置错误
+
+```bash
+<Huawei>system-view 
+[Huawei]sysname AR1
+[AR1]
+```
+
+几乎所的配置命令（不包括管理类的命令）都有对应的 undo 命令格式，其中 undo 作为这些命令的关键字，即为 undo 命令行。
+
+undo 命令行一般用来恢复缺省情况、禁用某个功能或者删除某项设置
+
+```bash
+sysname abc
+undo sysname
+```
+
 ## 命令视图 
 
 ![img](./.assets/华为SW命令基础/20171207094721990.png)
