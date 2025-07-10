@@ -95,6 +95,8 @@ WeCMDB（Configuration Management Database 配置管理数据库），是源自�
 
 资源平台是 OpsAny 的 CMDB，同时支持以资源和应用为中心的管理，支持自定义 CI 模型，资产自动采集，自定义采集模板。结合云管平台、堡垒机、应用平台形成数据联邦
 
+- <https://github.com/glpi-project/glpi>
+
 ## 维护 CMDB 数据
 
 维护 CMDB 数据的常用方法无外乎 3 种:
