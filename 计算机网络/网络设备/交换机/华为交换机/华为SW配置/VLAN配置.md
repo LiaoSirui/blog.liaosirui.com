@@ -52,7 +52,7 @@ VLANIF 接口是交换机上的一个逻辑三层接口，用于实现不同 VLA
 
 ```bash
 [HW-SW-01]interface Vlanif10
-[HW-SW-01-Vlanif10] ip address 172.31.10.0 255.255.255.0
+[HW-SW-01-Vlanif10] ip address 172.31.10.254 255.255.255.0
 [HW-SW-01-Vlanif10] quit
 ```
 
