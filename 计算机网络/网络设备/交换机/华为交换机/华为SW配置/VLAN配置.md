@@ -35,7 +35,7 @@ VLANIF 接口是交换机上的一个逻辑三层接口，用于实现不同 VLA
 [HW-SW-01]interface GigabitEthernet0/0/1
 [HW-SW-01-GigabitEthernet0/0/1]undo shutdown
 [HW-SW-01-GigabitEthernet0/0/1]port link-type access
-[HW-SW-01-GigabitEthernet0/0/1]port default vlan 10
+[HW-SW-01-GigabitEthernet0/0/1]port default vlan 23
 # 配置连接终端设备的交换机接口为边缘端口
 [HW-SW-01-GigabitEthernet0/0/1]stp edged-port enable
 [HW-SW-01-GigabitEthernet0/0/1]quit
