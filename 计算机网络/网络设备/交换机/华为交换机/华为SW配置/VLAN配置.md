@@ -21,11 +21,11 @@ VLANIF 接口是交换机上的一个逻辑三层接口，用于实现不同 VLA
 
 ## VLAN 配置
 
-创建 VLAN 10，并进入 vlan10 配置视图，如果 vlan10 存在就直接进入 vlan10 配置视图
+创建 VLAN 23，并进入 vlan23 配置视图，如果 vlan23 存在就直接进入 vlan23 配置视图
 
 ```
 <HW-SW-01>sys
-[HW-SW-01]vlan 10
+[HW-SW-01]vlan 23
 ```
 
 将端口加入到 VLAN 中
@@ -44,22 +44,22 @@ VLANIF 接口是交换机上的一个逻辑三层接口，用于实现不同 VLA
 将多个端口加入到 VLAN 中
 
 ```bash
-[HW-SW-01]vlan 10
-[HW-SW-01-vlan10]port GigabitEthernet 0/0/1 to 0/0/3
+[HW-SW-01]vlan 23
+[HW-SW-01-vlan10]port GigabitEthernet 0/0/3 to 0/0/4
 ```
 
 交换机配置 IP 地址，定义 vlan10 管理 IP 三层交换网关路由
 
 ```bash
-[HW-SW-01]interface Vlanif10
-[HW-SW-01-Vlanif10] ip address 172.31.10.254 255.255.255.0
-[HW-SW-01-Vlanif10] quit
+[HW-SW-01]interface Vlanif23
+[HW-SW-01-Vlanif10]ip address 172.31.23.254 255.255.255.0
+[HW-SW-01-Vlanif10]quit
 ```
 
 配置默认静态路由
 
 ```bash
-[HW-SW-01]ip route-static 0.0.0.0 0.0.0.0 172.31.0.254
+[HW-SW-01]ip route-static 0.0.0.0 0.0.0.0 192.168.1.1
 ```
 
 交换机保存设置
