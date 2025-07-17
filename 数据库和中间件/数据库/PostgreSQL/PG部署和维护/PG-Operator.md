@@ -1,0 +1,4 @@
+- <https://github.com/zalando/postgres-operator>
+  - postgres-operator 官方文档：<https://postgres-operator.readthedocs.io/en/latest/>
+- <https://github.com/percona/percona-postgresql-operator>
+- <https://github.com/CrunchyData/postgres-operator>
