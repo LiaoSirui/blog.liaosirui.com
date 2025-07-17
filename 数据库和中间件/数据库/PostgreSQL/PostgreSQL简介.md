@@ -1,5 +1,7 @@
 ## PostgreSQL
 
+PostgreSQL是一个开源数据库，遵循SQL标准，支持NoSQL数据类型（JSON/XML/hstore）、递归查询、全文搜索、GIS地理信息处理等，能够应对各种复杂数据分析需求
+
 PostgreSQL 官方文档：Mhttps://www.postgresql.org/docs/>
 
 WAL 官方文档：<https://www.postgresql.org/docs/16/wal-intro.html>
