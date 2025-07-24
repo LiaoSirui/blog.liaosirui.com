@@ -1,5 +1,7 @@
 ## Java 程序无法访问
 
+Java下载地址：<https://www.java.com/zh_CN/download/mac_download.jsp>
+
 （1）从 Java 8 Update 131 发行版开始，使用 MD5withRSA 或 MD5withDSA 算法签名的应用程序被视为未签名。
 
 未签名的应用程序请求不受限制地访问系统。 以下资源使用弱签名算法MD5withRSA 进行签名，并被视为未签名。
@@ -33,7 +35,9 @@ vim /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/securi
 
 ```bash
 /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/javaws \
--Djava.library.path= \
+-XX:ReservedCodeCacheSize=256m \
 jviewer.jnlp
+
+-Djava.library.path= \
 ```
 
