@@ -68,7 +68,8 @@ pg_basebackup -h <主节点私网IP> -U <YOUR_USER> -P -w -v --wal-method=stream
 # hot_standby = on 开启备用服务器的只读模式
 hot_standby = on
 
-# 设置 hot_standby_feedback = on 控制备用服务器是否会向主服务器发送关于自己的复制状态和进度的信息
+# 设置 hot_standby_feedback = on 
+# 控制备用服务器是否会向主服务器发送关于自己的复制状态和进度的信息
 hot_standby_feedback = on
 ```
 
@@ -82,7 +83,9 @@ hot_standby_feedback = on
 primary_conninfo = 'application_name=pgslave host=<主节点私网IP> port=5432 user=<YOUR_USER> password=<YOUR_PASSWORD> sslmode=disable sslcompression=1'
 ```
 
-设置从库可以接管主库
+设置从库可以接入主库
+
+带有 `.signal` 扩展名的信号文件用于触发服务器的特定操作模式，`standby.signal` 表示待命模式
 
 ```bash
 touch /var/lib/postgresql/data/standby.signal
