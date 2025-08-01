@@ -82,7 +82,7 @@ apt install git postgresql-server-dev-13
 
 使用 ES 进行索引 <https://docs.mattermost.com/scale/elasticsearch.html>
 
-## Hack
+## Crack
 
 参考：<https://i.urox.cn/2020-05-10-i-learned-assembly-language.html>
 
