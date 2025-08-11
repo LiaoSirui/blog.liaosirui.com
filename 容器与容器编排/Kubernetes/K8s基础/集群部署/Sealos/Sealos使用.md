@@ -47,6 +47,12 @@ sealos run \
 # 安装 node: --nodes 10.244.244.21
 ```
 
+## SealosRUN 工作原理
+
+- <https://sealos.run/docs/k8s/advanced-guide/sealos-run>
+
+<img src="./.assets/Sealos使用/sealos-run.png" alt="img" style="zoom:33%;" />
+
 ## 参数详解
 
 ### 新增节点
