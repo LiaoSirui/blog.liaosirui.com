@@ -4,6 +4,18 @@ FTPS 是在安全套接层使用标准的 FTP 协议和指令的一种增强型 
 
 ## CurlFtpFS
 
+报错：`Error setting curl: CURLOPT_SSL_VERIFYHOST no longer supports 1 as value!`
+
+修改 `ftpfs.c`
+
+```c
+1627   if (ftpfs.no_verify_hostname) {
+1628     /* The default is 2 which verifies even the host string. This sets to 1
+1629      * which means verify the host but not the string. */
+1630     curl_easy_setopt_or_die(easy, CURLOPT_SSL_VERIFYHOST, 0);
+1631   }
+```
+
 ## 参考资料
 
 - <https://blog.csdn.net/juanxiaseng0838/article/details/126302293>
