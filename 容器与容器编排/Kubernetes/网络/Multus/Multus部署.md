@@ -1,0 +1,3 @@
+- 启动一个 Multus 守护程序集，这会在每个节点上运行一个 pod，它在每个节点上放置一个 Multus 二进制文件`/opt/cni/bin`
+- 读取按字典顺序（按字母顺序）的第一个配置文件`/etc/cni/net.d`，并在每个节点上为 Multus 创建一个新的配置文件`**/etc/cni/net.d/00-multus.conf**`，此配置是自动生成的，并且基于默认网络配置（假定为按字母顺序排列的第一个配置）
+- 在每个节点上创建一个`/etc/cni/net.d/multus.d`目录，其中包含 Multus 访问 Kubernetes API 的身份验证信息。

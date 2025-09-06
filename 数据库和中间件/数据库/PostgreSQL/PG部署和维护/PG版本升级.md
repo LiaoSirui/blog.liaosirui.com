@@ -38,9 +38,8 @@ tar zcvf pg-data.tgz pg-data/
 准备旧版本相关文件
 
 ```bash
+docker create --name pgdb postgres:13.13 bash
 # 将旧版本数据库容器的 bin、data、lib 复制出来
-docker cp pgdb:/usr/local /data/db_update/old_bin
-docker cp pgdb:/usr/local /data/db_update/old_share
 
 docker cp pgdb:/usr/lib /data/db_update/old_usr_lib
 docker cp pgdb:/usr/share /data/db_update/old_usr_share
@@ -98,7 +97,7 @@ cd /tmp
 /usr/lib/postgresql/14/bin/pg_upgrade \
     -b /usr/lib/postgresql/13/bin \
     -B /usr/lib/postgresql/14/bin \
-    -d /old_data/ \
+    -d /data/old_data/ \
     -D /var/lib/postgresql/data \
     -U postgres \
     -p 5433 \
@@ -112,7 +111,7 @@ cd /tmp
 /usr/lib/postgresql/14/bin/pg_upgrade \
     -b /usr/lib/postgresql/13/bin \
     -B /usr/lib/postgresql/14/bin \
-    -d /old_data/ \
+    -d /data/old_data/ \
     -D /var/lib/postgresql/data \
     -U postgres \
     -p 5433 \
