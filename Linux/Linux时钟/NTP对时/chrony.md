@@ -2,12 +2,11 @@
 
 `vi /etc/chrony.conf`
 
-注释掉默认的 ntp.org 时钟源，添加一个 NTP 服务器时钟源，例如添加 ntp.aliyun.com
+注释掉默认的 ntp.org 时钟源，添加一个 NTP 服务器时钟源，例如添加 `ntp.aliyun.com`
 
-然后设置 NTP 客户端的允许IP地址范围
+然后设置 NTP 客户端的允许 IP 地址范围
 
 ```bash
-allow 10.20.0.0/16
 allow 0/0
 allow ::0/0
 ```
@@ -26,7 +25,7 @@ local 指令启用本地参考模式，该模式允许 chronyd 作为 NTP 服务
 
 该指令通常用在隔离网络中，其中计算机需要彼此同步，但不一定是实时的。 通过手动输入，服务器可以保持与实时的模糊一致。
 
-```
+```bash
 local stratum 10 orphan distance 0.1
 ```
 
