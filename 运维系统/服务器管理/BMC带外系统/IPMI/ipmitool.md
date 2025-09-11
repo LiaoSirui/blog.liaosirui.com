@@ -77,13 +77,17 @@ ipmitool lan set 1 defgw ipaddr 192.168.17.254
 ```bash
 # 显示 IPMI 用户列表
 ipmitool user list
+
 # 创建用户，一般服务器有默认的超级用户（root,admin,ADMIN）
 ipmitool user set name 3 root
+
 # 创建密码
 ipmitool user set password 3 calvin
-# 开权限
+
+# 设置权限
 # ipmitool channel setaccess 1 用户ID
 ipmitool channel setaccess 1 3 callin=on ipi=on link=on privilege=4
+
 # 查看 chanenel 1 的用户信息
 ipmitool user list 1
 
