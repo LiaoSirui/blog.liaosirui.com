@@ -2,6 +2,9 @@
 
 pypika：SQL 语句生成器
 
+- <https://github.com/kayak/pypika>
+- <https://pypika.readthedocs.io/en/latest/>
+
 简单的 select：构建 select 语句的入口点是 pypika.Query，而查询数据的话必然要有两个关键信息：查询的表和指定的字段。
 
 ```python
@@ -453,5 +456,603 @@ sql = (
 )
 print(sql)
 # SELECT "t2"."age","t1"."name" FROM "t1" LEFT JOIN "t2" USING ("id") WHERE "t1"."age">18
+```
+
+### 嵌套子查询
+
+```python
+from pypika import Query, Table, functions as fn
+
+
+table1 = Table("t1")
+table2 = Table("t2")
+
+sub_query = (
+    Query.from_(table1)
+    .select(fn.Avg(table2.age).as_("avg"))
+    .left_join(table2)
+    .using("id")
+    .where(table1.age > 18)
+)
+print(sub_query)
+# SELECT AVG("t2"."age") "avg" FROM "t1" LEFT JOIN "t2" USING ("id") WHERE "t1"."age">18
+
+# 子查询完全可以当成一张表来操作
+sql = (
+    Query.from_(table1)
+    .select("age", "name")
+    .where(table1.field("age") > Query.from_(sub_query).select("avg"))
+)
+print(sql)
+"""
+SELECT "age", "name"
+FROM "t1"
+WHERE "age" > (
+            SELECT "sq0"."avg"
+            FROM (
+                SELECT AVG("t2"."age") "avg"
+                FROM "t1"
+                LEFT JOIN "t2" USING ("id")
+                WHERE "t1"."age" > 18
+            ) "sq0"
+        )
+"""
+```
+
+### 集合运算
+
+两个结果集之间是可以合并的，比如 union 和 union all，至于 union distinct 它是 union 的同义词，所以 pypika 没有设置专门的函数。union 虽然可以用来合并多个结果集，但前提是它们要有相同的列。
+
+```python
+from pypika import Query, Table
+
+table1 = Table("t1")
+table2 = Table("t2")
+
+sql1 = Query.from_(table1).select("name", "age", "salary")
+sql2 = Query.from_(table2).select("name", "age", "salary")
+
+print(sql1.union(sql2))
+# (SELECT "name","age","salary" FROM "t1") UNION (SELECT "name","age","salary" FROM "t2")
+print(sql2.union(sql1))
+# (SELECT "name","age","salary" FROM "t2") UNION (SELECT "name","age","salary" FROM "t1")
+
+# union 可以使用 + 代替
+print(str(sql1 + sql2) == str(sql1.union(sql2)))  # True
+print(str(sql2 + sql1) == str(sql2.union(sql1)))  # True
+
+# union_all 可以使用 * 代替
+print(sql1.union_all(sql2))
+# (SELECT "name","age","salary" FROM "t1") UNION ALL (SELECT "name","age","salary" FROM "t2")
+print(sql2.union_all(sql1))
+# (SELECT "name","age","salary" FROM "t2") UNION ALL (SELECT "name","age","salary" FROM "t1")
+print(str(sql1 * sql2) == str(sql1.union_all(sql2)))  # True
+print(str(sql2 * sql1) == str(sql2.union_all(sql1)))  # True
+```
+
+此外还有交集、差集、对称差集
+
+```python
+from pypika import Query, Table
+
+table1 = Table("t1")
+table2 = Table("t2")
+
+sql1 = Query.from_(table1).select("name", "age", "salary")
+sql2 = Query.from_(table2).select("name", "age", "salary")
+
+# 交集，没有提供专门的操作符
+print(sql1.intersect(sql2))
+# (SELECT "name","age","salary" FROM "t1") INTERSECT (SELECT "name","age","salary" FROM "t2")
+
+# 差集，可以使用减号替代
+print(sql1.minus(sql2))
+# (SELECT "name","age","salary" FROM "t1") MINUS (SELECT "name","age","salary" FROM "t2")
+
+# 对称差集，没有提供专门的操作符
+print(sql1.except_of(sql2))
+# (SELECT "name","age","salary" FROM "t1") EXCEPT (SELECT "name","age","salary" FROM "t2")
+```
+
+### Date, Time, and Intervals
+
+```python
+from pypika import Query, Table, functions as fn, Interval
+
+fruits = Table("fruits")
+
+sql = (
+    Query.from_(fruits)
+    .select(fruits.id, fruits.name)
+    .where(fruits.harvest_date + Interval(months=1) < fn.Now())
+)
+print(sql)
+# SELECT "id","name" FROM "fruits" WHERE "harvest_date"+INTERVAL '1 MONTH'<NOW()
+```
+
+### 多值比较
+
+SQL 有一个非常有用的特性，假设一张表中有 year、month  这两个字段，然后我想找出 year、month 组合起来之后大于 2020 年 7 月的记录。比如：year = 2021、month = 2  这条记录就是合法的，因为 year 是大于 2020 的；year = 2020、month = 8 也是合法的。
+
+数据库提供了多值比较：
+
+```sql
+select * from t where (year, month) > (2020, 7)
+```
+
+这样会先比较 year，如果满足 year > 2020、直接成立，year < 2020、直接不成立，后面就不用比了；如果 year = 2020，那么再比较 month。
+
+```python
+from pypika import Query, Table, Tuple
+
+table = Table("t")
+
+sql = (
+    Query.from_(table)
+    .select(table.salary)
+    .where(Tuple(table.year, table.month) >= (2020, 7))
+)
+print(sql)
+# SELECT "salary" FROM "t" WHERE ("year","month")>=(2020,7)
+```
+
+对于 in 字句也是同样的道理：
+
+```python
+from pypika import Query, Table, Tuple
+
+table = Table("t")
+
+sql = (
+    Query.from_(table)
+    .select(table.salary)
+    .where(
+        Tuple(table.year, table.month).isin([(2020, 7), (2020, 8), (2020, 9)])
+    )
+)
+print(sql)
+# SELECT "salary" FROM "t" WHERE ("year","month") IN ((2020,7),(2020,8),(2020,9))
+```
+
+### 字符串函数
+
+字符串操作也是非常常用的，下面来看一下：
+
+```python
+from pypika import Query, Table
+
+table = Table("t")
+
+sql = (
+    Query.from_(table)
+    .select("name", "age", "salary")
+    .where(
+        table.field("name").like("古明地%")
+        & table.field("place").ilike("ja%")  # ilike 不区分大小写
+    )
+)
+print(sql)
+# SELECT "name","age","salary" FROM "t" WHERE "name" LIKE '古明地%' AND "place" ILIKE 'ja%'
+```
+
+正则也是可以的：
+
+```python
+from pypika import Query, Table
+
+table = Table("t")
+
+sql = (
+    Query.from_(table)
+    .select("name", "age", "salary")
+    .where(table.field("xxx").regex(r"^[abc][a-zA-Z]+&"))
+)
+print(sql)
+# SELECT "name","age","salary" FROM "t" WHERE "xxx" REGEX '^[abc][a-zA-Z]+&'
+```
+
+还有字符串之间的 concat、大小写转换等等：
+
+```python
+from pypika import Query, Table, functions as fn
+
+table = Table("t")
+
+sql = Query.from_(table).select(
+    fn.Concat(table.field("name"), "-", table.field("age")),
+    fn.Upper(table.field("name")),
+    fn.Lower(table.field("name")),
+    fn.Length(table.field("name")),
+)
+print(sql)
+# SELECT CONCAT("name",'-',"age"),UPPER("name"),LOWER("name"),LENGTH("name") FROM "t"
+```
+
+### 自定义函数
+
+尽管 pypika 的 fn 模块支持大部分的 SQL 函数，但还是有少部分没有覆盖到，这个时候自定义函数的实现
+
+```python
+from pypika import Table, Query, CustomFunction
+
+table = Table("t")
+# 自定义实现数据库的 LENGTH 函数，该函数可以接收一个参数来查看长度
+my_length = CustomFunction("LENGTH", ["col"])
+# 自定义实现数据库的 POWER 函数，该函数可以接收两个参数来计算幂
+my_power = CustomFunction("POWER", ["col1", "col2"])
+
+sql = Query.from_(table).select(my_length(table.field("name")))
+print(sql)
+# SELECT LENGTH("name") FROM "t"
+
+sql = Query.from_(table).select(
+    my_power(table.field("num"), table.field("base"))
+)
+print(sql)
+# SELECT POWER("num","base") FROM "t"
+
+sql = Query.from_(table).select(my_power(table.field("num"), 3))
+print(sql)
+# SELECT POWER("num",3) FROM "t"
+```
+
+### case when
+
+```python
+from pypika import Table, Query, Case
+
+table = Table("t")
+
+sql = Query.from_(table).select(
+    table.name,
+    Case()
+    .when(table.age < 18, "未成年")
+    .when(table.age < 30, "成年")
+    .when(table.age < 50, "中年")
+    .else_("老年")
+    .as_("age"),
+)
+print(sql)
+"""
+SELECT "name",
+    CASE WHEN "age"<18 THEN '未成年'
+        WHEN "age"<30 THEN '成年'
+        WHEN "age"<50 THEN '中年'
+        ELSE '老年'
+    END "age"
+FROM "t"
+"""
+```
+
+### with 语句
+
+```python
+from pypika import Table, Query, AliasedQuery
+
+table = Table("t")
+
+sub_query = Query.from_(table).select("*")
+sql = Query.with_(sub_query, "alias").from_(AliasedQuery("alias")).select("*")
+print(sql)
+# WITH alias AS (SELECT * FROM "t") SELECT * FROM alias
+```
+
+### distinct
+
+相对结果集进行去重的
+
+```python
+from pypika import Query, Table
+
+table = Table("t")
+print(
+    # 只需要在 select 之前调用一次 distinct 即可
+    Query.from_(table)
+    .distinct()
+    .select(table.id, table.age)
+)
+# SELECT DISTINCT "id","age" FROM "t"
+```
+
+### limit 与 offset
+
+```python
+from pypika import Table, Query, functions as fn, Order
+
+table = Table("t")
+sql = (
+    Query.from_(table)
+    .select(fn.Count("id").as_("count"), "age", "length")
+    .where(table.field("age") > 18)
+    .groupby("age", "length")
+    .having(fn.Count("id") > 10)
+    .orderby("count", order=Order.desc)
+    .orderby("age", order=Order.asc)
+    .limit(10)
+    .offset(5)
+)
+print(sql)
+"""
+SELECT COUNT('id') "count", "age", "length"
+FROM "t"
+WHERE "age" > 18
+GROUP BY "age", "length"
+HAVING COUNT('id') > 10
+ORDER BY "count" DESC, "age" ASC
+LIMIT 10 OFFSET 5
+"""
+```
+
+## 插入数据
+
+简单的插入数据
+
+```python
+from pypika import Table, Query
+
+table = Table("t")
+# 查询是 Query.from_，插入数据是 Query.into
+sql = Query.into(table).insert(1, "xxx", 16, "yyy")
+print(sql)
+# INSERT INTO "t" VALUES (1,'xxx',16,'yyy')
+```
+
+需要注意的地方，比如：None 值的处理
+
+```python
+from pypika import Table, Query
+
+table = Table("t")
+
+sql = Query.into(table).insert(1, "xxx", None, "yyy")
+# 自动换成了 NULL，如果是自己手动拼接的话，那么还需要额外处理一下
+# 而 pypika 内部已经做了，如果不把 None 换成 NULL，交给数据库执行是会报错的
+print(sql)
+# INSERT INTO "t" VALUES (1,'xxx',NULL,'yyy')
+
+# 假设第二个字段在数据库中是一个 json
+sql = Query.into(table).insert(
+    1, {"name": "xxx", "age": 16, "where": None}
+)
+print(sql)
+# INSERT INTO "t" VALUES (1,{'name': 'xxx', 'age': 16, 'where': None})
+# 我们看到这不是我们期望的结果，应该手动将值先变成 json 才行
+
+import json
+
+sql = Query.into(table).insert(
+    1,
+    json.dumps(
+        {"name": "xxx", "age": 16, "where": None}, ensure_ascii=False
+    ),
+)
+print(sql)
+# INSERT INTO "t" VALUES (1,'{"name": "xxx", "age": 16, "where": null}')
+# 以上就没有问题了
+```
+
+插入多条数据
+
+```python
+from pypika import Table, Query
+
+table = Table("t")
+
+sql = (
+    Query.into(table)
+    .insert(1, "xxx", 16, "yyy")
+    .insert(2, "xxx", 15, "yyy")
+)
+print(sql)
+# INSERT INTO "t" VALUES (1,'xxx',16,'yyy'),(2,'xxx',15,'yyy')
+
+# 或者
+sql = Query.into(table).insert(
+    (1, "xxx", 16, "yyy"), (2, "xxx", 15, "yyy")
+)
+print(sql)
+# INSERT INTO "t" VALUES (1,'xxx',16,'yyy'),(2,'xxx',15,'yyy')
+```
+
+指定字段插入
+
+```python
+from pypika import Table, Query, Field
+
+table = Table("t")
+
+sql = (
+    Query.into(table)
+    .columns("id", table.field("name"), table.age, Field("place"))
+    .insert(1, "xxx", 16, "yyy")
+)
+print(str(sql))
+# INSERT INTO "t" ("id","name","age","place") VALUES (1,'xxx',16,'yyy')
+```
+
+将一张表的部分记录插入到另一张表中
+
+```python
+from pypika import Table, Query, Field
+
+table1 = Table("t1")
+table2 = Table("t2")
+
+sql = (
+    Query.into(table1)
+    .columns("id", "name", "age")
+    .from_(table2)
+    .select("id", "name", "age")
+    .where(Field("age") > 18)
+)
+print(sql)
+# INSERT INTO "t1" ("id","name","age") SELECT "id","name","age" FROM "t2" WHERE "age">18
+```
+
+将两个表 join 之后的数据插入到新表中也是可以的：
+
+```python
+from pypika import Table, Query, Field
+
+table1 = Table("t1")
+table2 = Table("t2")
+table3 = Table("t3")
+
+sql = (
+    Query.into(table1)
+    .columns("id", "name", "age")
+    .from_(table2)
+    .left_join(table3)
+    .on(table2.id == table3.id)
+    .select(table2.id, table2.name, table3.age)
+)
+print(sql)
+"""
+INSERT INTO "t1" ("id","name","age") 
+SELECT "t2"."id","t2"."name","t3"."age" FROM "t2" LEFT JOIN "t3" ON "t2"."id"="t3"."id"
+"""
+```
+
+## 更新数据
+
+简单的更新数据
+
+```python
+from pypika import Table, Query
+
+table = Table("t")
+
+# 更新是 update
+sql = Query.update(table).set(table.name, "xxx")
+print(sql)
+# UPDATE "t" SET "name"='xxx'
+
+sql = Query.update(table).set(table.name, "xxx").where(table.id == 1)
+print(sql)
+# UPDATE "t" SET "name"='xxx' WHERE "id"=1
+
+sql = Query.update(table).set(table.name, "xxx").set(table.age, 16)
+print(sql)
+# UPDATE "t" SET "name"='xxx',"age"=16
+```
+
+用另一张表的数据更新当前也是一种比较常见的操作，比如 t1 有 id、name 两个字段，t2 有 id、name 两个字段。如果 t1 的 id 在 t2 中存在，那么就用 t2 的 name 更新掉 t1 的 name。
+
+```python
+from pypika import Table, Query
+
+table1 = Table("t1")
+table2 = Table("t2")
+
+sql = (
+    Query.update(table1)
+    .join(table2)
+    .on(table1.uid == table2.tid)
+    .set(table1.name, table2.name)
+    .where(table1.uid > 10)
+)
+print(sql)
+# UPDATE "t1" JOIN "t2" ON "t1"."uid"="t2"."tid" SET "name"="t2"."name" WHERE "t1"."uid">10
+```
+
+最后，更新字段还有另一种方式：
+
+```python
+from pypika import Table
+
+table1 = Table("t1")
+table2 = Table("t2")
+
+# Query.update(table1) 也可以写成 table1.update()，其它不变
+sql = (
+    table1.update()
+    .join(table2)
+    .on(table1.uid == table2.tid)
+    .set(table1.name, table2.name)
+    .where(table1.uid > 10)
+)
+# 可以看到打印的结果是一样的
+print(sql)
+# UPDATE "t1" JOIN "t2" ON "t1"."uid"="t2"."tid" SET "name"="t2"."name" WHERE "t1"."uid">10
+```
+
+## 占位符
+
+相当于先构建好相应的 SQL 语句，然后驱动在执行的时候会对数据进行替换
+
+```python
+from pypika import Table, Query, Parameter
+
+table = Table("t")
+sql = (
+    Query.into(table)
+    .columns("id", "name", "age")
+    .insert(Parameter(":1"), Parameter(":2"), Parameter(":3"))
+)
+print(sql)
+# INSERT INTO "t" ("id","name","age") VALUES (:1,:2,:3)
+
+# 看到 VALUES 后面只是相应的占位符，具体的值是多少需要驱动执行的时候传递
+# 但是问题来了，不同的驱动的占位符是不同的。有的是 %s，有的是 $1、$2、$3 这种
+# 所以需要根据驱动调整占位符，但是 SQLAlchemy 提供了一种通用的方式
+from sqlalchemy import text, create_engine
+
+sql = (
+    Query.into(table)
+    .columns("id", "name", "age")
+    .insert(Parameter(":id"), Parameter(":name"), Parameter(":age"))
+)
+# 传递到 text 中
+sql = text(str(sql))
+print(sql)  # INSERT INTO "t" ("id","name","age") VALUES (:id,:name,:age)
+engine = create_engine("")
+engine.execute(sql, id=123, name="xxx", age=16)
+```
+
+## 其他用法
+
+### 数据库适配
+
+不同数据库的 SQL  语法会有略微不同，最大的一个不同就是包裹字段所用的符号，MySQL 用的是反引号、PostgreSQL 用的是双引号。而 pypika  不知道要适配什么数据库，所以默认用的是双引号，如果想适配 MySQL 的话，那么应该告诉 pypika 要适配 MySQL。
+
+```python
+from pypika import Table, MySQLQuery, PostgreSQLQuery
+
+table = Table("t")
+print(
+    MySQLQuery.from_(table).select(table.id, table.age)
+)
+# SELECT `id`,`age` FROM `t`
+
+print(
+    PostgreSQLQuery.from_(table).select(table.id, table.age)
+)
+# SELECT "id","age" FROM "t"
+```
+
+看到此时就实现了数据库的适配，除了 MySQL 和 PostgreSQL 之外，pypika 还可以适配其它的数据库：
+
+- MSSQLQuery: 微软的 SqlServer
+- OracleQuery: 甲骨文的 Oracle
+- VerticaQuery: 列式数据库 Vertica
+
+### 窗口函数
+
+详见：<https://pypika.readthedocs.io/en/latest/3_advanced.html#window-frames>
+
+```python
+from pypika import Table, Query, analytics as an
+
+table = Table("t")
+sql = Query.from_(table).select(
+    an.Sum("amount").over("month").as_("amount_sum"),
+    an.Avg("amount").over("month").as_("amount_avg"),
+)
+print(sql)
+"""
+SELECT SUM('amount') OVER (PARTITION BY month) "amount_sum",
+        AVG('amount') OVER (PARTITION BY month) "amount_avg"
+FROM "t"
+"""
 ```
 
