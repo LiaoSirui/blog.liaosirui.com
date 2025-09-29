@@ -52,4 +52,3 @@ readinessProbe:
   successThreshold: 1
   failureThreshold: 3
 ```
-

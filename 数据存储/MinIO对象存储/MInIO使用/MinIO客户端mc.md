@@ -140,6 +140,3 @@ mc ls minio/buk2
 ```bash
 mc anonymous set public minio/buk2
 ```
-
-
-

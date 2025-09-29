@@ -49,8 +49,6 @@ except S3Error as err:
     print(err)
 ```
 
-
-
 - 安全性：确保在生产环境中使用 HTTPS（secure=True）来保护你的数据传输。
 - 错误处理：在生产代码中，你应该添加更全面的错误处理逻辑来应对各种异常情况。
 - 访问控制：MinIO 支持 IAM（Identity and Access Management）策略，你可以通过配置 IAM 策略来精细控制对存储桶和对象的访问权限。

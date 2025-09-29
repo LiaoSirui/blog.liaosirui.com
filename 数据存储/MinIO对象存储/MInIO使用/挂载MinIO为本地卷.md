@@ -88,7 +88,6 @@ EOF
 endpoint是minio服务端地址
 # bk1是bucket名
 # /home/minio是本地目录
-# 将goofys放到/usr/local/bin目录下之后就可以直接调用了，不需要再写路径
+# 将 goofys 放到/usr/local/bin目录下之后就可以直接调用了，不需要再写路径
 ./goofys --endpoint=http://192.168.137.8:9090 bk1 /home/minio/
 ```
-
