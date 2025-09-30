@@ -913,11 +913,14 @@ systemctl enable --now tailscaled
 安装
 
 ```bash
-brew install go@1.22
+brew install go@1.24
 
 export GOPROXY=https://goproxy.cn,direct
-export PATH="/usr/local/opt/go@1.22/bin:$PATH"
-go install tailscale.com/cmd/tailscale{,d}@v1.80.0
+export PATH="/usr/local/opt/go@1.24/bin:$PATH"
+
+go env -w GOPROXY=https://goproxy.cn,direct
+
+go install tailscale.com/cmd/tailscale{,d}@v1.88.3
 
 sudo $HOME/go/bin/tailscaled install-system-daemon
 # 卸载守护进程：sudo $HOME/go/bin/tailscaled uninstall-system-daemon
@@ -940,13 +943,13 @@ export PATH="$HOME/go/bin:$PATH"
 首先在服务端生成 pre-authkey 的 token，有效期可以设置为 1 小时：
 
 ```bash
-headscale preauthkeys create -e 2h --user '<用户名>'
+headscale preauthkeys create -e 2h --user '<用户ID>'
 ```
 
 查看已经生成的 key：
 
 ```bash
-headscale --user '<用户名>' preauthkeys list
+headscale --user '<用户ID>' preauthkeys list
 ```
 
 现在新节点就可以无需服务端同意直接接入
