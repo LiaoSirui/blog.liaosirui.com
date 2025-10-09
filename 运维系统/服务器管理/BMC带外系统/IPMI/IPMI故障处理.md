@@ -35,7 +35,8 @@ vim /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/securi
 
 ```bash
 /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/bin/javaws \
--XX:ReservedCodeCacheSize=256m \
+-XX:InitialCodeCacheSize=256m \
+-XX:ReservedCodeCacheSize=512m \
 jviewer.jnlp
 
 -Djava.library.path= \
