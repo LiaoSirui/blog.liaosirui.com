@@ -39,6 +39,6 @@ vim /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin/Contents/Home/lib/securi
 -XX:ReservedCodeCacheSize=512m \
 jviewer.jnlp
 
--Djava.library.path= \
+# -Djava.library.path=
 ```
 
