@@ -31,3 +31,8 @@ LVM 将一个或多个磁盘分区（PV）虚拟为一个卷组（VG），相当
 逻辑区域是逻辑卷中可用于分配的最小存储单元，逻辑区域的大小取决于逻辑卷所在卷组中的物理区域的大小。
 
 由于受内核限制的原因，一个逻辑卷（Logic Volume）最多只能包含 65536 个 PE（Physical Extent），所以一个 PE 的大小就决定了逻辑卷的最大容量，4 MB (默认) 的 PE 决定了单个逻辑卷最大容量为 256 GB，若希望使用大于 256G 的逻辑卷，则创建卷组时需要指定更大的 PE。在 Red Hat Enterprise Linux AS 4 中 PE 大小范围为 8 KB 到 16GB，并且必须总是 2 的倍数。
+
+## 参考资料
+
+- <https://docs.redhat.com/zh-cn/documentation/red_hat_enterprise_linux/10/html/deduplicating_and_compressing_logical_volumes_on_rhel/index>
+- <https://docs.redhat.com/zh-cn/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_logical_volumes/index>
