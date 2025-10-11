@@ -1,4 +1,55 @@
-## s3fs 方式步骤
+## mount-s3 方式
+
+推荐方式！！
+
+````bash
+dnf install -y https://s3.amazonaws.com/mountpoint-s3-release/latest/x86_64/mount-s3.rpm
+````
+
+创建配置文件
+
+```bash
+# 创建mount-s3配置文件目录
+mkdir -p /etc/mount-s3
+
+# 创建mount-s3日志目录
+mkdir -p /var/logs/mount-s3
+
+# 创建挂载点目录
+# mkdir -p /data/mount-s3/<存储桶名称>
+mkdir -p /data/mount-s3/one
+
+# 创建mount-s3配置文件
+vim /etc/mount-s3/config
+
+```
+
+配置内容如下
+
+```bash
+AWS_ACCESS_KEY_ID="admin"
+AWS_SECRET_ACCESS_KEY="Wps@123456"
+OPTIONS=" --endpoint-url http://127.0.0.1:9000 --allow-delete -l /var/logs/mount-s3/ one /data/mount-s3/one"
+
+```
+
+| 参数                    | 描述                                                     |
+| ----------------------- | -------------------------------------------------------- |
+| `AWS_ACCESS_KEY_ID`     | 访问MinIO服务器的访问密钥ID，用于认证用户身份。          |
+| `AWS_SECRET_ACCESS_KEY` | 与访问密钥ID对应的密钥，用于认证用户身份。               |
+| `–endpoint-url`         | 指定MinIO服务器的URL。                                   |
+| `–allow-delete`         | 允许删除操作，使得挂载的存储桶支持删除文件。             |
+| `-l`                    | 指定日志文件的路径，用于记录挂载操作的日志。             |
+| `demoapp`               | 要挂载的存储桶名称。                                     |
+| `/opt/s3/demoapp`       | 本地挂载目录，挂载后可以通过这个目录访问存储桶中的文件。 |
+
+参考资料
+
+- <https://blog.csdn.net/omaidb/article/details/147130075>
+
+## s3fs 方式
+
+Github 仓库：<https://github.com/s3fs-fuse/s3fs-fuse>
 
 安装 s3fs 客户端
 
