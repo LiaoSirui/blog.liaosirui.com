@@ -34,7 +34,7 @@ Bcache 支持三种缓存策略，分别是：writeback、writethrough、writear
 安装依赖 libblkid-devel 包
 
 ```bash
-dnf intall -y libblkid-devel liblibsmartcols-devel
+dnf install -y libblkid-devel liblibsmartcols-devel
 ```
 
 进入模块目录

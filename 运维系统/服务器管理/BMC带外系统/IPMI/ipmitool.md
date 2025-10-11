@@ -20,9 +20,14 @@ ipmitool power off
 
 # 重启
 ipmitool power reset
+
+# 注意 power cycle 和 power reset 的区别在于前者从掉电到上电有１秒钟的间隔，而后者是很快上电)
+ipmitool power cycle
 ```
 
-### Sensor 信息查看
+### 读取系统状态类
+
+#### Sensor 信息查看
 
 ```bash
 # 查看 SDR Sensor 信息
@@ -32,10 +37,29 @@ ipmitool sdr
 ipmitool sensor list
 ```
 
-### SEL 日志查看
+#### SEL 日志查看
 
 ```bash
+# 显示所有系统事件日志
 ipmitool sel list
+
+# 删除所有系统日志
+ipmitool sel clear
+
+# 查看当前 BMC 时间
+ipmitool sel time get
+# 设置当前 BMC 的时间
+ipmitool sel time set  "mm/dd/yyyy hh:mm:ss"
+```
+
+### 启动类
+
+```bash
+# 重启后停在 BIOS 菜单
+ipmitool chassis bootdev bios
+
+# 重启后从 PXE 启动
+ipmitool chassis bootdev pxe
 ```
 
 ## IPMItool 使用
