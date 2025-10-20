@@ -86,21 +86,21 @@ MyProject/
 根目录的 `CMakeLists.txt` 文件负责全局配置，并将子模块添加到构建中：
 
 ```cmake
-cmake_minimum_required(VERSION 3.15)
-project(MyProject)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.15)
+PROJECT(MyProject)
 
 # 设置 C++ 标准
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CMAKE_CXX_STANDARD 17)
+SET(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 使用 Conan 的配置（假设 Conan 已经生成相关文件）
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+# Include the Conan toolchain file
+include(${CMAKE_BINARY_DIR}/build/Release/generators/conan_toolchain.cmake)
 
 # 添加子模块
-add_subdirectory(core)
-add_subdirectory(tools)
-add_subdirectory(app)
+ADD_SUBDIRECTORY(core)
+ADD_SUBDIRECTORY(tools)
+ADD_SUBDIRECTORY(app)
 
 ```
 
@@ -117,10 +117,10 @@ from conan.tools.cmake import CMake, cmake_layout
 class MyProjectConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     requires = (
-        "boost/1.81.0",  # boost 库
-        "fmt/10.1.1",  # fmt 库
+        "boost/1.88.0",  # boost 库
+        "fmt/12.0.0",  # fmt 库
     )
-    generators = "cmake", "cmake_find_package"
+    generators = "CMakeDeps", "CMakeToolchain"
 
     def layout(self):
         cmake_layout(self)
@@ -146,5 +146,128 @@ class MyProjectConan(ConanFile):
 `core` 模块没有外部依赖，因此只需要简单的 `CMakeLists.txt` 文件
 
 ```cmake
+CMAKE_MINIMUM_REQUIRED(VERSION 3.15)
+PROJECT(core)
+
+add_library(core src/core.cpp)
+
+target_include_directories(core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 ```
 
+`tools` 模块依赖于 `core` 和 `Boost`，因此需要配置 `CMakeLists.txt` 和 `conanfile.py` 来管理这些依赖
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(tools)
+
+# 将 core 模块添加为依赖
+add_subdirectory(${CMAKE_SOURCE_DIR}/core ${CMAKE_BINARY_DIR}/core)
+
+# 定义 tools 库
+add_library(tools src/tools.cpp)
+
+# 连接 core 和 Boost 库
+target_link_libraries(tools PRIVATE core Boost::Boost)
+
+target_include_directories(tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+```
+
+Conan 配置
+
+```python
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+from conan import ConanFile
+from conan.tools.cmake import CMake, cmake_layout
+
+
+class ToolsConan(ConanFile):
+    settings = "os", "compiler", "build_type", "arch"
+    requires = "boost/1.88.0"  # 只需要 boost 库
+    generators = "CMakeDeps", "CMakeToolchain"
+
+    def layout(self):
+        cmake_layout(self)
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
+
+    def package_info(self):
+        self.cpp_info.libs = ["tools"]
+
+```
+
+`app` 模块依赖于 `core`、`tools` 和 `fmt`。配置方式类似于 `tools` 模块：
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(app)
+
+# 将 core 和 tools 模块添加为依赖
+add_subdirectory(${CMAKE_SOURCE_DIR}/core ${CMAKE_BINARY_DIR}/core)
+add_subdirectory(${CMAKE_SOURCE_DIR}/tools ${CMAKE_BINARY_DIR}/tools)
+
+# 定义 app 可执行文件
+add_executable(app src/app.cpp)
+
+# 连接 core、tools 和 fmt 库
+target_link_libraries(app PRIVATE core tools fmt::fmt)
+
+target_include_directories(app PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+```
+
+Conan 配置
+
+```python
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+from conan import ConanFile
+from conan.tools.cmake import CMake, cmake_layout
+
+
+class AppConan(ConanFile):
+    settings = "os", "compiler", "build_type", "arch"
+    requires = "fmt/12.0.0"  # 只需要 fmt 库
+    generators = "CMakeDeps", "CMakeToolchain"
+
+    def layout(self):
+        cmake_layout(self)
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
+
+    def package(self):
+        cmake = CMake(self)
+        cmake.install()
+
+    def package_info(self):
+        self.cpp_info.libs = ["app"]
+
+```
+
+### 构建与集成
+
+在项目结构和配置文件都就绪之后，构建过程如下：
+
+1. 安装 Conan 依赖：在根目录运行 `conan install .`，Conan 将解析 `conanfile.py` 中定义的依赖，并下载和配置这些库
+2. 生成构建文件：运行 `cmake .`，CMake 将使用 Conan 提供的配置生成构建文件
+3. 构建项目：运行 `cmake --build .`，将会编译所有的模块并链接生成最终的可执行文件和库
+
+在这个过程中，Conan 和 CMake 紧密集成，确保所有依赖都正确安装并配置，同时每个子模块都能够独立管理和构建
+
+## 集成策略
+
+### Conan 的高级配置与使用
