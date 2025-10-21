@@ -271,3 +271,9 @@ class AppConan(ConanFile):
 ## 集成策略
 
 ### Conan 的高级配置与使用
+
+# 参考资料
+
+- <https://docs.conan.io/2/tutorial/consuming_packages/build_simple_cmake_project.html>
+- <https://github.com/conan-io/examples2/tree/main/examples/conanfile/layout>
+- <https://blog.csdn.net/qq_21438461/article/details/141650533>
