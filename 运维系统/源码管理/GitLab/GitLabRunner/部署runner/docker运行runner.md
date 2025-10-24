@@ -26,12 +26,12 @@ networks:
     external: true
 
 services:
-  app:
-    image: gitlab/gitlab-runner
-    container_name: gitlab-runner-docker
+  gitlab-runner:
+    image: registry.gitlab.com/gitlab-org/gitlab-runner:alpine-v18.5.0
+    container_name: gitlab-runner
     volumes:
       - "./config:/etc/gitlab-runner"
-      - "./cache:/tmp/cache"
+      - "/data/gitlab-runner-manager/cache:/tmp/cache"
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:
       resources:
@@ -45,21 +45,24 @@ services:
 初始化命令
 
 ```bash
-docker run -it --rm \
-    -v ./config:/etc/gitlab-runner \
-    --hostname gitlab-runner-docker \
-    harbor.liangkui.co/3rd_party/docker.io/gitlab/gitlab-runner:v16.9.1 \
-    register \
-    --non-interactive \
-    --url "https://git.liangkui.co//" \
-    --registration-token "$RUNNER_TOKEN" \
-    --executor "docker" \
-    --docker-image harbor.liangkui.co/3rd_party/docker.io/library/alpine:3.19.1 \
-    --description "docker-runner" \
-    --tag-list "docker-runner" \
-    --run-untagged="true" \
-    --locked="false" \
-    --access-level="not_protected"
+# 不再支持
+# --tag-list="docker-runner" \
+# --run-untagged="true" \
+# --locked="false" \
+# --access-level="not_protected" \
+docker compose run -it --rm gitlab-runner \
+  register \
+  --non-interactive \
+  --url="https://gitlab.alpha-quant.tech" \
+  --token="$RUNNER_TOKEN" \
+  --executor="docker" \
+  --docker-image="harbor.alpha-quant.tech/3rd_party/docker.io/library/alpine:3.19.8" \
+  --description="docker-runner" \
+  --request-concurrency=10 \
+  --docker-volumes="/var/run/docker.sock:/var/run/docker.sock" \
+  --docker-volumes="/data/gitlab-runner/builds:/builds" \
+  --docker-volumes="/data/gitlab-runner/cache:/cache" \
+  --docker-pull-policy="if-not-present"
 ```
 
 进入 config 目录，会发现一个 config.toml 文件，里面是 gitlab-runner 相关的配置信息
@@ -67,27 +70,36 @@ docker run -it --rm \
 ```toml
 concurrent = 1
 check_interval = 0
+shutdown_timeout = 0
 
 [session_server]
   session_timeout = 1800
 
 [[runners]]
-  name = "home-runner-docker"
-  url = "https://gitlab.com"
-  token = "xxxxxxxxxxxxxxx"
+  name = "docker-runner"
+  url = "https://gitlab.alpha-quant.tech"
+  id = 1
+  token = "glrt-h22AT0Z_Z1qwYp2mI6bYTW86MQp0OjEKdTo2Cw.01.1212bkzkg"
+  token_obtained_at = 2025-10-24T09:40:44Z
+  token_expires_at = 0001-01-01T00:00:00Z
   executor = "docker"
+  [runners.cache]
+    MaxUploadedArchiveSize = 0
+    [runners.cache.s3]
+    [runners.cache.gcs]
+    [runners.cache.azure]
   [runners.docker]
     tls_verify = false
-    image = "tico/docker"
+    image = "harbor.alpha-quant.tech/3rd_party/docker.io/library/alpine:3.19.8"
     privileged = false
     disable_entrypoint_overwrite = false
     oom_kill_disable = false
     disable_cache = false
-    volumes = ["/cache"]
+    volumes = ["/var/run/docker.sock:/var/run/docker.sock", "/data/gitlab-runner/builds:/builds", "/data/gitlab-runner/cache:/cache"]
+    pull_policy = ["if-not-present"]
     shm_size = 0
-  [runners.cache]
-    [runners.cache.s3]
-    [runners.cache.gcs]
+    network_mtu = 0
+
 ```
 
 - `concurrent`：默认为 1，结合服务器配置自行修改
@@ -110,7 +122,5 @@ check_interval = 0
   ```yaml
   pull_policy = "if-not-present"
   ```
-
-  
 
 然后启动 runner 即可

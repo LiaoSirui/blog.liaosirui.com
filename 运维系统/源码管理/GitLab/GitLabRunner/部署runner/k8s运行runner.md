@@ -32,7 +32,7 @@ Runner 注入自签证书
 ```dockerfile
 FROM harbor.alpha-quant.tech/3rd_party/registry.gitlab.com/gitlab-org/gitlab-runner:alpine-v18.5.0
 
-COPY libs/build-kits/certs/alpha-quant.tech.CA.pem \
+COPY certs/alpha-quant.tech.CA.crt \
     /usr/local/share/ca-certificates/alpha-quant.tech.CA.crt
 RUN update-ca-certificates
 
@@ -43,7 +43,7 @@ helper 镜像也要注入
 ```dockerfile
 FROM harbor.alpha-quant.tech/3rd_party/registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-b72e108d
 
-COPY libs/build-kits/certs/alpha-quant.tech.CA.pem \
+COPY certs/alpha-quant.tech.CA.crt \
     /usr/local/share/ca-certificates/alpha-quant.tech.CA.crt
 RUN update-ca-certificates
 
@@ -51,7 +51,7 @@ RUN update-ca-certificates
 
 ### 部署 values
 
-- 注意要预先填写 runnerRegistrationToken
+- 注意要预先填写 runnerToken
 
 - 这里选用本地存储，也可以选用 S3 作为 cache（直接挂载目录来实现缓存功能是最高效的，而不是使用 gitlab 的缓存关键字。所以建议使用 Docker 安装 Gitlab Runner，并通过挂载目录实现缓存功能）
 
@@ -66,7 +66,7 @@ imagePullSecrets:
 
 gitlabUrl: https://gitlab.alpha-quant.tech
 
-runnerRegistrationToken: "JxzhgJy3jiyDYD2-djVP"
+runnerToken: "JxzhgJy3jiyDYD2-djVP"
 
 unregisterRunners: true
 
