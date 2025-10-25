@@ -135,6 +135,66 @@ copier update ./new-project
 
 Copier 会根据模板的更新情况智能合并变更，确保项目文件始终保持最新状态
 
+## 常用配置
+
+### 默认值与动态变量
+
+在 `copier.yml` 文件中，可以为变量设置默认值或通过 Python 表达式生成动态值。例如，下面的配置为 `project_version` 设置了一个默认版本号，并通过动态表达式计算 `year` 的值：
+
+```yaml
+project_name:
+  type: str
+  help: "请输入项目名称"
+
+project_version:
+  type: str
+  default: "1.0.0"
+  help: "请输入项目版本号"
+
+year:
+  type: int
+  default: !python "datetime.datetime.now().year"
+  help: "当前年份"
+
+```
+
+### 条件性文件生成
+
+可以通过在模板文件中使用 Jinja2 的条件语句，来根据用户输入决定是否生成某些文件或内容。例如，可以根据用户选择生成不同的文件：
+
+```yaml
+use_docker:
+  type: bool
+  default: false
+  help: "是否使用 Docker?"
+
+```
+
+在模板中根据该值生成或跳过文件：
+
+```jinja2
+{% if use_docker %}
+# Dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+COPY . .
+RUN pip install -r requirements.txt
+CMD ["python", "main.py"]
+{% endif %}
+
+```
+
+### Git 支持
+
+Copier 还支持直接从 Git 仓库中拉取模板，而无需手动下载文件。例如，可以从 GitHub 上的模板仓库生成新项目：
+
+```bash
+copier copy git@github.com:username/template-repo.git ./new-project
+```
+
+这样做的好处是可以轻松地将模板托管在 Git 仓库中，并且多个开发者可以协作维护和更新模板
+
 ## 最佳实践
 
 - 保持模板简单：确保模板结构清晰简洁，避免不必要的复杂性
