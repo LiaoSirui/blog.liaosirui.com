@@ -115,6 +115,44 @@ chronyd -4 -t 10 -q -f /etc/chrony.conf
 # -f <FILE> Specify configuration file (/etc/chrony.conf)
 ```
 
+### 参考时钟
+
+`chronyd` 依赖使用其他程序（例如 `gpsd`）通过特定驱动程序来访问计时数据。在 `/etc/chrony.conf` 中使用 `refclock` 指令可指定要用作时间源的硬件参考时钟。它有两个必填参数：驱动程序名称和驱动程序特定的参数。这两个参数后面跟着零个或多个 `refclock` 选项。`chronyd` 包含以下驱动程序：    
+
+- PPS
+
+内核 pulse per second API 的驱动程序
+
+```bash
+refclock PPS /dev/pps0 lock NMEA refid GPS
+```
+
+- SHM
+
+NTP 共享内存驱动程序
+
+```bash
+refclock SHM 0 poll 3 refid GPS1
+refclock SHM 1:perm=0644 refid GPS2
+```
+
+- SOCK
+
+Unix 域套接字驱动程序
+
+```bash
+refclock SOCK /var/run/chrony.ttyS0.sock
+```
+
+- PHC
+
+PTP 硬件时钟驱动程序
+
+```bash
+refclock PHC /dev/ptp0 poll 0 dpoll -2 offset -37
+refclock PHC /dev/ptp1:nocrossts poll 3 pps
+```
+
 ## 问题记录
 
 Using chronyc tracking, get:
