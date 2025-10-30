@@ -246,6 +246,13 @@ Restart Confluence.
 
 ## Confluence 页面上添加水印
 
+建议使用插件：
+
+- <https://marketplace.atlassian.com/apps/1219637/watermark-for-confluence>
+- <https://marketplace.atlassian.com/apps/1229495/watermark-for-jira-and-jsm>
+
+水印可添加：公司资料保密为员工义务，违规外传将严肃处理
+
 Confluence 提供了内置功能，可以修改站点或空间的布局，通过这个功能，可以为 Confluence 页面添加水印
 
 修改布局配置的步骤：
