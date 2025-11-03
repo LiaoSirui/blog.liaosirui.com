@@ -24,20 +24,18 @@ Off-the-shelf configuration，在这个工作流程中，所有文件都由用�
 ### overlays
 
 ```bash
-├── base
+my-app/
+├── base/              # 基础配置（所有环境共用）
 │   ├── deployment.yaml
-│   ├── kustomization.yaml
-│   └── service.yaml
-└── overlays
-    ├── dev
-    │   ├── kustomization.yaml
-    │   └── patch.yaml
-    ├── prod
-    │   ├── kustomization.yaml
-    │   └── patch.yaml
-    └── staging
+│   ├── service.yaml
+│   └── kustomization.yaml # 声明基础资源
+└── overlays/          # 环境补丁（每个环境单独一个目录）
+    ├── dev/           # 测试环境
+    │   ├── kustomization.yaml    # 声明要打哪些补丁
+    │   └── patch-deployment.yaml # 测试环境的补丁（比如副本数1）
+    └── prod/          # 生产环境
         ├── kustomization.yaml
-        └── patch.yaml
+        └── patch-deployment.yaml # 生产环境的补丁（比如副本数3）
 ```
 
 一个常见的项目 kustomize 项目布局如上所示
@@ -66,6 +64,28 @@ API 参考文档地址：<https://kubectl.docs.kubernetes.io/zh/api-reference/ku
 - `configMapGenerator` 可以生成 config map，列表中的每一条都会生成一个 configmap
 - `secretGenerator` 用于生成 secret 资源
 - `generatorOptions` 用于控制 `configMapGenerator` 和 `secretGenerator` 的行为
+
+### 生成和提交清单
+
+检查生成的资源文件
+
+```bash
+kubectl kustomize path/to/kustomization-directory
+```
+
+如果希望直接应用，可以使用下面的命令
+
+```bash
+kubectl apply -k path/to/kustomization-directory
+```
+
+比较集群的当前状态与 Kustomize 将应用的资源，并显示差异
+
+```bash
+kubectl diff -k path/to/kustomization-directory
+```
+
+
 
 ### 插件
 
