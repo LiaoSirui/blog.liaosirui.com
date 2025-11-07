@@ -88,3 +88,129 @@ uv tool run
 uvx ruff check
 ```
 
+## Git 仓库依赖
+
+### 使用 uv 管理 Git 仓库依赖
+
+uv 的 Git 集成能力源自 uv-git 与 uv-git-types 两个核心模块
+
+通过 uv 安装 Git 仓库依赖与常规包管理同样简单。在终端中执行：
+
+```bash
+# 安装特定Git仓库
+uv add git+https://github.com/akfamily/akshare.git
+ 
+# 指定分支
+uv add git+https://github.com/akfamily/akshare.git@main
+ 
+# 指定 tag
+uv add git+https://github.com/akfamily/akshare.git@release-v1.17.83
+ 
+# 指定 commit hash
+uv add git+https://github.com/akfamily/akshare.git@fc221438791f4977657b938b05dc7d0fa118a536
+```
+
+uv 会自动执行以下操作：
+
+1. 解析 Git URL 并验证仓库可访问性
+2. 执行增量克隆（仅获取必要历史）
+3. 检出指定版本
+4. 构建并安装包
+5. 缓存结果以加速后续安装
+
+最终生成的配置
+
+```bash
+[project]
+    dependencies    = ["akshare"]
+
+[tool.uv.sources]
+    akshare = { git = "https://github.com/akfamily/akshare.git", rev = "release-v1.17.83" }
+
+```
+
+
+
+对于项目依赖，推荐在 `pyproject.toml` 中显式声明 Git 依赖：
+
+```toml
+[project]
+name = "my-project"
+version = "0.1.0"
+dependencies = [
+  # 基础 Git 依赖
+  "akshare @ git+https://github.com/akfamily/akshare.git",
+  # 带子目录的依赖
+  "nested-package @ git+https://gitcode.com/org/repo.git#subdirectory=packages/nested",
+  # 带额外功能的依赖
+  "full-package[extra] @ git+ssh://git@gitcode.com:org/repo.git@dev-branch",
+]
+```
+
+声明后执行 `uv sync` 即可安装所有依赖
+
+### 私有仓库认证
+
+uv 通过 uv-auth 模块提供全面的认证支持：
+
+- SSH 密钥认证：自动使用系统 SSH 密钥链
+- HTTPS 令牌认证：支持环境变量注入 
+- 系统密钥链
+
+配置
+
+```toml
+# ~/.config/uv/uv.toml
+[auth]
+"gitcode.com" = { username = "myuser", password = "mytoken" }
+"gitlab.company.com" = { ssh_key_path = "~/.ssh/id_rsa_company" }
+
+```
+
+使用环境变量
+
+```bash
+export UV_HTTPS_AUTH=gitcode.com:username:token
+```
+
+### 依赖解析策略
+
+uv 提供两种 Git 依赖解析策略，可通过 `tool.uv.resolver.git-strategy` 配置：
+
+```toml
+[tool.uv.resolver]
+# 快速模式（默认）：仅获取必要提交，最快但不支持本地修改
+git-strategy = "shallow"
+
+# 完整模式：克隆完整仓库，支持本地开发
+git-strategy = "full"
+
+```
+
+### 工作区支持
+
+对于包含多个包的 Git 仓库，uv 支持通过 subdirectory 参数安装特定子目录：
+
+```toml
+dependencies = [
+  "package-a @ git+https://gitcode.com/org/monorepo.git#subdirectory=packages/a",
+  "package-b @ git+https://gitcode.com/org/monorepo.git#subdirectory=packages/b@v2.0",
+]
+
+```
+
+### 缓存管理
+
+uv 会将 Git 仓库缓存到 `~/.cache/uv/git-v0` 目录，可通过以下命令管理缓存：
+
+```bash
+# 查看缓存目录
+uv cache dir
+ 
+# 清理过期缓存
+uv cache clean --git
+ 
+# 强制刷新特定仓库
+uv add --refresh git+https://github.com/akfamily/akshare.git
+```
+
