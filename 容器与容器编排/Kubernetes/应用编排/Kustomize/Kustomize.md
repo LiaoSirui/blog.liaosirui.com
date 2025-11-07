@@ -19,7 +19,7 @@ Off-the-shelf configuration，在这个工作流程中，所有文件都由用�
 
 <img src="./.assets/Kustomize/image-20251103101929272.png" alt="image-20251103101929272" style="zoom: 50%;" />
 
-## 使用
+## 基础概念
 
 ### overlays
 
@@ -84,8 +84,6 @@ kubectl apply -k path/to/kustomization-directory
 ```bash
 kubectl diff -k path/to/kustomization-directory
 ```
-
-
 
 ### 插件
 
