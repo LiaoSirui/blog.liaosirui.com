@@ -173,6 +173,12 @@ uv 通过 uv-auth 模块提供全面的认证支持：
 export UV_HTTPS_AUTH=gitcode.com:username:token
 ```
 
+若遇到认证失败，可通过以下步骤排查
+
+```bash
+UV_LOG=uv_git=debug uv sync
+```
+
 ### 依赖解析策略
 
 uv 提供两种 Git 依赖解析策略，可通过 `tool.uv.resolver.git-strategy` 配置：
@@ -212,5 +218,17 @@ uv cache clean --git
  
 # 强制刷新特定仓库
 uv add --refresh git+https://github.com/akfamily/akshare.git
+```
+
+## 依赖冲突处理
+
+可以尝试使用 uv 的依赖覆盖功能
+
+```toml
+[tool.uv]
+override-dependencies = [
+  "requests>=2.26"
+]
+
 ```
 
