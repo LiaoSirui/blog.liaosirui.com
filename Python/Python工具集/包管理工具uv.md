@@ -48,7 +48,17 @@ export UV_DEFAULT_INDEX="https://pypi.tuna.tsinghua.edu.cn/simple"
 添加依赖
 
 ```bash
-uv add "pandas>=2.2.3,<2.3.0"
+# 添加单个包
+uv add requests
+
+# 指定版本约束
+uv add 'requests==2.31.0'
+
+# 添加 Git 依赖
+uv add git+https://github.com/psf/requests
+
+# 从 requirements.txt 文件添加所有依赖
+uv add -r requirements.txt -c constraints.txt
 ```
 
 通过`uv run`可以直接在项目环境中执行命令，无需手动激活虚拟环境
@@ -65,15 +75,53 @@ uv sync
 uv sync --upgrade
 ```
 
-更新特定包
+更新特定包，该命令会尝试将指定包更新到最新的兼容版本，同时保持锁文件中其他依赖不变
 
 ```bash
 uv sync --upgrade-package pandas
 ```
 
+要从特定索引添加 Python 包，请使用 `--index` 选项
+
+```bash
+uv add torch --index pytorch=https://download.pytorch.org/whl/cpu
+```
+
+## 分组管理依赖
+
+还有一个比较常用的功能是区分开发环境和生产环境的依赖
+
+```bash
+uv add --dev pytest
+```
+
+可以使用 `--group` 标志将开发依赖项划分为多个组
+
+```bash
+uv add --group lint ruff
+```
+
+依赖项组可以包括其他依赖项组，例如：
+
+```toml
+[dependency-groups]
+dev = [
+  {include-group = "lint"},
+  {include-group = "test"}
+]
+lint = [
+  "ruff"
+]
+test = [
+  "pytest"
+]
+```
+
 ## 工具管理
 
 uv 可以在隔离的虚拟环境中安装命令行工具，并无需显式安装即可执行一次性命令
+
+可以替代 pipx 等工具来运行和管理 Python 工具
 
 ```bash
 uv tool install
@@ -86,6 +134,71 @@ uv tool run
 
 ```bash
 uvx ruff check
+```
+
+可以使用 `@` 语法指定工具的版本：
+
+```bash
+# 运行特定版本的工具
+uvx ruff@0.1.5 check .
+
+# 运行最新版本的工具
+uvx ruff@latest check .
+```
+
+也可以使用 `--from` 选项指定更复杂的版本约束：
+
+```bash
+# 指定版本范围
+uvx --from 'ruff>0.2.0,<0.3.0' ruff check .
+```
+
+可以使用 `--with` 选项添加额外的依赖或插件：
+
+```bash
+# 运行带插件的工具
+uvx --with mkdocs-material mkdocs serve
+
+# 安装带插件的工具
+uv tool install mkdocs --with mkdocs-material
+
+```
+
+## 管理 Python 版本
+
+uv 可以轻松管理多个 Python 版本，无需额外安装 pyenv 等工具
+
+查看可用的 Python 版本：
+
+```bash
+uv python list
+```
+
+安装特定版本的 Python：
+
+```bash
+# 安装最新的 Python 3.13
+uv python install 3.13
+
+# 安装特定版本
+uv python install 3.13.9
+
+```
+
+初始化一个新的虚拟环境：
+
+```bash
+# 创建虚拟环境，不加环境路径的话默认是保存在当前的.venv目录下
+uv venv 
+
+# 指定环境保存目录
+uv venv /path/to/venv
+
+# 指定 Python 版本，注意需要对应版本的 Python 已经安装
+uv venv -p 3.14
+
+# --python 同 -p
+uv venv --python 3.14
 ```
 
 ## Git 仓库依赖
