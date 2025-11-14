@@ -35,3 +35,9 @@ AWX 是 Ansible Tower 的开源版，Ansible Tower 是一个可视化界面的�
 - 自定义容器运行资源：<https://readthedocs.ansible.org.cn/projects/awx-operator/en/latest/user-guide/advanced-configuration/containers-resource-requirements.html>
 
 - 持久化项目：<https://readthedocs.ansible.org.cn/projects/awx-operator/en/latest/user-guide/advanced-configuration/persisting-projects-directory.html>
+
+## 参考资料
+
+- <https://readthedocs.ansible.org.cn/projects/awx/en/latest/userguide/projects.html#scm-types-git-and-subversion>
+- <https://blog.csdn.net/2301_76699451/article/details/139870013>
+- <https://blog.csdn.net/weixin_43902588/article/details/116753281>
