@@ -79,3 +79,7 @@ ansible-vault 主要用于配置文件的加密，如编写的 playbook 配置�
 - <https://www.cnblogs.com/brianzhu/category/1368500.html>
 
 - Ansible 入门：<https://ansible.leops.cn/basic/Variables/>
+
+- <https://docs.ansible.org.cn/ansible/latest/getting_started/index.html>
+
+- <https://getansible.com/>
