@@ -1,3 +1,12 @@
+## Ansible 模块
+
+- synchronize，copy，unarchive 都可以上传文件
+- ping：检查指定节点机器是否还能连通。主机如果在线，则回复 pong
+- dnf, apt：这两个模块都是在远程系统上安装包的
+- pip：远程机器上 python 安装包
+- user，group：用户管理
+- systemd：管理服务
+
 ## ad-hoc
 
 ad-hoc 是指临时命令，是在输入内容后，快速执行某些操作，但不希望保存下来的命令。
@@ -126,6 +135,5 @@ ansible -i inventory.py all -m command -a "/bin/echo Hello Ansible"
 
 command 模块和 shell 模块的功能十分接近。shell 模块可以看作 command 模块的加强版本，比 command 模块支持更多的功能特性，如前面例子中的管道。
 
-## ansible.cfg
 
-ssh 连接时需要检查验证 HOST KEY ，可在 ssh 连接命令中使用 -o 参数将 StrictHostKeyChecking 设置为 no 来临时禁用检查。如果要保存设置，可修改 Ansible 配置文件，将 /etc/ansible/ansible.cfg 中的 host_key_checking 的注释符删除即可。
+

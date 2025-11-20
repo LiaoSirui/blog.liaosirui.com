@@ -1,6 +1,6 @@
-<https://github.com/semaphoreui/semaphore>
+- Github 仓库地址 <https://github.com/semaphoreui/semaphore>
 
-semaphore 是 Ansible Tower 的基本功能的 clone，提供了：
+Semaphore 是 Ansible Tower 的基本功能的 clone，提供了：
 
 - 快速简单的 WEB 管理界面
 - 通过 websocket 来输出任务信息

@@ -1,5 +1,9 @@
 ## Inventory
 
+<img src="./.assets/Ansible清单/image2_1.png" alt="Inventory" style="zoom: 50%;" />
+
+
+
 Ansible 能够同时对单台或多台机器亦或部分机器操作是通过 Inventory 来实现的。
 
 Inventory 默认保存在 /etc/ansible/hosts 配置文件中，而 Ansible 通过这个文件就可以知道要追踪的服务器了。
@@ -24,6 +28,12 @@ Alias ansible_host=192.168.1.50 ansible_port=6666
 # 4.控制本地机器
 [local]
 localhost ansible_connection=local
+```
+
+查看主机
+
+```bash
+ansible-inventory -i inventory.yaml  --graph
 ```
 
 ### 参数
@@ -66,6 +76,12 @@ ansible_python_interpreter   # 用来指定Python解释器的路径，同样可�
 ### 多个 Inventory 列表
 
 首先需要在Ansible的配置文件ansible.cfg中hosts的定义改成一个目录，比如：hostfile = /etc/ansible/inventory，然后在该目录中放入多个hosts文件。
+
+## ansible.cfg
+
+ssh 连接时需要检查验证 HOST KEY ，可在 ssh 连接命令中使用 -o 参数将 StrictHostKeyChecking 设置为 no 来临时禁用检查
+
+如果要保存设置，可修改 Ansible 配置文件，将 `/etc/ansible/ansible.cfg` 中的 host_key_checking 的注释符删除即可
 
 ## 动态 Inventory
 

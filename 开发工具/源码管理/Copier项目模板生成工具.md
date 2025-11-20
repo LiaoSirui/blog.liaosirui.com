@@ -49,6 +49,22 @@ my-template
 project_name:
   type: str
   help: "请输入项目名称"
+  # default: "paradox-specifier"
+  # validator: >-
+  #       {% if not (project_name | regex_search('^[a-z][a-z0-9\-]+$')) %}
+  #       project_name must start with a letter, followed one or more letters, digits or dashes all lowercase.
+  #       {% endif %}
+  # multiline: true
+
+# project_license:
+#   type: str
+#   default: *mit_text
+#   choices:
+#       MIT: &mit_text |
+#           Here I can write the full text of the MIT license.
+#           This will be a long text, shortened here for example purposes.
+#       Apache2: |
+#           Full text of Apache2 license.
 
 author_name:
   type: str
