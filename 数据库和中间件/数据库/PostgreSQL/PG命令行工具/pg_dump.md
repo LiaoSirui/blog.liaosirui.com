@@ -45,3 +45,12 @@ echo "$databases" | while read -r db_name; do
         -f "${BACKUP_DIR}/${db_name}.sql"
 done
 ```
+
+注意恢复的时候需要：
+
+```bash
+# ON_ERROR_STOP=1 避免中间出错
+psql -v ON_ERROR_STOP=1 -d ${PG_DB} -U ${PG_USER} -f sql_file
+```
+
+其中 pg 16.9 -> 16.10 引入了安全修复，加入了 `\restrict` 指令，尽量不要跨任何版本进行备份和恢复
