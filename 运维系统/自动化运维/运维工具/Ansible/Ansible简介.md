@@ -68,7 +68,7 @@ Collections 是 Ansible 2.9+ 引入的更高级的打包方式，它包含：多
 
 ```bash
 # 用 pyenv 安装较新版本的 python
-export PIPX_DEFAULT_PYTHON=/opt/pyenv/shims/python3.13
+export PIPX_DEFAULT_PYTHON=$(pyenv root)/shims/python3.13
 
 pipx install \
     --python ${PIPX_DEFAULT_PYTHON} \
