@@ -54,8 +54,8 @@ yq -i '.https.certificate = "/data/harbor/https-cert/tls.crt"' harbor.yml
 yq -i '.https.private_key = "/data/harbor/https-cert/tls.key"' harbor.yml
 
 # 初始密码
-yq -i '.harbor_admin_password = "Lsr1142._harbor"' harbor.yml
-yq -i '.database.password = "Lsr1142._mysql"' harbor.yml
+yq -i '.harbor_admin_password = "Harbor_harbor"' harbor.yml
+yq -i '.database.password = "Harbor_mysql"' harbor.yml
 
 # 数据目录
 yq -i '.data_volume = "/data/harbor-data"' harbor.yml
