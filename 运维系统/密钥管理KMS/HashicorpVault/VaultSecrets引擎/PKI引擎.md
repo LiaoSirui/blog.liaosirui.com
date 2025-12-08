@@ -8,6 +8,8 @@
 
 ## 使用 PKI 引擎
 
+搭建一个根（root）CA，由它签发一个中间（intermediate）CA，中间 CA 负责为最终的使用者（一般为 Web 服务器 / APP）签发证书
+
 ### 生成根证书颁发机构
 
 在 pki 路径上启用 pki 密钥引擎
