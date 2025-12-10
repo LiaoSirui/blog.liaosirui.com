@@ -92,17 +92,6 @@ ansible --version
 
 离线安装：通过制作 venv（可以选用 Pyenv 进行管理）
 
-
-## 配置文件
-
-`.ansible.cfg` 的路径：~/.ansible.cfg
-
-```ini
-[defaults]
-# inventory 是声明 hosts 配置文件
-inventory=~/.ansible/hosts
-```
-
 ## 参考文档
 
 - <https://www.cnblogs.com/brianzhu/category/1368500.html>

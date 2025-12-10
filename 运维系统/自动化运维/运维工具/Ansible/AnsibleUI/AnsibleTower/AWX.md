@@ -15,6 +15,10 @@ AWX 是 Ansible Tower 的开源版，Ansible Tower 是一个可视化界面的�
 
 ![Meraki Ansible](./.assets/AWX/Ansible-overview-1-1.png)
 
+## AWX 部署
+
+- Docker Compose 部署：<https://github.com/ansible/awx/blob/24.6.1/tools/docker-compose/README.md>
+- K8s 部署：AWXOperator
 
 ## AWX 使用入门
 

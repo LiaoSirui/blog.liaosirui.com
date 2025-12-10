@@ -10,6 +10,10 @@ Inventory 默认保存在 /etc/ansible/hosts 配置文件中，而 Ansible 通�
 
 在 Inventory 中列出我们需要操作的机器，可以单纯地列出这些主机，但是推荐有条理地为他们分组，这样在使用时就可以只对其中的某组操作。
 
+## 文件格式
+
+### INI  格式
+
 Inventory 文件可以有多种不同的格式（如：INI、YAML 等），具体要取决于相应的插件
 
 ```ini
@@ -33,10 +37,63 @@ localhost ansible_connection=local
 查看主机
 
 ```bash
-ansible-inventory -i inventory.yaml  --graph
+ansible --list-hosts all -vvvv
+
+ansible-inventory --graph
 ```
 
-### 参数
+### YAML 格式
+
+上述格式转换为 YAML
+
+```yaml
+all:
+  children:
+    test:
+      hosts:
+        127.0.0.1:
+        foo.example.com:
+    dev_test:
+      hosts:
+        192.168.42.3:
+          ansible_user: ubuntu
+          ansible_ssh_private_key_file: /path/of/keyfile
+    local:
+      hosts:
+        localhost:
+          ansible_connection: local
+```
+
+更多示例
+
+```yaml
+all:
+  children:
+    webservers:
+      hosts:
+        web1.example.com:
+        web2.example.com:
+      vars:
+        ansible_user: webadmin
+        http_port: 8080
+    dbservers:
+      hosts:
+        db1.example.com:
+          ansible_user: dbuser
+        db2.example.com:
+      vars:
+        db_version: 12
+    development:
+      children:
+        dev_web:
+          hosts:
+            devweb1.example.com:
+        dev_db:
+          hosts:
+            devdb1.example.com:
+```
+
+## 连接参数
 
 主机连接
 
@@ -67,21 +124,19 @@ ansible_connection           # SSH连接类型：local、ssh、paramiko，在 an
 ansible_python_interpreter   # 用来指定Python解释器的路径，同样可以指定ruby、Perl的路径
 ```
 
-### 使用自定义 inventory
+### SSH 忽略 Host Key Check
 
-还可以通过 ANSIBLE_HOSTS 环境变量指定或者运行 ansible 和 ansible-playbook 的时候用 -i 参数临时设置。
+SSH 连接时需要检查验证 Host Key ，可在 ssh 连接命令中使用 `-o` 参数将 `StrictHostKeyChecking` 设置为 no 来临时禁用检查
 
-然后在该目录中放入多个 hosts 文件，不同的文件可以存放不同的主机。
+如果要保存设置，可修改 Ansible 配置文件，将 `/etc/ansible/ansible.cfg` 中的 `host_key_checking` 的注释符删除即可
 
-### 多个 Inventory 列表
+## 使用自定义 inventory
 
-首先需要在Ansible的配置文件ansible.cfg中hosts的定义改成一个目录，比如：hostfile = /etc/ansible/inventory，然后在该目录中放入多个hosts文件。
+还可以通过 ANSIBLE_HOSTS 环境变量指定或者运行 ansible 和 ansible-playbook 的时候用 -i 参数临时设置
 
-## ansible.cfg
+然后在该目录中放入多个 hosts 文件，不同的文件可以存放不同的主机
 
-ssh 连接时需要检查验证 HOST KEY ，可在 ssh 连接命令中使用 -o 参数将 StrictHostKeyChecking 设置为 no 来临时禁用检查
-
-如果要保存设置，可修改 Ansible 配置文件，将 `/etc/ansible/ansible.cfg` 中的 host_key_checking 的注释符删除即可
+多个 Inventory 列表：首先需要在 Ansible 的配置文件 ansible.cfg 中 hosts 的定义改成一个目录，比如：hostfile = /etc/ansible/inventory，然后在该目录中放入多个 hosts 文件
 
 ## 动态 Inventory
 
@@ -117,7 +172,7 @@ chmod +x inventory.py
 运行 ansible 命令并调用该 python 脚本：
 
 ```bash
-ansible -i inventory.py all -a "date" -k
+ansible -i inventory.py all -a "date"
 ```
 
 示例输出
