@@ -213,11 +213,11 @@ clab deploy -t topo.yaml
 
 创建成功后输出
 
-![image-20231031095310855](.assets/Kind和Containerlab构建CiliumBGP环境/image-20231031095310855.png)
+![image-20231031095310855](./.assets/构建CiliumBGP测试环境/image-20231031095310855.png)
 
 创建完的拓扑如下所示，当前只有 tor0, tor1 和 router0 设备之间建立了 BGP 连接，由于尚未通过 CiliumBGPPeeringPolicy 设置 Kubernetes 集群的 BGP 配置，因此 tor0, tor1 与 Kubernetes Node 的 BGP 连接还没有建立
 
-![image-20231030145008728](.assets/Kind和Containerlab构建CiliumBGP环境/image-20231030145008728.png)
+![image-20231030145008728](./.assets/构建CiliumBGP测试环境/image-20231030145008728.png)
 
 分别执行以下命令，可以查看 tor0, tor1, router0 这 3 个网络设备当前的 BGP 邻居建立情况
 
@@ -241,7 +241,7 @@ Containerlab 提供 `graph` 命令生成网络拓扑，在浏览器输入 `http:
 clab graph -t topo.yaml
 ```
 
-![img](.assets/Kind和Containerlab构建CiliumBGP环境/vvsibFWkwqHrG3ffYxKKwgwq4w6c4E2W4VjTuExvIBuaz6bk5JGrLv8ZSx90HBPPKgjpNYurXVlRJtP7ebzfddA.png)
+![img](./.assets/构建CiliumBGP测试环境/vvsibFWkwqHrG3ffYxKKwgwq4w6c4E2W4VjTuExvIBuaz6bk5JGrLv8ZSx90HBPPKgjpNYurXVlRJtP7ebzfddA.png)
 
 ### 安装 Cilium
 
@@ -368,7 +368,7 @@ spec:
 
 创建完的拓扑如下所示，现在 tor0 和 tor1 也已经和 Kubernetes Node 建立了 BGP 邻居
 
-![img](.assets/Kind和Containerlab构建CiliumBGP环境/vvsibFWkwqHrG3ffYxKKwgwq4w6c4E2W4aDH74k6VYVDH0apPfvNVwaXjkwXB9UuguiaJnO4d2c1YPHKPGwAUFtw.png)
+![img](./.assets/构建CiliumBGP测试环境/vvsibFWkwqHrG3ffYxKKwgwq4w6c4E2W4aDH74k6VYVDH0apPfvNVwaXjkwXB9UuguiaJnO4d2c1YPHKPGwAUFtw.png)
 
 分别执行以下命令，可以查看 tor0, tor1, router0 3 个网络设备当前的 BGP 邻居建立情况
 
@@ -460,7 +460,7 @@ kubectl exec -it nettool-1 -- traceroute -n 10.1.3.56
 - （4）tor1 的 lo0 接口
 - （5）server3 的 net0 接口
 
-![img](.assets/Kind和Containerlab构建CiliumBGP环境/vvsibFWkwqHrG3ffYxKKwgwq4w6c4E2W43sydSsYuP1dUDTUnmv0PsRtA5gzBCp0km94iaoPjrgKXUn6xUXzcKWQ.png)
+![img](./.assets/构建CiliumBGP测试环境/vvsibFWkwqHrG3ffYxKKwgwq4w6c4E2W43sydSsYuP1dUDTUnmv0PsRtA5gzBCp0km94iaoPjrgKXUn6xUXzcKWQ.png)
 
 ### 清理环境
 

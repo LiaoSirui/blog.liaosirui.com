@@ -20,7 +20,19 @@ Cilium 是一个基于 eBPF 和 XDP 的高性能容器网络方案的开源项�
 
 Cilium 通过利用 BPF 具有能够透明的注入网络安全策略并实施的功能，区别于传统的 IP 地址标识的方式，Cilium 是基于 service / pod /container 标识来实现的，并且可以在应用层实现 L7 Policy 网络过滤。总之，Cilium 通过解藕 IP 地址，不仅可以在高频变化的微服务环境中应用简单的网络安全策略，还能在支持 L3/L4 基础上通过对 http 层进行操作来提供更强大的网络安全隔离。BPF 的使用使 Cilium 甚至可以在大规模环境中以高度可扩展的方式解决这些挑战问题
 
-![img](.assets/Cilium%E7%AE%80%E4%BB%8B/9885453-6b09787b4b207027.png)
+<img src=".assets/Cilium%E7%AE%80%E4%BB%8B/9885453-6b09787b4b207027.png" alt="img" style="zoom:50%;" />
+
+eBPF 就是「 在不用重新编译 Linux Kernel 或是修改 Linux Kernel 代码的情况下，安全地挂载一段自定义代码到 Kernel 中的特定点 （hook points）」
+
+<img src="./.assets/Cilium简介/syscall-hook.png" alt="Syscall hook" style="zoom:67%;" />
+
+Cilium 就是基于 eBPF 打造的 新一代 CNI Plugin，它能：
+
+- 取代 kube-proxy：用 eBPF 加速 Service Load Balancing
+- Identity-based Policy：不靠 IP，而是靠 Pod Label 来分配 Identity ，并基于 Identity 来决策流量
+- 内建 Observability：Hubble 提供实时流量可视化
+
+基于以上，Cilium 能够让 Network Policy 更稳定、效能更好、可观测性更强
 
 ### Cilium 的主要功能特性
 

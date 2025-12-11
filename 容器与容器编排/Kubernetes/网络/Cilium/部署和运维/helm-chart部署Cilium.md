@@ -9,12 +9,12 @@ Cilium 支持 2 种安装方式：
 
 官方文档：
 
-- 系统安装需求：https://docs.cilium.io/en/v1.14/operations/system_requirements/
+- 系统安装需求：<https://docs.cilium.io/en/v1.18/operations/system_requirements/>
 
 要安装 Cilium, 最低系统需求如下：
 
 - 主机是 AMD64 或 AArch64（即 arm64) 架构
-- 需要开通某些防火墙规则，详见：https://docs.cilium.io/en/stable/operations/system_requirements/#firewall-rules
+- 需要开通某些防火墙规则，详见：<https://docs.cilium.io/en/stable/operations/system_requirements/#firewall-rules>
 - Linux Kernel >= 4.19.57（对于 RHEL8, Linux Kernel >= 4.18)
 
 如果需要用到 Cilium 的高级功能，则需要更高版本的内核，具体如下：
@@ -38,58 +38,94 @@ Cilium 支持 2 种安装方式：
 官方：
 
 - Cilium Charts：<https://github.com/cilium/charts>
-- Charts 源码：<https://github.com/cilium/cilium/tree/v1.13.2/install/kubernetes/cilium>
+- Charts 源码：<https://github.com/cilium/cilium/tree/v1.18.4/install/kubernetes/cilium>
 
-- 使用 helm 安装：<https://docs.cilium.io/en/v1.14/gettingstarted/k8s-install-helm/>
+- 使用 helm 安装：<https://docs.cilium.io/en/v1.18/gettingstarted/k8s-install-helm/>
 
 ```bash
 helm repo add cilium https://helm.cilium.io/
 ```
 
-当前最新的稳定版本 v1.14.3
+当前最新的稳定版本 v1.18.4
 
-Chart 的源码详见：<https://github.com/cilium/cilium/tree/v1.14.3/install/kubernetes/cilium>
+Chart 的源码详见：<https://github.com/cilium/cilium/tree/v1.18.4/install/kubernetes/cilium>
 
 使用 value
 
 ```yaml
+imagePullSecrets:
+  - name: "image-pull-secrets"
+
+ipv4:
+  enabled: true
+ipv6:
+  enabled: true
+
+k8s:
+  apiServerURLs: "https://apiserver.cluster.local:6443"
+kubeProxyReplacement: "true"
+kubeProxyReplacementHealthzBindAddr: "0.0.0.0:1025"
+k8sServiceHost: "apiserver.cluster.local"
+k8sServicePort: "6443"
+
+ipam:
+  operator:
+    clusterPoolIPv4PodCIDRList: ["10.3.0.0/16"]
+    clusterPoolIPv4MaskSize: 24
+    clusterPoolIPv6PodCIDRList: ["fd85:ee78:d8a6:8607::3:0000/112"]
+    clusterPoolIPv6MaskSize: 120
+
+image:
+  repository: "harbor.alpha-quant.tech/3rd_party/quay.io/cilium/cilium"
+  tag: "v1.18.4"
+  useDigest: false
+
+envoy:
+  image:
+    repository: "harbor.alpha-quant.tech/3rd_party/quay.io/cilium/cilium-envoy"
+    tag: "v1.34.10-1762597008-ff7ae7d623be00078865cff1b0672cc5d9bfc6d5"
+    useDigest: false
+
+operator:
+  replicas: 1
+  image:
+    repository: "harbor.alpha-quant.tech/3rd_party/quay.io/cilium/operator"
+    # quay.io/cilium/operator-generic
+    tag: "v1.18.4"
+    useDigest: false
+
 hubble:
   enabled: true
   relay:
     enabled: true
-    tolerations:
-      - key: "node-role.kubernetes.io/control-plane"
-        operator: "Exists"
+    image:
+      repository: "quay.io/cilium/hubble-relay"
+      tag: "v1.18.4"
+      useDigest: false
   ui:
     enabled: true
-    tolerations:
-      - key: "node-role.kubernetes.io/control-plane"
-        operator: "Exists"
-ipam:
-  operator:
-    clusterPoolIPv4PodCIDR: "10.4.0.0/16"
-    clusterPoolIPv4MaskSize: 24
-
-ipv4NativeRoutingCIDR: "10.244.244.0/24"
-
-k8s:
-  requireIPv4PodCIDR: true
-
-image:
-  useDigest: false
-
-operator:
-  image:
-    useDigest: false
-
-hostPort:
-  enabled: true
+    backend:
+      image:
+        repository: "quay.io/cilium/hubble-ui-backend"
+        tag: "v0.13.3"
+        useDigest: false
+    frontend:
+      image:
+        repository: "quay.io/cilium/hubble-ui"
+        tag: "v0.13.3"
+        useDigest: false
 
 nodePort:
   enabled: true
+  range: "30000,60000"
 
-loadBalancer:
-  algorithm: maglev
+bpf:
+  masquerade: true
+
+enableIPv4Masquerade: true
+enableIPv6Masquerade: true
+
+policyAuditMode: false
 
 ```
 
@@ -97,7 +133,7 @@ loadBalancer:
 
 ```bash
 helm upgrade --install cilium cilium/cilium \
-  --version v1.14.3 \
+  --version v1.18.4 \
   --namespace kube-system \
   -f ./values.yaml
 ```
@@ -130,6 +166,8 @@ kubectl get pods --all-namespaces \
 
 官方给的安装脚本如下
 
+文档：<https://docs.cilium.io/en/stable/gettingstarted/k8s-install-default/#install-the-cilium-cli>
+
 ```bash
 CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/master/stable.txt)
 CLI_ARCH=amd64
@@ -160,22 +198,33 @@ chmod +x /usr/local/bin/cilium
 查看状态
 
 ```bash
-> cilium status --wait
-
+# cilium status --wait
     /¯¯\
  /¯¯\__/¯¯\    Cilium:             OK
  \__/¯¯\__/    Operator:           OK
- /¯¯\__/¯¯\    Envoy DaemonSet:    disabled (using embedded mode)
- \__/¯¯\__/    Hubble Relay:       disabled
+ /¯¯\__/¯¯\    Envoy DaemonSet:    OK
+ \__/¯¯\__/    Hubble Relay:       OK
     \__/       ClusterMesh:        disabled
 
-Deployment        cilium-operator    Desired: 2, Ready: 2/2, Available: 2/2
-DaemonSet         cilium             Desired: 4, Ready: 4/4, Available: 4/4
-Containers:       cilium             Running: 4
-                  cilium-operator    Running: 2
-Cluster Pods:     5/5 managed by Cilium
-Image versions    cilium-operator    quay.io/cilium/operator-generic:v1.14.3: 2
-                  cilium             quay.io/cilium/cilium:v1.14.3: 4
+DaemonSet              cilium                   Desired: 1, Ready: 1/1, Available: 1/1
+DaemonSet              cilium-envoy             Desired: 1, Ready: 1/1, Available: 1/1
+Deployment             cilium-operator          Desired: 1, Ready: 1/1, Available: 1/1
+Deployment             hubble-relay             Desired: 1, Ready: 1/1, Available: 1/1
+Deployment             hubble-ui                Desired: 1, Ready: 1/1, Available: 1/1
+Containers:            cilium                   Running: 1
+                       cilium-envoy             Running: 1
+                       cilium-operator          Running: 1
+                       clustermesh-apiserver    
+                       hubble-relay             Running: 1
+                       hubble-ui                Running: 1
+Cluster Pods:          8/8 managed by Cilium
+Helm chart version:    1.18.4
+Image versions         cilium             harbor.alpha-quant.tech/3rd_party/quay.io/cilium/cilium:v1.18.4: 1
+                       cilium-envoy       harbor.alpha-quant.tech/3rd_party/quay.io/cilium/cilium-envoy:v1.34.10-1762597008-ff7ae7d623be00078865cff1b0672cc5d9bfc6d5: 1
+                       cilium-operator    harbor.alpha-quant.tech/3rd_party/quay.io/cilium/operator-generic:v1.18.4: 1
+                       hubble-relay       harbor.alpha-quant.tech/3rd_party/quay.io/cilium/hubble-relay:v1.18.4: 1
+                       hubble-ui          harbor.alpha-quant.tech/3rd_party/quay.io/cilium/hubble-ui-backend:v0.13.3: 1
+                       hubble-ui          harbor.alpha-quant.tech/3rd_party/quay.io/cilium/hubble-ui:v0.13.3: 1
 ```
 
 检查安装是否成功
@@ -195,30 +244,93 @@ kubectl -n kube-system exec ds/cilium -- cilium status
 
 例如：
 ```text
-Defaulted container "cilium-agent" out of: cilium-agent, config (init), mount-cgroup (init), apply-sysctl-overwrites (init), mount-bpf-fs (init), clean-cilium-state (init), install-cni-binaries (init)
-KVStore:                 Ok   Disabled
-Kubernetes:              Ok   1.27 (v1.27.3) [linux/amd64]
-Kubernetes APIs:         ["EndpointSliceOrEndpoint", "cilium/v2::CiliumClusterwideNetworkPolicy", "cilium/v2::CiliumEndpoint", "cilium/v2::CiliumNetworkPolicy", "cilium/v2::CiliumNode", "cilium/v2alpha1::CiliumCIDRGroup", "core/v1::Namespace", "core/v1::Pods", "core/v1::Service", "networking.k8s.io/v1::NetworkPolicy"]
-KubeProxyReplacement:    False   [net0  (Direct Routing)]
-Host firewall:           Disabled
-CNI Chaining:            none
-Cilium:                  Ok   1.14.3 (v1.14.3-252a99ef)
-NodeMonitor:             Listening for events on 12 CPUs with 64x4096 of shared memory
-Cilium health daemon:    Ok   
-IPAM:                    IPv4: 2/254 allocated from 10.1.3.0/24, 
-IPv4 BIG TCP:            Disabled
-IPv6 BIG TCP:            Disabled
-BandwidthManager:        Disabled
-Host Routing:            Legacy
-Masquerading:            IPTables [IPv4: Enabled, IPv6: Disabled]
-Controller Status:       20/20 healthy
-Proxy Status:            OK, ip 10.1.3.111, 0 redirects active on ports 10000-20000, Envoy: embedded
-Global Identity Range:   min 256, max 65535
-Hubble:                  Ok              Current/Max Flows: 4095/4095 (100.00%), Flows/s: 0.67   Metrics: Disabled
-Encryption:              Disabled        
-Cluster health:          4/4 reachable   (2023-10-31T06:28:49Z)
+KVStore:                      Disabled   
+Kubernetes:                   Ok         1.33 (v1.33.6) [linux/amd64]
+Kubernetes APIs:              ["EndpointSliceOrEndpoint", "cilium/v2::CiliumCIDRGroup", "cilium/v2::CiliumClusterwideNetworkPolicy", "cilium/v2::CiliumEndpoint", "cilium/v2::CiliumNetworkPolicy", "cilium/v2::CiliumNode", "core/v1::Pods", "networking.k8s.io/v1::NetworkPolicy"]
+KubeProxyReplacement:         True   [nm-bond   172.31.24.199 fe80::184:8e89:83fd:7ccc (Direct Routing)]
+Host firewall:                Disabled
+SRv6:                         Disabled
+CNI Chaining:                 none
+CNI Config file:              successfully wrote CNI configuration file to /host/etc/cni/net.d/05-cilium.conflist
+Cilium:                       Ok   1.18.4 (v1.18.4-afda2aa9)
+NodeMonitor:                  Listening for events on 28 CPUs with 64x4096 of shared memory
+Cilium health daemon:         Ok   
+IPAM:                         IPv4: 10/254 allocated from 10.3.0.0/24, IPv6: 10/254 allocated from fd85:ee78:d8a6:8607::3:0/120
+IPv4 BIG TCP:                 Disabled
+IPv6 BIG TCP:                 Disabled
+BandwidthManager:             Disabled
+Routing:                      Network: Tunnel [vxlan]   Host: Legacy
+Attach Mode:                  TCX
+Device Mode:                  veth
+Masquerading:                 IPTables [IPv4: Enabled, IPv6: Enabled]
+Controller Status:            56/56 healthy
+Proxy Status:                 OK, ip 10.3.0.179, 0 redirects active on ports 10000-20000, Envoy: external
+Global Identity Range:        min 256, max 65535
+Hubble:                       Ok                           Current/Max Flows: 4095/4095 (100.00%), Flows/s: 7.10   Metrics: Disabled
+Encryption:                   Disabled                     
+Cluster health:               0/1 reachable                (2025-12-11T02:50:41Z)   (Probe interval: 1m36.566274746s)
+Name                          IP                           Node                     Endpoints
+  aq-dev-server (localhost)   172.31.24.199,fc00::10ca:1   0/2                      2/2
+Modules Health:               Stopped(12) Degraded(0) OK(89)
 ```
 
-## 参考资料
+## 测试 Pod-To-Pod 流量
 
-- <https://tinychen.com/20220510-k8s-04-deploy-k8s-with-cilium/#5-1-%E5%AE%89%E8%A3%85cilium>
+新建两个 Pod
+
+```yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: client
+  namespace: default
+spec:
+  nodeName: aq-dev-server # 指定 Schedule 到 aq-dev-server
+  containers:
+    - name: client
+      image: harbor.alpha-quant.tech/3rd_party/docker.io/nicolaka/netshoot:v0.9
+      command: ["sleep", "infinity"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server
+  namespace: default
+spec:
+  nodeName: aq-dev-server # 指定 Schedule 到 aq-dev-server
+  containers:
+    - name: server
+      image: harbor.alpha-quant.tech/3rd_party/docker.io/openresty/openresty:1.27.1.2-3-bullseye-fat
+
+```
+
+从 `client` Pod 向 `server` Pod 发出 HTTP 请求是否能成功得到响应：
+
+```bash
+SERVER_IP=$(kubectl get po server -o jsonpath='{.status.podIP}')
+kubectl exec client -- curl -s $SERVER_IP
+```
+
+同样的方式，将上述 Pod  改为不同节点，测试跨节点的 Pod-to-Pod 流量
+
+## Hubble UI
+
+临时访问
+
+```bash
+kubectl port-forward -n kube-system svc/hubble-ui --address 0.0.0.0 12000:80
+```
+
+安装 Hubble
+
+```bash
+HUBBLE_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/hubble/master/stable.txt)
+HUBBLE_ARCH=amd64
+if [ "$(uname -m)" = "aarch64" ]; then HUBBLE_ARCH=arm64; fi
+curl -L --fail --remote-name-all https://github.com/cilium/hubble/releases/download/$HUBBLE_VERSION/hubble-linux-${HUBBLE_ARCH}.tar.gz{,.sha256sum}
+sha256sum --check hubble-linux-${HUBBLE_ARCH}.tar.gz.sha256sum
+sudo tar xzvfC hubble-linux-${HUBBLE_ARCH}.tar.gz /usr/local/bin
+rm hubble-linux-${HUBBLE_ARCH}.tar.gz{,.sha256sum}
+```
+

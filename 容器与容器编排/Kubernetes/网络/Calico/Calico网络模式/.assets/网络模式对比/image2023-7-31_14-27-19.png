@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN" >
+<head>
+                    <title>登录 - Kuanbang Brain</title>
+    
+        
+
+                        
+    
+                        
+    
+                        
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE,chrome=IE7">
+<meta charset="UTF-8">
+<meta id="confluence-context-path" name="confluence-context-path" content="">
+<meta id="confluence-base-url" name="confluence-base-url" content="http://wiki.bigquant.ai">
+
+    <meta id="atlassian-token" name="atlassian-token" content="686bb2d94b91885dfdb3d876f42353bc38bce2e8">
+
+
+<script type="text/javascript">
+        var contextPath = '';
+</script>
+
+    
+
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="robots" content="noarchive">
+    <meta name="confluence-request-time" content="1701141692369">
+        
+            <script type="text/x-template" title="poll-selector-blueprint">
+    <h3>What type of poll would you like to create?</h3>
+    <div class="aui-group">
+        <div class="aui-item">
+            <div class="hero choice-poll">
+                <h2>Choice poll</h2>
+                <p>Use choice polls to make choices like where to go for lunch or to survey user satisfaction.</p>
+                <p><a id="create-choice-poll" class="aui-button" href="#">Create choice poll</a></p>
+            </div>
+        </div>
+        <div class="aui-item">
+            <div class="hero date-poll">
+                <h2>Date poll</h2>
+                <p>Use date polls to schedule events like the next team meeting or an upcoming Atlassian User Group.</p>
+                <p><a id="create-date-poll" class="aui-button" href="#">Create date poll</a></p>
+            </div>
+        </div>
+    </div>
+</script>
+
+    
+        
+            
+            <meta name="ajs-use-keyboard-shortcuts" content="true">
+            <meta name="ajs-is-confluence-admin" content="false">
+            <meta name="ajs-connection-timeout" content="60000">
+            
+            <script type="text/x-template" title="gliffy-webpanel-footer">
+        <div class="gliffy-webpanel-footer"><span></span></div>
+</script>
+
+
+            <meta name="ajs-discovered-plugin-features" content="$discoveredList">
+            <meta name="ajs-keyboardshortcut-hash" content="e4258e06e187c50c69ad616383b4a1ee">
+            <meta id="team-calendars-has-jira-link" content="true">
+            <meta name="ajs-team-calendars-display-time-format" content="displayTimeFormat24">
+            <meta id="team-calendars-display-week-number" content="false">
+            <meta id="team-calendars-user-timezone" content="GMT">
+            <script type="text/x-template" id="team-calendars-messages" title="team-calendars-messages"><fieldset class="i18n hidden"><input type="hidden" name="calendar3.month.long.july" value="七月"><input type="hidden" name="calendar3.day.short.wednesday" value="星期三"><input type="hidden" name="calendar3.day.short.thursday" value="星期四"><input type="hidden" name="calendar3.month.short.march" value="三月"><input type="hidden" name="calendar3.month.long.april" value="四月"><input type="hidden" name="calendar3.month.long.october" value="十月"><input type="hidden" name="calendar3.month.long.august" value="八月"><input type="hidden" name="calendar3.month.short.july" value="七月"><input type="hidden" name="calendar3.month.short.may" value="五月"><input type="hidden" name="calendar3.month.short.november" value="十一月"><input type="hidden" name="calendar3.day.long.friday" value="星期五"><input type="hidden" name="calendar3.day.long.sunday" value="星期日"><input type="hidden" name="calendar3.day.long.saturday" value="星期六"><input type="hidden" name="calendar3.month.short.april" value="四月"><input type="hidden" name="calendar3.day.long.wednesday" value="星期三"><input type="hidden" name="calendar3.month.long.december" value="十二月"><input type="hidden" name="calendar3.month.short.october" value="十月"><input type="hidden" name="calendar3.day.long.monday" value="星期一"><input type="hidden" name="calendar3.month.short.june" value="六月"><input type="hidden" name="calendar3.day.short.monday" value="星期一"><input type="hidden" name="calendar3.day.short.tuesday" value="星期二"><input type="hidden" name="calendar3.day.short.saturday" value="星期六"><input type="hidden" name="calendar3.month.long.march" value="三月"><input type="hidden" name="calendar3.month.long.june" value="六月"><input type="hidden" name="calendar3.month.short.february" value="二月"><input type="hidden" name="calendar3.month.short.august" value="八月"><input type="hidden" name="calendar3.month.short.december" value="十二月"><input type="hidden" name="calendar3.day.short.sunday" value="星期日"><input type="hidden" name="calendar3.month.long.february" value="二月"><input type="hidden" name="calendar3.day.long.tuesday" value="星期二"><input type="hidden" name="calendar3.month.long.may" value="五月"><input type="hidden" name="calendar3.month.long.september" value="九月"><input type="hidden" name="calendar3.month.long.november" value="十一月"><input type="hidden" name="calendar3.month.short.january" value="一月"><input type="hidden" name="calendar3.month.short.september" value="九月"><input type="hidden" name="calendar3.day.long.thursday" value="星期四"><input type="hidden" name="calendar3.month.long.january" value="一月"><input type="hidden" name="calendar3.day.short.friday" value="星期五"></fieldset></script>
+            
+            
+    
+    
+            <meta name="ajs-context-path" content="">
+            <meta name="ajs-base-url" content="http://wiki.bigquant.ai">
+            <meta name="ajs-version-number" content="7.13.0">
+            <meta name="ajs-build-number" content="8703">
+            <meta name="ajs-remote-user" content="">
+            <meta name="ajs-remote-user-key" content="">
+            <meta name="ajs-remote-user-has-licensed-access" content="false">
+            <meta name="ajs-remote-user-has-browse-users-permission" content="false">
+            <meta name="ajs-current-user-fullname" content="">
+            <meta name="ajs-current-user-avatar-url" content="">
+            <meta name="ajs-current-user-avatar-uri-reference" content="/images/icons/profilepics/anonymous.svg">
+            <meta name="ajs-static-resource-url-prefix" content="/s/3fy444/8703/189cb2l/_">
+            <meta name="ajs-global-settings-attachment-max-size" content="41943040000">
+            <meta name="ajs-global-settings-quick-search-enabled" content="true">
+            <meta name="ajs-user-locale" content="zh_CN">
+            <meta name="ajs-enabled-dark-features" content="site-wide.shared-drafts,site-wide.synchrony,clc.quick.create,confluence.view.edit.transition,cql.search.screen,confluence-inline-comments-resolved,frontend.editor.v4,http.session.registrar,nps.survey.inline.dialog,confluence.efi.onboarding.new.templates,frontend.editor.v4.compatibility,atlassian.cdn.static.assets,pdf-preview,previews.sharing,previews.versions,file-annotations,confluence.efi.onboarding.rich.space.content,collaborative-audit-log,confluence.reindex.improvements,previews.conversion-service,editor.ajax.save,read.only.mode,graphql,previews.trigger-all-file-types,attachment.extracted.text.extractor,lucene.caching.filter,confluence.table.resizable,notification.batch,previews.sharing.pushstate,confluence-inline-comments-rich-editor,tc.tacca.dacca,site-wide.synchrony.opt-in,file-annotations.likes,gatekeeper-ui-v2,v2.content.name.searcher,mobile.supported.version,pulp,confluence-inline-comments,confluence-inline-comments-dangling-comment,quick-reload-inline-comments-flags">
+            <meta name="ajs-atl-token" content="686bb2d94b91885dfdb3d876f42353bc38bce2e8">
+            <meta name="ajs-confluence-flavour" content="VANILLA">
+            <meta name="ajs-user-date-pattern" content="yyyy-M-d">
+            <meta name="ajs-access-mode" content="READ_WRITE">
+            <meta name="ajs-render-mode" content="READ_WRITE">
+            <meta name="ajs-date.format" content="MMM dd, yyyy">
+    
+    <link rel="shortcut icon" href="/s/3fy444/8703/189cb2l/16/_/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/s/3fy444/8703/189cb2l/16/_/favicon.ico">
+
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch/osd.action" title="Kuanbang Brain"/>
+
+    <script>
+window.WRM=window.WRM||{};window.WRM._unparsedData=window.WRM._unparsedData||{};window.WRM._unparsedErrors=window.WRM._unparsedErrors||{};
+WRM._unparsedData["com.atlassian.plugins.atlassian-plugins-webresource-plugin:context-path.context-path"]="\u0022\u0022";
+WRM._unparsedData["com.onresolve.confluence.groovy.groovyrunner:web-item-response-renderer.web-item-actions-data-provider"]="[]";
+WRM._unparsedData["com.atlassian.confluence.plugins.synchrony-interop:synchrony-status-banner-loader.synchrony-status"]="false";
+WRM._unparsedData["net.seibertmedia.plugin.confluence.linchpin-usage-tracking:linchpin-usage-tracking-data-provider.environment-data"]="{\u0022version\u0022:\u00227.13.0\u0022,\u0022apps\u0022:{\u0022net.seibertmedia.plugin.confluence.microblog\u0022:{\u0022pluginKey\u0022:\u0022net.seibertmedia.plugin.confluence.microblog\u0022,\u0022name\u0022:\u0022Microblogging for Confluence \u0022,\u0022version\u0022:\u00226.4.1\u0022},\u0022net.seibertmedia.plugin.confluence.linchpin-usage-tracking\u0022:{\u0022pluginKey\u0022:\u0022net.seibertmedia.plugin.confluence.linchpin-usage-tracking\u0022,\u0022name\u0022:\u0022Linchpin Usage Tracking\u0022,\u0022version\u0022:\u00221.1.4\u0022}}}";
+WRM._unparsedData["com.atlassian.analytics.analytics-client:policy-update-init.policy-update-data-provider"]="false";
+WRM._unparsedData["com.atlassian.analytics.analytics-client:programmatic-analytics-init.programmatic-analytics-data-provider"]="false";
+WRM._unparsedData["com.atlassian.applinks.applinks-plugin:applinks-common-exported.applinks-help-paths"]="{\u0022entries\u0022:{\u0022applinks.docs.root\u0022:\u0022https://confluence.atlassian.com/display/APPLINKS-072/\u0022,\u0022applinks.docs.diagnostics.troubleshoot.sslunmatched\u0022:\u0022SSL+and+application+link+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.oauthsignatureinvalid\u0022:\u0022OAuth+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.oauthtimestamprefused\u0022:\u0022OAuth+troubleshooting+guide\u0022,\u0022applinks.docs.delete.entity.link\u0022:\u0022Create+links+between+projects\u0022,\u0022applinks.docs.adding.application.link\u0022:\u0022Link+Atlassian+applications+to+work+together\u0022,\u0022applinks.docs.administration.guide\u0022:\u0022Application+Links+Documentation\u0022,\u0022applinks.docs.oauth.security\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.troubleshoot.application.links\u0022:\u0022Troubleshoot+application+links\u0022,\u0022applinks.docs.diagnostics.troubleshoot.unknownerror\u0022:\u0022Network+and+connectivity+troubleshooting+guide\u0022,\u0022applinks.docs.configuring.auth.trusted.apps\u0022:\u0022Configuring+Trusted+Applications+authentication+for+an+application+link\u0022,\u0022applinks.docs.diagnostics.troubleshoot.authlevelunsupported\u0022:\u0022OAuth+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.ssluntrusted\u0022:\u0022SSL+and+application+link+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.unknownhost\u0022:\u0022Network+and+connectivity+troubleshooting+guide\u0022,\u0022applinks.docs.delete.application.link\u0022:\u0022Link+Atlassian+applications+to+work+together\u0022,\u0022applinks.docs.adding.project.link\u0022:\u0022Configuring+Project+links+across+Applications\u0022,\u0022applinks.docs.link.applications\u0022:\u0022Link+Atlassian+applications+to+work+together\u0022,\u0022applinks.docs.diagnostics.troubleshoot.oauthproblem\u0022:\u0022OAuth+troubleshooting+guide\u0022,\u0022applinks.docs.diagnostics.troubleshoot.migration\u0022:\u0022Update+application+links+to+use+OAuth\u0022,\u0022applinks.docs.relocate.application.link\u0022:\u0022Link+Atlassian+applications+to+work+together\u0022,\u0022applinks.docs.administering.entity.links\u0022:\u0022Create+links+between+projects\u0022,\u0022applinks.docs.upgrade.application.link\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.diagnostics.troubleshoot.connectionrefused\u0022:\u0022Network+and+connectivity+troubleshooting+guide\u0022,\u0022applinks.docs.configuring.auth.oauth\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.insufficient.remote.permission\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.configuring.application.link.auth\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.diagnostics\u0022:\u0022Application+links+diagnostics\u0022,\u0022applinks.docs.configured.authentication.types\u0022:\u0022OAuth+security+for+application+links\u0022,\u0022applinks.docs.adding.entity.link\u0022:\u0022Create+links+between+projects\u0022,\u0022applinks.docs.diagnostics.troubleshoot.unexpectedresponse\u0022:\u0022Network+and+connectivity+troubleshooting+guide\u0022,\u0022applinks.docs.configuring.auth.basic\u0022:\u0022Configuring+Basic+HTTP+Authentication+for+an+Application+Link\u0022,\u0022applinks.docs.diagnostics.troubleshoot.authlevelmismatch\u0022:\u0022OAuth+troubleshooting+guide\u0022}}";
+WRM._unparsedData["com.atlassian.applinks.applinks-plugin:applinks-common-exported.applinks-types"]="{\u0022crowd\u0022:\u0022\u4eba\u7fa4\u0022,\u0022confluence\u0022:\u0022Confluence\u0022,\u0022fecru\u0022:\u0022Fisheye / Crucible\u0022,\u0022stash\u0022:\u0022\u6682\u5b58\u0022,\u0022jira\u0022:\u0022Jira\u0022,\u0022refapp\u0022:\u0022\u76f8\u5173\u5e94\u7528\u7a0b\u5e8f\u0022,\u0022bamboo\u0022:\u0022\u7af9\u0022,\u0022generic\u0022:\u0022\u901a\u7528\u5e94\u7528\u7a0b\u5e8f\u0022}";
+WRM._unparsedData["com.atlassian.applinks.applinks-plugin:applinks-common-exported.entity-types"]="{\u0022singular\u0022:{\u0022refapp.charlie\u0022:\u0022Charlie\u0022,\u0022fecru.project\u0022:\u0022Crucible\u9879\u76ee\u0022,\u0022fecru.repository\u0022:\u0022FishEye \u4ed3\u5e93\u0022,\u0022stash.project\u0022:\u0022Stash \u9879\u76ee\u0022,\u0022generic.entity\u0022:\u0022\u901a\u7528\u9879\u76ee\u0022,\u0022confluence.space\u0022:\u0022Confluence\u7a7a\u95f4\u0022,\u0022bamboo.project\u0022:\u0022Bamboo\u9879\u76ee\u0022,\u0022jira.project\u0022:\u0022Jira \u9879\u76ee\u0022},\u0022plural\u0022:{\u0022refapp.charlie\u0022:\u0022\u67e5\u7406\u65af\u0022,\u0022fecru.project\u0022:\u0022Crucible\u9879\u76ee\u0022,\u0022fecru.repository\u0022:\u0022FishEye \u4ed3\u5e93\u96c6\u0022,\u0022stash.project\u0022:\u0022Stash\u9879\u76ee\u0022,\u0022generic.entity\u0022:\u0022\u901a\u7528\u9879\u76ee\u0022,\u0022confluence.space\u0022:\u0022Confluence\u7a7a\u95f4\u0022,\u0022bamboo.project\u0022:\u0022Bamboo\u9879\u76ee\u0022,\u0022jira.project\u0022:\u0022Jira \u9879\u76ee\u0022}}";
+WRM._unparsedData["com.atlassian.applinks.applinks-plugin:applinks-common-exported.authentication-types"]="{\u0022com.atlassian.applinks.api.auth.types.BasicAuthenticationProvider\u0022:\u0022\u57fa\u672c\u8bbf\u95ee\u0022,\u0022com.atlassian.applinks.api.auth.types.TrustedAppsAuthenticationProvider\u0022:\u0022\u4fe1\u4efb\u7684\u5e94\u7528\u65e0\u6548\u0022,\u0022com.atlassian.applinks.api.auth.types.CorsAuthenticationProvider\u0022:\u0022\u6b4c\u73e5\u0022,\u0022com.atlassian.applinks.api.auth.types.OAuthAuthenticationProvider\u0022:\u0022Oauth\u0022,\u0022com.atlassian.applinks.api.auth.types.TwoLeggedOAuthAuthenticationProvider\u0022:\u0022Oauth\u0022,\u0022com.atlassian.applinks.api.auth.types.TwoLeggedOAuthWithImpersonationAuthenticationProvider\u0022:\u0022Oauth\u0022}";
+WRM._unparsedData["com.atlassian.confluence.plugins.confluence-feature-discovery-plugin:confluence-feature-discovery-plugin-resources.test-mode"]="false";
+WRM._unparsedData["com.atlassian.confluence.plugins.confluence-license-banner:confluence-license-banner-resources.license-details"]="{\u0022daysBeforeLicenseExpiry\u0022:0,\u0022daysBeforeMaintenanceExpiry\u0022:0,\u0022showLicenseExpiryBanner\u0022:false,\u0022showMaintenanceExpiryBanner\u0022:false,\u0022renewUrl\u0022:null,\u0022salesUrl\u0022:null}";
+WRM._unparsedData["com.atlassian.confluence.plugins.confluence-search-ui-plugin:confluence-search-ui-plugin-resources.i18n-data"]="{\u0022search.ui.recent.link.text\u0022:\u0022\u67e5\u770b\u66f4\u591a\u6700\u8fd1\u8bbf\u95ee\u0022,\u0022search.ui.filter.space.category.input.label\u0022:\u0022\u67e5\u627e\u7a7a\u95f4\u7c7b\u522b......\u0022,\u0022search.ui.search.results.empty\u0022:\u0022\u6211\u4eec\u627e\u4e0d\u5230\u4efb\u4f55\u5339\u914d\u201c{0}\u201d\u7684\u5185\u5bb9\u3002\u0022,\u0022search.ui.filter.clear.selected\u0022:\u0022\u6e05\u9664\u6240\u9009\u9879\u76ee\u0022,\u0022search.ui.content.name.search.items.panel.load.all.top.items.button.text\u0022:\u0022\u663e\u793a\u66f4\u591a\u5e94\u7528\u7ed3\u679c......\u0022,\u0022search.ui.filter.space.archive.label\u0022:\u0022\u641c\u7d22\u5df2\u7ecf\u5f52\u6863\u7684\u7a7a\u95f4\u0022,\u0022search.ui.filter.label\u0022:\u0022\u7b5b\u9009\u5668\u0022,\u0022search.ui.filter.contributor.button.text\u0022:\u0022\u8d21\u732e\u8005\u0022,\u0022search.ui.filter.date.all.text\u0022:\u0022\u968f\u65f6\u0022,\u0022search.ui.filter.space.current.label\u0022:\u0022\u5f53\u524d\u0022,\u0022search.ui.clear.input.button.text\u0022:\u0022\u6e05\u9664\u6587\u672c\u0022,\u0022search.ui.search.results.clear.button\u0022:\u0022\u6e05\u7a7a\u7b5b\u9009\u5668\u3002\u0022,\u0022search.ui.filter.date.hour.text\u0022:\u0022\u8fc7\u53bb\u4e00\u5929\u0022,\u0022help.search.ui.link.title\u0022:\u0022\u641c\u7d22\u6280\u5de7\u0022,\u0022search.ui.filters.heading\u0022:\u0022\u7b5b\u9009\u65b9\u5f0f\u0022,\u0022search.ui.filter.label.input.label\u0022:\u0022\u67e5\u627e\u6807\u7b7e......\u0022,\u0022search.ui.recent.items.anonymous\u0022:\u0022\u5f00\u59cb\u63a2\u7d22\u3002 \u60a8\u7684\u641c\u7d22\u7ed3\u679c\u5c06\u663e\u793a\u5728\u6b64\u5904\u3002\u0022,\u0022search.ui.filter.date.month.text\u0022:\u0022\u8fc7\u53bb\u4e00\u4e2a\u6708\u0022,\u0022search.ui.input.label\u0022:\u0022\u641c\u7d22\u0022,\u0022search.ui.search.result\u0022:\u0022{0,choice,1#{0}\u4e2a\u641c\u7d22\u7ed3\u679c|1\u005Cu003c{0}\u4e2a\u641c\u7d22\u7ed3\u679c}\u0022,\u0022search.ui.infinite.scroll.button.text\u0022:\u0022\u66f4\u591a\u7ed3\u679c\u0022,\u0022search.ui.filter.date.button.text\u0022:\u0022\u65e5\u671f\u0022,\u0022search.ui.filter.date.week.text\u0022:\u0022\u8fc7\u53bb\u4e00\u5468\u0022,\u0022search.ui.filter.label.button.text\u0022:\u0022\u6807\u7b7e\u0022,\u0022search.ui.input.alert\u0022:\u0022\u6309\u56de\u8f66\u952e(Enter)\u641c\u7d22\u0022,\u0022search.ui.result.subtitle.calendar\u0022:\u0022\u56e2\u961f\u65e5\u7a0b\u8868\u0022,\u0022search.ui.filter.no.result.text\u0022:\u0022\u6211\u4eec\u627e\u4e0d\u5230\u4efb\u4f55\u7b26\u5408\u60a8\u641c\u7d22\u6761\u4ef6\u7684\u5185\u5bb9\u0022,\u0022search.ui.filter.date.heading\u0022:\u0022\u4e0a\u6b21\u4fee\u6539\u0022,\u0022search.ui.result.subtitle.user\u0022:\u0022\u7528\u6237\u8d44\u6599\u0022,\u0022search.ui.filter.contributor.input.label\u0022:\u0022\u67e5\u627e\u4eba\u5458......\u0022,\u0022search.ui.filter.content.type.button.text\u0022:\u0022\u7c7b\u578b\u0022,\u0022search.ui.filter.space.input.label\u0022:\u0022\u67e5\u627e\u7a7a\u95f4\u0022,\u0022search.ui.filter.date.year.text\u0022:\u0022\u8fc7\u53bb\u4e00\u5e74\u0022,\u0022search.ui.advanced.search.link.text\u0022:\u0022\u9ad8\u7ea7\u641c\u7d22\u0022,\u0022search.ui.filter.space.button.text\u0022:\u0022\u7a7a\u95f4\u0022,\u0022search.ui.generic.error\u0022:\u0022\u51fa\u9519\u4e86\u3002\u5237\u65b0\u9875\u9762\uff0c\u6216\u8005\u5982\u679c\u6301\u7eed\u53d1\u751f\u8fd9\u79cd\u60c5\u51b5\uff0c\u8bf7\u8054\u7cfb\u60a8\u7684\u7ba1\u7406\u5458\u3002\u0022,\u0022search.ui.recent.spaces\u0022:\u0022\u6700\u8fd1\u7a7a\u95f4\u0022,\u0022search.ui.search.results.clear.line2\u0022:\u0022\u8bf7\u5c1d\u8bd5\u4e0d\u540c\u7684\u641c\u7d22\u5173\u952e\u5b57\u6216\u8005\u0022,\u0022search.ui.filter.space.category.button.text\u0022:\u0022\u7a7a\u95f4\u7c7b\u522b\u0022,\u0022search.ui.search.results.clear.line1\u0022:\u0022\u627e\u4e0d\u5230\u5339\u914d\u7684\u641c\u7d22\u7ed3\u679c\u0022,\u0022search.ui.content.name.search.items.panel.load.all.top.items.admin.button.text\u0022:\u0022\u663e\u793a\u66f4\u591a\u8bbe\u7f6e\u548c\u5e94\u7528\u7ed3\u679c...\u0022,\u0022search.ui.recent.pages\u0022:\u0022\u6700\u8fd1\u8bbf\u95ee\u0022,\u0022search.ui.search.result.anonymous\u0022:\u0022{0,choice,1#{0}\u4e2a\u641c\u7d22\u7ed3\u679c| 1 \u005Cu003c{0}\u4e2a\u641c\u7d22\u7ed3\u679c}\u3002 \u60a8\u6709\u5e10\u6237\u5417\uff1f{1}\u767b\u5f55{2}\u641c\u7d22\u66f4\u591a\u7ed3\u679c\u3002\u0022,\u0022search.ui.recent.items.empty\u0022:\u0022\u5f00\u59cb\u63a2\u7d22\u3002 \u60a8\u6700\u8fd1\u8bbf\u95ee\u8fc7\u7684\u9875\u9762\u548c\u7a7a\u95f4\u5c06\u663e\u793a\u5728\u6b64\u5904\u3002\u0022,\u0022search.ui.result.subtitle.space\u0022:\u0022\u7a7a\u95f4\u0022,\u0022search.ui.filter.space.init.heading\u0022:\u0022\u6700\u8fd1\u7a7a\u95f4\u0022}";
+if(window.WRM._dataArrived)window.WRM._dataArrived();</script>
+<link type="text/css" rel="stylesheet" href="/s/f8e3108f24fc765a7a6bc33602354508-CDN/3fy444/8703/189cb2l/7ba65cf2222d41be6701bc5ed0debcd4/_/download/contextbatch/css/_super/batch.css" data-wrm-key="_super" data-wrm-batch-type="context" media="all">
+<link type="text/css" rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-CDN/3fy444/8703/189cb2l/f874a6ba2e1a737ab64e54ad113aca43/_/download/contextbatch/css/main,atl.general,-_super/batch.css?hostenabled=true" data-wrm-key="main,atl.general,-_super" data-wrm-batch-type="context" media="all">
+<link type="text/css" rel="stylesheet" href="/s/f61221f9158df5db7656afa5757f1fa3-CDN/3fy444/8703/189cb2l/11be1df6d806481961e09d2841d71b0e/_/download/contextbatch/css/login,-_super/batch.css" data-wrm-key="login,-_super" data-wrm-batch-type="context" media="all">
+<link type="text/css" rel="stylesheet" href="/s/d41d8cd98f00b204e9800998ecf8427e-T/3fy444/8703/189cb2l/3.0.10/_/download/batch/de.communardo.confluence.plugins.karma:karma-medal-ressources/de.communardo.confluence.plugins.karma:karma-medal-ressources.css" data-wrm-key="de.communardo.confluence.plugins.karma:karma-medal-ressources" data-wrm-batch-type="resource" media="all">
+<link type="text/css" rel="stylesheet" href="/s/3fy444/8703/189cb2l/16/_/styles/colors.css" media="all">
+<script type="text/javascript" src="/s/62cf40f0a4880c34b79c57f22dc9c027-CDN/3fy444/8703/189cb2l/7ba65cf2222d41be6701bc5ed0debcd4/_/download/contextbatch/js/_super/batch.js?locale=zh-CN" data-wrm-key="_super" data-wrm-batch-type="context" data-initially-rendered></script>
+<script type="text/javascript" src="/s/755f1bdcd097210b9ce93dfd3a3ee30d-CDN/3fy444/8703/189cb2l/f874a6ba2e1a737ab64e54ad113aca43/_/download/contextbatch/js/main,atl.general,-_super/batch.js?hostenabled=true&amp;locale=zh-CN" data-wrm-key="main,atl.general,-_super" data-wrm-batch-type="context" data-initially-rendered></script>
+<script type="text/javascript" src="/s/12212377decbd15fbe17d33b98290418-CDN/3fy444/8703/189cb2l/1.0/_/download/batch/confluence.web.resources:login/confluence.web.resources:login.js?locale=zh-CN" data-wrm-key="confluence.web.resources:login" data-wrm-batch-type="resource" data-initially-rendered></script>
+<script type="text/javascript" src="/s/12212377decbd15fbe17d33b98290418-T/3fy444/8703/189cb2l/3.0.10/_/download/batch/de.communardo.confluence.plugins.karma:karma-medal-ressources/de.communardo.confluence.plugins.karma:karma-medal-ressources.js?locale=zh-CN" data-wrm-key="de.communardo.confluence.plugins.karma:karma-medal-ressources" data-wrm-batch-type="resource" data-initially-rendered></script>
+
+    
+
+        
+    
+
+            
+            
+            
+            
+	    		    
+		    
+		
+            
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+#help-menu-link {display:none}
+#footer{display:none}
+.dashboard-buttons {display:none}
+
+.aui-navgroup-horizontal:after{height:0px}
+.aui-navgroup-horizontal:before{height:0px}
+.aui-header .aui-icon {--aui-icon-size: 16px !important;}
+
+ul.aui-nav>li>a.Overlay__Trigger__jAwkb {
+    padding-right: 35px !important;
+    padding-bottom: 25px !important;
+}
+
+td.filename-column span.content-type-attachment-powerpoint97 {
+    padding-left: 16px;
+    width: 0px;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+div.reveal #ewToc {
+    display: none;
+}
+div.reveal section img {
+  border: 0;
+  background: transparent;
+}
+div.reveal li {
+  line-height: 1.5;
+}
+div.reveal p {
+  margin:0;
+  line-height: 1.5;
+}
+div.reveal table {
+  border-bottom: 1px solid;
+}
+div.reveal li:empty {
+    display: none;
+}
+
+.dashboard-gadget {
+    overflow-x: scroll;
+}
+.dashboard-gadget table {
+    white-space: nowrap;
+    width: 100%;
+}
+.dashboard-gadget table td {
+    padding: 0 7px;
+}
+.dashboard-gadget .aui-avatar {
+    vertical-align: bottom;
+}
+.dashboard-gadget a.hero {
+    display: inline-block;
+    margin: 3px 0;
+}
+
+.kb-mark-2 > div > span > a{color:gray}
+.kb-depth-0 > div > span > a {color:#42526e}
+
+.codeContent .syntaxhighlighter table td.code .container .line {
+  white-space:pre-wrap
+}
+
+.recently-updated-social .userLogo {width: 48px; height: 48px}
+
+.aui-dropdown2.aui-style-default:hover a:not(.aui-dropdown2-disabled):focus, .aui-dropdown2.aui-style-default:hover a:not(.aui-dropdown2-disabled):hover, .aui-dropdown2.aui-style-default:hover a.active:not(.aui-dropdown2-disabled), .aui-dropdown2.aui-style-default:hover .aui-dropdown2-radio:not(.aui-dropdown2-disabled):hover {
+color: #fff
+}
+#app-switcher.aui-dropdown2.aui-style-default .active, .aui-dropdown2-trigger.app-switcher-trigger:hover, .aui-dropdown2.aui-style-default .active{
+background-color:#ebecf0
+}
+
+div#content.ewHeadingsStructuredWrapper {
+    margin-right: 200px;
+}
+#ewToc {
+    border-left: 1px solid #bbb;
+    line-height: 1.6;
+}
+.ewHeadingsStructured + div {
+    position: fixed;
+    top: 100px;
+    right: 50px;
+    width: 170px;
+    #transform: translateY(-50%)
+}
+.ewHeadingsStructured + div ul,
+.ewHeadingsStructured + div ol {
+    list-style: none;
+    padding-left: 1em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div#ewToc::-webkit-scrollbar {
+ display: none;
+}
+div#ewToc::-webkit-scrollbar {
+ display: none;
+}
+.ewHeadingsStructured + div {
+ position: fixed;
+ top: 100px;
+ right: 50px;
+ width: 170px;
+ bottom: 0;
+ overflow-y: auto;
+}
+</style>
+
+
+<link rel=stylesheet href=http://wiki.bigquant.ai/bigwikistatic/asciinema-player.css>
+
+    
+
+</head>
+
+<body      id="com-atlassian-confluence" class="theme-default login aui-layout aui-theme-default">
+    
+        
+            
+
+<fieldset class="parameters hidden" style="display: none;">
+            <input type="hidden" id="boardsAnalyticsKey" value="17"/>
+        <input type="hidden" id="boardsAnalyticsDomain" value="comalatech.matomo.cloud"/>
+    </fieldset>
+
+            <div id='stp-licenseStatus-banner'></div>
+                <div class="navigationbarpro-hidden navigationbarpro-datacontainer">
+        <div id="navigationbarpro" >
+            <nav class="aui-navgroup aui-navgroup-horizontal">
+                <div class="aui-navgroup-inner">
+                    <div class="aui-navgroup aui-navgroup-primary subspaces-menu">
+                                            </div>
+                    <div class="aui-navgroup aui-navgroup-secondary">
+                        <ul class="aui-nav">
+                            <li>
+                                <div class="subspaces-menu"></div>
+                            </li>
+                                                    </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div id="examplemenu" class="aui-style-default aui-dropdown2">
+            <ul class="aui-list-truncate">
+                <li><a href="#">Menu item</a></li>
+                <li><a href="#">Menu item</a></li>
+                <li><a href="#">Menu item</a></li>
+                <li><a href="#">Menu item</a></li>
+            </ul>
+        </div>
+
+        
+        <input id="navigationProStructure" type="hidden" value='[]'>
+
+    </div>
+
+
+    <section role="dialog" id="subspace_showmore_dialog" class="aui-layer aui-dialog2 aui-dialog2-medium" aria-hidden="true">
+        <!-- Dialog header -->
+        <header class="aui-dialog2-header">
+            <h2 class="aui-dialog2-header-main">Show all results</h2>
+        </header>
+        <!-- Main dialog content -->
+        <div class="aui-dialog2-content">
+        </div>
+        <!-- Dialog footer -->
+        <footer class="aui-dialog2-footer">
+            <!-- Actions to render on the right of the footer -->
+            <div class="aui-dialog2-footer-actions">
+                <button class="dialog-close-button aui-button aui-button-link">Close</button>
+            </div>
+        </footer>
+    </section>
+
+    <div id="page">
+    <div id="full-height-container">
+        <div id="header-precursor">
+            <div class="cell">
+                
+                                    </div>
+        </div>
+                                
+
+
+
+
+
+<header id="header" role="banner">
+    <nav class="aui-header aui-dropdown2-trigger-group" aria-label="站点"><div class="aui-header-inner"><div class="aui-header-before"><button class=" aui-dropdown2-trigger app-switcher-trigger aui-dropdown2-trigger-arrowless" aria-controls="app-switcher" aria-haspopup="true" role="button" data-aui-trigger href="#app-switcher"><span class="aui-icon aui-icon-small aui-iconfont-appswitcher">已链接应用程序</span></button><div id="app-switcher" class="aui-dropdown2 aui-style-default" role="menu" hidden data-is-switcher="true" data-environment="{&quot;isUserAdmin&quot;:false,&quot;isAppSuggestionAvailable&quot;:false,&quot;isSiteAdminUser&quot;:false}"><div class="app-switcher-loading">正在加载...</div></div></div><div class="aui-header-primary"><span id="logo" class="aui-header-logo aui-header-logo-custom"><a href="/" aria-label="转到主页"><img src="/download/attachments/65571/atl.site.logo?version=5&amp;modificationDate=1562906750791&amp;api=v2" alt="Kuanbang Brain" /></a></span><ul class="aui-nav">
+                            <li>
+            
+        
+        
+<a  id="microblog-portal-web-item" href="/plugins/microblog.action"  class=" aui-nav-imagelink"   title="">
+            <span>Microblog</span>
+    </a>
+        </li>
+                                <li class="aui-buttons">
+            </li>
+</ul>
+</div><div class="aui-header-secondary"><ul class="aui-nav">
+            <li>
+        
+    
+            
+<a  id="todome-quick-access-link" href="#"  class="read aui-nav-imagelink"   title="">
+            <span></span>
+    </a>
+    </li>
+                    <li>
+            
+        <a id="help-menu-link" class="aui-nav-link aui-dropdown2-trigger aui-dropdown2-trigger-arrowless" href="#" aria-haspopup="true" aria-owns="help-menu-link-content" title="帮助">
+        <span class="aui-icon aui-icon-small aui-iconfont-question-filled">帮助</span>
+    </a>
+    <nav id="help-menu-link-content" class="aui-dropdown2 aui-style-default" aria-hidden="true">
+                    <div class="aui-dropdown2-section">
+                                <ul  id="help-menu-link-leading" class="aui-list-truncate section-leading first">
+                                            <li>
+        
+            
+<a  id="confluence-help-link" href="https://docs.atlassian.com/confluence/docs-713/" class="    "      title="访问Confluence文档首页"  target="_blank"
+>
+        在线帮助
+</a>
+</li>
+                                            <li>
+    
+                
+<a  id="keyboard-shortcuts-link" href="#" class="    "      title="查看可用的键盘快捷方式" >
+        快捷键
+</a>
+</li>
+                                            <li>
+    
+            
+<a  id="feed-builder-link" href="/dashboard/configurerssfeed.action" class="    "      title="创建个性化的 RSS源。" >
+        RSS源建立器
+</a>
+</li>
+                                            <li>
+    
+            
+<a  id="whats-new-menu-link" href="https://confluence.atlassian.com/display/DOC/Confluence+7.13+Release+Notes" class="    "      title="" >
+        新功能
+</a>
+</li>
+                                            <li>
+    
+                
+<a  id="gadget-directory-link" href="#" class="   user-item administration-link "      title="浏览小工具" >
+        可用的小工具
+</a>
+</li>
+                                            <li>
+    
+            
+<a  id="confluence-about-link" href="/aboutconfluencepage.action" class="    "      title="获取关于Confluence的更多信息" >
+        关于Confluence
+</a>
+</li>
+                                    </ul>
+            </div>
+                    <div class="aui-dropdown2-section">
+                                <ul  id="help-menu-link-user-profile-plugin-section" class="aui-list-truncate section-user-profile-plugin-section">
+                                            <li>
+    
+                
+<a  id="user-profile-plugin-webitem-templates-link" href="#" class="    "      title="" >
+        <style>
+	#browse-menu-link-user-profile-plugin-section,
+	.section-user-profile-plugin-section,
+	#user-profile-plugin-webitem-templates-link {
+		display: none !important;
+	}
+</style>
+
+<table>
+    <tr>
+        <td>
+            <div id="user-profile-plugin-content-container">
+				
+				    
+				
+				
+					
+												
+				            </div>
+        </td>
+    </tr>
+</table>
+
+</a>
+</li>
+                                    </ul>
+            </div>
+            </nav>
+    
+    </li>
+        <li>
+                
+    
+    </li>
+        <li>
+            
+    </li>
+        <li>
+                                            <li>
+        
+            
+<a  id="login-link" href="/login.action" class="   user-item login-link "      title="" >
+        登录
+</a>
+</li>
+                        
+    </li>
+    </ul>
+</div></div><!-- .aui-header-inner--></nav><!-- .aui-header -->
+    <br class="clear">
+</header>
+    
+                        <!-- \#header -->
+
+            
+        <div id="main" class=" aui-page-panel">
+            
+
+            <div id="sidebar-container">
+                                                                        </div><!-- \#sidebar-container -->
+
+            
+
+        
+		
+        <div id="login-container" >
+        			<div class="login-section ">
+                                                                                                                                                                
+    <form     name="loginform" method="POST" action="/dologin.action" class="aui login-form-container" >
+
+                                                                                                    
+                                            <h2>登录</h2>
+                    
+
+                                        
+
+<div id="action-messages">
+                        </div>
+                    <fieldset class="compact-form-fields">
+                            
+
+    <legend class="assistive"><span>登录到 Confluence</span></legend>
+                        
+
+<div class="field-group
+    "
+        >
+    <label id="os_username-label" for="os_username">
+    <u>U</u>用户名
+        </label>
+
+                <input type="text" name="os_username" id="os_username"                                   class="text   "               placeholder="用户名"     data-focus="0"          />
+                      </div>                        
+
+<div class="field-group">
+    <label id="os_password-label" for="os_password">
+    <u>P</u>密码
+        </label>
+    <input type="password" name="os_password" id="os_password"                                   class="password "               placeholder="密码"          />
+                  </div>                        
+                                                    
+
+<div class="group">
+        
+<div class="checkbox">
+    <input type="checkbox" class="checkbox" value="true" name="os_cookie"
+                id="os_cookie">
+    <label for="os_cookie"><u>R</u>记住我的登录信息</label>
+    </div>
+</div>                                                <div class="field-group form-buttons compact-form-buttons ">
+                            <input id="loginButton" class="aui-button aui-style aui-button-primary" name="login" type="submit" value="登录"/>
+                                                            <a id="forgot-password" class="aui-button aui-style aui-button-link" href="/forgotuserpassword.action">忘记密码</a>
+                                                    </div>
+                        <input type="hidden" name="os_destination" value="/download/attachments/373302251/image2023-7-31_14-27-19.png?version=1&amp;modificationDate=1690785061793&amp;api=v2"/>
+                    </fieldset>
+                                    
+
+</form>                </div> 
+                            </div>
+        	
+        </div><!-- \#main -->
+    
+        
+                        
+            
+            
+
+<div id="footer" role="contentinfo">
+    <section class="footer-body">
+
+                                                    
+        
+
+        <ul id="poweredby">
+            <li class="noprint">基于 <a href="http://www.atlassian.com/software/confluence" class="hover-footer-link" rel="nofollow">Atlassian Confluence</a> <span id='footer-build-information'>7.13.0</span> 技术构建</li>
+            <li class="print-only">由 Atlassian 合流7.13.0 打印</li>
+            <li class="noprint"><a href="https://support.atlassian.com/help/confluence" class="hover-footer-link" rel="nofollow">报告缺陷</a></li>
+            <li class="noprint"><a href="https://www.atlassian.com/company" class="hover-footer-link" rel="nofollow">Atlassian 新闻</a></li>
+        </ul>
+
+        
+
+        <div id="footer-logo"><a href="http://www.atlassian.com/" rel="nofollow">Atlassian</a></div>
+
+                    <script>
+$('table.attachments td.filename-column a.filename').each(function(i, e) {
+    e = $(e);
+    d = $('div.attachment-buttons a.previewAttachmentLink', e.parent().parent().next());
+
+    e.attr('title', '在线预览');
+    e.attr('data-file-src', e.attr('href'));
+    e.attr('data-linked-resource-default-alias', e.attr('data-filename'));
+    e.attr('data-mime-type', e.attr('data-type'));
+    e.attr('data-linked-resource-id', d.attr('data-linked-resource-id'));
+    e.removeAttr('data-type');
+    e.removeAttr('href');
+    e.attr('class', 'previewAttachmentLink');
+    e.css('cursor', 'pointer');
+
+    d.attr('href', d.attr('data-file-src'));
+    d.removeAttr('data-file-src');
+    d.attr('class', 'aui-button');
+    d.text('下载');
+});
+
+
+function lms_fix() {
+    if (location.href.indexOf('/courses/playcourse.action') == -1) {
+        return;
+    }
+    var player = $('#lms-reader-capsule .capsule-file-content embed-video');
+    var src = player.attr('href');
+    if (src && src.indexOf('http://wiki.bigquant.ai/videos/') == 0 && src != player.attr('playing_href')) {
+        player.attr('playing_href', src);
+
+        var autoplay = player.attr('autoplay');
+        var player_html = '<video id="lms_fixed_player" controls="controls" src="' + src + '" class="lms-video-container ng-scope"></video>';
+        var lms_fixed_player = $('#lms_fixed_player');
+        if (lms_fixed_player.length == 0) {
+            player.prepend(player_html);
+        } else {
+            lms_fixed_player.replaceWith(player_html);
+        }
+
+        if (autoplay) {
+            setTimeout(function(){$('#lms_fixed_player')[0].play();}, 500);
+        }
+    }
+    setTimeout(lms_fix, 200);
+}
+lms_fix();
+
+
+function _ensure() {
+     try {
+        $('select[name=templateId] optgroup[label=Bundled]').hide();
+    } catch(err) {console.log(err);}
+    setTimeout(_ensure, 500);
+}
+setTimeout(_ensure, 500);
+
+// $('#header ul.aui-nav .aui-buttons').before('<li><a href="http://wiki.bigquant.ai/dosearchsite.action?cql=siteSearch+~+%22mp4+mp3+m4a%22+and+type+%3D+%22attachment%22&queryString=mp4+mp3+m4a" class=" aui-nav-imagelink" title="音频/视频"><span>音视频</span></a></li>');
+// $('#header ul.aui-nav .aui-buttons').before('<li><a href="http://wiki.bigquant.ai/dosearchsite.action?cql=siteSearch+~+%22pptx%22+and+type+%3D+%22attachment%22&queryString=pptx" class=" aui-nav-imagelink" title="PPT"><span>PPT</span></a></li>');
+
+// $('#header ul.aui-nav .aui-buttons').before('<li><a href="http://jira.bigquant.ai/" class=" aui-nav-imagelink"><span>WorkFlow</span></a></li>');
+// $('#header ul.aui-nav .aui-buttons').before('<li><a href="http://code.bigquant.ai/" class=" aui-nav-imagelink"><span>CodeFlow</span></a></li>');
+
+
+
+(function(){
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
+    function _getUserName() {
+        if (location.pathname == '/users/viewuserprofile.action') {
+            return getUrlParameter('username');
+        }
+        if (location.pathname.indexOf('/display/~') == 0) {
+            return location.pathname.substring('/display/~'.length);
+        }
+        var spacekKey = $('meta[name=confluence-space-key]').attr('content');
+        if (spacekKey && spacekKey.indexOf('~') == 0) {
+            return spacekKey.substring('~'.length);
+        }
+        return null;
+    }
+    var userName = _getUserName();
+    if (!userName) {
+        return;
+    }
+
+    $.get("/bigwikistatic/userpages/" + userName + ".html", { "_": $.now() }, function(data, status) {
+        var parent = null;
+        if ((parent = $('.ia-splitter-left .plugin_pagetree')).length) {
+            data = '<div class="ia-secondary-header"><h5 class="ia-secondary-header-title page-tree"><span class="icon"></span><span class="label">知识结构</span></h5></div>' + data;
+        } else if ((parent = $('.ia-secondary-container')).length) {
+            data = '<div class="ia-secondary-content"><div class="plugin_pagetree conf-macro output-inline" data-hasbody="false" data-macro-name="pagetree">' + '<div class="ia-secondary-header"><h5 class="ia-secondary-header-title page-tree"><span class="icon"></span><span class="label">知识结构</span></h5></div>' + data + '</div></div>';
+        } else if ((parent = $('#profile-status-list')).length) {
+            data = '<form class="aui"><h2>知识结构</h2></form><div class="plugin_pagetree conf-macro output-inline" data-hasbody="false" data-macro-name="pagetree">' + data + '</div>';
+        }
+        parent.append(data);
+    });
+})();
+
+
+
+function watch_global_calendar() {
+    if (location.pathname == '/calendar/mycalendar.action') {
+        if ($('.sub-calendar-panel  .subcalendar-name[title=宽邦日程]').length == 0) {
+            $.ajax({
+                cache: false,
+                data: {
+                    // 宽邦日程 http://wiki.bigquant.ai/display/KUANBANG/calendars
+                    subCalendarId: "8c051261-6aaf-4336-a576-3d4b062a39d5"
+                },
+                dataType: "json",
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.error('关注宽邦日程失败');
+                },
+                success: function () {
+                    // location.reload();
+                },
+                type: true ? "PUT" : "DELETE",
+                // timeout: 10,
+                url: '/rest/calendar-services/1.0/calendar/preferences/subcalendars/watch.json'
+            });
+        }
+    }
+}
+setTimeout(watch_global_calendar, 500);
+
+
+window.BigPresentationConfig = {
+    'theme': 'white',
+    'logo': 'https://bigai.cn/wp-content/uploads/2019/01/logo-81x38@2x.png'
+}
+
+function watch_nav_menu() {
+    $("#header > #navigationbarpro").css({
+        "background": "#fff"
+    });
+    $("#header > #navigationbarpro").detach().appendTo($("<li></li>").prependTo($("div.aui-header-primary > ul.aui-nav")));
+}
+
+$( document ).ready(function() {
+    watch_nav_menu();
+});
+
+function waitToDo(selector, func) {
+    var item = $(selector);
+    if (!item || item.length == 0) {
+        setTimeout(function(){
+            waitToDo(selector, func);
+        }, 1000);
+        return;
+    }
+    func(item);
+}
+// 首页 最新更新，显示更多
+waitToDo(
+    ".confluence-dashboard ul.list-container-all-updates",
+    function(item){
+        $('<div class="" style="border-top: 1px solid #ccc;margin: 10px 0;padding: 10px 0;"><a href="/pages/viewpage.action?pageId=200147007" style="">显示更多</a></div>').insertAfter(item);
+    }
+);
+
+
+
+</script>
+<script type="text/javascript" src="https://bigpresentation.bigquant.com/js/bigpresentation.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="http://wiki.bigquant.ai/bigwikistatic/asciinema-player.js"></script>
+<script type="text/javascript" src="http://wiki.bigquant.ai/bigwikistatic/heros.js"></script>
+
+
+
+<script src="/kbvendors/ajax/libs/crypto-js/4.0.0/crypto-js.js"></script>
+<script src="/kbvendors/ajax/libs/crypto-js/4.0.0/aes.min.js"></script>
+<script>
+// outlook calendar auto login
+$("#loginButton").click(function(){
+    localStorage.setItem(
+        "tempuser",
+       $("#os_username").val()
+    );
+    localStorage.setItem(
+        "temppwd",
+        CryptoJS.AES.encrypt($("#os_password").val(), "oTLIfnkxGErOBeg5SOPop4zwhNsaFSYvuP78CIl8O8vf3RNUxd3GRefoPJ00")
+    )
+});
+
+
+if (localStorage.getItem("temppwd")) {
+    console.log("to login outlook calendar ..");
+    $.ajax({
+        url: "http://wiki.bigquant.ai/rest/com.yasoon.calendar/1.0/user/auth",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            userName: localStorage.getItem("tempuser"),
+            emailAddress: "",
+            password: CryptoJS.AES.decrypt(
+                localStorage.getItem("temppwd"),
+                "oTLIfnkxGErOBeg5SOPop4zwhNsaFSYvuP78CIl8O8vf3RNUxd3GRefoPJ00").toString(CryptoJS.enc.Utf8)
+        })
+    }).done(function(){
+        console.log("login outlook calendar done.");
+        localStorage.removeItem("temppwd");
+
+        console.log("to add outlook calendar ..");
+        var userName = localStorage.getItem("tempuser");
+        $.ajax({
+            url: "http://wiki.bigquant.ai/rest/com.yasoon.calendar/1.0/user/property/calendar",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                key: "calendar",
+                value: JSON.stringify([{"id":"main","name":"Main Calendar","_type":0,"_ownerUser":{"id":userName,"displayName":userName,"mail":userName+"@bigquant.ai","givenName":userName,"personaType":"Mailbox"},"_isActive":true,"_uniqueId":"main" + userName,"currentCalendarVersion":1,"calendarSource":"office","isShared":false,"color":"atlassian-r300"}])
+            })
+        }).done(function(){
+            console.log("add outlook calendar done.");
+        })
+
+    })
+}
+
+function ga(){}
+
+// set head icon
+function check_head_icon() {
+    if (location.href.indexOf('/#') == -1) {
+        return;
+    }
+
+    var icon = $('#header #user-menu-link .aui-avatar-inner img').attr('src');
+    if (!icon) {
+        setTimeout(check_head_icon, 2000);
+        return;
+    }
+    if (icon == "/images/icons/profilepics/default.svg") {
+        if (window.confirm("你的头像未设置。现在设置头像？"))  location.href="/users/profile/editmyprofilepicture.action";
+    }
+}
+setTimeout(check_head_icon, 2000);
+
+// 设置HeadingsStructured
+$("#content>#main-content>p>span.ewHeadingsStructured").parent().parent().parent().addClass("ewHeadingsStructuredWrapper");
+
+</script>
+
+        
+    </section>
+</div>
+
+        </div><!-- \#full-height-container -->
+</div><!-- \#page -->
+</body>
+</html>
