@@ -68,9 +68,20 @@ kubectl rollout restart ds cilium -n kube-system
 
 部署 `node-local-dns-lrp.yaml`
 
-查看一下 Service BPF Map：
+当节点上的任何 Pod 查询 `kube-dns` service 时，eBPF datapath 会拦截该封包，并将其直接重新导向到同一节点上的 node-local-dns
+
+LRP 配置下去之后，他会把 Service Type 从 `Cluster IP` 改成 `LocalRedirect`
+
+查看一下 Service BPF Map 以及 LRP List：
 
 ```bash
-kubectl exec -n kube-system cilium-hlmbw -- cilium-dbg service list
+kubectl exec -n kube-system cilium-5g95m -- cilium-dbg service list
+
+kubectl exec -n kube-system cilium-5g95m -- cilium-dbg lrp list
 ```
 
+<img src="./.assets/NodeLocalDNSCache/image-20251212094647505.png" alt="image-20251212094647505" style="zoom:67%;" />
+
+配置 Cilium Local Redirect Policy (LRP) 成功让封包在 eBPF 层被拦截，并重新导向至同一节点的 node-local-dns Pod，使得 DNS 查询真正命中本地 cache，大幅降低跨节点的 DNS 延迟与负载
+
+![image-20251212094615589](./.assets/NodeLocalDNSCache/image-20251212094615589.png)
