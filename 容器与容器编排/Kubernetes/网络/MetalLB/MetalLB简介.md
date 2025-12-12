@@ -204,6 +204,7 @@ metallb-speaker-ntrnb                 1/1     Running   0          50s
 
 ```yaml
 # mentallb/whoami.yaml
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

@@ -309,6 +309,40 @@ Gateway API 引入了 Role-oriented 的概念，让 Infra 团队和开发团队�
 
 <img src="./.assets/CiliumEnvoy/201787784RRUhrImam.png" alt="201787784RRUhrImam" style="zoom:67%;" />
 
+Cilium Gateway API 与传统 Ingress Controller 的差异
+
+（1）传统 Ingress Controller：以 Pod 为中心的 Proxy
+
+像 NGINX Ingress Controller 或 AWS Load Balancer Controller ，这些 Controller 通常是以一个 Deployment （或 DaemonSet） 的形式跑在 Cluster 里面，并搭配一个 `Service` （通常是 `type=LoadBalancer` ）对外暴露。
+
+整个流量路径大致如下：
+
+```plain
+Client -> LoadBalancer -> Ingress Pod (例如 NGINX) -> Service
+```
+
+在这种架构里：
+
+- 封包会经过 Ingress Pod（例如 NGINX），这个 Pod 本身就是一个 proxy
+- Backend Pod 看到的来源 IP 其实是 Ingress Pod 的 IP（经 NAT 后的）
+- NetworkPolicy 无法直接作用在这段流量上（因为流量是从 Ingress Pod 发出）
+
+（2）Cilium Gateway API：以 CNI 为中心的整合式 Gateway
+
+<img src="./.assets/CiliumEnvoy/20178778H3RHH0OThh.png" alt="20178778H3RHH0OThh" style="zoom:67%;" />
+
+Cilium 的 Gateway API 实作方式完全不同：它不是在 Cluster 里再跑一个 Deployment 来代理流量，而是直接在 CNI 层整合 Gateway 能力 ，让整个 Gateway 功能变成 Cilium datapath 的一部分
+
+Cilium 的流量路径大致如下：
+
+```yaml
+Client
+-> LoadBalancer / NodePort
+-> eBPF hook -> TPROXY -> per-node Envoy (DaemonSet)
+-> Envoy 做 L7 routing (HTTPRoute/GRPCRoute)
+-> Backend Pod
+```
+
 ### 开启 Gateway API
 
 安装 Gateway API CRD
@@ -337,7 +371,7 @@ NAME     CONTROLLER                     ACCEPTED   AGE
 cilium   io.cilium/gateway-controller   Unknown    9m52s
 ```
 
-### Gateway
+### 创建 Gateway
 
 创建一个简单的 Gateway 看看
 
@@ -349,6 +383,7 @@ metadata:
   namespace: default
 spec:
   gatewayClassName: cilium
+  allocateHealthCheckNodePort: false
   listeners:
     - name: http
       protocol: HTTP
@@ -366,3 +401,311 @@ cilium-gw   cilium             Unknown      55s
 ```
 
 当 Gateway 被创建后，背后的具体实例是需要一个真实存在的 LoadBalancer，现在来看一下 Service 有哪些:
+
+```bash
+# k get svc -n default|grep cilium-gateway
+
+cilium-gateway-cilium-gw   LoadBalancer   10.4.186.92    172.31.24.100   80:50707/TCP   29s
+```
+
+### 真实 Client IP
+
+Cilium 的 Envoy 会自动在 HTTP Header 里补上：
+
+- `X-Forwarded-For`
+- `X-Envoy-External-Address`
+
+后端应用里正常去拿 `X-Forwarded-For` 最左边的 IP 就能拿到真实的 client IP
+
+### 深入 Gateway 的管理
+
+传统的 Ingress Controller（像 NGINX 或 AWS Load Balancer Controller）是跑在 user  space 的 proxy，所有流量都会经过一层额外的 Pod；而 Cilium 的 Gateway API 则是直接在 CNI 层整合  Envoy，利用 eBPF + TPROXY 把封包导入每个 Node 上的 Envoy DaemonSet，让 Gateway 功能成为  datapath 的一部分。
+
+```plain
+K8s Gateway API YAML
+       │
+       ▼
+Cilium Operator（解析＋验证）
+       │
+       ▼
+CiliumEnvoyConfig (CEC)
+       │
+       ▼
+Cilium Agent（下发设定）
+       │
+       ▼
+Envoy（真正处理 HTTP / gRPC 流量）
+```
+
+（1）Cilium Operator 负责「验证与转换」
+
+Cilium Operator 会：
+
+- watch 所有 Gateway API 资源（像 Gateway、HTTPRoute、GRPCRoute）
+- 验证这些设定是否有效 （例如 parentRefs 是否存在、service 名称是否对）
+- 如果没问题，就把该资源标记为 `Accepted=True`
+
+然后 operator 会把这些 Gateway API 的设定「翻译」成 Cilium 自家的内部格式，叫作 CiliumEnvoyConfig (CEC)
+
+（2）Cilium Agent 接手
+
+每个 Node 上都有一个 Cilium Agent，它会监听这些新的 `CiliumEnvoyConfig` （CEC）资源。
+
+ 当 agent 侦测到新的设定：
+
+- 它就会把这些设定下发给内建的 Envoy （或 DaemonSet 模式的 Envoy）
+- Envoy 根据这些设定开始代理流量（例如 route、split、TLS termination 等）
+
+（3）Envoy 开始接手流量
+
+流量真正进来（不管是北南向 Gateway 还是东西向 GAMMA）时，就由这些 Envoy 根据设定处理，像是：
+
+- 要导去哪个 Service？
+- 是否要做 Weighted Routing（流量分流）？
+- 要不要加 Header？
+- 要不要 TLS termination？
+
+### 流量分流
+
+创建应用程序
+
+```yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-1
+  namespace: default
+  labels:
+    app: echo-1
+spec:
+  ports:
+    - port: 8080
+      name: high
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: echo-1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-1
+  namespace: default
+  labels:
+    app: echo-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-1
+  template:
+    metadata:
+      labels:
+        app: echo-1
+    spec:
+      containers:
+        - image: harbor.alpha-quant.tech/3rd_party/gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+          name: echo-1
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-2
+  namespace: default
+  labels:
+    app: echo-2
+spec:
+  ports:
+    - port: 8080
+      name: high
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: echo-2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-2
+  namespace: default
+  labels:
+    app: echo-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-2
+  template:
+    metadata:
+      labels:
+        app: echo-2
+    spec:
+      containers:
+        - image: harbor.alpha-quant.tech/3rd_party/gcr.io/kubernetes-e2e-test-images/echoserver:2.2
+          name: echo-2
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+
+```
+
+接着来建立 Gateway `my-example-gateway` 和 HTTPRoute `example-route-1` :
+
+```yaml
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: my-example-gateway
+  namespace: default
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - protocol: HTTP
+      port: 80
+      name: web-gw-echo
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: example-route-1
+  namespace: default
+spec:
+  parentRefs:
+    - name: my-example-gateway
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /echo
+      backendRefs:
+        - kind: Service
+          name: echo-1
+          port: 8080
+          weight: 50
+        - kind: Service
+          name: echo-2
+          port: 8080
+          weight: 50
+
+```
+
+发起请求
+
+```bash
+# curl -s http://172.31.24.100/echo
+
+
+Hostname: echo-1-64486976bf-t5cqf
+
+Pod Information:
+	node name:	aq-dev-server
+	pod name:	echo-1-64486976bf-t5cqf
+	pod namespace:	default
+	pod IP:	10.3.0.158
+
+Server values:
+	server_version=nginx: 1.12.2 - lua: 10010
+
+Request Information:
+	client_address=10.3.0.179
+	method=GET
+	real path=/echo
+	query=
+	request_version=1.1
+	request_scheme=http
+	request_uri=http://172.31.24.100:8080/echo
+
+Request Headers:
+	accept=*/*
+	host=172.31.24.100
+	user-agent=curl/7.76.1
+	x-envoy-internal=true
+	x-forwarded-for=172.31.24.199
+	x-forwarded-proto=http
+	x-request-id=9d1931f9-a527-4a78-bce6-6aa823b8f9c5
+
+Request Body:
+	-no body in request-
+```
+
+这里可以从 `Hostname` 知道是 `echo-1` 处理的请求
+
+可以试着多发送几次请求，会看到 `echo-2` 也会处请求，比例会是 50:50：
+
+```bash
+for i in {1..20}; do
+  kubectl exec -n default netshoot -- curl -s http://172.31.24.100/echo | head -n 3
+done
+
+```
+
+调整权重，改成 `90:10`：
+
+```yaml
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: example-route-1
+  namespace: default
+spec:
+  parentRefs:
+    - name: my-example-gateway
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /echo
+      backendRefs:
+        - kind: Service
+          name: echo-1
+          port: 8080
+          weight: 90 # 调整权重
+        - kind: Service
+          name: echo-2
+          port: 8080
+          weight: 10 # 调整权重
+
+```
+
+应用后，再次发送请求，可以看到比例大致为  `90:10`
