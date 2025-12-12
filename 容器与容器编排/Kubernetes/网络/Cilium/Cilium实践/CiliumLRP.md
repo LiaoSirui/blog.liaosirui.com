@@ -1,3 +1,9 @@
+## LRP 简介
+
+
+
+## 实践：NodeLocalDNSCache
+
 由于启用 kubeProxyReplacement 功能，请依照 Cilium 官方文件提供的 `node-local-dns.yaml` 安装
 
 <https://docs.cilium.io/en/stable/network/kubernetes/local-redirect-policy/#node-local-dns-cache>
@@ -57,7 +63,7 @@ kubectl exec -n kube-system cilium-75f8p -- hubble observe --protocol udp --port
 
 执行 `hubble observe` 后，使用 netshoot Pod 发出 DNS 查询封包
 
-![image-20251211184210392](./.assets/NodeLocalDNSCache/image-20251211184210392.png)
+![image-20251211184210392](./.assets/CiliumLRP/image-20251211184210392.png)
 
 注意 cilium 还需要开启 `localRedirectPolicies.enabled=true`，设置后重启
 
@@ -80,8 +86,8 @@ kubectl exec -n kube-system cilium-5g95m -- cilium-dbg service list
 kubectl exec -n kube-system cilium-5g95m -- cilium-dbg lrp list
 ```
 
-<img src="./.assets/NodeLocalDNSCache/image-20251212094647505.png" alt="image-20251212094647505" style="zoom:67%;" />
+<img src="./.assets/CiliumLRP/image-20251212094647505.png" alt="image-20251212094647505" style="zoom:67%;" />
 
 配置 Cilium Local Redirect Policy (LRP) 成功让封包在 eBPF 层被拦截，并重新导向至同一节点的 node-local-dns Pod，使得 DNS 查询真正命中本地 cache，大幅降低跨节点的 DNS 延迟与负载
 
-![image-20251212094615589](./.assets/NodeLocalDNSCache/image-20251212094615589.png)
+![image-20251212094615589](./.assets/CiliumLRP/image-20251212094615589.png)
