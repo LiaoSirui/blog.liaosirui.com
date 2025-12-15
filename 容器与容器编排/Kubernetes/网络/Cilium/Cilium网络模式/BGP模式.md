@@ -5,7 +5,7 @@
 - `neighbors` 参数用于设置 BGP 邻居信息，通常是集群外部的网络设备
 
 ```yaml
-apiVersion: "cilium.io/v2alpha1"
+apiVersion: "cilium.io/v2"
 kind: CiliumBGPPeeringPolicy
 metadata:
  name: rack0

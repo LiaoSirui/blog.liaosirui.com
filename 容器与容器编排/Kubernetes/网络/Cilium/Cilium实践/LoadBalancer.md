@@ -14,6 +14,15 @@ Cilium 在 Cilium 1.13 版本中引入了对负载均衡器 IP 地址管理的�
 
 <img src="./.assets/LoadBalancer/bc4c2a5da878e2f2f243712d66961af279b05fd5-1414x820.png" alt="cilium_ippool" style="zoom: 25%;" />
 
+<img src="./.assets/LoadBalancer/b2e9b165-cb92-4e2b-b557-79260875756c.png" alt="img" style="zoom:50%;" />
+
+安装需要开启以下配置：
+
+```yaml
+bgpControlPlane:
+  enabled: true
+```
+
 一个简单的 IP 池：
 
 ```yaml
@@ -97,19 +106,29 @@ apiVersion: "cilium.io/v2"
 kind: CiliumBGPClusterConfig
 metadata:
   name: tor
+  labels:
+    advertise: "generic"
 spec:
   nodeSelector:
     matchLabels:
-      kubernetes.io/hostname: clab-bgp-cplane-devel-control-plane
+      node-role.kubernetes.io/load-balancer: ""
   bgpInstances:
-    - name: "instance-65001"
+    - name: "instance-65001-ipv4"
       localASN: 65001
       peers:
-        - name: "peer-65000-tor"
+        - name: "peer-65000-tor-ipv4"
           peerASN: 65000
-          peerAddress: "172.0.0.1"
+          peerAddress: "172.31.24.254"
           peerConfigRef:
             name: "peer-config-generic"
+    # - name: "instance-65001-ipv6"
+    #   localASN: 65001
+    #   peers:
+    #     - name: "peer-65000-tor"
+    #       peerASN: 65000
+    #       peerAddress: fd00:10:0:1::1
+    #       peerConfigRef:
+    #         name: "peer-config-generic"
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumBGPPeerConfig
@@ -122,6 +141,11 @@ spec:
       advertisements:
         matchLabels:
           advertise: "generic"
+    # - afi: ipv6
+    #   safi: unicast
+    #   advertisements:
+    #     matchLabels:
+    #       advertise: generic
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumBGPAdvertisement
@@ -136,15 +160,15 @@ spec:
       service:
         addresses:
           - LoadBalancerIP
-      selector:
-        matchLabels:
-          color: yellow
-        matchExpressions:
-          - {
-              key: app,
-              operator: In,
-              values: ["load-balancer"],
-            }
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "dyn-ip-pool"
+spec:
+  blocks:
+    - cidr: "172.31.26.0/24"
+    # - cidr: "fd85:ee78:d8a6:8607::26:0000/112"
 
 ```
 
