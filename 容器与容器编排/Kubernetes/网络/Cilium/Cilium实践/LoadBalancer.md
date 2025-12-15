@@ -77,7 +77,7 @@ spec:
     - port: 1234
 ```
 
-service-none 一直处于 peding 状态，无法分配到 LB IP
+service-none 一直处于 pending 状态，无法分配到 LB IP
 
 ## L3 宣告（BGP）
 
