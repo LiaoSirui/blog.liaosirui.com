@@ -2,6 +2,8 @@
 
 Cilium 是一个基于 eBPF 和 XDP 的高性能容器网络方案的开源项目，目标是为微服务环境提供网络、负载均衡、安全功能，主要定位是容器平台
 
+Cilium 就是为大规模、高动态的容器化环境而设计的。它能原生理解容器和 Kubernetes 身份，并解析 HTTP、gRPC 和 Kafka 等 API 协议，提供比传统防火墙更简单、更强大的可视性和安全性。
+
 ![Cilium feature overview](.assets/Cilium%E7%AE%80%E4%BB%8B/cilium_overview.png)
 
 官方：

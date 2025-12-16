@@ -1,6 +1,6 @@
 ## Cilium Envoy 简介
 
-Cilium Envoy 其实是一个简化版的 Envoy (去掉不必要的 extension)，并且加上 Cilium 专用的 policy filter ，用来支援 Cilium 的 L7 Policy
+Cilium Envoy 其实是一个简化版的 Envoy (去掉不必要的 extension)，并且加上 Cilium 专用的 policy filter ，用来支持 Cilium 的 L7 Policy
 
 Cilium Envoy 的 GitHub Repo： <http://github.com/cilium/proxy>
 

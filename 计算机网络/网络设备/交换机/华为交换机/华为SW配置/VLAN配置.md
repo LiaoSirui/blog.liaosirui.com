@@ -83,6 +83,9 @@ VLANIF 接口是交换机上的一个逻辑三层接口，用于实现不同 VLA
 # 查看交换机固件版本信息
 [HW-SW-01]display version
 
+# 查看全部 VLAN 列表
+[HW-SW-01]display vlan
+
 # 查看 VALN 的配置信息
 [HW-SW-01]display vlan ?
 ```

@@ -1,10 +1,14 @@
 ## Kyverno 简介
 
+策略执行是通过 Kubernetes events 来捕获的，Kyverno 还报告现有资源的策略违规行为。下图为 Kyverno 的整体架构：
+
+<img src="./.assets/Kyverno简介/1712888653949.png" alt="Kyverno架构" style="zoom: 40%;" />
+
 ## 策略与规则
 
 使用 Kyverno 其实就是对策略和规则的应用，Kyverno 策略是规则的集合，每个规则都包含一个 `match` 声明、一个可选的 `exclude` 声明以及 `validate`、`mutate`、`generate` 或 `verifyImages` 声明之一组成，每个规则只能包含一个 `validate`、`mutate`、`generate` 或 `verifyImages` 子声明
 
-<img src="./.assets/Kyverno简介/b32209498fd73aa6553cb603d8cf9b88.png" alt="policy.png" style="zoom: 50%;" />
+<img src="./.assets/Kyverno简介/b32209498fd73aa6553cb603d8cf9b88.png" alt="policy.png" style="zoom: 33%;" />
 
 Kyverno 策略
 

@@ -17,21 +17,6 @@ Cilium 支持 2 种安装方式：
 - 需要开通某些防火墙规则，详见：<https://docs.cilium.io/en/stable/operations/system_requirements/#firewall-rules>
 - Linux Kernel >= 4.19.57（对于 RHEL8, Linux Kernel >= 4.18)
 
-如果需要用到 Cilium 的高级功能，则需要更高版本的内核，具体如下：
-
-| Cilium Feature                                               | Minimum Kernel Version |
-| ------------------------------------------------------------ | ---------------------- |
-| [Bandwidth Manager](https://docs.cilium.io/en/v1.14/network/kubernetes/bandwidth-manager/#bandwidth-manager) | >= 5.1                 |
-| [Egress Gateway](https://docs.cilium.io/en/v1.14/network/egress-gateway/#egress-gateway) | >= 5.2                 |
-| VXLAN Tunnel Endpoint (VTEP) Integration                     | >= 5.2                 |
-| [WireGuard Transparent Encryption](https://docs.cilium.io/en/v1.14/security/network/encryption-wireguard/#encryption-wg) | >= 5.6                 |
-| Full support for [Session Affinity](https://docs.cilium.io/en/v1.14/network/kubernetes/kubeproxy-free/#session-affinity) | >= 5.7                 |
-| BPF-based proxy redirection                                  | >= 5.7                 |
-| Socket-level LB bypass in pod netns                          | >= 5.7                 |
-| L3 devices                                                   | >= 5.8                 |
-| BPF-based host routing                                       | >= 5.10                |
-| IPv6 BIG TCP support                                         | >= 5.19                |
-| IPv4 BIG TCP support                                         | >= 6.3                 |
 
 ## Helm Chart 安装
 

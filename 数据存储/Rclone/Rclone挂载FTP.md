@@ -9,19 +9,19 @@ rclone config
 隐式 TLS
 
 ```bash
-Options:
-- type: ftp
-- host: x.x.x.x
-- user: xxx
-- port: 1121
-- pass: *** ENCRYPTED ***
-- tls: true
-- explicit_tls: true
-- concurrency: 5
-- no_check_certificate: true
-- disable_epsv: true
-- disable_mlsd: true
-- allow_insecure_tls_ciphers: true
-- encoding: Slash,Ctl,LeftPeriod
+# Options:
+# - type: ftp
+# - host: 10.x.x.x
+# - user: alpha-quant
+# - port: 1121
+# - pass: *** ENCRYPTED ***
+# - tls: true
+# - explicit_tls: true
+# - concurrency: 5
+# - no_check_certificate: true
+# - disable_epsv: true
+# - disable_mlsd: true
+# - allow_insecure_tls_ciphers: true
+# - encoding: Slash,Ctl,LeftPeriod
 ```
 

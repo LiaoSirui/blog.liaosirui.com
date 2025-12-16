@@ -36,6 +36,8 @@ Cilium Label 其实是「抽象化的超集合(superset)」，能包进去多种
 
 <img src="./.assets/Cilium基础概念/identity_model.png" alt="img" style="zoom:67%;" />
 
+<img src="./.assets/Cilium基础概念/5bf684bb8c46a0a45224acd18f1d7c43-20230719211001.png" alt="https://pic-cdn.ewhisper.cn/img/2023/07/19/5bf684bb8c46a0a45224acd18f1d7c43-20230719211001.png" style="zoom: 80%;" />
+
 每个 Endpoint 都会被分配一个 Identity (是数字)
 
 ![image-20251211140020915](./.assets/Cilium基础概念/image-20251211140020915.png)
@@ -55,6 +57,6 @@ Cilium 实现的 Policy 本质上就是用 Label+Identity 选择哪些 Endpoint 
 CNP 比 K8s 原生 NetworkPolicy 更强是强在哪里呢？
 
 - K8s 原生的 NetworkPolicy
-  - 只能做到 L3/L4 （IP + Port），不支援 L7
-  - 无法指定 DNS-based rule （例如允许 `api.alpha-quant.tech` )
+  - 只能做到 L3/L4 （IP + Port），不支持 L7
+  - 无法指定 DNS-based rule （例如允许 `api.alpha-quant.tech`）
 - 所以 Cilium 才自己定了 CRD，来弥补原生的 NetworkPolicy 不足之处

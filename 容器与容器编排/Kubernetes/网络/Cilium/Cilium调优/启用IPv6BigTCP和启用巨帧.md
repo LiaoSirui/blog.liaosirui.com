@@ -1,1 +1,0 @@
-`IPv6 BIG TCP: Disabled` 该功能要求 Linux Kernel >= 5.19, 所以在 Kernel 4.19.232 状态为禁用

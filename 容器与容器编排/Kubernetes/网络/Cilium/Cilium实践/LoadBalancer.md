@@ -94,7 +94,7 @@ Cilium 上的 BGP 可以在 Cilium 管理的节点和架顶 (ToR) 设备之间�
 
 <img src="./.assets/LoadBalancer/3afbdce3468cab319c89ae2597fe2f35e1a23e0d-2112x1008.png" alt="HdKUoo9n3eTD8ivqVDevUo" style="zoom: 33%;" />
 
-可以使用以下资源来设置 BGP：
+可以使用以下资源来设置 BGP（EBGP）：
 
 - `CiliumBGPClusterConfig` ：定义应用于多个节点的 BGP 实例和对等配置。
 - `CiliumBGPPeerConfig` ：一套通用的 BGP 对等连接配置。它可以用于多个对等体之间。
@@ -105,9 +105,9 @@ Cilium 上的 BGP 可以在 Cilium 管理的节点和架顶 (ToR) 设备之间�
 apiVersion: "cilium.io/v2"
 kind: CiliumBGPClusterConfig
 metadata:
-  name: tor
+  name: cilium-bgp
   labels:
-    advertise: "generic"
+    advertise: bgp
 spec:
   nodeSelector:
     matchLabels:
@@ -115,59 +115,70 @@ spec:
   bgpInstances:
     - name: "instance-65001-ipv4"
       localASN: 65001
+      # localPort: 179
       peers:
         - name: "peer-65000-tor-ipv4"
           peerASN: 65000
           peerAddress: "172.31.24.254"
           peerConfigRef:
-            name: "peer-config-generic"
+            name: "cilium-bgp-peer"
     # - name: "instance-65001-ipv6"
     #   localASN: 65001
     #   peers:
-    #     - name: "peer-65000-tor"
+    #     - name: "peer-65000-tor-ipv6"
     #       peerASN: 65000
     #       peerAddress: fd00:10:0:1::1
     #       peerConfigRef:
-    #         name: "peer-config-generic"
+    #         name: "cilium-bgp-peer"
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumBGPPeerConfig
 metadata:
-  name: peer-config-generic
+  name: cilium-bgp-peer
+  labels:
+    advertise: bgp
 spec:
   families:
     - afi: ipv4
       safi: unicast
       advertisements:
         matchLabels:
-          advertise: "generic"
+          advertise: "bgp"
     # - afi: ipv6
     #   safi: unicast
     #   advertisements:
     #     matchLabels:
-    #       advertise: generic
+    #       advertise: bgp
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumBGPAdvertisement
 metadata:
-  name: services
+  name: cilium-bgp-advertisements
   labels:
-    advertise: generic
+    advertise: bgp
 spec:
   advertisements:
-    - advertisementType: "PodCIDR"
+    # - advertisementType: "PodCIDR"
+    # - advertisementType: "CiliumPodIPPool"
     - advertisementType: "Service"
       service:
         addresses:
+          # - ClusterIP
+          - ExternalIP
           - LoadBalancerIP
+      selector:
+        matchExpressions:
+          - { key: cilium-bgp, operator: In, values: ["disabled"] }
 ---
 apiVersion: "cilium.io/v2"
 kind: CiliumLoadBalancerIPPool
 metadata:
-  name: "dyn-ip-pool"
+  name: "cilium-dynamic-ip-pool"
 spec:
   blocks:
     - cidr: "172.31.26.0/24"
+    # - start: "172.31.24.10"
+    #   stop: "172.31.24.99"
     # - cidr: "fd85:ee78:d8a6:8607::26:0000/112"
 
 ```
