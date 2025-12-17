@@ -53,7 +53,7 @@
 
 ## 优雅重启
 
-BGP 是基于 TCP 实现的路由协议，TCP 连接异常断开后，开启 Graceful Restart 功能的交换机不会删除 RIB 和  FIB，仍然按照原有的转发表项转发报文，并启动 RIB 路由老化定时器。BGP Peer 需要两端同时开启 Graceful Restart  功能才能生效，Graceful Restart可以有效防止BGP链路震荡，提升底层网络的可用性。
+BGP 是基于 TCP 实现的路由协议，TCP 连接异常断开后，开启 Graceful Restart 功能的交换机不会删除 RIB 和  FIB，仍然按照原有的转发表项转发报文，并启动 RIB 路由老化定时器。BGP Peer 需要两端同时开启 Graceful Restart  功能才能生效，Graceful Restart可以有效防止 BGP 链路震荡，提升底层网络的可用性。
 
 ## IPAM
 

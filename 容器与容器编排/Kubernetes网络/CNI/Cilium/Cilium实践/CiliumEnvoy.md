@@ -709,3 +709,51 @@ spec:
 ```
 
 应用后，再次发送请求，可以看到比例大致为  `90:10`
+
+### HTTP 重定向
+
+<img src="./.assets/CiliumEnvoy/8b7dbb1ab1772997e811040b3907708e420132d3-1240x458.png" alt="PFR5pV9232Ehuab4qkw13S" style="zoom: 25%;" />
+
+```yaml
+- matches:
+    - path:
+        type: PathPrefix
+        value: /original-prefix
+    filters:
+    - type: RequestRedirect
+      requestRedirect:
+        path:
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /replacement-prefix
+```
+
+<img src="./.assets/CiliumEnvoy/f7f92c93ee51c3529721115b903a0efe3da13d2d-1240x458.png" alt="TbxCFjuLkZXT3Gzm6sNBGY" style="zoom:25%;" />
+
+```yaml
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /path-and-host
+    filters:
+    - type: RequestRedirect
+      requestRedirect:
+        hostname: example.org
+        path:
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /replacement-prefix
+```
+
+<img src="./.assets/CiliumEnvoy/d3714c58f129fbd08a77ddeccb5766aa99bad108-1240x458.png" alt="U7RHMYukngnnsvToExGPD3" style="zoom:25%;" />
+
+```yaml
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /scheme-and-host
+    filters:
+    - type: RequestRedirect
+      requestRedirect:
+        hostname: example.org
+        scheme: "https"
+```
+
