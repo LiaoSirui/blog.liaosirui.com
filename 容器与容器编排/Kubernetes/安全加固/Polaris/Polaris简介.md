@@ -13,7 +13,7 @@ Polaris 支持下列三种运行模式：
 
 ## Helm安装
 
-```
+```bash
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
 
 helm upgrade --install polaris fairwinds-stable/polaris --namespace polaris --create-namespace
@@ -23,18 +23,32 @@ kubectl port-forward --namespace polaris svc/polaris-dashboard 8080:80
 
 ## 其他项目
 
-- Goldilocks - 通过将内存和 CPU 设置与实际使用情况进行比较来调整 Kubernetes Deploy资源的大小
-- Polaris - 审核、执行和构建 Kubernetes 资源策略，包括 20 多项内置最佳实践检查
-- Pluto - 检测未来版本中已弃用或删除的 Kubernetes 资源
-- Nova - 检查你的 Helm 图表是否有可用更新
-- rbac-manager - 简化 Kubernetes 集群中 RBAC 的管理
+- Goldilocks
 
-Goldilocks: *https://github.com/FairwindsOps/Goldilocks*
+<https://github.com/FairwindsOps/Goldilocks>
 
-Polaris: *https://github.com/FairwindsOps/Polaris*
+通过将内存和 CPU 设置与实际使用情况进行比较来调整 Kubernetes Deploy资源的大小
 
-Pluto: *https://github.com/FairwindsOps/Pluto
+- Polaris
 
-Nova: *https://github.com/FairwindsOps/Nova*
+<https://github.com/FairwindsOps/Polaris>
 
-rbac-manager: *https://github.com/FairwindsOps/rbac-manager*
+审核、执行和构建 Kubernetes 资源策略，包括 20 多项内置最佳实践检查
+
+- Pluto
+
+<https://github.com/FairwindsOps/Pluto>
+
+检测未来版本中已弃用或删除的 Kubernetes 资源
+
+- Nova
+
+<https://github.com/FairwindsOps/Nova>
+
+检查你的 Helm 图表是否有可用更新
+
+- rbac-manager
+
+<https://github.com/FairwindsOps/rbac-manager>
+
+简化 Kubernetes 集群中 RBAC 的管理
