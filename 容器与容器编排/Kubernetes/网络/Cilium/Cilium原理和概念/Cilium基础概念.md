@@ -36,7 +36,7 @@ Cilium Label 其实是「抽象化的超集合(superset)」，能包进去多种
 
 <img src="./.assets/Cilium基础概念/identity_model.png" alt="img" style="zoom:67%;" />
 
-<img src="./.assets/Cilium基础概念/5bf684bb8c46a0a45224acd18f1d7c43-20230719211001.png" alt="https://pic-cdn.ewhisper.cn/img/2023/07/19/5bf684bb8c46a0a45224acd18f1d7c43-20230719211001.png" style="zoom: 80%;" />
+<img src="./.assets/Cilium基础概念/5bf684bb8c46a0a45224acd18f1d7c43-20230719211001.png" alt="pic" style="zoom: 80%;" />
 
 每个 Endpoint 都会被分配一个 Identity (是数字)
 
