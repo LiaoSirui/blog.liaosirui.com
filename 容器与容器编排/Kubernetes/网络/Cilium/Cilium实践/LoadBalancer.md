@@ -358,3 +358,17 @@ spec:
 
 ```
 
+## LoadBalancerClass
+
+当指定
+
+```yaml
+defaultLBServiceIPAM: none
+```
+
+Service 需要指定 LoadBalancerClass
+
+| loadBalancerClass             | Feature                               |
+| ----------------------------- | ------------------------------------- |
+| `io.cilium/bgp-control-plane` | Cilium BGP Control Plane              |
+| `io.cilium/l2-announcer`      | L2 Announcements / L2 Aware LB (Beta) |
