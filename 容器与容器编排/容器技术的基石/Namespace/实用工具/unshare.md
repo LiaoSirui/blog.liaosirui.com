@@ -1,0 +1,1 @@
+`unshare` 和 `nsenter` 参数有些相似，功能却不同，它是离开父进程的某些 namespace 去执行命令
