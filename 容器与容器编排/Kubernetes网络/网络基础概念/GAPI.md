@@ -1,5 +1,7 @@
 ## Gateway API
 
+官方文档：<https://gateway-api.kubernetes.ac.cn/guides/>
+
 ### Ingress 的局限
 
 有许多Ingress 控制器选项，每个都有其特定性和特殊功能，有时会使它们的使用变得复杂。
@@ -60,7 +62,7 @@ roleRef:
 `Gateway` 是允许触发在云提供商中创建负载均衡组件的资源。
 
 ```yaml
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: echo-gateway
@@ -84,7 +86,7 @@ spec:
 `HTTPRoute` 允许通过引用 Gateway 并定义所需的路由参数来配置到服务的路由。
 
 ```yaml
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: echo-1
@@ -139,7 +141,7 @@ spec:
 有多种方法可以使用 GAPI 配置 TLS。在这里，将使用最常见的情况：HTTPS 协议在 Gateway 上终止 TLS。
 
 ```yaml
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: echo
@@ -253,7 +255,7 @@ rules:
 例如，将在请求中添加一个标头。
 
 ```yaml
-apiVersion: gateway.networking.k8s.io/v1beta1
+apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: echo-1

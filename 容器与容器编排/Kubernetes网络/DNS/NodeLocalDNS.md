@@ -25,7 +25,7 @@
 
 启用 NodeLocal DNSCache 后 DNS 查询所遵循的路径：
 
-![https://support.huaweicloud.com/usermanual-cce/zh-cn_image_0000001153514018.png](.assets/NodeLocalDNS%E7%AE%80%E4%BB%8B/zh-cn_image_0000001153514018.png)
+![https://support.huaweicloud.com/usermanual-cce/zh-cn_image_0000001153514018.png](./.assets/NodeLocalDNS/zh-cn_image_0000001153514018.png)
 
 ## 部署 NodeLocalDNS
 
@@ -55,6 +55,7 @@ sed 's/__PILLAR__DNS__SERVER__/10.247.3.10/g
 ```
 
 daemonset 启动命令替换如下
+
 ```yaml
 args: [ "-localip", "169.254.20.10", "-conf", "/etc/Corefile", "-upstreamsvc", "coredns" ]
 ```
@@ -62,7 +63,6 @@ args: [ "-localip", "169.254.20.10", "-conf", "/etc/Corefile", "-upstreamsvc", "
 创建一个 pod 使用 NodeLocalDNS 进行验证
 
 ```yaml
-
 apiVersion: v1
 kind: Pod
 metadata:

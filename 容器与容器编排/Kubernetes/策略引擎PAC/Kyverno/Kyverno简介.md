@@ -113,7 +113,7 @@ spec:
       generate: # 生成的资源对象
         kind: Secret
         name: regcred
-        namespace: "{{request.object.metadata.name}}" # 获取目标命名空间
+        namespace: "{{ request.object.metadata.name }}" # 获取目标命名空间
         synchronize: true
         clone:
           namespace: default
@@ -141,7 +141,7 @@ spec:
         apiVersion: networking.k8s.io/v1
         kind: NetworkPolicy
         name: default-deny
-        namespace: "{{request.object.metadata.name}}"
+        namespace: "{{ request.object.metadata.name }}"
         synchronize: true
         data:
           spec:

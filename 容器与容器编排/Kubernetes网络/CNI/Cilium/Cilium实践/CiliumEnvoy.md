@@ -383,7 +383,7 @@ metadata:
   namespace: default
 spec:
   gatewayClassName: cilium
-  allocateHealthCheckNodePort: false
+  # allocateHealthCheckNodePort: false
   listeners:
     - name: http
       protocol: HTTP
@@ -719,41 +719,44 @@ spec:
     - path:
         type: PathPrefix
         value: /original-prefix
-    filters:
+  filters:
     - type: RequestRedirect
       requestRedirect:
         path:
           type: ReplacePrefixMatch
           replacePrefixMatch: /replacement-prefix
+
 ```
 
 <img src="./.assets/CiliumEnvoy/f7f92c93ee51c3529721115b903a0efe3da13d2d-1240x458.png" alt="TbxCFjuLkZXT3Gzm6sNBGY" style="zoom:25%;" />
 
 ```yaml
-  - matches:
+- matches:
     - path:
         type: PathPrefix
         value: /path-and-host
-    filters:
+  filters:
     - type: RequestRedirect
       requestRedirect:
         hostname: example.org
         path:
           type: ReplacePrefixMatch
           replacePrefixMatch: /replacement-prefix
+
 ```
 
 <img src="./.assets/CiliumEnvoy/d3714c58f129fbd08a77ddeccb5766aa99bad108-1240x458.png" alt="U7RHMYukngnnsvToExGPD3" style="zoom:25%;" />
 
 ```yaml
-  - matches:
+- matches:
     - path:
         type: PathPrefix
         value: /scheme-and-host
-    filters:
+  filters:
     - type: RequestRedirect
       requestRedirect:
         hostname: example.org
         scheme: "https"
+
 ```
 
