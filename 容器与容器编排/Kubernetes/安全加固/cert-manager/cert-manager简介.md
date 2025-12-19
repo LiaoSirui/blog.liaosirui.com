@@ -1,6 +1,4 @@
- 
- 
-## 简介
+## cert-manager
 
 Cert-manager 是一个Kubernetes addon 插件，用于从不同的证书颁发者自动化管理和签发 TLS 证书。Cert-manager 会保证证书的合法性，并试图在到期前轮转更新证书
 
