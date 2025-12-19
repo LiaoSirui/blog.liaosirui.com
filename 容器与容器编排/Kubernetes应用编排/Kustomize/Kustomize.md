@@ -23,6 +23,8 @@ Off-the-shelf configuration，在这个工作流程中，所有文件都由用�
 
 ### overlays
 
+<img src="./.assets/Kustomize/kustomize-overlays.png" alt="kustomize-overlays" style="zoom:50%;" />
+
 ```bash
 my-app/
 ├── base/              # 基础配置（所有环境共用）
