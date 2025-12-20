@@ -20,16 +20,6 @@ AWX 是 Ansible Tower 的开源版，Ansible Tower 是一个可视化界面的�
 - Docker Compose 部署：<https://github.com/ansible/awx/blob/24.6.1/tools/docker-compose/README.md>
 - K8s 部署：AWXOperator
 
-## AWX 使用入门
-
-基础概念：
-
-- 清单（Inventories）：对应 Ansible 的 Inventory，即主机组和主机IP清单列表。
-- 凭证（Credentials）：受控主机的用户名、密码（秘钥）以及提权控制
-- 项目（Projects）：一个完整可运行的 Ansible 项目
-- 模板（Templates）：将清单、项目和凭证关联起来的任务模板，一次创建，多次使用，可修改
-- 作业（Jobs）：模板每一次运行视为一次作业
-
 ## 参考资料
 
 - <https://readthedocs.ansible.org.cn/projects/awx/en/latest/userguide/projects.html#scm-types-git-and-subversion>

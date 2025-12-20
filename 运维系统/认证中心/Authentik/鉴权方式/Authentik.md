@@ -147,6 +147,12 @@ ldapsearch \
 
 ```
 
+### LDAP 问题
+
+- <https://github.com/goauthentik/authentik/issues/7522>
+
+Authentik 不支持 ldap_compare 请求 ，django-auth-ldap 无法正常工作，`AUTH_LDAP_USER_FLAGS_BY_GROUP` 需要设置为空
+
 ## 参考资料
 
 - <https://ecwuuuuu.com/post/authentik-tutorial-1-introduction-and-install/>
