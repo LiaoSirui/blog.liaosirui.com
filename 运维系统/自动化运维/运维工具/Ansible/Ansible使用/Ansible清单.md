@@ -95,6 +95,8 @@ all:
 
 ## 连接参数
 
+### Ansible SSH 连接
+
 主机连接
 
 - ansible_connection 连接到主机的类型，任何可能的连接插件名称，例如，SSH 协议类型中有：ssh、smart 或 paramiko 。
@@ -124,7 +126,23 @@ ansible_connection           # SSH连接类型：local、ssh、paramiko，在 an
 ansible_python_interpreter   # 用来指定Python解释器的路径，同样可以指定ruby、Perl的路径
 ```
 
-### SSH 忽略 Host Key Check
+### SSH Agent 参数
+
+所有参数需以 `-o` 开头，多个参数用空格分隔。
+
+```bash
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+```
+
+| 参数                     | 简介              | 描述                                                         |
+| ------------------------ | ----------------- | ------------------------------------------------------------ |
+| ProxyJump                | 通过跳板机连接    | 指定跳板机（Bastion Host）的地址、用户和端口。格式：`[user@]host[:port]` |
+| ForwardAgent=yes         | 启用 SSH 代理转发 | 允许跳板机使用本地的 SSH 私钥连接目标主机，避免在跳板机上存储私钥 |
+| StrictHostKeyChecking=no | 禁用主机密钥检查  | 首次连接时自动添加目标主机的 SSH 密钥到 known_hosts，避免交互提示 |
+| ControlMaster            | 启用连接复用      | 多个任务共享同一个 SSH 连接，减少握手开销                    |
+| IdentityAgent            | 指定 SSH 代理路径 | 自动检测 SSH 代理（如`ssh-agent`）                           |
+| LogLevel                 | 设置 SSH 日志级别 | 用于调试连接问题，输出详细日志                               |
+| ConnectTimeout           | 设置连接超时时间  | 超过 10 秒未连接则中断                                       |
 
 SSH 连接时需要检查验证 Host Key ，可在 ssh 连接命令中使用 `-o` 参数将 `StrictHostKeyChecking` 设置为 no 来临时禁用检查
 
