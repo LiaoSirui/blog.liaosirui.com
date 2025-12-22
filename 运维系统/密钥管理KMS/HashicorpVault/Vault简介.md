@@ -83,8 +83,5 @@ Vault 接收到请求后需要先校验身份请求者身份信息，有多种 A
 ## 参考资料
 
 - <https://lonegunmanb.github.io/essential-vault>
-
 - <https://cloud.tencent.com/developer/article/2534898>
-- <https://cloud.tencent.com/developer/search/article-%E5%BC%80%E6%BA%90KMS%E4%B9%8Bvault>
-
 - <https://blog.csdn.net/zhengzaifeidelushang/article/details/131291390>
