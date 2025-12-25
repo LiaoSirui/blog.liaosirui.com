@@ -1,16 +1,18 @@
 ## JumpServer 简介
 
-JumpServer 是一款全球首创的完全开源堡垒机，采用 GNU GPL v2.0 开源协议。它是一个专业的运维审计系统，符合 4A（认证 Authentication、账号 Account、授权 Authorization、审计 Audit）标准
+JumpServer 是一款全球首创的完全开源堡垒机。它是一个专业的运维审计系统，符合 4A（认证 Authentication、账号 Account、授权 Authorization、审计 Audit）标准
 
-JumpServer 是基于 Python/Django 开发的，符合 Web 2.0 规范，具备业界领先的 Web Terminal 解决方案，提供美观的交互界面和出色的用户体验。系统采用分布式架构，支持多机房跨区域部署。中心节点提供 API，而各机房部署登录节点，可以轻松横向扩展，没有并发访问限制
+<img src="./.assets/JumpServer/image-20251225131706803.png" alt="image-20251225131706803" style="zoom: 67%;" />
+
+JumpServer 是基于 Python/Django 开发，具备业界领先的 Web Terminal 解决方案，提供美观的交互界面和出色的用户体验。系统采用分布式架构，支持多机房跨区域部署。中心节点提供 API，而各机房部署登录节点，可以轻松横向扩展，没有并发访问限制
 
 JumpServer 采纳分布式架构，支持多机房跨区域部署，支持横向扩展，无资产数量及并发限制；这使得 Jumpserver 成为一个高度灵活和可扩展的堡垒机解决方案
 
-<img src=".assets/JumpServer/js-enterprise-20240118053609156.png" alt="img" style="zoom: 33%;" />
+<img src="./.assets/JumpServer/jumpserver-arch-light-6639483.png" alt="jumpserver-arch-light" style="zoom: 33%;" />
 
 组件架构如下：
 
-<img src="./.assets/JumpServer/architecture_01.png" alt="architecture_01" style="zoom:33%;" />
+<img src="./.assets/JumpServer/image-20251225131302852.png" alt="image-20251225131302852" style="zoom: 67%;" />
 
 - Core 组件是 JumpServer 的核心组件，其他组件依赖此组件启动
 - Koko 是服务于类 Unix 资产平台的组件，通过 SSH、Telnet 协议提供字符型连接
@@ -45,31 +47,6 @@ helm repo add jumpserver https://jumpserver.github.io/helm-charts
 初始用户名/密码：admin/admin，第一次登录，会强制要求修改密码
 
 参考：<https://github.com/jumpserver/Dockerfile/blob/master/docker-compose.yml>
-
-## JumpServer 配置
-
-### OIDC 登录
-
-官方文件：<https://docs.jumpserver.org/zh/master/admin-guide/authentication/openid/>
-
-### MFA
-
-清理所有 MFA
-
-```python
-from users.models import User
-receivers = User.objects.values_list("username", flat=True)
-all_users = []
-for r in receivers:
-    all_users.append(r)
-
-for u_name in all_users:
-    u = User.objects.get(username=u_name)
-    u.mfa_level='0'
-    u.otp_secret_key=''
-    u.save()
-
-```
 
 ## 参考资料
 

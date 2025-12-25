@@ -42,7 +42,9 @@ JumpServer 支持分组织的管理方式，即不同的组织之间用户的权
 
 ### 账号存储
 
-开启账号存储 Valut 功能的配置项为：`VAULT_ENABLED=true`
+开启账号存储 Valut 功能的配置项为：`VAULT_ENABLED=true`、`VAULT_HCP_HOST=hcp`
+
+文档见：<https://www.jumpserver.com/docs/configuration#vault_enabled>
 
 ### 虚拟应用
 
@@ -79,6 +81,8 @@ LDAP
   }
   ```
   
+
+OIDC 登录，官方文档：<https://docs.jumpserver.org/zh/master/admin-guide/authentication/openid/>
 
 ## 存储设置
 

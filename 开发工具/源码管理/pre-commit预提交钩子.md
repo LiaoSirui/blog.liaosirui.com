@@ -11,6 +11,8 @@
 - post-merge：这种 hook 会在合并分支之后运行
 - prepare-commit-msg：这种 hook 会在创建提交信息时运行
 
+![Screenshot-2021-07-06-at-14.09.58](./.assets/pre-commit预提交钩子/Screenshot-2021-07-06-at-14.09.58.png)
+
 ## 安装和初始化
 
 安装 CLI 工具

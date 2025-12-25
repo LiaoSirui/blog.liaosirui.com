@@ -29,6 +29,23 @@ u.otp_secret_key=''
 u.save()
 ```
 
+清理所有 MFA
+
+```python
+from users.models import User
+receivers = User.objects.values_list("username", flat=True)
+all_users = []
+for r in receivers:
+    all_users.append(r)
+
+for u_name in all_users:
+    u = User.objects.get(username=u_name)
+    u.mfa_level='0'
+    u.otp_secret_key=''
+    u.save()
+
+```
+
 ## Win 远程
 
 ### 远程计算机接收到非预期的服务器身份验证证书
