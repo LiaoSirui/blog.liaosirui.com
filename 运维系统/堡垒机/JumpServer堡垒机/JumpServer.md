@@ -6,11 +6,11 @@ JumpServer 是基于 Python/Django 开发的，符合 Web 2.0 规范，具备业
 
 JumpServer 采纳分布式架构，支持多机房跨区域部署，支持横向扩展，无资产数量及并发限制；这使得 Jumpserver 成为一个高度灵活和可扩展的堡垒机解决方案
 
-![img](.assets/JumpServer/js-enterprise-20240118053609156.png)
+<img src=".assets/JumpServer/js-enterprise-20240118053609156.png" alt="img" style="zoom: 33%;" />
 
 组件架构如下：
 
-![architecture_01](./.assets/JumpServer/architecture_01.png)
+<img src="./.assets/JumpServer/architecture_01.png" alt="architecture_01" style="zoom:33%;" />
 
 - Core 组件是 JumpServer 的核心组件，其他组件依赖此组件启动
 - Koko 是服务于类 Unix 资产平台的组件，通过 SSH、Telnet 协议提供字符型连接
