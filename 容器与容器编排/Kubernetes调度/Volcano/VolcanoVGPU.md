@@ -1,0 +1,1 @@
+参考文档：<https://www.lixueduan.com/posts/kubernetes/45-volcano-vgpu/#2-%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8>
