@@ -1,0 +1,1 @@
+容器和节点的资源指标，如 CPU、内存使用量，可通过 Kubernetes 的 Metrics API 获得。这些指标可以直接被用户访问，比如用 kubectl top 命令，也可以被 HPA 或者 CustomedHPA 使用，根据资源使用率使负载弹性伸缩。
