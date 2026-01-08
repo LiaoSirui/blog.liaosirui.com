@@ -53,3 +53,38 @@ FPGA 配置：可以定义板卡型号、逻辑单元使用量或频率等。
 网络设备：支持指定带宽、吞吐量或 RDMA 能力。
 
 基于这种参数化设计为用户提供了高度灵活的资源定制能力，同时也为复杂资源的动态管理奠定了基础。
+
+## 开启
+
+1.34 以下的版本：
+
+DRA 的功能还处于 beta 状态，所以需要通过在 kube-apiserver/kube-scheduler/kube-controller-manager/kubelet 都需要开启 feature-gates 的选项，具体如下。
+
+```bash
+# kube-apiserver/kube-scheduler/kube-controller-manager 静态 Pod 的启动命令增加下面的参数
+- --feature-gates=DynamicResourceAllocation=true
+
+# kube-apiserver
+--runtime-config=resource.k8s.io/v1beta1=true
+
+# /var/lib/kubelet/config.yaml文件增加下面的配置
+featureGates:
+  DynamicResourceAllocation: true
+
+```
+
+验证
+
+```bash
+kubectl api-resources | grep resource
+
+# Check kube-apiserver arguments
+kubectl get pod -n kube-system -l component=kube-apiserver -o yaml | grep "DynamicResourceAllocation"
+
+# Check kube-controller-manager arguments  
+kubectl get pod -n kube-system -l component=kube-controller-manager -o yaml | grep "DynamicResourceAllocation"
+
+# Check kube-scheduler arguments
+kubectl get pod -n kube-system -l component=kube-scheduler -o yaml | grep "DynamicResourceAllocation"
+```
+
