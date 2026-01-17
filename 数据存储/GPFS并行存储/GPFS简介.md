@@ -1,0 +1,1 @@
+GPFS CSI 指的是 GPFS（现在被称为 IBM Spectrum Scale）的容器存储接口。IBM Spectrum Scale 是一种高性能的共享磁盘文件管理系统，旨在支持大规模的数据集和高吞吐量的环境，如高性能计算（HPC），大数据分析和 AI 工作负载。通过 GPFS CSI，用户可以有效地将 Spectrum Scale 集成到 Kubernetes 这样的容器管理系统中，以实现数据的动态扩展和管理。
