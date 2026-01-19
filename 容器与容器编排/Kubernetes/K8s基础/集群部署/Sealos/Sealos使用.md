@@ -60,19 +60,19 @@ sealos run \
 - 增加 master
 
 ```bash
-sealos join --master 192.168.0.6 --master 192.168.0.7
+sealos add --master 192.168.0.6 --master 192.168.0.7
 
 # 或者多个连续 IP
-sealos join --master 192.168.0.6-192.168.0.9
+sealos add --master 192.168.0.6-192.168.0.9
 ```
 
 - 增加 node
 
 ```bash
-sealos join --node 192.168.0.6 --node 192.168.0.7
+sealos add --node 192.168.0.6 --node 192.168.0.7
 
 # 或者多个连续 IP
-sealos join --node 192.168.0.6-192.168.0.9  
+sealos add --node 192.168.0.6-192.168.0.9  
 ```
 
 ### 删除节点
