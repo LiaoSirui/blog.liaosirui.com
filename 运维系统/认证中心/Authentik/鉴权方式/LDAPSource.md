@@ -14,4 +14,3 @@ return {
 #     "email": ldap.get("mail"),
 # }
 ```
-
