@@ -120,3 +120,44 @@ docker exec -ti vault-openldap ldapsearch -b "cn=alice,ou=users,dc=learn,dc=exam
     -w ...
 ```
 
+## LDAP 接入
+
+ldap 配置
+
+```bash
+vault auth enable ldap
+
+vault write auth/ldap/config \
+    url="ldap://ldap.alpha-quant.tech:389" \
+    userattr="cn" \
+    userdn="ou=users,dc=alpha-quant,dc=tech" \
+    groupattr="cn" \
+    groupdn="ou=groups,dc=alpha-quant,dc=tech" \
+    groupfilter="(&(objectClass=group)(member={{.UserDN}}))"
+    upndomain="alpha-quant.tech" \
+    binddn="CN=ldap-service,OU=users,DC=alpha-quant,DC=tech" \
+    bindpass='' \
+    insecure_tls=true \
+    starttls=false
+```
+
+ldap policy 权限设置
+
+```bash
+vault write auth/ldap/groups/devops policies=policy-devops
+
+vault policy write policy-srliao - <<EOF
+path "*" {
+    capabilities = ["sudo","read","create","update","delete","list","patch"]
+}
+EOF
+
+vault write auth/ldap/users/srliao policies=policy-srliao
+```
+
+登录
+
+```bash
+vault login -method=ldap username=srliao
+```
+

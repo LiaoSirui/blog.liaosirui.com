@@ -112,6 +112,10 @@ kubectl exec -it vault-2 -n hashicorp-vault-system -- vault operator unseal
 
 执行以下命令，查看节点添加结果。
 
+```bash
+vault operator raft list-peers
+```
+
 预期输出：
 
 ```bash

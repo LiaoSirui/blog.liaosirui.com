@@ -34,7 +34,7 @@ SSH 机密引擎在使用前必须先挂载：
 vault secrets enable -path=ssh-client-signer ssh
 ```
 
-透过 `/config/ca` 端点给 Vault 配置一个 CA ，用以对客户端密钥进行签名。如果我们没有内部 CA，Vault 会为我们生成一个密钥对(keypair)。
+透过 `/config/ca` 端点给 Vault 配置一个 CA ，用以对客户端密钥进行签名。如果没有内部 CA，Vault 会生成一个密钥对(keypair)。
 
 ```bash
 vault write ssh-client-signer/config/ca generate_signing_key=true
@@ -98,8 +98,6 @@ EOH
 ```
 
 #### 客户端 SSH 身份验证
-
-
 
 希望通过身份验证连接到由 Vault 管理的机器的客户端（用户）需要执行以下步骤。这些命令通常从过年客户端运行的本地工作站运行：
 
@@ -257,8 +255,6 @@ vault read -field=public_key ssh-host-signer/config/ca
 ```
 
 像往常一样 SSH 连接到目标机器。
-
-
 
 ## SSH OTP 
 
