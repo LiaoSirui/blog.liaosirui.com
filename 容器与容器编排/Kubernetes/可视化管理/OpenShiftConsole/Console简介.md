@@ -38,6 +38,8 @@ CRC 下载地址：<https://console.redhat.com/openshift/create/local>
 
 ```bash
 wget https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+
+tar xvJf crc-linux-amd64.tar.xz
 ```
 
 注意还需要 `Download pull secret`，下载后解压 crc 到 PATH 路径中，并将 pull secret 放置到机器上
