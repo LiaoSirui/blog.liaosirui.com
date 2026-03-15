@@ -1,3 +1,7 @@
+## 固件升级
+
+固件下载地址：<https://www.h3c.com/en/Support/Resource_Center/EN/Routers/Catalog/MSR3600/MSR3600/Software_Download/MSR_3620-DP/>
+
 ## 初始化
 
 初始默认密码：admin / admin
@@ -22,8 +26,13 @@ ip https enable
 开启 ssh
 
 ```bash
-# 生成本地密钥对
-public-key local create rsa
+# 生成本地密钥对 ecdsa
+public-key local create ecdsa
+public-key local create rsa  # 4096
+
+# ssh-keygen -f ~/.ssh/known_hosts -R "192.168.71.201"
+# update-crypto-policies --set LEGACY
+# ssh -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedAlgorithms=+ssh-rsa user@ip
 
 # 开启 SSH 服务器功能
 ssh server enable
@@ -56,7 +65,7 @@ local-user admin class manage
 # 额外创建用户
 local-user h3c class manage
   # 设置密码
-	password simple H3c@123
+	password simple 'H3c@123'
   # 允许用户使用 http 服务
   service-type http
   # 允许用户使用 https 服务
@@ -66,6 +75,7 @@ local-user h3c class manage
   authorization-attribute user-role network-admin
 
 # 配置 SSH 用户 h3c 的服务为 netconf，认证类型为 password
+ssh user h3c service-type all authentication-type password
 ssh user h3c service-type netconf authentication-type password
 
 # 配置 VTY 界面允许 SSH 登录
@@ -87,7 +97,7 @@ display ip interface brief
 
 ```bash
 interface gigabitethernet 0/0
-  ip address 192.168.71.254 255.255.255.0
+  ip address 192.168.71.201 255.255.255.0
   quit
 
 # 配置网关
