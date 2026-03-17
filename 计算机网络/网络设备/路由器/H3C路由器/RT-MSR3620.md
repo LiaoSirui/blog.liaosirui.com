@@ -54,6 +54,13 @@ netconf ssh server port 830
 netconf agent idle-timeout 5
 ```
 
+开启 RESTCONF
+
+```bash
+restful http enable
+restful https enable
+```
+
 用户
 
 ```bash
