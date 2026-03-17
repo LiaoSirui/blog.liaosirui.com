@@ -59,6 +59,12 @@ netconf agent idle-timeout 5
 ```bash
 restful http enable
 restful https enable
+
+# 查看配置
+display current-configuration | include restful
+
+display ip http
+display ip https
 ```
 
 用户
