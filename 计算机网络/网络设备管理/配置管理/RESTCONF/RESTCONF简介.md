@@ -64,19 +64,11 @@ curl -k -u admin:password https://<设备IP>/restconf/data/h3c-system:system/sta
 
 `RESTCONF`使部署能够指定`RESTCONF API`的位置。当第一次连接到`RESTCONF`服务器时，`RESTCONF`客户端必须确定`RESTCONF API`的根。必须正好有一个由设备返回的 “`restconf`” 链接关系。
 
-
-
 ```bash
 GET /.well-known/host-meta HTTP/1.1
 Host: example.com
 Accept: application/yang-data+json
 ```
-
-## H3C RESTful
-
-- <https://www.h3c.com/cn/d_202109/1465787_30005_0.htm>
-
-- <https://www.h3c.com/cn/Service/Document_Software/Document_Center/Home/Wlan/00-Public/Developer_Guides/Development_Guide/H3C_RESTful-28619/>
 
 ## 参考资料
 
