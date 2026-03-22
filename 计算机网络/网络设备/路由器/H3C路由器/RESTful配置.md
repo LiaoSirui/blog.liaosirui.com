@@ -4,3 +4,4 @@
 
 - <https://www.h3c.com/cn/Service/Document_Software/Document_Center/Home/Wlan/00-Public/Developer_Guides/Development_Guide/H3C_RESTful-28619/>
 
+- REST API Reference <https://www.h3c.com/cn/d_202410/2287916_30005_1.htm>

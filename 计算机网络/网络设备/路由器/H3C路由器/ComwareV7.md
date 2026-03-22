@@ -1,0 +1,1 @@
+- ComwareV7 常用命令行视图介绍 <https://www.h3c.com/cn/Service/Document_Software/Document_Center/Home/Switches/00-Public/Command/Command_Manual/ComwareV7_Command/>
