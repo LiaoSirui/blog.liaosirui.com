@@ -10,7 +10,7 @@
 
 ```bash
 # 命名路由器
-sysname Router_H3C
+sysname RouterH3C
 ```
 
 开启 web 登录
@@ -74,11 +74,17 @@ display ip https
 local-user admin class manage
 	# 设置密码
 	password simple H3c@123
+	# 允许用户使用 http 服务
+  service-type http
+  # 允许用户使用 https 服务
+  service-type https
+  # 允许用户使用 ssh 服务
+  service-type ssh
 
 # 额外创建用户
 local-user h3c class manage
   # 设置密码
-	password simple 'H3c@123'
+	password simple H3c@123
   # 允许用户使用 http 服务
   service-type http
   # 允许用户使用 https 服务
@@ -87,9 +93,8 @@ local-user h3c class manage
   service-type ssh
   authorization-attribute user-role network-admin
 
-# 配置 SSH 用户 h3c 的服务为 netconf，认证类型为 password
+# 配置 SSH 用户 h3c 的服务，认证类型为 password
 ssh user h3c service-type all authentication-type password
-ssh user h3c service-type netconf authentication-type password
 
 # 配置 VTY 界面允许 SSH 登录
 line vty 0 15
@@ -110,19 +115,35 @@ display ip interface brief
 
 ```bash
 interface gigabitethernet 0/0
-  ip address 192.168.71.201 255.255.255.0
+  ip address 192.168.254.201 255.255.255.0
   quit
 
 # 配置网关
-ip route-static 0.0.0.0 0.0.0.0 192.168.71.1
+# ip route-static 0.0.0.0 0.0.0.0 192.168.71.1
 
 # NAT 转换
-acl basic 2000
-  rule permit source 192.168.71.0 0.0.0.255
-  quit
-interface gigabitethernet 0/0
-  nat outbound 2000
+# acl basic 2000
+#   rule permit source 192.168.71.0 0.0.0.255
+#   quit
+# interface gigabitethernet 0/0
+#   nat outbound 2000
 
+```
+
+## Bond
+
+```bash
+interface Bridge-Aggregation 1
+    port access vlan 10
+    link-aggregation mode dynamic
+# 创建聚合口，划入vlan
+int g 6/0
+    port link-aggregation group 1
+    link-aggregation port-priority 100
+# 聚合的两个物理口都加入集合组
+int g 6/1
+    port link-aggregation g 1
+    link-aggregation port-priority 100
 ```
 
 ## NETCONF
