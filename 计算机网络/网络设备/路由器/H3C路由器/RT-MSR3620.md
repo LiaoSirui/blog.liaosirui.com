@@ -151,16 +151,41 @@ ntp-service unicast-server ntp5.aliyun.com
 vlan
 
 ```bash
-acl advanced 3500
-  rule permit ip
+# 配置安全策略允许域内通信
+security-policy ip
+  rule name Trust_Intra_Allow
+    source-zone Trust
+    destination-zone Trust
+    action pass
+    quit
   quit
+display security-policy ip rule name Trust_Intra_Allow
 
-interface Vlan-interface 24
-  packet-filter 3500 inbound
-  packet-filter 3500 outbound
+# 将物理接口的 VLAN 10 流量关联到安全域 Trust
+security-zone name Trust
+  import interface GigabitEthernet 0/1
+  import interface Vlan-interface 23
+  import interface GigabitEthernet 2/2 VLAN 23
+  import interface GigabitEthernet 4/3 VLAN 23
+  import interface GigabitEthernet 5/0 VLAN 23
+  import interface GigabitEthernet 6/4 VLAN 23
+  import interface Vlan-interface 24
+  import interface GigabitEthernet 2/0 VLAN 24
+  import interface GigabitEthernet 2/1 VLAN 24
+  import interface GigabitEthernet 4/0 VLAN 24
+  import interface GigabitEthernet 4/1 VLAN 24
+  import interface GigabitEthernet 5/4 VLAN 24
+  import interface GigabitEthernet 5/5 VLAN 24
+  import interface GigabitEthernet 6/0 VLAN 24
+  import interface GigabitEthernet 6/1 VLAN 24
+  import interface Bridge-Aggregation 1 VLAN 24
+  import interface Bridge-Aggregation 2 VLAN 24
+  import interface Bridge-Aggregation 3 VLAN 24
+  import interface Bridge-Aggregation 4 VLAN 24
+  import interface Vlan-interface 25
+  import interface GigabitEthernet 4/3 VLAN 25
   quit
-
-display current-configuration interface Vlan-interface 24
+display security-zone
 ```
 
 Bond
