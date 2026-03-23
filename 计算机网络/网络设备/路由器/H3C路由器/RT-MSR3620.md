@@ -160,6 +160,13 @@ security-policy ip
     quit
   quit
 display security-policy ip rule name Trust_Intra_Allow
+security-policy ip
+  rule name Trust_Local_Allow
+    source-zone Trust
+    destination-zone Local
+    action pass
+    quit
+  quit
 
 # 将物理接口的 VLAN 10 流量关联到安全域 Trust
 security-zone name Trust
