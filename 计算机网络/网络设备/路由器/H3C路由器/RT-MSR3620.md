@@ -130,7 +130,32 @@ interface gigabitethernet 0/0
 
 ```
 
-## Bond
+开启对时
+
+```bash
+clock timezone Beijing add 08:00:00
+clock protocol ntp
+
+ntp-service enable
+ntp-service unicast-server ntp.aliyun.com
+ntp-service unicast-server ntp.ntsc.ac.cn
+ntp-service unicast-server ntp1.aliyun.com
+ntp-service unicast-server ntp2.aliyun.com
+ntp-service unicast-server ntp3.aliyun.com
+ntp-service unicast-server ntp4.aliyun.com
+ntp-service unicast-server ntp5.aliyun.com
+```
+
+## 二层接口
+
+配置要点：
+
+- 开启端口二层模式，之后端口默认划入了默认 VLAN1
+- 将 VLAN 虚接口和二层物理接口同时加入安全域，切记，否则会出现跨域不能访问。
+- 如果需要访问外网等，需要做 NAT
+- 最重要的一点，需要开启域内策略，否则即使做了上面的所有配置，同一 VLAN，同一安全域，同一网段照样不通。命令如下：`security-zone intra-zone default permit`
+
+Bond
 
 ```bash
 interface Bridge-Aggregation 1
@@ -144,6 +169,38 @@ int g 6/0
 int g 6/1
     port link-aggregation g 1
     link-aggregation port-priority 100
+```
+
+同一安全域，默认 permit
+
+```bash
+security-zone intra-zone default permit
+
+security-zone name Trust
+  import ip 172.31.23.0 24
+  import ip 172.31.24.0 24
+  import ip 172.31.25.0 24
+
+# 显示安全域信息
+display security-zone
+
+# 创建源安全域 Trust 到目的安全域 Untrust 的安全域间实例
+zone-pair security source Trust destination Untrust
+display zone-pair security
+```
+
+## 开启 BGP
+
+```bash
+# 启用 BGP
+bgp 65534
+  # 配置邻居 IPv4 地址及 AS 号
+  peer 10.1.1.2 as-number 65534
+  # Graceful Restart，平滑重启
+  graceful-restart
+  # 进入 IPv4 单播地址族并激活邻居
+  address-family ipv4 unicast
+    peer 10.1.1.2 enable
 ```
 
 ## NETCONF
