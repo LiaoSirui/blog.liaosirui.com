@@ -229,14 +229,16 @@ int g 6/1
 
 ```bash
 # 启用 BGP
-bgp 65534
+bgp 65000
   # 配置邻居 IPv4 地址及 AS 号
-  peer 10.1.1.2 as-number 65534
+  peer 172.31.24.211 as-number 65001
+  peer 172.31.24.212 as-number 65001
   # Graceful Restart，平滑重启
   graceful-restart
   # 进入 IPv4 单播地址族并激活邻居
   address-family ipv4 unicast
-    peer 10.1.1.2 enable
+    peer 172.31.24.211 enable
+    peer 172.31.24.212 enable
 ```
 
 ## NETCONF
