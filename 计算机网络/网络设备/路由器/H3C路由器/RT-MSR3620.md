@@ -152,6 +152,8 @@ vlan
 
 ```bash
 # 配置安全策略允许域内通信
+security-zone intra-zone default permit
+
 security-policy ip
   rule name Trust_Intra_Allow
     source-zone Trust
@@ -160,6 +162,7 @@ security-policy ip
     quit
   quit
 display security-policy ip rule name Trust_Intra_Allow
+
 security-policy ip
   rule name Trust_Local_Allow
     source-zone Trust
@@ -167,8 +170,18 @@ security-policy ip
     action pass
     quit
   quit
+display security-policy ip rule name Trust_Local_Allow
 
-# 将物理接口的 VLAN 10 流量关联到安全域 Trust
+security-policy ip
+  rule name Local_Trust_Allow
+    source-zone Local
+    destination-zone Trust
+    action pass
+    quit
+  quit
+display security-policy ip rule name Local_Trust_Allow
+
+# 将物理接口的 VLAN 流量关联到安全域 Trust
 security-zone name Trust
   import interface GigabitEthernet 0/1
   import interface Vlan-interface 23
@@ -201,6 +214,7 @@ Bond
 interface Bridge-Aggregation 1
     port access vlan 10
     link-aggregation mode dynamic
+    lacp edge-port
 # 创建聚合口，划入vlan
 int g 6/0
     port link-aggregation group 1
