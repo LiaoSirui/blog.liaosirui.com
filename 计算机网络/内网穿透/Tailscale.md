@@ -696,7 +696,7 @@ tailscale up --accept-routes --ssh --advertise-exit-node
 只需要在拥有公网 IP 的节点上，运行：
 
 ```bash
-tailscale set--relay-server-port=40000
+tailscale set --relay-server-port=40000
 ```
 
 为对等中继设置一个 ACL tags
@@ -946,14 +946,14 @@ systemctl enable --now tailscaled
 安装
 
 ```bash
-brew install go@1.24
+brew install go@1.26
 
 export GOPROXY=https://goproxy.cn,direct
-export PATH="/usr/local/opt/go@1.24/bin:$PATH"
+export PATH="/usr/local/opt/go@1.26/bin:$PATH"
 
 go env -w GOPROXY=https://goproxy.cn,direct
 
-go install tailscale.com/cmd/tailscale{,d}@v1.88.3
+go install tailscale.com/cmd/tailscale{,d}@v1.96.3
 
 sudo $HOME/go/bin/tailscaled install-system-daemon
 # 卸载守护进程：sudo $HOME/go/bin/tailscaled uninstall-system-daemon
