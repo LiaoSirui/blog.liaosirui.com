@@ -310,15 +310,21 @@ code {
 }
 ```
 
+## 侧边栏
+
+```
+{pagetree:startDepth=2|searchBox=true}
+```
+
 ## 修改 synchrony 最大堆内存
 
-synchrony是Confluence用协同编辑的功能，默认堆内存为2G，这里可以修改成1G，或是禁用掉。
+synchrony 是 Confluence 用协同编辑的功能，默认堆内存为 2G，这里可以修改成 1G，或是禁用掉。
 
 参考：
 
-https://confluence.atlassian.com/doc/configuring-synchrony-858772125.html
-https://confluence.atlassian.com/doc/recognized-system-properties-190430.html
-https://confluence.atlassian.com/doc/configuring-system-properties-168002854.html
+- <https://confluence.atlassian.com/doc/configuring-synchrony-858772125.html>
+- <https://confluence.atlassian.com/doc/recognized-system-properties-190430.html>
+- <https://confluence.atlassian.com/doc/configuring-system-properties-168002854.html>
 
 编辑 `/opt/atlassian/confluence/bin/setenv.sh` 文件，未尾增加如下内容：
 

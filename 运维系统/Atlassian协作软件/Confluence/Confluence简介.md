@@ -38,7 +38,7 @@ Confluence 集成国外几乎所有主流的工具
 | 插件名                         | 插件用途                                                     | 插件下载地址                                                 |
 | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Markdown for Confluence        | Markdown 支持                                                | <https://marketplace.atlassian.com/apps/1211445/markdown-for-confluence> |
-| Mermaid Diagrams               | Mermaid 渲染插件                                             |                                                              |
+| Mermaid Diagrams               | Mermaid 渲染插件                                             | <https://marketplace.atlassian.com/apps/1234056/mermaid-chart-for-confluence> |
 | EasyMind for Confluence        | 绘制脑图的工具                                               |                                                              |
 | Slide Presenter for Confluence | 快速制作幻灯片                                               |                                                              |
 | MultiExcerpt                   | 该插件允许用户在Confluence页面上创建可重用的内容块（称为摘录）。这些摘录可以被插入到同一Confluence实例的其他页面上，并且当原始摘录更新时，所有插入的摘录也会自动更新 |                                                              |
