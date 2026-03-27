@@ -57,14 +57,15 @@ vgcreate crc /dev/sdx
 ```bash
 # 按需配置
 crc config set consent-telemetry no
-crc config set cpus 12
+crc config set cpus 8
+crc config set kubeadmin-password openshift
 crc config set developer-password openshift
 crc config set disable-update-check true
-crc config set disk-size 120
+crc config set disk-size 100
 crc config set enable-cluster-monitoring true
-crc config set memory 32768
+crc config set memory 24576 # 24Gi
 crc config set nameserver 8.8.8.8
-crc config set persistent-volume-size 60
+crc config set persistent-volume-size 50
 crc config set pull-secret-file /root/crc/pull-secret
 
 crc config set skip-check-root-user true

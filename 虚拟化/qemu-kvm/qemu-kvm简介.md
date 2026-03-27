@@ -136,6 +136,51 @@ vim /etc/default/grub
 
 `Unknown if this platform has Secure Guest support` 可以忽略
 
+### 修改 virbr0 网段
+
+停止默认网桥
+
+```bash
+virsh net-destroy default
+```
+
+修改配置文件
+
+```bash
+vi /etc/libvirt/qemu/networks/default.xml
+```
+
+例如修改为
+
+```xml
+<!--
+WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
+OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
+  virsh net-edit default
+or other application using the libvirt API.
+-->
+
+<network>
+  <name>default</name>
+  <uuid>4394c22a-a3c2-4ddb-91b6-50ad81465067</uuid>
+  <forward mode='nat'/>
+  <bridge name='virbr0' stp='on' delay='0'/>
+  <mac address='52:54:00:7a:34:76'/>
+  <ip address='172.30.122.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='172.30.122.2' end='172.30.122.254'/>
+    </dhcp>
+  </ip>
+</network>
+```
+
+重新定义并启动网络
+
+```bash
+virsh net-define /etc/libvirt/qemu/networks/default.xml
+virsh net-start default
+```
+
 ## 启动
 
 ### 启动 libvirtd
@@ -144,7 +189,6 @@ vim /etc/default/grub
 
 ```bash
 systemctl enable libvirtd --now
- 
 systemctl status libvirtd
 ```
 
