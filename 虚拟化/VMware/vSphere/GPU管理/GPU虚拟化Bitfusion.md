@@ -1,0 +1,1 @@
+VMware 的 Bitfusion 解决方案类似 C/S 架构，Bitfusion Server 端是虚拟机，通过直通模式实现物理 GPU 资源虚拟化，Bitfusion Client 是运行在其他 vSphere 服务器上承载着 ML 工作负载的 Linux 虚机，通过插件的方式把它们对于 GPU 的服务请求通过网络传输给 Bitfusion Server，计算完成后再返回结果。对于 ML 工作负载来说，远程 GPU 是完全透明的，它就像是在使用本地的 GPU 硬件
