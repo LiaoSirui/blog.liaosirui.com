@@ -1,4 +1,6 @@
-## 安装域控
+## 单域控服务器
+
+### 安装域控
 
 修改计算机名字，作为域控后不建议随意修改名字
 
@@ -7,7 +9,13 @@
 Rename-Computer -NewName "AD-S1" -Force -Restart
 ```
 
-固定 IP 地址
+配置静态IP地址
+
+```bash
+# 配置静态 IP 地址
+New-NetIPAddress -InterfaceAlias "以太网" -IPAddress "192.168.1.101" -PrefixLength 24 -DefaultGateway 192.168.1.254
+Set-DnsClientServerAddress -InterfaceAlias "以太网" -ServerAddresses "192.168.1.254"
+```
 
 删除安全服务（可选 ）
 
@@ -36,7 +44,7 @@ PowerShell 命令行安装 AD 域服务
 
 ```bash
 # 安装域控角色
-Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
+Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools -Restart
 ```
 
 将服务器配置为域控制器
@@ -48,7 +56,7 @@ Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
 Import-Module ADDSDeployment
 
 Install-ADDSForest `
--DomainName "alpha-quant.tech" `
+-DomainName "ad.alpha-quant.tech" `
 -ForestMode Win2025 `
 -DomainMode Win2025 `
 -DomainNetbiosName "ALPHA-QUANT" `
@@ -56,9 +64,9 @@ Install-ADDSForest `
 -InstallDNS
 ```
 
-- `-DomainName "alpha-quant.tech"`
+- `-DomainName "ad.alpha-quant.tech"`
 
-该参数指定新的 Active Directory 域的 DNS 名称。这里创建的域名是 `alpha-quant.tech`，可以自行修改。
+该参数指定新的 Active Directory 域的 DNS 名称。这里创建的域名是 `ad.alpha-quant.tech`，可以自行修改。
 
 - `-ForestMode Win2025`
   - Windows2008, Windows2008R2
@@ -76,7 +84,7 @@ Install-ADDSForest `
 
 指定域的 NetBIOS 名称，NetBIOS 名称是一个 15 字符以内的短名，主要用于旧的网络浏览、兼容应用等。
 
-一般与域名的前缀（主机部分）相同或类似，通常大写。例如 `alpha-quant.tech` 域对应的 NetBIOS 名称是 `ALPHA-QUANT`。
+一般与域名的前缀（主机部分）相同或类似，通常大写。例如 `ad.alpha-quant.tech` 域对应的 NetBIOS 名称是 `ALPHA-QUANT`。
 
 - `-SafeModeAdministratorPassword (ConvertTo-SecureString -AsPlainText "alphaquant" -Force)`
 
@@ -94,26 +102,32 @@ DSRM 是 AD 维护和恢复时使用的特殊模式。
 
 对 Active Directory 域控来说，DNS 服务是必备的，因为 AD 依赖 DNS 进行名称解析和服务定位。
 
-## 配置组策略
+### 配置组策略
 
-### 修改密码过期时间
+#### 修改密码过期时间
 
 powershell 执行 gpmc.msc 打开组策略管理。
-
-修改最长最短使用期限都为 0 天。
-
-然后让 AD 执行 `gpupdate /force` 强制快速应用组策略。
 
 ```bash
 组策略管理
   林
     域
       Default Domain Policy
-        计算机管理
-          策略
-            Windows 设置
-              安全设置
-                密码策略
+```
+
+
+
+修改最长最短使用期限都为 0 天。
+
+然后让 AD 执行 `gpupdate /force` 强制快速应用组策略。
+
+```bash
+计算机配置
+  策略
+    Windows 设置
+      安全设置
+        账户策略
+          密码策略
 ```
 
 设置 Administrator 永不过期
@@ -123,32 +137,29 @@ powershell 执行 gpmc.msc 打开组策略管理。
 Set-ADUser -Identity "Administrator" -PasswordNeverExpires $true
 ```
 
-### 只允许本地管理员登录域控
+#### 只允许本地管理员登录域控
 
 powershell 执行 gpmc.msc 打开组策略管理。
-
-添加 Administrators 组 和 Domain Admins 组，这样只能添加到本地管理员组的普通用户，或域控管理员用户能进行登录这台计算机。
-
-然后让 AD 执行 `gpupdate /force` 强制快速应用组策略。
 
 修改策略：允许本地登录
 
 ```bash
-组策略管理
-  林
-    域
-      Default Domain Policy
-        计算机管理
-          策略
-            Windows 设置
-              安全设置
-                本地策略
-                  用户权限分配
+计算机配置
+  策略
+    Windows 设置
+      安全设置
+        本地策略
+          用户权限分配
+            允许本地登录
 ```
+
+在 “允许本地登录” 中添加 Administrators 组 和 Domain Admins 组，这样只能添加到本地管理员组的普通用户，或域控管理员用户能进行登录这台计算机。
+
+然后让 AD 执行 `gpupdate /force` 强制快速应用组策略。
 
 同样的方式调整远程登录。
 
-### 允许 LDAP 389 不加密访问
+#### 允许 LDAP 389 不加密访问
 
 主要原因是 windows Server 2025 AD 角色增强了安全性，默认禁止在明文的连接中使用 simple bind 简单身份认证机制。只能通过 LDAPS 进行访问 (增加 CA 角色实现)。
 
@@ -156,9 +167,9 @@ powershell 执行 gpmc.msc 打开组策略管理。
 - 找到配置项：域控制器: LDAP 服务器强制签名要求 将其设置为 “已禁用”
 - 在所有域控强制刷新组策略 `gpupdate /force` 并重启
 
-## DNS
+### DNS
 
-### DNS 转发器
+#### DNS 转发器
 
 修改 DNS 转发器，加快 DNS  查询
 
@@ -166,35 +177,38 @@ powershell 执行 gpmc.msc 打开组策略管理。
 
 ![img](./.assets/AD域部署/jlZ41dd4xc.png)
 
-### 配置正向
+#### 配置正向
 
 1. 打开 “DNS 管理器”。
 2. 右键点击 “正向查找区域”，选择 “新建区域”。
-3. 按照向导操作，选择 “主要区域”，输入区域名称（如`alpha-quant.tech`）。
+3. 按照向导操作，选择 “主要区域”，输入区域名称（如`ad.alpha-quant.tech`）。
 
-### 创建反向查找区域
+#### 创建反向查找区域
 
 1. 打开 “DNS 管理器”。
 2. 右键点击 “反向查找区域”，选择 “新建区域”。
-3. 按照向导操作，选择 “主要区域”，输入 IP 地址前三位（如`10.10.10`）。
+3. 按照向导操作，选择 “主要区域”，输入 IP 地址前三位（如`192.168.1`）。
 4. 创建 PTR 记录，将 IP 地址解析为域名。
 
  身份验证服务（如 Kerberos）、 Exchange 邮件、某些特定安全软件服务因无法校验 IP 与其域名对应而故障。
 
 ```powershell
-# 配置DNS反向查找区域
-Add-DnsServerResourceRecordPtr -Name "11" -ZoneName "10.10.10.in-addr.arpa" -PtrDomainName "AD-S1.alpha-quant.tech" -TimeToLive 01:00:00
+# 配置 DNS 反向查找区域
+Add-DnsServerResourceRecordPtr  `
+-Name "101" -ZoneName "1.168.192.in-addr.arpa"  `
+-PtrDomainName "AD-S1.ad.alpha-quant.tech"  `
+-TimeToLive 01:00:00
 ```
 
 DNS 反向查找区域用于将 IP 地址解析为域名，确保网络通信的完整性。
 
-## NTP
+### NTP
 
 因为默认仅仅会用 COMS 作为时间源，久了时间会偏移。
 
 ```powershell
 # 仅主域控配置公网 NTP 服务器，并立即同步
-w32tm /config /manualpeerlist:cn.ntp.org.cn,0x8 /syncfromflags:MANUAL /update
+w32tm /config /manualpeerlist:ntp.ntsc.ac.cn,0x8 /syncfromflags:MANUAL /update
 
 # 强制同步 NTP 服务器，最好所有 AD 中的域控制器，都执行一次。
 w32tm /resync
@@ -220,7 +234,9 @@ ClockRate: 0.0156261s
 
 ```
 
-## ADSI
+### ADSI 配置
+
+#### 限制普通用户添加计算技
 
 设置普通用户不能自己将计算机加入域控
 
@@ -228,38 +244,141 @@ ClockRate: 0.0156261s
 
 找到 “ ms-DS-MachineAccountQuota” ，将其数值由默认的 10 改成 0 。然后点击应用 （默认是 10 次，代表普通用户可以将十台计算机加入域控，但域控管理员不受限制。）
 
-## 创建额外的域控管理员用户
+### DAS 管理用户
+
+#### 创建额外的域控管理员用户
 
 运行 dsa.msc 打开 Active Directory 用户和计算机
 
 进入 Users 组织单位下，右键 Administrator，选择复制创建用户。
 
-## 启用并使用 Active Directory 回收站
+#### 启用并使用 Active Directory 回收站
 
 ```powershell
 ## powershell 管理员执行。在主域控制器执行。
-Enable-ADOptionalFeature –Identity ‘CN=Recycle Bin Feature,CN=Optional Features,CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,DC=songxwn,DC=local’ –Scope ForestOrConfigurationSet –Target 'alpha-quant.tech'
 # 在主域控上执行，注意修改域名。
+Enable-ADOptionalFeature  `
+-Identity 'CN=Recycle Bin Feature,CN=Optional Features,CN=Directory Service,CN=Windows NT,CN=Services,CN=Configuration,DC=ad,DC=alpha-quant,DC=tech'  `
+-Scope ForestOrConfigurationSet  `
+-Target 'ad.alpha-quant.tech'
 ```
 
 已删除的对象，运行 dsac.exe 去 Active Directory 管理中心 > Deleted Objects 下查看并还原。
 
-## 启用数据库 32k 页可选功能 – 可选
+### 启用数据库 32k 页可选功能 – 可选
 
 ```powershell
 # powershell 管理执行，输入Y继续。
+# 注意修改域名。
 $params = @{
 Identity = 'Database 32k pages feature'
 Scope = 'ForestOrConfigurationSet'
 Server = 'AD-S1'
-Target = 'alpha-quant.tech'
+Target = 'ad.alpha-quant.tech'
 }
 Enable-ADOptionalFeature @params
-# 注意修改域名。
-
 ```
 
+## 多域控服务器
 
+### 添加域控
+
+同样的初始化
+
+注意 DNS 需要设置为第一台 AD 服务器
+
+```powershell
+# 配置静态 IP 地址（假设主域控IP为192.168.1.101）
+New-NetIPAddress -InterfaceAlias "以太网" -IPAddress "192.168.1.102" -PrefixLength 24 -DefaultGateway 192.168.1.254
+Set-DnsClientServerAddress -InterfaceAlias "以太网" -ServerAddresses "192.168.1.101"
+```
+
+Windows 使用 SID 来表示所有的安全对象（security principals）。安全对象包括主机，域计算机账户，用户和安全组。克隆的操作系统安装需要单独执行：打开克隆完的虚拟机：`C:\Windows\System32\Sysprep\Sysprep.exe` 勾选 generalise 选项即可。
+
+![image-20260330174825210](./.assets/AD域部署/image-20260330174825210.png)
+
+安装域控服务
+
+```powershell
+# 安装域控角色
+Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools -Restart
+```
+
+提升为域控服务器
+
+```powershell
+# 创建安全字符串用于 DSRM 密码
+$securePassword = ConvertTo-SecureString "alphaquant" -AsPlainText -Force
+
+# 将服务器提升为现有域的额外域控制器
+Install-ADDSDomainController `
+    -DomainName "ad.alpha-quant.tech" `
+    -InstallDns:$true `
+    -Credential (Get-Credential) `
+    -SafeModeAdministratorPassword $securePassword `
+    -ReplicationSourceDC "AD-S1.ad.alpha-quan.tech" `
+    -Force
+```
+
+同样的方式添加另外一台
+
+### 验证域控
+
+验证域控制器列表
+
+```powershell
+Get-ADDomainController -Filter * | Select-Object Name, Site, IPv4Address
+```
+
+检查复制状态
+
+```powershell
+# 查看所有域控制器间的复制状态
+repadmin /replsum
+
+# 详细查看复制延迟
+Get-ADReplicationPartnerMetadata -TargetServer "AD-S1" -Scope Domain | Format-Table
+```
+
+验证客户端故障转移
+
+```powershell
+# 模拟客户端登录，验证是否能自动选择域控制器
+nltest /dsgetdc:ad.alpha-quant.tech
+```
+
+模拟故障测试
+
+```powershell
+# 停止一台域控制器的AD服务进行测试
+Stop-Service -Name NTDS -Force
+
+# 验证客户端是否能自动切换到其他域控制器
+nltest /dsgetdc:ad.alpha-quant.tech
+```
+
+### 优化建议
+
+配置 DNS 负载均衡
+
+```powershell
+# 为所有域控制器配置相同的 DNS SRV 记录权重
+Set-DnsServerResourceRecord -Name "_ldap._tcp" -ZoneName "ad.alpha-quant.tech" -NewTimeToLive 300 -Force
+```
+
+设置合理的复制间隔
+
+```powershell
+# 设置域内复制间隔为 15 分钟（默认为 180 分钟）
+Set-ADReplicationSiteLink "DEFAULTIPSITELINK" -ReplicationFrequencyInMinutes 15 -Force
+```
+
+定期备份系统状态
+
+```powershell
+# 每日执行系统状态备份
+wbadmin start systemstatebackup -backupTarget D:\Backup -quiet
+```
 
 
 
