@@ -92,19 +92,25 @@ Advanced -> ACPI Settings -> NUMA -> Enabled
 
 ## ESXi
 
+### 性能调整
+
 - 更改电源策略
 
 选择【管理】-【硬件】-【电源管理】-【更改策略】- 高性能
 
 - 关闭内存交换
 
+- 找到“VMkernel.Boot.hyperthreadingMitigationIntraVM”，鼠标右键选择“编辑设置”。设置为 False
+
+### 锁定用户例外
+
+添加 root 到锁定用户例外，防止密码输入错误过多导致账号被锁
+
 - 更改密码策略
 
 选择“管理”选项卡——“高级设置”，找到“Security.AccountLockFailures”，然后右键选择“编辑选项“ 设置为 0
 
-- 找到“VMkernel.Boot.hyperthreadingMitigationIntraVM”，鼠标右键选择“编辑设置”。设置为 False
-
-## 修改时区
+### 修改时区
 
 1. 打开`/etc/vmware/config`文件。例如，输入`vi /etc/vmware/config`。
 2. 在文件末尾添加以下行，将`Asia/Shanghai`替换为您所需的时区：
@@ -113,7 +119,7 @@ Advanced -> ACPI Settings -> NUMA -> Enabled
 time_zone = "Asia/Shanghai"
 ```
 
-## 免密登录 ESXi
+### 免密登录 ESXi
 
 ESXI 的 `authorized_keys` 在 `/etc/ssh/keys-root/authorized_keys` 所以 ssh-copy-id 不会成功。
 
@@ -129,7 +135,7 @@ cat ~/.ssh/id_rsa.pub
 echo "你的公钥" > /etc/ssh/keys-root/authorized_keys
 ```
 
-## 自动启动虚拟机
+### 自动启动虚拟机
 
 在 Esxi 对虚拟机设置自启动不生效，重启后还是不会自动启动。
 
