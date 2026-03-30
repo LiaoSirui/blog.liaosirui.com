@@ -104,8 +104,40 @@ Advanced -> ACPI Settings -> NUMA -> Enabled
 
 - 找到“VMkernel.Boot.hyperthreadingMitigationIntraVM”，鼠标右键选择“编辑设置”。设置为 False
 
+## 修改时区
+
+1. 打开`/etc/vmware/config`文件。例如，输入`vi /etc/vmware/config`。
+2. 在文件末尾添加以下行，将`Asia/Shanghai`替换为您所需的时区：
+
+```ini
+time_zone = "Asia/Shanghai"
+```
+
+## 免密登录 ESXi
+
+ESXI 的 `authorized_keys` 在 `/etc/ssh/keys-root/authorized_keys` 所以 ssh-copy-id 不会成功。
+
+查看自己的公钥
+
+```
+cat ~/.ssh/id_rsa.pub
+```
+
+把自己的公钥写入到
+
+```
+echo "你的公钥" > /etc/ssh/keys-root/authorized_keys
+```
+
+## 自动启动虚拟机
+
+在 Esxi 对虚拟机设置自启动不生效，重启后还是不会自动启动。
+
+进入【主机】-【管理】-【系统】-【自动启动】，编辑修改为已启动为【是】。
+
 ## 参考文档
 
 - <https://blog.csdn.net/z136370204/article/details/110794027>
 
 - <https://o-my-chenjian.com/2018/03/22/VMware-Performance-optimization/#bios%E4%BC%98%E5%8C%96>
+

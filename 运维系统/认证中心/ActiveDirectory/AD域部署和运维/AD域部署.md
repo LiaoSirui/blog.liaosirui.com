@@ -18,9 +18,16 @@ Remove-WindowsFeature -Name Windows-Defender
 关闭 “IE 增强安全配置”
 
 ```powershell
-# 关闭IE增强安全设置
+# 关闭 IE 增强安全设置
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\1" -Name "2500" -Value 0
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\2" -Name "2500" -Value 0
+```
+
+关闭防火墙
+
+```bash
+# 关闭防火墙
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 ```
 
 PowerShell 命令行安装 AD 域服务
@@ -28,9 +35,6 @@ PowerShell 命令行安装 AD 域服务
 管理员运行下面的命令
 
 ```bash
-# 关闭防火墙
-Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
-
 # 安装域控角色
 Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
 ```

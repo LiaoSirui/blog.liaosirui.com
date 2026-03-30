@@ -8,6 +8,7 @@ gpmc.msc
 
 允许用户远程登陆（需要同时添加管理员和普通用户）：
 
-![img](./.assets/RDS应用/16153914_62d26b22c8b8a20224.png)
+<img src="./.assets/发布RDS应用/16153914_62d26b22c8b8a20224.png" alt="img" style="zoom:67%;" />
 
 - <https://blog.51cto.com/sparkgo/5478585>
+
