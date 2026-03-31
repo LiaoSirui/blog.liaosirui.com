@@ -8,3 +8,10 @@
 - Parallels Desktop 17 vTPM support：`https://www.parallels.com/blogs/windows-11-tpm/`
 
 Win11 镜像修改，参考：<https://sysin.org/blog/windows-11-no-tpm/>
+
+```bash
+esxcli system settings encryption get
+
+esxcli system settings encryption set --mode=TPM
+```
+
