@@ -39,7 +39,7 @@ esxi 安装
 
 ```bash
 esxcli software acceptance set --level=CommunitySupported
-esxcli software vib install -v /tmp/BCM_bootbank_storcli_007.2414.0000.0000-01.vib
+esxcli software vib install -v /tmp/BCM_bootbank_storcli_007.3103.0000.0000-01.vib
 ```
 
 ## StorCLI 使用
