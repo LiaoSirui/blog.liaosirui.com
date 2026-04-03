@@ -410,3 +410,11 @@ timeout: 3
 debug: false
 EOF
 ```
+
+或者使用
+
+```bash
+crictl config runtime-endpoint unix:///run/containerd/containerd.sock
+crictl config image-endpoint unix:///run/containerd/containerd.sock
+```
+
