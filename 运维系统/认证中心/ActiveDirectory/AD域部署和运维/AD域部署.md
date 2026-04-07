@@ -115,8 +115,6 @@ powershell 执行 gpmc.msc 打开组策略管理。
       Default Domain Policy
 ```
 
-
-
 修改最长最短使用期限都为 0 天。
 
 然后让 AD 执行 `gpupdate /force` 强制快速应用组策略。
@@ -208,7 +206,7 @@ DNS 反向查找区域用于将 IP 地址解析为域名，确保网络通信的
 
 ```powershell
 # 仅主域控配置公网 NTP 服务器，并立即同步
-w32tm /config /manualpeerlist:ntp.ntsc.ac.cn,0x8 /syncfromflags:MANUAL /update
+w32tm /config /manualpeerlist:ntp.aliyun.com,0x8 /syncfromflags:MANUAL /update
 
 # 强制同步 NTP 服务器，最好所有 AD 中的域控制器，都执行一次。
 w32tm /resync
