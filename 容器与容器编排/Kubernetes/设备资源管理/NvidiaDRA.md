@@ -75,3 +75,6 @@ spec:
 
 ```
 
+## 参考资料
+
+- <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/dra-intro-install.html>
