@@ -54,6 +54,66 @@ FPGA 配置：可以定义板卡型号、逻辑单元使用量或频率等。
 
 基于这种参数化设计为用户提供了高度灵活的资源定制能力，同时也为复杂资源的动态管理奠定了基础。
 
+## DRA 工作流程
+
+当一个 Pod 提交 GPU/TPU 等资源请求时，DRA 的处理流程如下：
+
+（1）用户工作负载创建阶段（User Workload）
+
+- 用户在 Pod 中声明 `ResourceClaims`（如：`gpu.example.com`），这相当于请求一个特定类型的硬件资源。
+
+（2）控制平面调度阶段（Kubernetes Control Plane with DRA）
+
+- Scheduler 调用 `DynamicResources` 插件读取 `ResourceClaims`。
+- 通过 CEL 表达式匹配 `DeviceClass`（定义了设备类型）与 `ResourceSlices`（节点上可用资源）。
+- 选择最符合条件的节点与设备。
+
+（3）驱动控制阶段（DRA Driver Control Plane）
+
+- DRA 控制器监控 `ResourceClaims` 变化。
+- 创建或更新 `ResourceSlices`。
+- 管理资源生命周期并上报设备属性。
+
+（4）节点执行阶段（DRA Driver Plugin Node）
+
+- kubelet 的 DRA Manager 调用 Node 端的 DRA Driver（通过 gRPC）。
+- 执行 `NodePrepareResources()`，为容器分配设备、生成 CDI（Container Device Interface）规范。
+- Pod 运行完后调用 `NodeUnprepareResources()` 清理设备。
+
+（5）容器运行时阶段（CRI - O / Docker）
+
+- 根据 CDI 规范挂载设备节点并设置权限。
+- 启动容器并提供相应的硬件访问能力。
+
+## DRA 的优势
+
+（1）提高效率
+
+kube-scheduler 现在可以在不需要与外部驱动程序交互的情况下管理资源分配，从而：
+
+- 减少调度延迟
+- 加快决策过程
+- 提高整体集群性能
+
+（2）增强灵活性
+
+用户可以指定详细的资源需求，如：
+
+- GPU 内存大小
+- 驱动程序版本
+- 特定硬件属性
+- 计算能力要求
+
+这种细粒度的控制确保工作负载在最佳资源上运行。
+
+（3）大规模可扩展性
+
+对于大型集群，DRA 使管理复杂的资源需求变得更加简单：
+
+- Kubernetes 可以在节点之间动态分配资源
+- 保持高资源利用率
+- 简化运维管理
+
 ## 开启
 
 1.34 以下的版本：

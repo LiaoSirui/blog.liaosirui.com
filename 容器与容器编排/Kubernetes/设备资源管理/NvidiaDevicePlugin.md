@@ -264,3 +264,5 @@ Failed to initialize NVML: Unknown Error
 ## 参考文档
 
 - <https://zhuanlan.zhihu.com/p/686793028>
+
+- <https://jimmysong.io/zh/book/kubernetes-handbook/ai-native/k8s-device-plugin/>
