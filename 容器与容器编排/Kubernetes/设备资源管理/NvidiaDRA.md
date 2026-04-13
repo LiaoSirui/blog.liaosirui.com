@@ -23,12 +23,12 @@ Kubernetes 工作负载可以分配并消耗以下两种资源：
 helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
 ```
 
-安装版本为`25.3.2`的`NVIDIA DRA GPU`驱动程序。
+安装版本为`25.12.0`的`NVIDIA DRA GPU`驱动程序。
 
 ```bash
 helm install \
     nvidia-dra-driver-gpu nvidia/nvidia-dra-driver-gpu \
-    --version="25.3.2" \
+    --version="25.12.0" \
     --create-namespace --namespace nvidia-dra-driver-gpu \
     --set gpuResourcesEnabledOverride=true
 ```
@@ -56,6 +56,8 @@ resourceslice.resource.k8s.io/kube-wk-gpu.nvidia.com-8zzk2   kube-wk   gpu.nvidi
 
 ## 使用
 
+### 分配单个 GPU
+
 部署使用 DRA GPU 的工作负载
 
 ```yaml
@@ -68,37 +70,117 @@ spec:
   spec:
     devices:
       requests:
-        - exactly:
+        - name: gpu
+          exactly:
             allocationMode: ExactCount
             deviceClassName: gpu.nvidia.com
             count: 1
-          name: gpu
+```
+
+调用单个 GPU
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: single-gpu
+  namespace: srliao
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: single-gpu
+  template:
+    metadata:
+      labels:
+        app: single-gpu
+    spec:
+      # runtimeClassName: nvidia
+      # nodeSelector:
+      #   node-role.kubernetes.io/nvidia-gpu: ""
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: single-gpu
+      containers:
+        - name: single-gpu
+          image: nvcr.io/nvidia/k8s-device-plugin:v0.19.0
+          command:
+            - busybox
+            - sleep
+            - infinity
+          env:
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: void
+          resources:
+            requests:
+              cpu: "2"
+              memory: "4Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+            claims:
+              - name: gpu
 
 ```
 
-创建`cuda-vectoradd.yaml`文件
+### vector-add 测试
+
+使用如下的 YAML 文件
 
 ```yaml
-apiVersion: v1
-kind: Pod
+---
+apiVersion: resource.k8s.io/v1beta2
+kind: ResourceClaimTemplate
+metadata:
+  name: cuda-vectoradd-gpu
+  namespace: srliao
+spec:
+  spec:
+    devices:
+      requests:
+        - name: gpu
+          exactly:
+            allocationMode: ExactCount
+            deviceClassName: gpu.nvidia.com
+            count: 1
+
+---
+kind: Job
+apiVersion: batch/v1
 metadata:
   name: cuda-vectoradd
   namespace: srliao
   labels:
     app: cuda-vectoradd
 spec:
-  runtimeClassName: nvidia
-  tolerations:
-    - operator: Exists
-  containers:
-    - name: cuda-vectoradd
-      image: nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0
-      resources:
-        claims:
-          - name: gpu
-  resourceClaims:
-    - name: gpu
-      resourceClaimTemplateName: single-gpu
+  backoffLimit: 0
+  completions: 1
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: cuda-vectoradd
+    spec:
+      restartPolicy: Never
+      # runtimeClassName: nvidia
+      # nodeSelector:
+      #   node-role.kubernetes.io/nvidia-gpu: ""
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: cuda-vectoradd-gpu
+      containers:
+        - name: cuda-vectoradd
+          image: nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0
+          resources:
+            requests:
+              cpu: "2"
+              memory: "4Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+            claims:
+              - name: gpu
+
 ```
 
 ## DRA 关键概念
@@ -196,15 +278,19 @@ ResourceClaim 表示工作负载所需的特定资源请求。它类似于持久
 一个 `ResourceClaim` 可被一个或多个 Pod 引用（取决于 driver 支持与 claim 设计目标）。
 
 ```yaml
-apiVersion: resource.k8s.io/v1alpha2
+apiVersion: resource.k8s.io/v1beta2
 kind: ResourceClaim
 metadata:
-  name: gpu-claim
+  name: single-gpu
+  namespace: srliao
 spec:
-  resourceClassName: nvidia-gpu
-  parameters:
-    memory: "16Gi"
-    driver-version: "470.57.02"
+  devices:
+    requests:
+      - name: gpu
+        exactly:
+          allocationMode: ExactCount
+          deviceClassName: gpu.nvidia.com
+          count: 1
 ```
 
 ### ResourceClaimTemplate（资源声明模板）
@@ -216,83 +302,25 @@ ResourceClaimTemplate 自动为每个 Pod 创建和管理 ResourceClaim，简化
 如不希望手动创建 `ResourceClaim`，可用 `ResourceClaimTemplate` 作为模板，让 Kubernetes 在创建 Pod / Job 时自动生成对应 claim，实现 “随 Pod 生命周期按需申请”。
 
 ```yaml
-apiVersion: resource.k8s.io/v1
+apiVersion: resource.k8s.io/v1beta2
 kind: ResourceClaimTemplate
 metadata:
-  name: gpu-demo-app
-  namespace: gpu-demo
+  name: single-gpu
+  namespace: srliao
 spec:
   spec:
     devices:
       requests:
-        - name: gpu-0
+        - name: gpu
           exactly:
+            allocationMode: ExactCount
             deviceClassName: gpu.nvidia.com
-            selectors:
-              - cel:
-                  expression: |
-                    device.attributes["gpu.nvidia.com"].architecture == "Blackwell" &&
-                    device.capacity["gpu.nvidia.com"].memory.isGreaterThan(quantity("20Gi"))
-
+            count: 1
 ```
 
 - `requests[]` 可表达多个请求片段（如需 1 块 GPU + 1 张 RDMA NIC）。
 - `selectors` 用于按设备属性筛选（示例用 CEL 表达 NUMA 亲和）。
 - `allocationMode/count` 表达 “数量” 是最基础的方式；更复杂的 “容量/切分” 通常由 driver 的 parameters/attributes 实现。
-
-负载直接使用
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gpu-demo-app
-  namespace: gpu-demo
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: gpu-demo-app
-  template:
-    metadata:
-      labels:
-        app: gpu-demo-app
-    spec:
-      resourceClaims:
-        - name: gpu-0
-          resourceClaimTemplateName: gpu-demo-app
-      containers:
-        - name: gpu-demo-app
-          image: nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0
-          ports:
-            - containerPort: 5000
-          resources:
-            requests:
-              memory: "1Gi"
-              cpu: "500m"
-            limits:
-              memory: "2Gi"
-              cpu: "1"
-            claims:
-              - name: gpu-0
-      tolerations:
-        - key: nvidia.com/gpu
-          operator: Exists
-          effect: NoSchedule
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: gpu-demo-service
-  namespace: gpu-demo
-spec:
-  selector:
-    app: gpu-demo-app
-  ports:
-    - port: 80
-      targetPort: 5000
-
-```
 
 ## 场景：Sharing the GPU
 

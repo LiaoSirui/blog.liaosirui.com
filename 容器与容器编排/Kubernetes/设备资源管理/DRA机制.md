@@ -125,7 +125,7 @@ DRA 的功能还处于 beta 状态，所以需要通过在 kube-apiserver/kube-s
 - --feature-gates=DynamicResourceAllocation=true
 
 # kube-apiserver
---runtime-config=resource.k8s.io/v1beta1=true
+--runtime-config=resource.k8s.io/v1beta1=true,resource.k8s.io/v1beta2=true
 
 # /var/lib/kubelet/config.yaml文件增加下面的配置
 featureGates:
