@@ -30,23 +30,24 @@ Confluence 集成国外几乎所有主流的工具
 | `Chinese Language Patch for Confluence` | 中文额外补充                                                 | <https://marketplace.atlassian.com/apps/1219843/chinese-language-patch-for-confluence> |
 | `Draw.io Confluence Plugin`             | Draw.io 支持                                                 | <https://marketplace.atlassian.com/apps/1210933/draw-io-diagrams-uml-bpmn-aws-erd-flowcharts> |
 | `LaTeX Math`                            | Latex 公式编辑                                               | <https://marketplace.atlassian.com/apps/1210882/latex-math>  |
+| `Markdown for Confluence`               | Markdown 支持                                                | <https://marketplace.atlassian.com/apps/1211445/markdown-for-confluence> |
 | `Easy Heading Macro`                    | 插件目录可以使用 wiki 全局配置、按照空间配置、按照页面配置自由选择，并且支持内容按照标题展开、收起 | <https://marketplace.atlassian.com/apps/1221271/easy-heading-macro-floating-table-of-contents> |
 | `Excalidraw for Confluence`             | 绘制手绘风格的图形，其中包含多种内置的图形库                 | <https://marketplace.atlassian.com/apps/1231435/excalidraw-for-confluence> |
+| `Jupyter Viewer for Confluence`         | 在 Confluence 页面内渲染 Jupyter/IPython notebook            | <https://marketplace.atlassian.com/apps/1214144/jupyter-viewer-for-confluence> |
+| `Comala Document Management`            | 文档管理                                                     | <https://marketplace.atlassian.com/apps/142/comala-document-management> |
+| `Comala Document Control`               | 为文档指派审查者或审批者，创建自定义工作流，并通过电子签名审批来确保合规 | <https://marketplace.atlassian.com/apps/1215729/comala-document-control> |
+| `Mermaid Diagrams`                      | Mermaid 渲染插件                                             | <https://marketplace.atlassian.com/apps/1234056/mermaid-chart-for-confluence> |
+| `EasyMind for Confluence`               | 绘制脑图的工具                                               | <https://marketplace.atlassian.com/apps/1211267/easymind-mind-maps-for-confluence> |
 
 备份：
 
 | 插件名                         | 插件用途                                                     | 插件下载地址                                                 |
 | ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Markdown for Confluence        | Markdown 支持                                                | <https://marketplace.atlassian.com/apps/1211445/markdown-for-confluence> |
-| Mermaid Diagrams               | Mermaid 渲染插件                                             | <https://marketplace.atlassian.com/apps/1234056/mermaid-chart-for-confluence> |
-| EasyMind for Confluence        | 绘制脑图的工具                                               |                                                              |
 | Slide Presenter for Confluence | 快速制作幻灯片                                               |                                                              |
 | MultiExcerpt                   | 该插件允许用户在Confluence页面上创建可重用的内容块（称为摘录）。这些摘录可以被插入到同一Confluence实例的其他页面上，并且当原始摘录更新时，所有插入的摘录也会自动更新 |                                                              |
-| Advanced Roadmaps for Jira     | ，允许用户在Confluence中嵌入和展示复杂的项目路线图。这对于项目规划和追踪进度非常有帮助 |                                                              |
+| Advanced Roadmaps for Jira     | 允许用户在Confluence中嵌入和展示复杂的项目路线图。这对于项目规划和追踪进度非常有帮助 |                                                              |
 | Table Filter and Charts        | 筛选复杂的 Confluence 表格，在数据透视表中汇总数据，并将表格转换为创新的 Confluence 图表，以使信息易于检查 | <https://marketplace.atlassian.com/apps/27447/table-filter-and-charts-for-confluence> |
 | Custom Charts                  | 利用自定义条形图、漏斗图和饼图显示支持数据或制作业务案例     | <https://marketplace.atlassian.com/apps/1220493/custom-jira-charts-confluence-reports> |
-| Comala Document Control        | 为文档指派审查者或审批者，创建自定义工作流，并通过电子签名审批来确保合规 | <https://marketplace.atlassian.com/apps/1215729/comala-document-control> |
-| Comala Document Management     | 文档管理                                                     | <https://marketplace.atlassian.com/apps/142/comala-document-management> |
 | Command Line Interface         | 通过简单的命令自动执行任务，从而节省时间，创建可扩展的流程，并在 Confluence 和其他工具之间执行操作 | <https://marketplace.atlassian.com/apps/284/confluence-command-line-interface-cli> |
 | Optics                         | 从选项卡到图像滑块再到按钮，获得您渴望的所有视觉呈现能力，以便让页面脱颖而出并清晰表达观点 | <https://marketplace.atlassian.com/apps/1222649/macrosuite-easy-html-button-hide-content-divider-tabs> |
 | Render Markdown                | 以在 Confluence 页面中使用 Markdown，并显示代码块的语法重点  | <https://marketplace.atlassian.com/apps/1212654/render-markdown> |
