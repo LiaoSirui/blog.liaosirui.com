@@ -16,6 +16,8 @@
 
 清单（Inventories）：包含一组服务器信息。分为普通清单和智能清单，普通清单可以手工录入服务器信息，或者通过源导入；智能清单可以对已存在的清单进行条件过滤筛选出目标服务器，更加方便进行服务器资源的统一管理。
 
+建议清单增加变量：`ansible_ssh_common_args: "-o StrictHostKeyChecking=no"`
+
 登录AWX，左侧菜单选择清单 ，下拉选择添加清单，如下图
 
 <img src="./.assets/AWX使用入门/image-20251220151923142.png" alt="image-20251220151923142" style="zoom: 50%;" />
@@ -28,7 +30,14 @@
 
 <img src="./.assets/AWX使用入门/image-20251220152156324.png" alt="image-20251220152156324" style="zoom:50%;" />
 
-把我们要部署的主机 IP 配置进去，然后保存。第一步配置完成。
+把要部署的主机 IP 配置进去，然后保存。第一步配置完成。
+
+```yaml
+---
+ansible_host: 192.168.3.156
+ansible_user: root
+ansible_port: 22
+```
 
 <img src="./.assets/AWX使用入门/image-20251220152419587.png" alt="image-20251220152419587" style="zoom:50%;" />
 
