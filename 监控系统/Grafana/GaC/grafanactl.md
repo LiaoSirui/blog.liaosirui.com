@@ -58,6 +58,8 @@ grafanactl resources pull -p ./resources/ -o yaml  # or json
 
 ```bash
 grafanactl resources push -p ./resources/
+# 如果去除管理字段，保证可编辑，需要添加参数
+# --omit-manager-fields
 ```
 
 使用 Gac
