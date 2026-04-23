@@ -179,7 +179,7 @@ DELETE FROM journalentry;
 
 ![Confluence PDF导出中文支持_Confluence](./.assets/Confluence运维/resize,m_fixed,w_1184)
 
-- <https://github.com/chengda/popular-font>
+- <https://github.com/chengda/popular-fonts>
 
 ## 页面添加返回顶部
 
