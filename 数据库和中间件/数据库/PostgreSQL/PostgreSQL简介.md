@@ -8,7 +8,7 @@ WAL 官方文档：<https://www.postgresql.org/docs/16/wal-intro.html>
 
 ## 高可用方案
 
-- Stolon <https://github.com/zalando/postgres-operator>
+- Stolon
 
 ## 参考资料
 
