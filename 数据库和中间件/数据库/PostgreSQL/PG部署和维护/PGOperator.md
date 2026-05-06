@@ -188,6 +188,9 @@ spec:
 
   # Patroni settings
   patroni:
+    # pg_hba:
+    #   - local all all trust
+    #   - host all all 0.0.0.0/0 md5  # Use 'host' instead of 'hostssl'
     initdb:
       encoding: "UTF8"
       locale: "en_US.UTF-8"
