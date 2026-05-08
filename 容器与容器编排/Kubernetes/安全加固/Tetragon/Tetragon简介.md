@@ -13,7 +13,7 @@ Tetragon 提供了如下功能：
 
 最后一个侧重策略的执行，可以通过发送信号或覆盖系统调用的返回值对重要的安全事件做出反应；前三种侧重监控，并可以将监控数据与容器、Kubernetes 元数据进行关联
 
-![Tetragon Overview Diagram](./.assets/Tetragon简介/smart_observability.png)
+<img src="./.assets/Tetragon简介/smart_observability.png" alt="Tetragon Overview Diagram" style="zoom:50%;" />
 
 官方：
 
@@ -23,7 +23,7 @@ Tetragon 提供了如下功能：
 
 ### Tetragon 架构
 
-![图片](./.assets/Tetragon简介/tetragon_arch.png)
+<img src="./.assets/Tetragon简介/tetragon_arch.png" alt="图片" style="zoom: 67%;" />
 
 `tetragon` 容器中运行了 Tetragon 的 Daemon 进程，在这个容器中还可以执行 `tetra` 命令（tetragon CLI）
 

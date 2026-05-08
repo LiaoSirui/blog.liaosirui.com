@@ -48,7 +48,9 @@ helm pull csi-driver-nfs/csi-driver-nfs --untar
 
 ## 通过 CSI 创建 NFS 存储
 
-当 csi 的驱动安装完成后我们就可以通过 csi 的方式来使用我们的 nfs 存储了。
+当 CSI 的驱动安装完成后就可以通过 CSI 的方式来使用 NFS 存储。
+
+### 静态绑定
 
 比如创建：
 
@@ -105,7 +107,11 @@ pvc-nfs-static   Bound    pv-nfs   10Gi       RWX                           50s
 
 ```
 
-这里的核心配置是 PV 中的 `csi` 属性的配置，需要通过 `csi.driver` 来指定我们要使用的驱动名称，比如我们这里使用 nfs 的名称为 `nfs.csi.k8s.io`，然后就是根据具体的驱动配置相关的参数。
+这里的核心配置是 PV 中的 `csi` 属性的配置，需要通过 `csi.driver` 来指定我们要使用的驱动名称，比如这里使用 nfs 的名称为 `nfs.csi.k8s.io`，然后就是根据具体的驱动配置相关的参数。
+
+### StorageClass
+
+#### 固定路径
 
 同样还可以创建一个用于动态创建 PV 的 StorageClass 对象：
 
@@ -131,4 +137,11 @@ mountOptions:
 ```
 
 对于普通用户来说使用起来都是一样的，只需要管理员提供何时的 PV 或 StorageClass 即可，这里就使用的 CSI 的形式来提供 NFS 的存储。
+
+#### 使用 subdir
+
+```yaml
+parameters:
+  subDir: ${pvc.metadata.namespace}/${pvc.metadata.name}/nfs-${pv.metadata.name}
+```
 

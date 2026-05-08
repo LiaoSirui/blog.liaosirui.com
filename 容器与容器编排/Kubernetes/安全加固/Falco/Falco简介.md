@@ -20,3 +20,13 @@ Falco 可对任何涉及 Linux 系统调用的行为进行检测和报警。Falc
 - 一个非设备文件被写到 `/dev`
 - 一个标准的系统二进制文件，如 ls，正在进行一个外向的网络连接
 - 在 Kubernetes 集群中启动一个有特权的 Pod
+
+Falco 功能：
+
+![k8s_audit_falco](./.assets/Falco简介/k8s_audit_falco.png)
+
+## Falco 告警集中化展示
+
+基于 FalcoSideKick 集中式日志搜集架构：
+
+![evt_collect_display](./.assets/Falco简介/evt_collect_display.png)
