@@ -2,9 +2,17 @@
 
 策略执行是通过 Kubernetes events 来捕获的，Kyverno 还报告现有资源的策略违规行为。下图为 Kyverno 的整体架构：
 
-<img src="./.assets/Kyverno简介/1712888653949.png" alt="Kyverno架构" style="zoom: 40%;" />
+<img src="./.assets/Kyverno简介/1712888653949.png" alt="Kyverno架构" style="zoom: 67%;" />
 
 Kyverno 在 Kubernetes 集群中也是作为动态准入控制器运行的。Kyverno 从 kube-apiserver  接收验证和修改准入 webhook HTTP 回调，并应用匹配策略返回执行准入策略或拒绝请求的结果。Kyverno 策略可以使用资源  Kind、name 和标签选择器匹配资源，而且名称中支持通配符。
+
+<img src="./.assets/Kyverno简介/kyverno-installation.BFO-kFnO_ZGtT38.webp" alt="Kyverno Installation" style="zoom:67%;" />
+
+## 兼容性查询
+
+- <https://release-1-13-0.kyverno.io/docs/installation/>
+- ...
+- <https://release-1-17-0.kyverno.io/docs/installation/>
 
 ## 策略与规则
 
