@@ -4,126 +4,6 @@
 
 Velero 依赖对象存储保存备份数据，这里部署 MinIO 替代公有云对象存储
 
-```yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: velero
-
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: velero
-  name: minio
-  labels:
-    component: minio
-spec:
-  strategy:
-    type: Recreate
-  selector:
-    matchLabels:
-      component: minio
-  template:
-    metadata:
-      labels:
-        component: minio
-    spec:
-      nodeSelector:
-        kubernetes.io/hostname: dev-master
-      volumes:
-      - hostPath:
-          path: /data/minio
-          type: DirectoryOrCreate
-        name: storage
-      - name: config
-        emptyDir: {}
-      containers:
-      - name: minio
-        image: minio/minio:latest
-        imagePullPolicy: IfNotPresent
-        args:
-        - server
-        - /data
-        - --config-dir=/config
-        - --console-address=:9001
-        env:
-        - name: MINIO_ROOT_USER
-          value: "admin"
-        - name: MINIO_ROOT_PASSWORD
-          value: "minio123"
-        ports:
-        - containerPort: 9000
-        - containerPort: 9001
-        volumeMounts:
-        - name: storage
-          mountPath: /data
-        - name: config
-          mountPath: "/config"
-        resources:
-          limits:
-            cpu: "1"
-            memory: 2Gi
-          # requests:
-          #   cpu: "1"
-          #   memory: 2Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: velero
-  name: minio
-  labels:
-    component: minio
-spec:
-  sessionAffinity: None
-  type: NodePort
-  ports:
-  - name: port-9000
-    port: 9000
-    protocol: TCP
-    targetPort: 9000
-    nodePort: 30080
-  - name: console
-    port: 9001
-    protocol: TCP
-    targetPort: 9001
-    nodePort: 30081
-  selector:
-    component: minio
-
----
-apiVersion: batch/v1
-kind: Job
-metadata:
-  namespace: velero
-  name: minio-setup
-  labels:
-    component: minio
-spec:
-  template:
-    metadata:
-      name: minio-setup
-    spec:
-      # nodeSelector:
-      #   kubernetes.io/hostname: dev-master
-      restartPolicy: OnFailure
-      volumes:
-      - name: config
-        emptyDir: {}
-      containers:
-      - name: mc
-        image: minio/mc:latest
-        imagePullPolicy: IfNotPresent
-        command:
-        - /bin/sh
-        - -c
-        - "mc --config-dir=/config config host add velero http://minio.velero.svc.cluster.local:9000 admin minio123 && mc --config-dir=/config mb -p velero/velero"
-        volumeMounts:
-        - name: config
-          mountPath: "/config"
-```
-
 部署完成后，可以通过 `http://<nodeip>:30081` 访问 minio 的 console 页面
 
 如果需要在不同 Kubernetes 和存储池集群备份与恢复数据，需要将 MinIO 服务端安装在 Kubernetes 集群外，保证在集群发生灾难性故障时，不会对备份数据产生影响，可以通过二进制的方式进行安装
@@ -177,8 +57,6 @@ velero install \
 - 这里使用 MinIO 作为对象存储，MinIO 是兼容 S3 的，所以配置的 provider（声明使用的 Velero 插件类型）是 AWS `–secret-file` 用来提供访问 MinIO 的密钥
 - `–plugins` 使用的 velero 插件，MinIO 使用 AWS S3 兼容插件
 - s3Url 配置 MinIO 服务对外暴露的 nodePort 端口及部署节点 IP
-
-
 
 ## 使用
 
@@ -311,3 +189,55 @@ Preserve Service NodePorts:  auto
 ```
 
 只要将每个 velero 实例指向相同的对象存储，velero 就能将资源从一个群集迁移到另一个群集。此外还支持定时备份，触发备份 Hooks 等操作
+
+## Helm 部署
+
+参考：<https://github.com/jenting/velero-install/blob/main/velero/helm-install-velero-minio.sh>
+
+```bash
+helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts
+
+cat <<EOF > credentials-velero
+[default]
+aws_access_key_id = minio
+aws_secret_access_key = minio123
+EOF
+
+helm install velero \
+    --namespace=velero \
+    --create-namespace \
+    --set-file credentials.secretContents.cloud=credentials-velero \
+    --set configuration.backupStorageLocation[0].name=default \
+    --set configuration.backupStorageLocation[0].provider=aws \
+    --set configuration.backupStorageLocation[0].bucket=velero \
+    --set configuration.backupStorageLocation[0].config.region=minio-default \
+    --set configuration.backupStorageLocation[0].config.s3ForcePathStyle=true \
+    --set configuration.backupStorageLocation[0].config.s3Url=http://minio-default.velero.svc.cluster.local:9000 \
+    --set configuration.backupStorageLocation[0].config.publicUrl=http://localhost:9000 \
+    --set configuration.backupStorageLocation[1].name=primary \
+    --set configuration.backupStorageLocation[1].provider=aws \
+    --set configuration.backupStorageLocation[1].bucket=velero \
+    --set configuration.backupStorageLocation[1].config.region=minio-primary \
+    --set configuration.backupStorageLocation[1].config.s3ForcePathStyle=true \
+    --set configuration.backupStorageLocation[1].config.s3Url=http://minio-primary.velero.svc.cluster.local:9000 \
+    --set configuration.backupStorageLocation[2].name=secondary \
+    --set configuration.backupStorageLocation[2].provider=aws \
+    --set configuration.backupStorageLocation[2].bucket=velero \
+    --set configuration.backupStorageLocation[2].config.region=minio-secondary \
+    --set configuration.backupStorageLocation[2].config.s3ForcePathStyle=true \
+    --set configuration.backupStorageLocation[2].config.s3Url=http://minio-secondary.velero.svc.cluster.local:9000 \
+    --set snapshotsEnabled=true \
+    --set deployNodeAgent=true \
+    --set configuration.volumeSnapshotLocation[0].name=default \
+    --set configuration.volumeSnapshotLocation[0].provider=aws \
+    --set configuration.volumeSnapshotLocation[0].config.region=minio-default \
+    --set initContainers[0].name=velero-plugin-for-aws \
+    --set initContainers[0].image=velero/velero-plugin-for-aws:v1.7.0 \
+    --set initContainers[0].volumeMounts[0].mountPath=/target \
+    --set initContainers[0].volumeMounts[0].name=plugins \
+    vmware-tanzu/velero
+```
+
+## 其他插件
+
+- Alibaba Cloud <https://github.com/AliyunContainerService/velero-plugin>
