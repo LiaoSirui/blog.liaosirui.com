@@ -1,0 +1,1 @@
+Meson 是一个现代的开源软件构建系统（Build System）。它的主要作用是帮助开发者自动配置和管理代码的编译过程，类似于传统的 Make、CMake 或 Autotools
