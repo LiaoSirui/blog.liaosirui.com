@@ -170,9 +170,32 @@ endif()
 
 常量
 
-- TREU 常量：`1`、`ON` 、`YES`、`TRUE`、`Y`、非零整值
+- TREU 常量（不区分大小写）：`1`、`ON` 、`YES`、`TRUE`、`Y`、非零整值
 
-- FALSE 常量：`0`、`OFF`、`NO`、`FALSE`、`N`、`IGNORE`、`NOTFOUND`、`*-NOTFOUND`、空字符串
+- FALSE 常量（不区分大小写）：`0`、`OFF`、`NO`、`FALSE`、`N`、`IGNORE`、`NOTFOUND`、`*-NOTFOUND`、空字符串
+
+```cmake
+set(v "Hello")
+
+# 按照变量判断
+# 只要当它的值不是上述 FALSE 常量时为 true
+# 未定义变量为 "" 所以是 FALZE
+if(v)
+    message("${v} is true")
+else()
+    message("${v} is false")
+endif()
+# Hello is true
+
+# 按照字符串规则判断
+# 不是 FALSE 常量时为 true
+if($v)
+    message("'${v}' is true")
+else()
+    message("'${v}' is false")
+endif()
+# 'Hello' is false
+```
 
 运算法
 
@@ -180,27 +203,209 @@ endif()
 
 - 比较运算符：
 
-  - 数值：`LESS`、`GREATER`、`EQUAL`、`LESS_EQUAL`、`GTREATER_EQUAl`
+  - 数值：`LESS`、`GREATER`、`EQUAL`、`LESS_EQUAL`、`GTREATER_EQUAL`
 
-  - 字符串：`STRLESS`、`STRGREATER`、`STREQUAL`、`STRLESS_EQUAL`、`STRGTREATER_EQUAl`、`MATCHES`（正则匹配）
+  - 字符串：`STRLESS`、`STRGREATER`、`STREQUAL`、`STRLESS_EQUAL`、`STRGTREATER_EQUAL`、`MATCHES`（正则匹配）
 
   - 版本号：`VERSION_LESS`、`VERSION_GREATER`、`VERSION_EQUAL`、`VERSION_RLESS_EQUAL`、`VERSION_GTREATER_EQUAl`
 
   - 路径：`PATH_EQUAL`
+- 文件操作：`EXISTS`、`IS_READABLE`、`IS_WRITABLE`、`IS_EXECUTABLE`、`IS_NEWER_THAN`、`IS_DIRECTORY`、`IS_SYMLINK`、`IS_ABSOLUTE`
+- 存在性测试：`COMMAND`、`POLICY`、`TARGET`、`TEST`、`DEFINED`、`IN_LIST`
 
 正则匹配示例
 
 ```cmake
-set(MY_VERSION "v1.2.3")
-if(MY_VERSION MATCHES "v([0-9]+)\\.([0-9]+)")
+set(myVersion "v1.2.3")
+if(myVersion MATCHES "v([0-9]+)\\.([0-9]+)")
     message("Major: ${CMAKE_MATCH_1}") # Output: Major: 1
     message("Minor: ${CMAKE_MATCH_2}") # Output: Minor: 2
 endif()
 ```
 
+路径示例
 
+```cmake
+# 按照路径判断
+if("/path//to/myfile" PATH_EQUAL "/path/to/myfile")
+    message("PATH_EQUAL is true")
+else()
+    message("PATH_EQUAL is false")
+endif()
+# PATH_EQUAL is true
+
+# 按照字符串规则判断
+if("/path//to/myfile" STREQUAL "/path/to/myfile")
+    message("STREQUAL is true")
+else()
+    message("STREQUAL is false")
+endif()
+# STREQUAL is false
+```
+
+IN_LIST 示例
+
+```cmake
+set(list1 a b c d v)
+set(list2 e f g)
+
+set(v "f")
+
+# unset(v)
+# 如果 v 未定义, v 会被当成字符串
+if(v IN_LIST list1)
+    message("v is in list1")
+elseif(v IN_LIST list2)
+    message("v is in list2")
+else()
+    message("v is not in list1 or list2")
+endif()
+```
+
+Cmake 预定义变量
+
+```cmake
+# 针对不同的系统添加不同的源文件或者库
+if(UNIX)
+    message("build with UNIX")
+elseif(MSVC)
+    message("build with MSVC")
+elseif(MINGW)
+    message("build with MINGW")
+elseif(XCODE)
+    message("build with XCODE")
+else()
+    message("build with other compiler")
+endif()
+```
+
+使用 option 变量
+
+```cmake
+option(BUILD_MY_LIB "Build MyLib target")
+if(BUILD_MY_LIB)
+    add_library(MyLib my_lib.cpp)
+else()
+    message("Ignore MyLib target")
+endif()
+# cmake -D BUILD_MY_LIB=on
+```
+
+避免在源代码内构建和编译
+
+```cmake
+if(" ${CMAKE_SOURCE_DIR}" STREQUAL " ${CMAKE_BINARY_DIR}")
+    message(FATAL_ERROR "In-source builds are forbidden")
+endif()
+```
+
+### foreach  循环
+
+语法
+
+```cmake
+foreach(<loop_var> <items>)
+    <command>
+endforeach()
+```
+
+示例
+
+```cmake
+foreach(v a b c)
+    message("v: ${v}")
+endforeach()
+
+# IN LISTS
+set(list1 1 3 5 7)
+set(list2 2 4 6 8)
+foreach(v IN LISTS list1 list2)
+    message("v: ${v}")
+endforeach()
+
+# IN ITEMS
+foreach(v IN ITEMS 1 2 3 4)
+    message("v: ${v}")
+endforeach()
+
+# ZIP_LISTS
+# 合并遍历两组列表
+set(list1 1 3 5 7)
+set(list2 2 4 6 8)
+foreach(v IN ZIP_LISTS list1 list2)
+    message("v: (${v_0},${v_1})")
+endforeach()
+
+# RANGE
+# step 默认值是 1
+set(start 1)
+set(end 8)
+set(step 2)
+foreach(v RANGE ${start} ${end} ${step})
+    message("v: ${v}")
+endforeach()
+```
+
+### while 循环
+
+语法
+
+```cmake
+while(<condition>)
+    <command>
+endwhile()
+```
+
+其他
+
+```cmake
+# 跳过下次循环
+continue()
+
+# 退出循环
+break()
+```
 
 ## 函数和宏
+
+### 函数
+
+语法
+
+```cmake
+function(function_name args...)
+    # do something
+endfunction()
+```
+
+传参方式
+
+- 命名参数
+
+```cmake
+function(my_function a b)
+    message("a:${a}, b:${b}")
+endfunction()
+
+my_function(hello world)
+```
+
+- 未命名参数
+
+```cmake
+function(my_function a b)
+    message("a:${a}, b:${b}")
+    # ARGC 参数数量
+    # ARGV 参数列表
+    #    ARGV0 ARGV1 ... ARGVn (n<ARGC)
+    # ARGN 未命名参数列表
+    message("argn:${ARGN}")
+endfunction()
+
+my_function(hello world 1 2 3
+```
+
+- 关键字参数
 
 ## 生成器表达式
 
