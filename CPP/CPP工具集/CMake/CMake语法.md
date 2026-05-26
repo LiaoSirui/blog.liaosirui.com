@@ -407,7 +407,142 @@ my_function(hello world 1 2 3
 
 - 关键字参数
 
-## 生成器表达式
+```cmake
+function(my_function targetName)
+    message("targetName:${targetName}")
+    message("argv:${ARGV}")
+    # argv:myTarget;USE_MY_LIB;MY_LIB_PATH;/usr/local/lib;SOURCES;main.cpp;INCLUDES;include;other_include
+endfunction()
+
+my_function(myTarget
+    # option 关键字
+    USE_MY_LIB
+    # 单值关键字
+    MY_LIB_PATH "/usr/local/lib"
+    SOURCES "main.cpp"
+    # 多值关键字
+    INCLUDES "include" "other_include"
+)
+# 多出来的实参都是未命名参数
+```
+
+`cmake_parse_arguments` 为解析函数（function）或 宏（macros） 参数的命令；
+
+```cmake
+cmake_parse_arguments(<prefix> <options>
+                      <one_value_keywords> <multi_value_keywords> <args>...)
+
+cmake_parse_arguments(PARSE_ARGV <N> <prefix> <options>
+                      <one_value_keywords> <multi_value_keywords>)
+```
+
+1. **`<prefix>`**前缀, 解析出的参数都会按照 `prefix_参数名` 的形式形成新的变量;
+2. **`<options>`**: 可选值
+   - 此处包含可选项的变量名称, 对应的值为 `TRUE` 或 `FALSE`;
+   - 如果传递进来的参数包含此变量, 则为 `TRUE` 反之为 `FALSE`
+3. **`<one_value_keywords>`**: 单值关键词列表
+   - 每个关键词仅仅对应一个值
+4. **`<multi_value_keywords>`**: 多值关键词列表
+   - 每个关键词可对应多个值
+5. **`<args>...`** 参数, 一般传入 `${ARGN}` 即可
+
+示例
+
+```cmake
+function ( my_install )
+    set ( options OPTIONAL FAST )
+    set ( oneValueArgs DESTINATION RENAME )
+    set ( multiValueArgs TARGETS CONFIGURATIONS )
+    cmake_parse_arguments( MY_INSTALL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
+    message( STATUS "MY_INSTALL_OPTIONAL = ${MY_INSTALL_OPTIONAL}" )
+    message( STATUS "MY_INSTALL_FAST = ${MY_INSTALL_FAST}" )
+    message( STATUS "MY_INSTALL_DESTINATION = ${MY_INSTALL_DESTINATION}" )
+    message( STATUS "MY_INSTALL_RENAME = ${MY_INSTALL_RENAME}" )
+    message( STATUS "MY_INSTALL_TARGETS = ${MY_INSTALL_TARGETS}" )
+    message( STATUS "MY_INSTALL_CONFIGURATIONS = ${MY_INSTALL_CONFIGURATIONS}" )
+    message( STATUS "MY_INSTALL_UNPARSED_ARGUMENTS = ${MY_INSTALL_UNPARSED_ARGUMENTS}" )
+    message( STATUS "MY_INSTALL_KEYWORDS_MISSING_VALUES = ${MY_INSTALL_KEYWORDS_MISSING_VALUES}" )
+endfunction()
+
+my_install(TARGETS foo bar DESTINATION bin OPTIONAL blub)
+```
+
+`<prefix>_UNPARSED_ARGUMENTS`: 表示未被使用的参数变量（ `${ARGN}` 里面）
+
+`<prefix>_KEYWORDS_MISSING_VALUES`：定义了关键词，但是没有对应的值
+
+### 返回值
+
+通过传参的方式接受返回值
+
+```cmake
+function(my_function returnValue)
+    set(${returnValue} "hello world" PARENT_SCOPE)
+endfunction()
+
+my_function(result)
+message("result:${result}")
+```
+
+使用 return 命令
+
+```cmake
+function(my_function returnValue)
+    set(${returnValue} "hello world")
+    return(PROPAGATE ${returnValue})
+endfunction()
+
+my_function(result)
+message("result:${result}")
+```
+
+### 宏
+
+函数有自己的栈，而宏则相当于将代码直接插入，宏的参数会被替换成字符串
+
+宏中尽量避免使用 return 造成混淆
+
+```cmake
+macro(myMacro args...)
+    # command
+endmacro()
+```
+
+示例
+
+```cmake
+function(my_function a)
+    if(a)
+        message("a is true")
+    else()
+        message("a is false")
+    endif()
+endfunction()
+
+macro(my_macro a)
+    if(a)
+        message("a is true")
+    else()
+        message("a is false")
+    endif()
+endmacro()
+
+# 函数中参数做为变量来判断
+my_function(hello) # true
+
+# 宏中参数做为字符串来判断
+my_macro(hello)# false
+```
+
+## 其他
+
+### List 命令
+
+```cmake
+list(操作关键字 <listVar> <其他参数> ...)
+```
+
+### 生成器表达式
 
 ## 目标属性
 
@@ -422,3 +557,7 @@ my_function(hello world 1 2 3
 - `STATIC_LIBRARY_FLAGS`
 
 - `SOURCES`
+
+## 其他参考资料
+
+- <https://www.cnblogs.com/gaox97329498/p/10952732.html>
