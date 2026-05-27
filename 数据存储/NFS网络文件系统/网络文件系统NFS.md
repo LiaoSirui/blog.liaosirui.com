@@ -331,3 +331,25 @@ mount -o nolock -o mtype=hard -o timeout=60 \\nas.server.ip_or_domain\somdir S:
 ```bash
 umount S:
 ```
+
+## 查看客户端
+
+NFS 用 TCP 2049 端口，所有客户端连接都在这
+
+```bash
+ss -tn state established '( sport = :2049 )'
+```
+
+NFSv4 还可以使用：
+
+```bash
+# 列出所有 NFSv4 客户端
+ls /proc/fs/nfsd/clients/
+
+# 查看每个客户端详情
+for c in /proc/fs/nfsd/clients/*/; do
+  echo "=== $c ==="
+  cat $c/info
+done
+```
+
