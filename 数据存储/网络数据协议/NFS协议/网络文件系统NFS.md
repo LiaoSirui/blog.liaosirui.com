@@ -178,9 +178,9 @@ touch /mnt/nfs/raid10/test.txt
 10.244.244.3:/data/raid10 /mnt/nfs/raid10 nfs defaults,nolock,retrans=2,_netdev 0 0
 ```
 
-### Exportfs
+### exportfs
 
-Exportfs 命令的常用选项为 -a、-r、-u 和 -v，各选项的含义如下
+exportfs 命令的常用选项为 -a、-r、-u 和 -v，各选项的含义如下
 
 - **-a**：表示全部挂载或者卸载。
 - **-r**：表示重新挂载。
@@ -202,6 +202,14 @@ Exportfs 命令的常用选项为 -a、-r、-u 和 -v，各选项的含义如下
 > exportfs -arv
 exporting 192.168.72.0/24:/tmp
 exporting 192.168.72.0/24:/home/nfstestdir
+```
+
+### 网络防火墙
+
+需要在防火墙开启端口111和2049的tcp/udp，开启 tcp 端口 2020、662、892、32803，开启 udp 端口 32769
+
+```bash
+firewall-cmd  --add-port={111/tcp,111/udp,2049/tcp,2049/udp,32769/udp,2020/tcp,662/tcp,892/tcp,32803/tcp}  --permanent
 ```
 
 ## NFS 版本
@@ -243,7 +251,23 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\ClientForNFS\CurrentVersion\Default
   - `2` 表示 NFSv3
   - `3` 表示 NFSv4
 
-## 挂载参数
+## 客户端挂载 NFS
+
+### showmount
+
+showmount 命令中可用的参数以及作用
+
+| 参数 | 作用                                        |
+| ---- | ------------------------------------------- |
+| -e   | 显示 NFS 服务器的共享列表                   |
+| -a   | 显示本机挂载的文件资源的情况 NFS 资源的情况 |
+| -v   | 显示版本号                                  |
+
+```bash
+showmount -e 192.168.10.10
+```
+
+### 挂载参数
 
 <https://help.aliyun.com/document_detail/90529.html#section-jyi-hyd-hbr>
 
