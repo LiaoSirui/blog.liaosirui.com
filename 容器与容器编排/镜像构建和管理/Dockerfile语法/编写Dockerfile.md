@@ -80,7 +80,7 @@ RUN apt-get install -y mysql-server="${MYSQL_VERSION}" \
 EXPOSE 设置容器暴露的端口，可以指定一个或多个端口
 
 ```dockerfile
-
+EXPOSE 80
 ```
 
 <https://www.cnblogs.com/jie-fang/p/10279690.html>

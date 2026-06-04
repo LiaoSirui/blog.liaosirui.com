@@ -1,4 +1,8 @@
-## 简介
+## Nvidia GPU Operator 简介
+
+GPU Operator 是一种用于在 Kubernetes 上自动配置和管理 Nvidia GPU 的 Kubernetes Operator。一旦完全初始化，GPU 将被作为可在 Kubernetes 节点上使用的资源进行公开。
+
+## 可选组件
 
 NVIDIA GPU Operator 包含如下的几个组件：
 

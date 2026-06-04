@@ -1,0 +1,1 @@
+dnf 优化 `dnf install -y --setopt=install_weak_deps=False --setopt=tsflags=nodocs`
