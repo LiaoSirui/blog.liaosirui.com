@@ -115,6 +115,8 @@ git reset 是直接删除指定的 commit，看似达到的效果是一样的，
 git config --global filter.lfs.smudge "git-lfs smudge --skip -- %f"
 
 git config --global filter.lfs.process "git-lfs filter-process --skip"
+
+export GIT_LFS_SKIP_SMUDGE=1
 ```
 
 ### Git  代理

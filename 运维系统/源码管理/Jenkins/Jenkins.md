@@ -28,7 +28,7 @@ services:
       - "50000:50000"
     environment:
       - TZ=Asia/Shanghai
-      - JENKINS_UC=https://mirrors.cloud.tencent.com/jenkins/
+      # - JENKINS_UC=https://mirrors.cloud.tencent.com/jenkins/
       - JENKINS_UC_DOWNLOAD=https://mirrors.cloud.tencent.com/jenkins/
     volumes:
       - /var/jenkins_home:/var/jenkins_home
