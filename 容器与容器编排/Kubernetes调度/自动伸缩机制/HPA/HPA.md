@@ -1,1 +1,0 @@
-Horizontal Pod Autoscaling（Pod 水平自动伸缩），简称 HPA，HPA 通过监控分析一些控制器控制的所有 Pod 的负载变化情况来确定是否需要调整 Pod 的副本数量
