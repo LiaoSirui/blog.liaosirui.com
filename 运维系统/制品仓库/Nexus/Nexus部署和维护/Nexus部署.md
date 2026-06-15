@@ -37,3 +37,45 @@ dnf install -y tzdata \
 
 查找类名所在文件夹
 
+## 二进制下载地址
+
+- <https://help.sonatype.com/en/download-archives---repository-manager-3.html>
+
+例如：<https://download.sonatype.com/nexus/3/nexus-3.93.0-06-linux-x86_64.tar.gz>
+
+- 文档地址：<https://help.sonatype.com/en/sonatype-nexus-repository-system-requirements.html#filehandles>
+
+用户
+
+```bash
+groupadd -g 200 nexus && useradd -u 200 -g nexus -r -s /sbin/nologin -M nexus
+chown -R nexus:nexus /mnt/nexus/sonatype-work
+```
+
+systemd
+
+```ini
+# /usr/lib/systemd/system/nexus.service
+[Unit]
+Description=Sonatype Nexus
+After=network.target
+# 在挂载完成之后才启动
+# After=mnt-nexus.mount
+# Requires=mnt-nexus.mount
+RequiresMountsFor=/mnt/nexus
+
+[Service]
+Type=forking
+LimitNPROC=65536
+LimitNOFILE=65536
+# 设置工作目录为挂载点
+WorkingDirectory=/mnt/nexus/nexus-3.93.0-06
+ExecStart=/mnt/nexus/nexus-3.93.0-06/bin/nexus start
+ExecStop=/mnt/nexus/nexus-3.93.0-06/bin/nexus stop
+User=nexus
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+```
+
