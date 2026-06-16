@@ -1,4 +1,4 @@
-## Systemd 工具集
+## systemd 工具集
 
 - systemctl：用于检查和控制各种系统服务和资源的状态
 - bootctl：用于查看和管理系统启动分区
@@ -62,42 +62,45 @@ $ systemctl cat docker.service
 
 ```bash
 # 显示系统状态
-$ systemctl status
+systemctl status
 
 # 显示单个 Unit 的状态
-$ ystemctl status bluetooth.service
+systemctl status bluetooth.service
 
 # 显示远程主机的某个 Unit 的状态
-$ systemctl -H root@rhel7.example.com status httpd.service
+systemctl -H root@rhel7.example.com status httpd.service
 ```
 
 ### Unit 的管理
 
 ```ini
 # 立即启动一个服务
-$ sudo systemctl start apache.service
+sudo systemctl start apache.service
 
 # 立即停止一个服务
-$ sudo systemctl stop apache.service
+sudo systemctl stop apache.service
 
 # 重启一个服务
-$ sudo systemctl restart apache.service
+sudo systemctl restart apache.service
 
 # 杀死一个服务的所有子进程
-$ sudo systemctl kill apache.service
+sudo systemctl kill apache.service
 
 # 重新加载一个服务的配置文件
-$ sudo systemctl reload apache.service
+sudo systemctl reload apache.service
 
 # 重载所有修改过的配置文件
-$ sudo systemctl daemon-reload
+sudo systemctl daemon-reload
 
 # 显示某个 Unit 的所有底层参数
-$ systemctl show httpd.service
+systemctl show httpd.service
 
 # 显示某个 Unit 的指定属性的值
-$ systemctl show -p CPUShares httpd.service
+systemctl show -p CPUShares httpd.service
 
 # 设置某个 Unit 的指定属性
-$ sudo systemctl set-property httpd.service CPUShares=500
+systemctl set-property httpd.service CPUShares=500
+
+# 清理 systemd 单元的 failed 状态
+systemctl reset-failed nginx.service
 ```
