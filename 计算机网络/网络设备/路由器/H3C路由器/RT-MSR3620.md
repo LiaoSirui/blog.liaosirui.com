@@ -120,6 +120,7 @@ interface gigabitethernet 0/0
 
 # 配置网关
 # ip route-static 0.0.0.0 0.0.0.0 192.168.71.1
+# ip route-static 0.0.0.0 0.0.0.0 Dialer 1
 
 # NAT 转换
 # acl basic 2000
@@ -275,5 +276,29 @@ with manager.connect(**main_router) as netconf_connect:
     else:
         logging.info("H3C 设备保存失败")
 
+```
+
+## PPPoE 拨号
+
+```bash
+[RouterH3C]interface Dialer 1
+[RouterH3C-Dialer1]nat outbound
+[RouterH3C-Dialer1]quit
+
+[RouterH3C]ip route-static 0.0.0.0 0.0.0.0 Dialer 1
+
+[RouterH3C]security-zone name Trust
+[RouterH3C-security-zone-Trust]import interface Dialer 1
+[RouterH3C-security-zone-Trust]quit
+```
+
+调优
+
+```bash
+# 进入 NAT 出口接口
+[H3C] interface Dialer 1
+
+# 设置映射行为为端点无关（关键！）
+[H3C-Dialer1] nat mapping-behavior endpoint-independent
 ```
 
