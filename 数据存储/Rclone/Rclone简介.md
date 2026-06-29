@@ -33,3 +33,5 @@ https://downloads.rclone.org/rclone-current-linux-amd64.zip
 ## 参考资料
 
 - <https://cloud.tencent.com/developer/article/2192254>
+
+- 挂载参考：<https://rclone.cn/storage/>
