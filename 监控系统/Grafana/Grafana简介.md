@@ -54,6 +54,13 @@ Runs as the grafana user by default (instead of root)
 All default volumes removed
 ```
 
+## 插件
+
+```bash
+# Dynamic Text
+grafana cli plugins install marcusolsson-dynamictext-panel
+```
+
 ## 参考资料
 
 - <https://cloud.tencent.com/developer/article/2192174?from_column=20421&from=20421>
