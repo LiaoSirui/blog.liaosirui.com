@@ -170,6 +170,45 @@ storcli64 /c0/e252/s3 add hotsparedrive DGs=0
 storcli64 /c0/s0 show all
 ```
 
+## 检查磁盘
+
+Error Count
+
+```bash
+# storcli64 /c0/eall/sall show all
+
+# 没有 EID
+storcli64 /c0/sall show all | awk '
+/^Drive \/c[0-9]+\/e[0-9]+\/s[0-9]+ -/ {disk=$2}
+/Media Error Count/ {media=$NF}
+/Other Error Count/ {other=$NF}
+/Predictive Failure Count/ {pred=$NF; 
+  if (media>0 || other>0 || pred>0) 
+    printf "%s Media=%s Other=%s Predictive=%s [WARN]\n", disk, media, other, pred
+  else 
+    printf "%s Media=%s Other=%s Predictive=%s [OK]\n", disk, media, other, pred
+}'
+```
+
+检查虚拟盘坏块表（BBM）
+
+```bash
+storcli64 /c0/vall show bbmt
+```
+
+验证 RAID 冗余数据（校验 / 镜像）是否与实际数据匹配：
+
+```bash
+# 启动一致性检查
+storcli64 /c0/v0 start cc
+
+# 查看进度
+storcli64 /c0/v0 show cc
+
+# 查看结果（检查是否有不一致）
+storcli64 /c0 show events | grep -iE "inconsist|cc"
+```
+
 ## 参考资料
 
 - <https://www.cnblogs.com/luxf0/p/17630732.html>
