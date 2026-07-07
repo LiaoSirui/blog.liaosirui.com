@@ -42,3 +42,21 @@ jviewer.jnlp
 # -Djava.library.path=
 ```
 
+## Firefox
+
+firefox 访问 ssl 页面
+
+```bash
+# 地址栏输入 about:config → 接受风险
+security.tls.version.min                    → 1
+security.tls.version.enable-deprecated      → true
+security.ssl3.deprecated.rsa_des_ede3_sha   → true
+
+security.ssl3.rsa_aes_128_sha              → true
+security.ssl3.rsa_aes_256_sha              → true
+security.ssl3.rsa_des_ede3_sha             → true
+
+security.ssl3.dhe_rsa_aes_128_sha          → true
+security.ssl3.dhe_rsa_aes_256_sha          → true
+```
+

@@ -120,6 +120,13 @@ ipmitool user list 1
 ipmitool user set password 1 abc-123
 ```
 
+## 重启
+
+```bash
+ipmitool mc reset cold   # BMC 冷启动  
+ipmitool mc reset warm   # BMC 热启动 
+```
+
 ## 参考文档
 
 - <https://www.cnblogs.com/HByang/p/16127044.html>
