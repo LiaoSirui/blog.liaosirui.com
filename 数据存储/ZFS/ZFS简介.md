@@ -19,3 +19,9 @@ systemctl enable --now zfs-import-cache zfs-import.target zfs-mount zfs.target z
 
 zpool 负责"存储从哪来"(物理磁盘管理),dataset 负责"存储怎么用"(逻辑划分与策略管理)。建议按用途划分 dataset(如 home、数据库、媒体、备份各一个),而不是把所有东西塞进池的根目录。
 
+## zpool
+
+```bash
+zpool status
+```
+
