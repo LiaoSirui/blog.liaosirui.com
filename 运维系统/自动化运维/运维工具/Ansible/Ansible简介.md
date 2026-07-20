@@ -64,24 +64,14 @@ Collections 是 Ansible 2.9+ 引入的更高级的打包方式，它包含：多
 
 ## Ansible 安装
 
-通过 pip 安装
+通过 uv 安装
 
 ```bash
-# 用 pyenv 安装较新版本的 python
-export PIPX_DEFAULT_PYTHON=$(pyenv root)/shims/python3.13
+# Ansible Core
+uv tool install "ansible-core"
 
-pipx install \
-    --python ${PIPX_DEFAULT_PYTHON} \
-    --pip-args="--no-cache-dir" \
-    --include-deps \
-    "ansible"
-
-# 如果是开发 ansible playbook，建议安装：
-pipx install \
-    --python ${PIPX_DEFAULT_PYTHON} \
-    --pip-args="--no-cache-dir" \
-    --include-deps \
-    "ansible-dev-tools"
+# 建议安装：
+uv tool install "ansible-dev-tools"
 ```
 
 安装后确认：
@@ -90,7 +80,7 @@ pipx install \
 ansible --version
 ```
 
-离线安装：通过制作 venv（可以选用 Pyenv 进行管理）
+离线安装：通过制作 venv
 
 ## 参考文档
 
