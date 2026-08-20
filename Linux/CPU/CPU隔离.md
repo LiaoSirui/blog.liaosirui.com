@@ -8,6 +8,8 @@ isolcpus=4,5,6,7
 # isolcpus=4-7
 ```
 
+`isolcpus=managed_irq,domain,1-15`
+
 ## 参考资料
 
 - <https://cloud.tencent.com/developer/article/1984433>
