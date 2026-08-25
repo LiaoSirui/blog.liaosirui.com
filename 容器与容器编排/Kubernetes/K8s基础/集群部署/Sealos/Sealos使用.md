@@ -1,6 +1,6 @@
 ## 安装 Sealos
 
-添加 Yum 源
+添加 yum 源
 
 ```bash
 > cat >> /etc/yum.repos.d/sealos.repo << __EOF__
