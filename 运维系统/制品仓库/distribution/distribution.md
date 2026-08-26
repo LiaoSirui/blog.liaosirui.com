@@ -1,3 +1,5 @@
+distribution registry
+
 文件 layout
 
 ```plain
