@@ -36,11 +36,16 @@ JumpServer 采纳分布式架构，支持多机房跨区域部署，支持横向
 
 ### helm 安装
 
-
-
 ```bash
 helm repo add jumpserver https://jumpserver.github.io/helm-charts
 ```
+
+以下两个组件如果不使用可以关闭，从而减少资源消耗
+
+在环境变量文件里把 CELERY_ENABLED=0 和 CHEN_ENABLED=0 取消注释即可
+
+- Chen 是服务于数据库的组件，用于通过 Web GUI 方式访问数据库资产。
+- Celery 是处理异步任务的组件，用于执行 JumpServer 相关的自动化任务。
 
 ### compose 安装
 
