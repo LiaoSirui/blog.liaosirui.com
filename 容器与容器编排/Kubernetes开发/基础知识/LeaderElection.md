@@ -1,0 +1,3 @@
+在实际部署时，为了保证 Controller 的高可用，我们常常同时运行多个 Controller 实例。在这种情况下，多个 Controller 实例之间需要进行 Leader Election。被选中成为 Leader 的 Controller 实例才执行 Watch 和 Reconcile 逻辑，其余 Controller 处于等待状态。当 Leader 出现问题后，另一个实例会被重新选为 Leader，接替原 Leader 继续执行。
+
+Kubernetes client-go 中提供了 leaderelection package。该 package 通过将 Kubernetes 的 lease 资源作为分布式锁来实现了选主逻辑。Kubernetes 为 Controller 的 Leader Election 创建一个 Lease 对象，该对象 spec 中的 holderIdentity 是当前的 Leader，一般会使用 Leader 的 pod name 作为 Identity。leaseDurationSeconds 是锁的租赁时间，renewTime 则是上一次的更新时间。参与选举的实例会判断当前是否存在该 Lease 对象，如果不存在，则会创建一个 Lease 对象，并将 holderIdentity 设为自己，成为 Leader 并执行调谐逻辑。其他实例则会定期检测该 Lease 对象，如果发现租赁过期，则会试图将 holderIdentity 设为自己，成为新的 Leader。

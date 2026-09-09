@@ -28,8 +28,6 @@ client-go 是一个调用 kubernetes 集群资源对象 API 的客户端，即�
 
 ## 参考资料
 
-<https://herbguo.gitbook.io/client-go/informer>
-
-https://www.huweihuang.com/kubernetes-notes/develop/client-go.html
-
-<https://www.backendcloud.cn/2022/11/24/client-go-1/>
+- <https://herbguo.gitbook.io/client-go/informer>
+- https://www.huweihuang.com/kubernetes-notes/develop/client-go.html
+- <https://www.backendcloud.cn/2022/11/24/client-go-1/>

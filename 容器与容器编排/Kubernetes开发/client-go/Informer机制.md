@@ -1,1 +1,0 @@
-![img](.assets/informer.svg)

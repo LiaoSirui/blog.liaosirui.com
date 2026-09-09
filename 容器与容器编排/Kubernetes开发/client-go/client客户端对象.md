@@ -1,8 +1,6 @@
 ## Client 客户端对象
 
-client-go 的客户端对象有四个，关系如下：
-
-![img](.assets/client.svg)
+client-go 的客户端对象有四个
 
 四种客户端都可以通过 kubeconfig 配置信息连接到指定到 Kubernetes API Server
 
