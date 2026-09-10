@@ -1,0 +1,1 @@
+用 envtest 写单元测试。 controller-runtime 自带的 envtest 能起一个真实的 API Server + etcd（不需完整集群），是验证 "幂等""finalizer 正确性 " 的最好方式。
