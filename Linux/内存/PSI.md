@@ -18,3 +18,33 @@ kubectl get --raw "/api/v1/nodes/<node-name>/proxy/metrics/cadvisor" | \
     grep 'container_pressure_cpu_waiting_seconds_total{container="cpu-stress"'
 ```
 
+容器监控
+
+```yaml
+- alert: ContainerCpuPsiHigh
+  expr: sum by (namespace, pod, container) (rate(container_pressure_cpu_waiting_seconds_total[5m])) > 0.20
+  for: 3m
+  labels:
+  severity: warning
+  annotations:
+  summary: "容器 CPU 压力过高"
+  description: "命名空间 {{ $labels.namespace }} 中的 Pod {{ $labels.pod }} (容器 {{ $labels.container }}) 在过去 5 分钟内，有超过 20% 的时间因等待 CPU 而停滞，请检查 CPU 资源分配或节点负载。"
+- alert: ContainerMemoryPsiSevere
+  expr: sum by (namespace, pod, container) (rate(container_pressure_memory_stalled_seconds_total[5m])) > 0.10
+  for: 2m
+  labels:
+    severity: critical
+  annotations:
+    summary: "容器内存完全停滞（严重严重）"
+    description: "容器 {{ $labels.container }} 所有任务有超过 10% 的时间因为等待内存而完全阻塞，可能即将触发 OOM 杀除！"
+- alert: ContainerIoPsiHigh
+  expr: sum by (namespace, pod, container) (rate(container_pressure_io_waiting_seconds_total[5m])) > 0.15
+  for: 5m
+  labels:
+    severity: warning
+  annotations:
+    summary: "容器 I/O 压力过高"
+    description: "容器 {{ $labels.container }} 出现 I/O 阻塞，过去 5 分钟等待 I/O 时间占比超过 15%。"
+
+```
+
