@@ -1,0 +1,1 @@
+<https://wasmedge.org/book/en/quick_start/run_in_aot_mode.html>

@@ -1,0 +1,1 @@
+在 Vim 环境下开发 GO，可参考：<https://github.com/fatih/vim-go>
