@@ -1,3 +1,5 @@
+完整流程：用户目标→拆解任务→推理决策→读取记忆→调用工具 / MCP 执行→反思纠错→输出答案 / 文件，循环迭代完成任务。
+
 ```mermaid
 sequenceDiagram
     autonumber
