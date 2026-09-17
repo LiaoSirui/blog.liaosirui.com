@@ -4,7 +4,11 @@
 
 ```bash
 my-skill/
-└── SKILL.md
+├── SKILL.md          # 📋 SOP（标准作业程序）- 专家的行动剧本
+├── scripts/          # 🔧 工具（Tools）- 确定性的可靠函数
+│   └── processor.py
+└── reference/        # 📚 资源（Resources）- API 文档、配置文件
+    └── guide.md
 ```
 
 `SKILL.md` 基本模板:

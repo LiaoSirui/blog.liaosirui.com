@@ -5,6 +5,13 @@
 - <https://www.skills.sh/>
 - <https://github.com/obra/superpowers>
 
+## 第三方 skill
+
+```bash
+gh skills install github/awesome-copilot convert-pdf-to-md
+gh skills install github/awesome-copilot convert-word-to-md
+```
+
 ## 自维护 skill repo
 
 推荐将所有团队 Skill 放在同一个 Git 仓库中，用目录隔离不同 Skill。
