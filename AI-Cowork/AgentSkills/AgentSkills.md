@@ -25,9 +25,9 @@
 
 那么问题来了，我不想每次开发项目的时候都啰里啰嗦的写这么一大段，能不能让 Claude Code“记住”我的这些要求，我不用每次都叮嘱呢？
 
-Claude Code 提供了一个方法：我们可以把这一大段要求放到一个单独的文件中，以 markdown 格式书写。
+Claude Code 提供了一个方法：可以把这一大段要求放到一个单独的文件中，以 markdown 格式书写。
 
-后续我们在让 Claude Code 干活的时候，他就把这个文件一起带上发给 AI 了，这样就不用每次都要写一遍了。
+后续在让 Claude Code 干活的时候，他就把这个文件一起带上发给 AI 了，这样就不用每次都要写一遍了。
 
 <img src="./.assets/AgentSkills/4ee980a5-8dff-4721-8344-abdc1696ff3c.jpg" style="zoom: 50%;" />
 
@@ -35,7 +35,7 @@ Claude Code 提供了一个方法：我们可以把这一大段要求放到一�
 
 能不能简化一下这个流程：只有当真正需要用到这个文件的时候，Claude Code 才把它发给 AI 呢？
 
-我们可以这样做：给这个文件取个名字和描述，放在文件最开始的地方，同样还是以 markdown 格式书写。这两个字段简单介绍了这个文件叫啥，是干啥用的。
+可以这样做：给这个文件取个名字和描述，放在文件最开始的地方，同样还是以 markdown 格式书写。这两个字段简单介绍了这个文件叫啥，是干啥用的。
 
 <img src="./.assets/AgentSkills/8c868eae-04cb-4670-a477-0f4b30ab364c.png" style="zoom: 50%;" />
 
@@ -69,7 +69,7 @@ Claude Code 与 AI 交互的时候，只需要把这些文档的名字和描述�
 
 <img src="./.assets/AgentSkills/a714b77c-392b-4687-9848-06aa8d9ce4a6.png" style="zoom:50%;" />
 
-回到我们这个网站 UI 设计的 Skill，随着你不断的迭代，这个 markdown 文件也变得越来越长。
+回到这个网站 UI 设计的 Skill，随着你不断的迭代，这个 markdown 文件也变得越来越长。
 
 因为好看的 UI 样式实在太多了，各种各样的风格层出不穷，你很难用一个单一的 markdown 文档来全部写完。
 
@@ -113,11 +113,11 @@ Claude Code 与 AI 交互的时候，只需要把这些文档的名字和描述�
 
 <img src="./.assets/AgentSkills/c90db544-d6a9-4a28-97b0-d7b832a9aafd.jpg" style="zoom:50%;" />
 
-通过这个 Skill，我们可以让 Claude Code 这样的编程智能体开发出 UI 更美观的产品。
+通过这个 Skill，可以让 Claude Code 这样的编程智能体开发出 UI 更美观的产品。
 
-而这个 Skill 背后的原理，正如我们前面介绍的那样。
+而这个 Skill 背后的原理，正如前面介绍的那样。
 
-最后让我们来梳理一下整个的过程。
+最后让来梳理一下整个的过程。
 
 首先，每个 Skill 都需要一个 Markdown 文件，并且在文件的最开始有名字和描述两个字段，这属于这个 Skill 的元数据 Meta Data。
 
