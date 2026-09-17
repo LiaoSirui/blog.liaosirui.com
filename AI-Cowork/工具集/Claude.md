@@ -58,3 +58,24 @@ Claude Code 区分三个模型级别（Opus > Sonnet > Haiku），Fast/Think 模
 }
 ```
 
+其他配置：
+
+```json
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "model": "主力模型 ID",
+  "advisorModel": "顾问模型 ID",
+  "availableModels": ["sonnet", "opus"],
+  "fallbackModel": ["备用模型1", "备用模型2"],
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "API Key",
+    "ANTHROPIC_BASE_URL": "端点 URL",
+    "ANTHROPIC_MODEL": "覆盖当前会话模型（优先级高于 model 字段）",
+    "ANTHROPIC_SMALL_FAST_MODEL": "后台轻量任务模型",
+    "MAX_THINKING_TOKENS": "0",
+    "DISABLE_AUTO_COMPACT": "1"
+  }
+}
+```
+
+- MAX_THINKING_TOKENS 限制模型扩展思考（Extended Thinking）最大 Token 预算的环境变量。调低或设为 0：限制思考过程以节省 Token 消耗，或者直接关闭思考模式来处理简单任务。
