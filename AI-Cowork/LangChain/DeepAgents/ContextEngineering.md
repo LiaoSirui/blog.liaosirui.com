@@ -286,3 +286,127 @@ agent = create_deep_agent(
 ```
 
 权限规则在工具调用前按声明顺序求值，采用 first-match-wins：第一个同时匹配 `operations` 和 `paths` 的规则决定结果；如果没有规则匹配，则默认允许。因此配置权限时，应将更具体的规则放在更宽泛的规则之前。
+
+`FilesystemPermission` 的 `mode` 决定命中规则后的处理方式：
+
+| `mode`        | 行为                     | 适用场景                             |
+| ------------- | ------------------------ | ------------------------------------ |
+| `"allow"`     | 允许操作继续执行         | 为特定路径设置显式例外               |
+| `"deny"`      | 直接拒绝，不执行文件操作 | 无论谁发起都不应访问的路径           |
+| `"interrupt"` | 暂停并等待人工决策       | 可以操作，但必须先经过审批的敏感路径 |
+
+`mode="interrupt"` 需要 Checkpointer，并使用与工具审批相同的 `Command(resume=...)` 恢复协议
+
+### 安全策略：PolicyWrapper
+
+对于需要拦截策略（速率限制、审计日志、内容检查）的场景，可以通过继承或包装后端实现：
+
+方式一：继承现有后端
+
+```python
+from deepagents.backends.filesystem import FilesystemBackend
+from deepagents.backends.protocol import WriteResult, EditResult, DeleteResult
+
+class GuardedBackend(FilesystemBackend):
+    def __init__(self, *, deny_prefixes: list[str], **kwargs):
+        super().__init__(**kwargs)
+        self.deny_prefixes = [p if p.endswith("/") else p + "/" for p in deny_prefixes]
+
+    def write(self, file_path: str, content: str) -> WriteResult:
+        if any(file_path.startswith(p) for p in self.deny_prefixes):
+            return WriteResult(error=f"写入被拒绝：{file_path}")
+        return super().write(file_path, content)
+
+    def edit(self, file_path: str, old_string: str, new_string: str,
+             replace_all: bool = False) -> EditResult:
+        if any(file_path.startswith(p) for p in self.deny_prefixes):
+            return EditResult(error=f"编辑被拒绝：{file_path}")
+        return super().edit(file_path, old_string, new_string, replace_all)
+
+    def delete(self, file_path: str) -> DeleteResult:
+        if any(file_path.startswith(p) for p in self.deny_prefixes):
+            return DeleteResult(error=f"删除被拒绝：{file_path}")
+        return super().delete(file_path)
+```
+
+方式二：通用包装器（适用于任何后端）
+
+```python
+from deepagents.backends.protocol import BackendProtocol, WriteResult, EditResult, DeleteResult
+
+class PolicyWrapper(BackendProtocol):
+    def __init__(self, inner: BackendProtocol, deny_prefixes: list[str]):
+        self.inner = inner
+        self.deny_prefixes = [p if p.endswith("/") else p + "/" for p in deny_prefixes]
+
+    def _deny(self, path: str) -> bool:
+        return any(path.startswith(p) for p in self.deny_prefixes)
+
+    def ls(self, path): return self.inner.ls(path)
+    def read(self, file_path, offset=0, limit=2000): return self.inner.read(file_path, offset=offset, limit=limit)
+    def grep(self, pattern, path=None, glob=None): return self.inner.grep(pattern, path, glob)
+    def glob(self, pattern, path="/"): return self.inner.glob(pattern, path)
+
+    def write(self, file_path: str, content: str) -> WriteResult:
+        if self._deny(file_path):
+            return WriteResult(error=f"写入被拒绝：{file_path}")
+        return self.inner.write(file_path, content)
+
+    def edit(self, file_path: str, old_string: str, new_string: str,
+             replace_all: bool = False) -> EditResult:
+        if self._deny(file_path):
+            return EditResult(error=f"编辑被拒绝：{file_path}")
+        return self.inner.edit(file_path, old_string, new_string, replace_all)
+
+    def delete(self, file_path: str) -> DeleteResult:
+        if self._deny(file_path):
+            return DeleteResult(error=f"删除被拒绝：{file_path}")
+        return self.inner.delete(file_path)
+```
+
+## 实现自定义后端
+
+如果内置后端不满足需求（比如要接入 S3 或 Postgres），可以实现 `BackendProtocol` 接口：
+
+```python
+from deepagents.backends.protocol import (
+    BackendProtocol, WriteResult, EditResult, DeleteResult,
+    LsResult, ReadResult, GrepResult, GlobResult,
+)
+
+class S3Backend(BackendProtocol):
+    def __init__(self, bucket: str, prefix: str = ""):
+        self.bucket = bucket
+        self.prefix = prefix.rstrip("/")
+
+    def ls(self, path: str) -> LsResult:
+        # 列出 S3 对象，返回 FileInfo 列表
+        ...
+
+    def read(self, file_path: str, offset: int = 0, limit: int = 2000) -> ReadResult:
+        # 读取 S3 对象，返回 ReadResult(file_data=...) 或 ReadResult(error=...)
+        ...
+
+    def write(self, file_path: str, content: str) -> WriteResult:
+        # 写入 S3 对象，外部存储后端 files_update=None
+        ...
+
+    def edit(self, file_path: str, old_string: str, new_string: str,
+             replace_all: bool = False) -> EditResult:
+        # 读取 → 替换 → 写回
+        ...
+
+    def grep(self, pattern: str, path: str | None = None, glob: str | None = None) -> GrepResult:
+        # 搜索匹配内容
+        ...
+
+    def glob(self, pattern: str, path: str = "/") -> GlobResult:
+        # 模式匹配，返回 FileInfo 列表
+        ...
+
+    def delete(self, file_path: str) -> DeleteResult:
+        # 删除对象或目录前缀；需要暴露 delete 工具时实现
+        ...
+```
+
+`BackendProtocol` 的核心读写与搜索接口包括 `ls`、`read`、`write`、`edit`、`grep`、`glob`。如果后端要向 Agent 暴露 v0.7 的删除能力，还要实现 `delete()` 并返回 `DeleteResult`。包装器也必须同步转发或拒绝删除，不能只保护 `write()` 和 `edit()`。
