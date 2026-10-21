@@ -6,6 +6,7 @@
         "CirrOS",
         "dysk",
         "firstboot",
+        "firstword",
         "guestfs",
         "libguestfs",
         "nftables",
