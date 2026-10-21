@@ -24,7 +24,7 @@ virt-builder --list
 
 可用的列表为：
 
-```
+```bash
 ubuntu-20.04             x86_64     Ubuntu 20.04 (focal)
 ubuntu-18.04             x86_64     Ubuntu 18.04 (bionic)
 ubuntu-16.04             x86_64     Ubuntu 16.04 (Xenial)
@@ -320,5 +320,4 @@ virt-builder centos-7.8 \
     --format qcow2 \
     --hostname centos7-base \
     --root-password password:f
-
 ```

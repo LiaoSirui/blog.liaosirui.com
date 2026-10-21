@@ -1,10 +1,21 @@
 {
     "cSpell.words": [
         "Anson",
+        "armv7l",
+        "centosstream",
+        "CirrOS",
         "dysk",
+        "firstboot",
+        "guestfs",
+        "libguestfs",
         "nftables",
+        "Nocalhost",
         "pagetree",
-        "Sirui"
+        "qcow2",
+        "scientificlinux",
+        "Sirui",
+        "Socat",
+        "virt"
     ],
     "makefile.configureOnOpen": false
 }
