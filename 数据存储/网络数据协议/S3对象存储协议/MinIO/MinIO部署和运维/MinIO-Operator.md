@@ -8,10 +8,6 @@ MinIO 是 kubernetes 原生的高性能对象存储，兼容 Amazon 的 s3 API�
 
 MinIO Operator 是一个工具，该工具扩展了 k8s 的 api，可以通过 minio operator 在公有云和私有云上来部署 MinIO Tenants。
 
-## 架构
-
-![Tenant Architecture](.assets/architecture.png)
-
 ## MinIO 集群部署过程
 
 ### 安装 kubectl-minio 插件

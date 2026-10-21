@@ -178,14 +178,14 @@ runPipelines("init masters"，
 
 关键设计：证书是 sealos 在本地签的，不是 kubeadm 签的。
 
-[`GenerateCert`](../pkg/runtime/kubernetes/init.go#L46-L70) 用 
+`GenerateCert` 用 
 
 - `cert.GenerateCertForKubeVersion` 在本地 `~/.sealos/<cluster>/pki` 生成全套 CA + 叶子证书(certSANs 里包含 apiserver 域名、VIP、所有 master IP)
 - `CreateKubeConfigFiles` 生成 admin/controller-manager/scheduler 的 kubeconfig，然后一起 scp 到 master0。好处是多 master 共享同一套 CA、后续 `sealos cert` 可以离线换 SAN。
 
 InitMaster0 <https://github.com/labring/sealos/blob/v5.1.2-rc6/lifecycle/pkg/runtime/kubernetes/master.go#L38-L53>
 
-- [`imagePull`](../pkg/runtime/kubernetes/master.go#L55-L98)：`WaitRegistryReady` → `kubeadm config images list -o json` → 把镜像地址里的 registry 域名替换成集群内 registry → 逐个 `crictl pull`。这是离线安装的关键一步。<https://github.com/labring/sealos/blob/v5.1.2-rc6/lifecycle/pkg/runtime/kubernetes/master.go#L55-L98>
+- `imagePull`：`WaitRegistryReady` → `kubeadm config images list -o json` → 把镜像地址里的 registry 域名替换成集群内 registry → 逐个 `crictl pull`。这是离线安装的关键一步。<https://github.com/labring/sealos/blob/v5.1.2-rc6/lifecycle/pkg/runtime/kubernetes/master.go#L55-L98>
 - `kubeadm init --config=<ConfigsPath>/kubeadm-init.yaml --skip-certificate-key-print --skip-token-print --ignore-preflight-errors=SystemVerification` <https://github.com/labring/sealos/blob/v5.1.2-rc6/lifecycle/pkg/runtime/kubernetes/commands.go>
 - `copyMasterKubeConfig` → 远端 `$HOME/.kube/config`。
 
@@ -322,7 +322,7 @@ tryUncordonNode                            # 带 1 分钟重试
 
 | 文件 | 关注点 |
 | --- | --- |
-| [cmd/sealos/cmd/run.go](../cmd/sealos/cmd/run.go) | cobra 挂载、`--force` / `-t` |
+| `cmd/sealos/cmd/run.go` | cobra 挂载、`--force` / `-t` |
 | [pkg/apply/args.go](https://github.com/labring/sealos/blob/v5.1.2-rc6/lifecycle/pkg/apply/args.go) | 所有 flag 的定义 |
 | [pkg/apply/run.go](https://github.com/labring/sealos/blob/v5.1.2-rc6/lifecycle/pkg/apply/run.go) | 参数 → desired Cluster |
 | [pkg/apply/applydrivers/apply_drivers_default.go](https://github.com/labring/sealos/blob/v5.1.2-rc6/lifecycle/pkg/apply/applydrivers/apply_drivers_default.go) | 分支决策 + 错误分类 + 状态回写 |
