@@ -1,0 +1,1 @@
+- <https://geek-docs.com/sql/sql-examples/sql-to-calculate-the-difference-between-the-same-group-or-division.html>
