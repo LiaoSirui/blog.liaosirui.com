@@ -1,38 +1,36 @@
 ## CoreDNS 简介
 
-CoreDNS 插件是一款通过链式插件的方式为 Kubernetes 提供域名解析服务的 DNS 服务器
+CoreDNS 是一个灵活且可扩展的 DNS 服务器，它的设计目标是提供一种更现代化的 DNS 解决方案，用于服务发现和服务代理，特别是在云原生和容器化环境中。
 
-![CoreDNS logo](.assets/CoreDNS%E7%AE%80%E4%BB%8B/CoreDNS_Colour_Horizontal.png)
+CoreDNS 的主要特点包括：
 
-CoreDNS 是由 CNCF 孵化的开源软件，用于 Cloud-Native 环境下的 DNS 服务器和服务发现解决方案
-
-- CoreDNS 实现了插件链式架构，能够按需组合插件，运行效率高、配置灵活
-- 在 kubernetes 集群中使用 CoreDNS 能够自动发现集群内的服务，并为这些服务提供域名解析。
-
-- 通过级联云上 DNS 服务器，还能够为集群内的工作负载提供外部域名的解析服务
-
-- 可以通过修改 CoreDNS 的配置（"Corefile"）来配置 CoreDNS
-
-该插件为系统资源插件，kubernetes 1.11 及以上版本的集群在创建时默认安装；目前 CoreDNS 已经成为社区 kubernetes 1.11 及以上版本集群推荐的 DNS 服务器解决方案
+- 插件架构：CoreDNS 采用模块化设计，所有功能都通过插件实现。用户可以根据需求启用或禁用插件，以定制 DNS 服务器的行为。
+- 高性能：得益于 Go 语言的高并发处理能力，CoreDNS 在处理大量 DNS 请求时表现出色。
+- 简洁配置：CoreDNS 的配置文件格式简单直观，用户易于上手和管理。
+- 灵活性：支持多种后端，如 file、Kubernetes、etcd 等，能够适应各种应用场景。
+- 云原生友好：与 Kubernetes 无缝集成，目前为 Kubernetes 集群默认 DNS 服务组件。
 
 官方：
 
-- CoreDNS 官网：https://coredns.io/
+- CoreDNS 官网：<https://coredns.io/>
+- GitHub <https://github.com/coredns/coredns>
 
-- 开源社区地址：https://github.com/coredns/coredns
+目前 CoreDNS 已经成为社区 kubernetes 1.11 及以上版本集群推荐的 DNS 服务器解决方案。kubernetes 官方部署的默认 CoreDNS 版本：<https://github.com/coredns/deployment/blob/master/kubernetes/CoreDNS-k8s_version.md>
 
-其他：
+## CoreDNS 插件
 
-- kubernetes 官方部署的默认 coredns 版本：<https://github.com/coredns/deployment/blob/master/kubernetes/CoreDNS-k8s_version.md>
+CoreDNS 通过插件形式实现更多功能，CoreDNS 插件有两种：官方插件和外部插件，用户可以根据自身需求安装插件或者自己开发插件以满足业务需求
 
-![image-20230509100753501](.assets/CoreDNS%E7%AE%80%E4%BB%8B/image-20230509100753501.png)
+对于预编译的版本，会内置全部官方认证的插件，也就是官网的插件页面列出来的全部插件，插件页面：<https://coredns.io/plugins/>
 
-## 插件和外部插件
+```bash
+> ./coredns -plugins
 
-- CoreDNS 本身是没有能力作为一个递归查询的 DNS 服务器（Recursive DNS），可以通过插件来实现对域名的递归查询和缓存等功能从而加速客户端的 DNS 查询性能；这里主要实现的插件有内部插件（Plugins）forward 或外部插件（External Plugins）unbound
-- CoreDNS 的日志输出并不如 nginx 那么完善（并不能在配置文件中指定输出的文件目录，但是可以指定日志的格式），默认情况下不论是 log 插件还是 error 插件都会把所有的相关日志输出到程序的 standard output；CoreDNS 的原生日志功能对于一个 DNS 服务器的绝大部分应用场景来说是足够使用的，如果有更进阶的需求，可以考虑使用 dnstap 插件来实现
-- CoreDNS 内置的两个健康检查插件 health 和 ready
-- CoreDNS 服务在外部域名递归结果过程中容易出现一些问题，使用 dnsredir 插件进行分流和 alternate 插件进行重试优化的操作
+acl
+any
+auto
+# ....
+```
 
 ## 自建解析服务器
 
@@ -42,23 +40,23 @@ CoreDNS 是由 CNCF 孵化的开源软件，用于 Cloud-Native 环境下的 DNS
 
 需要重点注意 SOA 记录和 NS 记录
 
-```dns
+```corefile
 $ORIGIN alpha-quant.com.cn.
-@	3600 IN	SOA sns.dns.icann.org. noc.dns.icann.org. (
-				2017042745 ; serial
-				7200       ; refresh (2 hours)
-				3600       ; retry (1 hour)
-				1209600    ; expire (2 weeks)
-				3600       ; minimum (1 hour)
-				)
+@ 3600 IN SOA sns.dns.icann.org. noc.dns.icann.org. (
+        2017042745 ; serial
+        7200       ; refresh (2 hours)
+        3600       ; retry (1 hour)
+        1209600    ; expire (2 weeks)
+        3600       ; minimum (1 hour)
+        )
 
-	3600 IN NS a.iana-servers.net.
-	3600 IN NS b.iana-servers.net.
+  3600 IN NS a.iana-servers.net.
+  3600 IN NS b.iana-servers.net.
 ```
 
 解决 `Got recursion not available from xx.xx.xx.xx, trying next server`
 
-```
+```corefile
 header {
   response set ra # set RecursionAvailable flag
 }

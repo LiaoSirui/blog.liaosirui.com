@@ -5,7 +5,6 @@
 关于 k8s_event 插件，请参见 k8s_event：
 
 - <https://github.com/coredns/coredns.io/blob/master/content/explugins/k8s_event.md>
-
 - <https://github.com/coredns/k8s_event>
 
 插件编译需要开启
@@ -94,4 +93,3 @@ core dns 配置示例
 ```bash
 kubectl get ev -A -w | grep CoreDNS
 ```
-

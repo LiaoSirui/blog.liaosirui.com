@@ -3,12 +3,11 @@
 加入 hosts：
 
 ```ini
-            hosts {
-                10.10.10.10 harbor.example.com
-                10.10.10.11 grafana.example.com
-                fallthrough
-            }
-
+hosts {
+  10.10.10.10 harbor.example.com
+  10.10.10.11 grafana.example.com
+  fallthrough
+}
 ```
 
 ## 优化
