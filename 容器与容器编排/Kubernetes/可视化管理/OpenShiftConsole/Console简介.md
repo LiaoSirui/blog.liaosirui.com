@@ -36,8 +36,11 @@ dnf install -y libvirt NetworkManager
 
 CRC 下载地址：<https://console.redhat.com/openshift/create/local>
 
+CRC 和 Openshift 版本对应：<https://github.com/crc-org/crc/releases>
+
 ```bash
-wget https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+# wget https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/crc/latest/crc-linux-amd64.tar.xz
+# v5 只能在网页下载了
 
 tar xvJf crc-linux-amd64.tar.xz
 ```
