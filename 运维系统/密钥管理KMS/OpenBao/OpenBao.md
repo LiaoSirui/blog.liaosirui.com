@@ -1,0 +1,1 @@
+HashiCorp Vault 的分支：OpenBao 最初是 HashiCorp 旗下知名开源项目 HashiCorp Vault 的开源代码分支（Fork）。

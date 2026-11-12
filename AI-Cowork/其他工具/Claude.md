@@ -51,6 +51,7 @@ Claude Code 区分三个模型级别（Opus > Sonnet > Haiku），Fast/Think 模
     "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-5",
     "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-5",
     "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5",
+    "CLAUDE_CODE_AUTO_MODE_MODEL": "claude-sonnet-5-5-cc",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_MAX_CONTEXT_TOKENS": "1024000",
     "DISABLE_COMPACT": "1"

@@ -106,3 +106,45 @@ brctl delif <bridge> <device>
 brctl delbr <bridge>
 ```
 
+## NetworkManager-wait-online.service
+
+ 让 NM 不管理 CNI 虚拟网卡
+
+```bash
+cat > /etc/NetworkManager/conf.d/99-k8s-unmanaged.conf <<'EOF'
+[keyfile]
+unmanaged-devices=interface-name:cali*;interface-name:tunl*;interface-name:vxlan.calico;interface-name:vxlan-v6.calico;interface-name:wireguard.cali;interface-name:wg-v6.cali;interface-name:flannel*;interface-name:cni*;interface-name:veth*;interface-name:kube-ipvs0;interface-name:nodelocaldns;interface-name:cilium_*;interface-name:lxc*;interface-name:docker0;interface-name:kube-bridge
+EOF
+
+systemctl reload NetworkManager
+```
+
+处理没用的物理网卡和连接
+
+```bash
+# 没插线或不用的网口，关闭自动连接
+nmcli connection modify <连接名> connection.autoconnect no
+
+# 或者直接删除多余的连接配置
+nmcli connection delete <连接名>
+```
+
+bond 或交换机协商慢时，加大超时
+
+```bash
+systemctl edit NetworkManager-wait-online.service
+```
+
+加入以下配置
+
+```ini
+[Service]
+Environment=NM_ONLINE_TIMEOUT=300
+```
+
+也可以针对某个连接设置等待设备出现的时间：
+
+```bash
+nmcli connection modify <conn> connection.wait-device-timeout 30000
+# 单位毫秒
+```
