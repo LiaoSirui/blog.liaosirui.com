@@ -57,7 +57,7 @@ echo "解析结果: $(modinfo -k "$KVER" -n cifs)"
 最后重新加载内核模块
 
 ```bash
-rmmod cifs
+modprobe -r cifs
 
 tee /etc/modules-load.d/cifs.conf << 'EOF'
 cifs
@@ -67,5 +67,8 @@ EOF
 
 depmod -a $(uname -r)
 systemctl restart systemd-modules-load
+
+# 如果 cifs 被打进了 initramfs 需要重建
+lsinitrd | grep cifs && dracut -f
 ```
 
