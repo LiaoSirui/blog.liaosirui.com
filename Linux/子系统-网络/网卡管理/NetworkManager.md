@@ -106,6 +106,12 @@ brctl delif <bridge> <device>
 brctl delbr <bridge>
 ```
 
+### 不作为路由网卡
+
+```bash
+nmcli connection modify "Vlan ens6f0np0.103" ipv4.never-default yes
+```
+
 ## NetworkManager-wait-online.service
 
  让 NM 不管理 CNI 虚拟网卡
