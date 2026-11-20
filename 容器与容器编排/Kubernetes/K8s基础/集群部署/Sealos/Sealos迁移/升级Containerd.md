@@ -14,7 +14,7 @@
 - CRIRegistryAuths（`auths`）属性。用户应迁移至使用 [ImagePullSecrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/)。
 - CRIRegistryConfigs（`configs`）属性。用户应迁移至使用 [config_path](https://github.com/containerd/containerd/blob/release/2.0/docs/hosts.md)。
 
-registry 配置是常用配置，需要**特别关注**。一般在配置 register mirror 和 私有镜像仓 都会大量用到本配置。实际移除将会在 containerd v2.1 （已经一推再推了） 。
+registry 配置是常用配置，需要特别关注。一般在配置 register mirror 和 私有镜像仓 都会大量用到本配置。
 
 ### CRI v1alpha2 API 已被移除
 
