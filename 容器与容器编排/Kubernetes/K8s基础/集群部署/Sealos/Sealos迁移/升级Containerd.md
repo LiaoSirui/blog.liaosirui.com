@@ -82,5 +82,14 @@ tar zxvf containerd-2.4.2-linux-amd64.tar.gz -C /usr/
 cp crun-1.31-linux-amd64 /usr/bin/crun
 cp runc.amd64-v1.5.3 /usr/bin/runc
 # 配置文件目录、systemd service
+cp -r containerd /etc
+cp -r containerd.service /etc/systemd/system/
+```
+
+重新开启服务
+
+```bash
+systemctl enable --now containerd
+systemctl enable --now kubelet
 ```
 
