@@ -43,7 +43,14 @@ systemctl disable --now kubelet
 systemctl disable --now containerd
 ```
 
-重启节点，然后执行清理
+重启节点或者清理 k8s 产生的 containerd 容器
+
+```bash
+crictl ps -q | xargs -i crictl stop {}
+crictl rm $(crictl ps -aq --state exited)
+```
+
+然后执行清理
 
 ```bash
 readonly BIN_DIR=/usr/bin
